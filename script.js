@@ -14,16 +14,6 @@ function showpay() {
 
   document.getElementById("payment").innerHTML = payment;
 
-  // payment = principle * monthly interest/(1 - (1/(1+MonthlyInterest)*Months))
-  //var slider = document.getElementById("monthRange");
-  //var output = document.getElementById("monthRangeValue");
-
-  //output.innerHTML = slider.value;
-
-  //slider.oninput = function() {
-  //  output.innerHTML = this.value;
-  //}
-
   var slider2 = document.getElementById("percentRange");
   var output2 = document.getElementById("percentRangeValue");
 
@@ -47,7 +37,7 @@ function showpay() {
 //var stockNum = document.getElementsByClassName("stock-number");
 //console.log(stockNum);
 //var sn = `SBA8169`;
-var sn = `BRP01308`;
+var sn = `BRP03555`;
 var stockNum = sn;
 //var stockNum = (document.querySelectorAll('div.vdp-key-feature-detail > span.pull-right')[5]).textContent;
 console.log(stockNum);
@@ -60,8 +50,10 @@ console.log(stockNum);
 
 $.ajax({
   type: "GET",
-  //url: 'https://newportal.flatoutmotorcycles.com/portal/public/api/majorunit/stocknumber/' + stockNum,
-  url: "http://192.168.1.8/portal/public/api/majorunit/stocknumber/" + stockNum,
+  url:
+    "https://newportal.flatoutmotorcycles.com/portal/public/api/majorunit/stocknumber/" +
+    stockNum,
+  //url: "http://192.168.1.8/portal/public/api/majorunit/stocknumber/" + stockNum,
 })
   .done(function (data) {
     console.log(data.StockNumber);
