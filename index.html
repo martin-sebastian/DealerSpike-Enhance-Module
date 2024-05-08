@@ -19,33 +19,51 @@
       crossorigin="anonymous"
     />
     <link rel="stylesheet" href="css/font-awesome.css" />
+    <style>
+      .modal-body {
+        background-color: none;
+        background-image: url("img/flatout-building.jpg");
+        background-size: cover;
+        background-repeat: no-repeat;
+        padding: 5px 10px 100px 20px;
+        overflow: hidden;
+      }
+    </style>
   </head>
-  <body>
+  <body style="padding-top: 50px">
     <header>
-      <div
-        class="header-content"
-        style="width: 100%; background: #333; padding: 5px; margin: 0px"
-      >
-        <form class="form-inline" action="index.html">
-          <div class="form-group">
-            <input
-              type="input"
-              name="search"
-              value=""
-              class="form-control input-sm"
-              placeholder="Stock Number"
-              id="stockNumberInput"
-            />
+      <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <a
+              type="button"
+              class="navbar-brand"
+              data-toggle="modal"
+              data-target="#myModal"
+            >
+              <span
+                style="margin: 0px 5px 0 0"
+                class="glyphicon glyphicon-asterisk"
+                aria-hidden="true"
+              ></span>
+              Overlay Preview
+            </a>
           </div>
-          <button
-            id="loadStockNumberButton"
-            type="submit"
-            class="btn btn-default btn-sm"
-          >
-            Load
-          </button>
-        </form>
-      </div>
+          <form class="navbar-form navbar-left" role="search">
+            <div class="form-group">
+              <input
+                type="text"
+                name="search"
+                value=""
+                class="form-control"
+                placeholder="Search Stock Number"
+                id="stockNumberInput"
+              />
+            </div>
+            <button type="submit" class="btn btn-default">Load</button>
+          </form>
+        </div>
+      </nav>
     </header>
     <main>
       <div class="main-content"></div>
@@ -62,9 +80,45 @@
           border-top: solid 1px #ccc;
         "
       >
-        <p style="color: #333; text-align: left">Overlay V.1.0.0</p>
+        <p style="color: #333; text-align: left">Overlay V.0.8.1</p>
       </div>
     </footer>
+    <div
+      class="modal fade"
+      id="myModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="myModalLabel"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <h4 class="modal-title">About</h4>
+          </div>
+          <div class="modal-body">
+            <h1>Flat Out Motorsports</h1>
+            <h4>Website Overlay Version: 0.8.1</h4>
+            <h4>Author: Martin Sebastian</h4>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+              Close
+            </button>
+          </div>
+        </div>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
     <script
       src="https://code.jquery.com/jquery-1.12.4.min.js"
       integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="

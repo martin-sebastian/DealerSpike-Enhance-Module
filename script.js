@@ -54,7 +54,7 @@ console.log(stockNum);
 
 //var productDetailDescription = document.getElementsByClassName("unit-attributes");
 //console.log(productDetailDescription);
-
+var notFoundTemplate = `<div style="background: red; height: 200px;"><h1>Stock Number Not Found</h1></div>`;
 $.ajax({
   type: "GET",
   url:
@@ -388,8 +388,8 @@ $.ajax({
 					</a>
 				</h3>
 				<div class="collapse in" id="collapseDescription">
-					<div style="margin: 0 auto; max-width: 1600px; padding: 20px;">
-						<p class="text-center" style="padding: 10px 0; margin: 0 20px;">${unitDescription} ${data.StandardFeatures}</p>
+					<div style="margin: 0 auto; max-width: 900px; padding: 20px;">
+						<p class="text-left" style="padding: 10px 0; margin: 0 20px;">${unitDescription} ${data.StandardFeatures}</p>
 					</div>
 				</div>
 		    </div>
@@ -688,9 +688,7 @@ $.ajax({
 			<div class="vehicle-header-icons-container hidden-xs">
 				${videoButtonsTemplate}
 			</div>
-			<div class="vehicle-manufacturer-logo-container hidden-xs hidden-sm hidden-md">
-				${manufacturerLogoTemplate}
-			</div>
+
 		</div>
 		`;
 
