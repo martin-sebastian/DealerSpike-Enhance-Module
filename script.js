@@ -1,3 +1,10 @@
+// Overlay by Martin Sebastian
+
+// Grab the URL of the current page
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+const urlstocknumber = urlParams.get("search");
+
 //!NOTE Moved this to the top so it can get registered before the AJAX call
 // Payment Calculator
 function showpay() {
@@ -37,7 +44,7 @@ function showpay() {
 //var stockNum = document.getElementsByClassName("stock-number");
 //console.log(stockNum);
 //var sn = `SBA8169`;
-var sn = `BRP03555`;
+var sn = urlstocknumber;
 var stockNum = sn;
 //var stockNum = (document.querySelectorAll('div.vdp-key-feature-detail > span.pull-right')[5]).textContent;
 console.log(stockNum);
@@ -382,7 +389,7 @@ $.ajax({
 				</h3>
 				<div class="collapse in" id="collapseDescription">
 					<div style="margin: 0 auto; max-width: 1600px; padding: 20px;">
-						<p class="text-center" style="padding: 10px 0; margin: 0 20px;">${unitDescription}</p>
+						<p class="text-center" style="padding: 10px 0; margin: 0 20px;">${unitDescription} ${data.StandardFeatures}</p>
 					</div>
 				</div>
 		    </div>
@@ -1015,6 +1022,8 @@ $.ajax({
 						<ul class="list-group shadow">
 							<li class="list-group-item text-center">
 							<h2 class="black" style="font-weight: bold; font-size: 2.8rem;">${yellowTag} ${ourPrice}<br>
+							<small>MSRP: <s>${unitMSRP}</s></small><br>
+							<small>Savings: ${totalSavings}</small><br>
 								<small class="red bold">${inventoryStatusTemplate}</small><br>
 							</h2>
 							<p>Now Until: ${salePriceExpireDate}</p>

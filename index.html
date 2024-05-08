@@ -24,28 +24,59 @@
     <header>
       <div
         class="header-content"
-        style="width: 100%; background: red; padding: 5px; margin: 0px"
+        style="width: 100%; background: #333; padding: 5px; margin: 0px"
       >
-        <img
-          src="https://s2.googleusercontent.com/s2/favicons?domain_url=https://www.flatoutmotorcycles.com"
-          alt="Favicon"
-          srcset=""
-        />
-        <img
-          src="https://s2.googleusercontent.com/s2/favicons?domain=flatoutmotorcycles.com"
-          alt="Favicon"
-          srcset=""
-        />
+        <form class="form-inline" action="index.html">
+          <div class="form-group">
+            <input
+              type="input"
+              name="search"
+              value=""
+              class="form-control input-sm"
+              placeholder="Stock Number"
+              id="stockNumberInput"
+            />
+          </div>
+          <button
+            id="loadStockNumberButton"
+            type="submit"
+            class="btn btn-default btn-sm"
+          >
+            Load
+          </button>
+        </form>
       </div>
     </header>
     <main>
       <div class="main-content"></div>
     </main>
+    <footer>
+      <div
+        class="footer-content"
+        style="
+          width: 100%;
+          background: #fff;
+          padding: 5px;
+          margin: 0px;
+          height: 50vh;
+          border-top: solid 1px #ccc;
+        "
+      >
+        <p style="color: #333; text-align: left">Overlay V.1.0.0</p>
+      </div>
+    </footer>
     <script
       src="https://code.jquery.com/jquery-1.12.4.min.js"
       integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
       crossorigin="anonymous"
     ></script>
+
+    <script>
+      $(document).on("submit", this.id, function (e) {
+        // Do stuff
+      });
+    </script>
+
     <!-- Latest compiled and minified JavaScript -->
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js"
