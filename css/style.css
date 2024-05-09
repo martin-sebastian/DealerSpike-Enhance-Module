@@ -1,6 +1,6 @@
 body {
   margin: 0px;
-  padding-top: 60px;
+  padding-top: 50px;
 }
 .main-content {
   display: flex;
@@ -15,7 +15,7 @@ body {
   background: #fff;
   padding: 0 20px;
   margin: 0px;
-  height: 20vh;
+  height: 10vh;
   border-top: solid 1px #ccc;
 }
 .modal-body {
@@ -23,9 +23,19 @@ body {
   background-image: url("../img/flatout-building.jpg");
   background-size: cover;
   background-repeat: no-repeat;
-  padding: 5px 10px 180px 20px;
+  padding: 5px 10px 200px 20px;
   overflow: hidden;
 }
 .modal-body h1 {
   font-weight: bold;
+}
+.form-control {
+  background: #444;
+  color: #ccc;
+  border: solid 1px #444;
+}
+.btn {
+  background: #444;
+  color: #ccc;
+  border: solid 1px #444;
 }

@@ -661,7 +661,7 @@ $.ajax({
 
       // VIDEO, 360 TOUR, PDF Anchor Links
       if (video.Platform === 0) {
-        videoButtonsTemplate += `<a href="#scrollVideo" title="View Overview Video"><div class="vehicle-header-icons"><i class="fa fa-video-camera fa-2x"></i><br><span class="vehicle-header-icons-label">Video</span></div></a>`;
+        videoButtonsTemplate += `<a href="#scrollVideo" title="View Overview Video"><div class="vehicle-header-icons"><i class="fa fa-video-camera fa-1x"></i><br><span class="vehicle-header-icons-label">Video</span></div></a>`;
       } else if (video.Platform === 1) {
         videoButtonsTemplate += `<a href="#scroll3D" title="View 360 Degree Tour"><div class="vehicle-header-icons"><i class="fa fa-eercast fa-2x"></i><br><span class="vehicle-header-icons-label">360&deg Tour</span></div></a>`;
       } else if (video.Platform === 2) {
@@ -1189,10 +1189,10 @@ $.ajax({
 			.vehicle-title {
 				justify-content: flex-start;
 				color: #222;
-				font-weight: 900;
+				font-weight: 800;
 			}
 			.vehicle-subtitle {
-				color: gray;
+				color: #999;
 			}
 			.item img {
 				width: 100%;
