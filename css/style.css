@@ -1,0 +1,31 @@
+body {
+  margin: 0px;
+  padding-top: 60px;
+}
+.main-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #ccc;
+  height: 80vh;
+  width: 100%;
+}
+.footer-content {
+  width: 100%;
+  background: #fff;
+  padding: 0 20px;
+  margin: 0px;
+  height: 20vh;
+  border-top: solid 1px #ccc;
+}
+.modal-body {
+  background-color: none;
+  background-image: url("../img/flatout-building.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  padding: 5px 10px 180px 20px;
+  overflow: hidden;
+}
+.modal-body h1 {
+  font-weight: bold;
+}

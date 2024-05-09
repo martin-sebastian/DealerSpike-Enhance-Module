@@ -49,12 +49,8 @@ var stockNum = sn;
 //var stockNum = (document.querySelectorAll('div.vdp-key-feature-detail > span.pull-right')[5]).textContent;
 console.log(stockNum);
 
-//var oemDescription = $('#productDetailDescription').html();
-//var oemSpecs = $('#product-specs-data').html();
-
-//var productDetailDescription = document.getElementsByClassName("unit-attributes");
-//console.log(productDetailDescription);
 var notFoundTemplate = `<div style="background: red; height: 200px;"><h1>Stock Number Not Found</h1></div>`;
+
 $.ajax({
   type: "GET",
   url:
@@ -380,20 +376,20 @@ $.ajax({
 
     if (data.B50Desc.length) {
       unitDescripionTemplate += `
-			<div id="scrollDescription" class="container-fluid" style="padding: 10px 0 12px 0; border-top: solid 1px #ededed;">
-				<h3 class="bold text-center">
-					<a class="black" style="text-decoration: none;" data-toggle="collapse" href="#collapseDescription" aria-expanded="false" aria-controls="collapseDescription">
-						NOTES
-						<i class="fa fa-plus pull-right" style="padding-right: 20px;" aria-hidden="true"></i>
-					</a>
-				</h3>
-				<div class="collapse in" id="collapseDescription">
-					<div style="margin: 0 auto; max-width: 900px; padding: 20px;">
-						<p class="text-left" style="padding: 10px 0; margin: 0 20px;">${unitDescription} ${data.StandardFeatures}</p>
-					</div>
+		<div id="scrollDescription" class="container-fluid" style="padding: 10px 0 12px 0; border-top: solid 1px #ededed;">
+			<h3 class="bold text-center">
+				<a class="black" style="text-decoration: none;" data-toggle="collapse" href="#collapseDescription" aria-expanded="false" aria-controls="collapseDescription">
+					NOTES
+					<i class="fa fa-plus pull-right" style="padding-right: 20px;" aria-hidden="true"></i>
+				</a>
+			</h3>
+			<div class="collapse in" id="collapseDescription">
+				<div style="margin: 0 auto; max-width: 900px; padding: 20px;">
+					<p class="text-left" style="padding: 10px 0; margin: 0 20px;">${unitDescription} ${data.StandardFeatures}</p>
 				</div>
-		    </div>
-			`;
+			</div>
+		</div>
+		`;
     }
 
     // OEM Description Template
@@ -401,20 +397,20 @@ $.ajax({
 
     if (typeof oemDescription !== "undefined") {
       oemDescriptionTemplate += `
-			<div id="scrollOemDescription" class="container-fluid" style="padding: 10px 0 12px 0; border-top: solid 1px #ededed;">
-				<h3 class="bold text-center">
-					<a class="black" style="text-decoration: none;" data-toggle="collapse" href="#collapseOemDescription" aria-expanded="false" aria-controls="collapseOemDescription">
-						DESCRIPTION
-						<i class="fa fa-plus pull-right" style="padding-right: 20px;" aria-hidden="true"></i>
-					</a>
-				</h3>
-				<div class="collapse" id="collapseOemDescription">
-					<div style="margin: 0 auto; max-width: 1600px;">
-						<p class="text-center" style="padding: 10px 0; margin: 0 20px;">${oemDescription}</p>
-					</div>
+		<div id="scrollOemDescription" class="container-fluid" style="padding: 10px 0 12px 0; border-top: solid 1px #ededed;">
+			<h3 class="bold text-center">
+				<a class="black" style="text-decoration: none;" data-toggle="collapse" href="#collapseOemDescription" aria-expanded="false" aria-controls="collapseOemDescription">
+					DESCRIPTION
+					<i class="fa fa-plus pull-right" style="padding-right: 20px;" aria-hidden="true"></i>
+				</a>
+			</h3>
+			<div class="collapse" id="collapseOemDescription">
+				<div style="margin: 0 auto; max-width: 1600px;">
+					<p class="text-center" style="padding: 10px 0; margin: 0 20px;">${oemDescription}</p>
 				</div>
-		    </div>
-			`;
+			</div>
+		</div>
+		`;
     }
 
     // OEM Description Template
@@ -422,20 +418,20 @@ $.ajax({
 
     if (typeof oemSpecs !== "undefined") {
       oemSpecsTemplate += `
-			<div id="scrollDescription" class="container-fluid" style="padding: 10px 0; border-top: solid 1px #eee;">
-				<h3 class="bold text-center">
-					<a class="black" style="text-decoration: none;" data-toggle="collapse" href="#collapseOemSpecs" aria-expanded="false" aria-controls="collapseOemSpecs">
-						TECH SPECS
-						<i class="fa fa-plus pull-right" style="padding-right: 20px;" aria-hidden="true"></i>
-					</a>
-				</h3>
-				<div class="collapse" id="collapseOemSpecs">
-					<div style="margin: 0 auto; max-width: 1600px;">
-						<p class="text-center" style="padding: 10px 0; margin: 0 20px;">${oemSpecs}</p>
-					</div>
+		<div id="scrollDescription" class="container-fluid" style="padding: 10px 0; border-top: solid 1px #eee;">
+			<h3 class="bold text-center">
+				<a class="black" style="text-decoration: none;" data-toggle="collapse" href="#collapseOemSpecs" aria-expanded="false" aria-controls="collapseOemSpecs">
+					TECH SPECS
+					<i class="fa fa-plus pull-right" style="padding-right: 20px;" aria-hidden="true"></i>
+				</a>
+			</h3>
+			<div class="collapse" id="collapseOemSpecs">
+				<div style="margin: 0 auto; max-width: 1600px;">
+					<p class="text-center" style="padding: 10px 0; margin: 0 20px;">${oemSpecs}</p>
 				</div>
-		    </div>
-			`;
+			</div>
+		</div>
+		`;
     }
 
     // Feature Highlights Header
