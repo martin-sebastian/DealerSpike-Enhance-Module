@@ -47,8 +47,6 @@ var stockNum = sn;
 
 //console.log(stockNum);
 
-var notFoundTemplate = `<div style="background: red; height: 200px;"><h1>Stock Number Not Found</h1></div>`;
-
 $.ajax({
   type: "GET",
   url:
@@ -66,15 +64,15 @@ $.ajax({
       data.Manufacturer +
       " " +
       data.B50ModelName;
-    var qLevel = data.QuoteLevel;
+    //var qLevel = data.QuoteLevel;
     var vinNumber = data.VIN;
     var MSRPUnit = numeral(data.MSRPUnit).format("$0,0.00");
     var unitMSRP = numeral(data.MSRP - data.AccessoryItemsTotal).format(
       "$0,0.00"
     );
     var msrpLabel = data.MSRPTitle;
-    var qPrice = numeral(data.QuotePrice).format("$0,0.00");
-    var sPrice = numeral(data.Price).format("$0,0.00");
+    var quotePrice = numeral(data.QuotePrice).format("$0,0.00");
+    var salePrice = numeral(data.Price).format("$0,0.00");
     var discount = numeral(data.QuotePrice - data.Price).format("$0,0.00");
     var savings = numeral(data.Savings).format("$0,0.00");
     var eDate = moment(data.ExpirationDate).format("MM/DD/YYYY");
@@ -626,7 +624,7 @@ $.ajax({
 						</a>
 					</h3>
 				</div>
-				<div class="container-fluid collapse" id="collapsePDF" style="color: #fff; background: #fff; padding: 20px 0;">
+				<div class="container-fluid collapse in" id="collapsePDF" style="color: #fff; background: #fff; padding: 20px 0;">
 					<div class="container-fluid" style="max-width: 1700px; margin: 0 auto;">
 						<div class="text-center">
 							<a href="${video.URL}" class="btn btn-danger">Download PDF Brochure</a>
@@ -806,168 +804,16 @@ $.ajax({
 			`;
     }
 
-    // LEVEL 1
-    if (qLevel === 1) {
-      var ourPrice = numeral(
-        data.MSRP + data.AccessoryItemsTotal + data.TradeInItemsTotal
-      ).format("$0,0.00");
-      var totalSavings = numeral(data.TradeInItemsTotal * -1).format("$0,0.00");
-      var overlay = `
-			
-			${muHeaderTemplate}
-			<div class="container-fluid" style="background: #efefef; padding-top: 16px; padding-bottom: 35px;">
-				<div class="row" style="max-width: 1700px; margin:0 auto;">
-					<div class="col-xl-9 col-lg-9 col-md-8">
-						${carousel}
-						<div style="padding: 0px; display: block; margin-bottom: 50px;">
-							${thumbnailImages}
-							<hr style="clear: both;">
-						</div>
-					</div>
-	
-					<div class="col-xl-3 col-lg-3 col-md-4">
-						<ul class="list-group rounded shadow">
-							<li class="list-group-item text-center">
-								<h2 class="black" style="font-weight: bold; font-size: 2.8rem;">${yellowTag} ${ourPrice}</h2>
-									<span>MSRP: <s>${unitMSRP}</s></span><br>
-									<span>Savings: ${totalSavings}</span><br>
-									<span class="red bold">${inventoryStatusTemplate}</span><br>
-								<p>${salePriceExpireDate}</p>
-								<hr style="margin: 0; padding: 0;">
-								${paymentCalc}
-							</li>
-							
-							<li class="list-group-item bold">${msrpLabel} <span class="pull-right">${MSRPUnit}</span></li>
-							${tradeInItemsTemplate} 
-							${freebieItemsTemplate}
-							${accessoryLine}
-							<div class="collapse" id="collapseItems">
-								${accessoryItemsTemplate}
-							</div>
-							<li class="list-group-item bold">
-								<a class="gray" data-toggle="collapse" href="#collapseFees" aria-expanded="true" aria-controls="collapseFees">Fees <i class="fa fa-chevron-down collapse-icon pull-right" aria-hidden="true"></i></a>
-							</li>
-							<div class="collapse in" id="collapseFees">
-								${OTDItemsTemplate}
-							</div>
-							<li class="list-group-item bold">
-								<a class="gray collapsed" data-toggle="collapse" href="#collapseNumbers" aria-expanded="false" aria-controls="collapseoverlay">More Info. <i class="fa fa-chevron-down collapse-icon pull-right" aria-hidden="true"></i></a>
-							</li>
-							<div class="collapse" id="collapseNumbers">
-								${unitNumbersTemplate}
-							</div>
-						</ul>
-						<div class="text-center">
-							<span class="label label-primary" style="background: #fff; border: solid 1px #ddd; color: #333;"><small>Price Expires: </small>${eDate}</span>
-						</div>
-						<hr style="clear: both;">
-						
-					</div>
-					
-				</div>
-				<div class="gray">${foDisclaimer}</div>
-				${contactMobile}
-			</div>
-			${featuresTemplate}
-			${walkthruVideoTemplate}
-			${unitDescripionTemplate}
-			${oemDescriptionTemplate}
-			${oemSpecsTemplate}
-			${youtubeVideoTemplate}
-			${pdfBrochureTemplate}
-			`;
+    // LEVEL 3
 
-      $(".main-content").replaceWith(overlay);
-      //document.getElementsByClassName("main-content").replaceWith(overlay);
-      document.getElementById("muItems").innerHTML = muImageCardTemplate;
-
-      // LEVEL 2
-    } else if (qLevel === 2) {
-      var ourPrice = numeral(
-        data.MSRP +
-          data.MatItemsTotal +
-          data.AccessoryItemsTotal +
-          data.TradeInItemsTotal
-      ).format("$0,0.00");
-      var totalSavings = numeral(
-        (data.MatItemsTotal + data.TradeInItemsTotal) * -1
-      ).format("$0,0.00");
-      var overlay = `
-			
-
-			${muHeaderTemplate}
-			<div class="container-fluid" style="background: #efefef; padding-top: 16px; padding-bottom: 35px;">
-				<div class="row" style="max-width: 1700px; margin:0 auto;">
-					<div class="col-xl-9 col-lg-9 col-md-8">
-						${carousel}
-						<div style="padding: 0px; display: block; margin-bottom: 50px;">
-							${thumbnailImages}
-							<hr style="clear: both;">
-						</div>
-					</div>
-	
-					<div class="col-xl-3 col-lg-3 col-md-4">
-						<ul class="list-group shadow">
-							<li class="list-group-item text-center">
-							<span class="bold">MSRP: <s>${MSRPUnit}</s></span> <span class="label label-warning">Savings: ${totalSavings}</span>
-							<h2 class="black" style="margin: 0; font-weight: bold; font-size: 2.8rem;">${yellowTag} ${ourPrice}<br>
-								<small class="red bold">${inventoryStatusTemplate}</small><br>
-							</h2>
-							<p>${salePriceExpireDate}</p>
-							<hr style="margin: 0; padding: 0;">
-							${paymentCalc}
-							</li>
-							${videoButtonsTemplate}
-							<li class="list-group-item bold">${msrpLabel} <span class="pull-right">${MSRPUnit}</span></li>
-							${matItemsTemplate} 
-							${tradeInItemsTemplate} 
-							${freebieItemsTemplate}
-							${accessoryLine}
-							<div class="collapse" id="collapseItems">
-								${accessoryItemsTemplate}
-							</div>
-							<li class="list-group-item bold">
-								<a class="gray fees-box" data-toggle="collapse" href="#collapseFees" aria-expanded="true" aria-controls="collapseoverlay">Fees <i class="fa fa-chevron-down collapse-icon pull-right" aria-hidden="true"></i></a>
-							</li>
-							<div class="collapse in" id="collapseFees">
-								${OTDItemsTemplate}
-							</div>
-							<li class="list-group-item bold">
-								<a class="gray more-info-box collapsed" data-toggle="collapse" href="#collapseNumbers" aria-expanded="true" aria-controls="collapseoverlay">More Info. <i class="fa fa-chevron-down collapse-icon pull-right" aria-hidden="true"></i></a>
-							</li>
-							<div class="collapse" id="collapseNumbers">
-								${unitNumbersTemplate}
-							</div>
-						</ul>
-						<hr style="clear: both;">
-						${contactMobile}
-					</div>
-				</div>
-			</div>
-			${featuresTemplate}
-			${walkthruVideoTemplate}
-			${unitDescripionTemplate}
-			${oemDescriptionTemplate}
-			${oemSpecsTemplate}
-			${youtubeVideoTemplate}
-			`;
-
-      $(".main-content").replaceWith(overlay);
-      //document.getElementsByClassName("main-content").innerHTML = overlay;
-      document.getElementById("muItems").innerHTML = muImageCardTemplate;
-
-      // LEVEL 3
-    } else if (qLevel === 3) {
-      var ourPrice = numeral(
-        data.MSRPUnit +
-          data.AccessoryItemsTotal +
-          data.MatItemsTotal +
-          data.DiscountItemsTotal +
-          data.TradeInItemsTotal
-      ).format("$0,0.00");
-      var overlay = `
-			
-
+    var ourPrice = numeral(
+      data.MSRPUnit +
+        data.AccessoryItemsTotal +
+        data.MatItemsTotal +
+        data.DiscountItemsTotal +
+        data.TradeInItemsTotal
+    ).format("$0,0.00");
+    var overlay = `
 			${muHeaderTemplate}
 			<div class="container-fluid" style="background: #efefef; padding-top: 16px; padding-bottom: 35px;">
 				
@@ -984,11 +830,18 @@ $.ajax({
 					<div class="col-xl-4 col-lg-4 col-md-4">
 						<ul class="list-group shadow">
 							<li class="list-group-item text-center">
-							<h2 class="black" style="font-weight: bold; font-size: 2.8rem;">${yellowTag} ${ourPrice}<br>
+							<div class="our-price-container">
+								<div class="our-price">
+								<h2 class="black" style="font-weight: bold; font-size: 2.8rem;">${yellowTag} ${ourPrice}</h2>
+								</div>
+							<div class="payment">Payment</div>
+							</div>						
+
+							
 							<small>MSRP: <s>${unitMSRP}</s></small><br>
-							<small>Savings: ${totalSavings}</small><br>
-								<small class="red bold">${inventoryStatusTemplate}</small><br>
-							</h2>
+							<small class="red bold">${inventoryStatusTemplate}</small><br>
+							<small class="red bold">Savings: ${discount}</small><br>
+							
 							<p>Now Until: ${salePriceExpireDate}</p>
 							<hr style="margin: 0; padding: 0;" />
 							${paymentCalc}
@@ -1032,173 +885,14 @@ $.ajax({
 			${pdfBrochureTemplate}
 			`;
 
-      $(".main-content").replaceWith(overlay);
-      //document.getElementsByClassName("main-content").innerHTML = overlay;
-      document.getElementById("muItems").innerHTML = muImageCardTemplate;
-
-      // LEVEL 4
-    } else if (qLevel === 4) {
-      var ourPrice = numeral(
-        data.MSRP + data.AccessoryItemsTotal - data.DiscountItemsTotal
-      ).format("$0,0.00");
-      var overlay = `
-			
-
-			${muHeaderTemplate}
-			<div class="container-fluid" style="background: #efefef; padding-top: 16px; padding-bottom: 35px;">
-				
-				<div class="row" style="max-width: 1700px; margin:0 auto;">
-					<div class="col-xl-9 col-lg-9 col-md-8">
-						${carousel}
-						<div style="padding: 0px; display: block; margin-bottom: 50px;">
-							${thumbnailImages}
-							<hr style="clear: both;">
-						</div>
-						
-					</div>
-	
-					<div class="col-xl-3 col-lg-3 col-md-4">
-						<ul class="list-group shadow">
-							<li class="list-group-item text-center">
-							<h2 class="black" style="font-weight: bold; font-size: 2.8rem;">${yellowTag} ${ourPrice}<br>
-								<small class="red bold">${inventoryStatusTemplate}</small><br>
-							</h2>
-							<p>${salePriceExpireDate}</p>
-							<hr style="margin: 0; padding: 0;">
-							${paymentCalc}
-							</li>
-							${videoButtonsTemplate}
-							<li class="list-group-item bold">${msrpLabel} <span class="pull-right">${MSRPUnit}</span></li>
-							
-							${tradeInItemsTemplate} 
-							${discountItemsTemplate}
-							${freebieItemsTemplate}
-							${accessoryLine}
-							<div class="collapse" id="collapseItems">
-								${accessoryItemsTemplate}
-							</div>
-							<li class="list-group-item bold">
-								<a class="gray" data-toggle="collapse" href="#collapseFees" aria-expanded="true" aria-controls="collapseoverlay">Fees <i class="fa fa-chevron-down collapse-icon pull-right" aria-hidden="true"></i></a>
-							</li>
-							<div class="collapse in" id="collapseFees">
-								${OTDItemsTemplate}
-							</div>
-							<li class="list-group-item bold">
-								<a class="gray collapsed" data-toggle="collapse" href="#collapseNumbers" aria-expanded="false" aria-controls="collapseoverlay">More Info. <i class="fa fa-chevron-down collapse-icon pull-right" aria-hidden="true"></i></a>
-							</li>
-							<div class="collapse" id="collapseNumbers">
-								${unitNumbersTemplate}
-							</div>
-							<li class="list-group-item">
-								  -
-							</li>
-						</ul>
-						<hr style="clear: both;">
-						${contactMobile}
-					</div>
-				</div>
-			</div>
-			${featuresTemplate}
-			${walkthruVideoTemplate}
-			${unitDescripionTemplate}
-			${oemDescriptionTemplate}
-			${oemSpecsTemplate}
-			${youtubeVideoTemplate}
-			${pdfBrochureTemplate}
-			`;
-
-      $(".main-content").replaceWith(overlay);
-      //document.getElementsByClassName("main-content").innerHTML = overlay;
-      document.getElementById("muItems").innerHTML = muImageCardTemplate;
-
-      // LEVEL 5
-    } else if (qLevel === 5) {
-      var ourPrice = numeral(
-        data.MSRPUnit +
-          data.AccessoryItemsTotal +
-          data.MatItemsTotal -
-          data.DiscountItemsTotal -
-          data.TradeInItemsTotal
-      ).format("$0,0.00");
-      var overlay = `
-			  
-  
-			  ${muHeaderTemplate}
-			  <div class="container-fluid" style="background: #efefef; padding-top: 16px; padding-bottom: 35px;">
-				  
-				  <div class="row" style="max-width: 1700px; margin:0 auto;">
-					  <div class="col-xl-9 col-lg-9 col-md-8">
-						  ${carousel}
-						  <div style="padding: 0px; display: block; margin-bottom: 50px;">
-							  ${thumbnailImages}
-							  <hr style="clear: both;">
-						  </div>
-						  
-					  </div>
-	  
-					  <div class="col-xl-3 col-lg-3 col-md-4">
-						  <ul class="list-group shadow">
-							  <li class="list-group-item text-center">
-							  <h2 class="black" style="font-weight: bold; font-size: 2.8rem;">${yellowTag} ${ourPrice}<br>
-							  <small>MSRP: <s>${unitMSRP}</s></small><br>
-							  <small>Savings: ${totalSavings}</small><br>
-								  <small class="red bold">${inventoryStatusTemplate}</small><br>
-							  </h2>
-							  <p>Now Until: ${salePriceExpireDate}</p>
-							  <hr style="margin: 0; padding: 0;">
-							  ${paymentCalc}
-							  </li>
-							  ${videoButtonsTemplate}
-							  <li class="list-group-item bold">${msrpLabel} <span class="pull-right">${MSRPUnit}</span></li>
-							  ${matItemsTemplate} 
-							  ${tradeInItemsTemplate} 
-							  ${discountItemsTemplate}
-							  ${freebieItemsTemplate}
-							  ${accessoryLine}
-							  <div class="collapse" id="collapseItems">
-								  ${accessoryItemsTemplate}
-							  </div>
-							  <li class="list-group-item bold">
-								  <a class="gray" data-toggle="collapse" href="#collapseFees" aria-expanded="false" aria-controls="collapseoverlay">Fees <i class="fa fa-chevron-down collapse-icon pull-right" aria-hidden="true"></i></a>
-							  </li>
-							  <div class="collapse" id="collapseFees">
-								  ${OTDItemsTemplate}
-							  </div>
-							  <li class="list-group-item bold">
-								  <a class="gray" data-toggle="collapse" href="#collapseNumbers" aria-expanded="false" aria-controls="collapseoverlay">More Info. <i class="fa fa-chevron-down collapse-icon pull-right" aria-hidden="true"></i></a>
-							  </li>
-							  <div class="collapse" id="collapseNumbers">
-								  ${unitNumbersTemplate}
-							  </div>
-							  <li class="list-group-item">
-								  -
-							  </li>
-						  </ul>
-						  <hr style="clear: both;">
-						  ${contactMobile}
-					  </div>
-				  </div>
-			  </div>
-			  ${featuresTemplate}
-			  ${walkthruVideoTemplate}
-			  ${unitDescripionTemplate}
-			  ${oemDescriptionTemplate}
-			  ${oemSpecsTemplate}
-			  ${youtubeVideoTemplate}
-			  ${pdfBrochureTemplate}
-			  `;
-
-      $(".main-content").replaceWith(overlay);
-      //document.getElementsByClassName("main-content").innerHTML = overlay;
-      document.getElementById("muItems").innerHTML = muImageCardTemplate;
-    } else {
-      console.log(qLevel);
-    }
+    $(".main-content").replaceWith(overlay);
+    //document.getElementsByClassName("main-content").innerHTML = overlay;
+    document.getElementById("muItems").innerHTML = muImageCardTemplate;
 
     // CSS STYLE LEVEL 0 to 4
-    if (qLevel > 0) {
-      var style = document.createElement("style");
-      style.innerHTML = `
+
+    var style = document.createElement("style");
+    style.innerHTML = `
 			html {
                 scroll-behavior: smooth;
             }
@@ -1565,11 +1259,11 @@ $.ajax({
               }
 			`;
 
-      document.head.appendChild(style);
-    }
+    document.head.appendChild(style);
 
     showpay();
   })
+
   .fail(function (jqXHR, textStatus, errorThrown) {
     console.log(jqXHR.responseText || textStatus);
   });
