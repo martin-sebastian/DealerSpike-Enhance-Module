@@ -5,7 +5,6 @@ const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const urlstocknumber = urlParams.get("search");
 
-//!NOTE Moved this to the top so it can get registered before the AJAX call
 // Payment Calculator
 function showpay() {
   var princ = document.calc.loan.value;
@@ -41,13 +40,12 @@ function showpay() {
 }
 
 //var stockNum = $('div[itemprop="sku"]').text();
-//var stockNum = document.getElementsByClassName("stock-number");
-//console.log(stockNum);
+//var stockNum = (document.querySelectorAll('div.vdp-key-feature-detail > span.pull-right')[5]).textContent;
 //var sn = `SBA8169`;
 var sn = urlstocknumber;
 var stockNum = sn;
-//var stockNum = (document.querySelectorAll('div.vdp-key-feature-detail > span.pull-right')[5]).textContent;
-console.log(stockNum);
+
+//console.log(stockNum);
 
 var notFoundTemplate = `<div style="background: red; height: 200px;"><h1>Stock Number Not Found</h1></div>`;
 
@@ -209,19 +207,19 @@ $.ajax({
     while (i < 100) {
       if (data.AccessoryItems[i]) {
         if (data.AccessoryItems[i].Included == false) {
-          accessoryItemsTemplate += `<li class="list-group-item" style="border-radius: 0; border-top: 0; border-bottom: 0; background: #fff;">${
+          accessoryItemsTemplate += `<li class="list-group-item">${
             data.AccessoryItems[i].Description
           } <span class="pull-right">${numeral(
             data.AccessoryItems[i].Amount
           ).format("$0,0.00")}</span></li>`;
         } else {
-          accessoryItemsTemplate += `<li class="list-group-item" style="border-radius: 0; border-top: 0; border-bottom: 0; background: #fff;">${
+          accessoryItemsTemplate += `<li class="list-group-item"><small>${
             data.AccessoryItems[i].Description
-          } <span class="red">(value:${numeral(
+          }</small> <span class="red">(<small>value:${numeral(
             data.AccessoryItems[i].Amount
           ).format(
             "$0,0.00"
-          )})</span> <span class="pull-right">Included</span></li>`;
+          )})</small></span> <span class="pull-right">Included</span></li>`;
         }
       }
       i++;
@@ -231,12 +229,12 @@ $.ajax({
     var accTotal = numeral(data.AccessoryItemsTotal).format("$0,0.00");
 
     if ($(data.AccessoryItems[0]).length && data.AccessoryItemsTotal > 0) {
-      var accessoryLine = `<li class="list-group-item"><a class="gray bold collapsed" data-toggle="collapse" href="#collapseItems" aria-expanded="false" aria-controls="collapseExample">Features <i class="fa fa-chevron-down collapse-icon pull-right" aria-hidden="true"></i></a> <span class=""> - ${accTotal}</span></li>`;
+      var accessoryLine = `<li class="list-group-item"><a class="gray bold collapsed" data-toggle="collapse" href="#collapseItems" aria-expanded="false" aria-controls="collapseoverlay">Features <i class="fa fa-chevron-down collapse-icon pull-right" aria-hidden="true"></i></a> <span class=""> - ${accTotal}</span></li>`;
     } else if (
       $(data.AccessoryItems[0]).length &&
       data.AccessoryItemsTotal < 1
     ) {
-      var accessoryLine = `<li class="list-group-item"><a class="gray bold collapsed" data-toggle="collapse" href="#collapseItems" aria-expanded="false" aria-controls="collapseExample">Features <i class="fa fa-chevron-down collapse-icon pull-right" aria-hidden="true"></i></a> <span class="gray"> - Included</span></li>`;
+      var accessoryLine = `<li class="list-group-item"><a class="gray bold collapsed" data-toggle="collapse" href="#collapseItems" aria-expanded="false" aria-controls="collapseoverlay">Features <i class="fa fa-chevron-down collapse-icon pull-right" aria-hidden="true"></i></a> <span class="gray"> - Included</span></li>`;
     } else {
       var accessoryLine = ``;
     }
@@ -264,7 +262,7 @@ $.ajax({
       if (data.DiscountItems[i]) {
         discountItemsTemplate += `<li class="list-group-item"><em>${
           data.DiscountItems[i].Description
-        }</em> <span class="pull-right bold red">-${numeral(
+        }</em> <span class="pull-right bold red">${numeral(
           data.DiscountItems[i].Amount
         ).format("$0,0.00")}</span></li>`;
       }
@@ -330,27 +328,13 @@ $.ajax({
       var yellowTag = ``;
     }
 
-    // Manufacturer Logos
-    var manufacturerLogoTemplate = ``;
-    if (data.Manufacturer == "SCARAB") {
-      manufacturerLogoTemplate += `<img class="vehicle-manufacturer-logo" src="https://cdnmedia.endeavorsuite.com/images/showcase/productOwner_colorLogos/marine/${data.Manufacturer}.png">`;
-    } else if (data.Manufacturer == "MANITOU") {
-      manufacturerLogoTemplate += `<img class="vehicle-manufacturer-logo" src="https://cdnmedia.endeavorsuite.com/images/showcase/productOwner_colorLogos/marine/${data.Manufacturer}.png">`;
-    } else if (data.Manufacturer == "SOUTHBAY") {
-      manufacturerLogoTemplate += `<img class="vehicle-manufacturer-logo" src="https://cdnmedia.endeavorsuite.com/images/showcase/productOwner_colorLogos/marine/${data.Manufacturer}.png">`;
-    } else if (data.Manufacturer == "SEA DOO") {
-      manufacturerLogoTemplate += `<img class="vehicle-manufacturer-logo" src="https://cdnmedia.endeavorsuite.com/images/showcase/productOwner_colorLogos/powersports/SEA-DOO.png">`;
-    } else {
-      manufacturerLogoTemplate += `<img class="vehicle-manufacturer-logo" src="https://cdnmedia.endeavorsuite.com/images/showcase/productOwner_colorLogos/powersports/${data.Manufacturer}.png">`;
-    }
-
     // Major Unit Header with name and manuf logo
     var muNavTemplate = `
 		<nav class="navbar navbar-default" style="background: #fff; margin: 0; border: ; border-radius: 0;">
 			<div class="container-fluid">
 				<!-- Brand and toggle get grouped for better mobile display -->
 				<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-overlay-navbar-collapse-1" aria-expanded="false">
 					<span class="sr-only">Toggle navigation</span>
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
@@ -360,7 +344,7 @@ $.ajax({
 				</div>
 
 				<!-- Collect the nav links, forms, and other content for toggling -->
-				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<div class="collapse navbar-collapse" id="bs-overlay-navbar-collapse-1">
 				<ul class="nav navbar-nav">
 					<li><a href="#scrollFeatures">FEATURE HIGHLIGHTS</a></li>
 					<li><a href="#scroll3D">360&#176; VIEW</a></li>
@@ -383,7 +367,7 @@ $.ajax({
 					<i class="fa fa-plus pull-right" style="padding-right: 20px;" aria-hidden="true"></i>
 				</a>
 			</h3>
-			<div class="collapse in" id="collapseDescription">
+			<div class="collapse" id="collapseDescription">
 				<div style="margin: 0 auto; max-width: 900px; padding: 20px;">
 					<p class="text-left" style="padding: 10px 0; margin: 0 20px;">${unitDescription} ${data.StandardFeatures}</p>
 				</div>
@@ -405,7 +389,7 @@ $.ajax({
 				</a>
 			</h3>
 			<div class="collapse" id="collapseOemDescription">
-				<div style="margin: 0 auto; max-width: 1600px;">
+				<div style="margin: 0 auto; max-width: 1700px;">
 					<p class="text-center" style="padding: 10px 0; margin: 0 20px;">${oemDescription}</p>
 				</div>
 			</div>
@@ -426,12 +410,12 @@ $.ajax({
 				</a>
 			</h3>
 			<div class="collapse" id="collapseOemSpecs">
-				<div style="margin: 0 auto; max-width: 1600px;">
+				<div style="margin: 0 auto; max-width: 1700px;">
 					<p class="text-center" style="padding: 10px 0; margin: 0 20px;">${oemSpecs}</p>
 				</div>
 			</div>
 		</div>
-		`;
+	  `;
     }
 
     // Feature Highlights Header
@@ -451,7 +435,7 @@ $.ajax({
     var featuresTemplate = `
 		${featuresHeader}
 		<div class="container-fluid collapse in" id="collapseFeatures">
-			<div class="row" style="max-width: 1600px; margin: 0 auto;" id="muItems"></div>
+			<div class="row" style="max-width: 1700px; margin: 0 auto;" id="muItems"></div>
 		</div>
 	`;
 
@@ -543,20 +527,20 @@ $.ajax({
 
     // Carousel Container
     var carousel = `
-		<div class="shadow" style="border: solid 1px #ededed; overflow: hidden; border-radius: 4px !important; margin-bottom: 20px;">
-			<div id="carousel-example-generic" class="carousel slide" data-ride="">
+		<div class="shadow" style="overflow: hidden; border-radius: 10px !important; margin-bottom: 10px;">
+			<div id="carousel-overlay-generic" class="carousel slide" data-ride="">
 			
 			<div class="carousel-inner" role="listbox">
 			${carouselImages}
 			</div>
 			
 			<!-- Controls -->
-			<a class="left carousel-control" style="background: none;" href="#carousel-example-generic" role="button" data-slide="prev">
+			<a class="left carousel-control" style="background: none;" href="#carousel-overlay-generic" role="button" data-slide="prev">
 				<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
 				<span class="sr-only">Previous</span>
 			</a>
 
-			<a class="right carousel-control" style="background: none;" href="#carousel-example-generic" role="button" data-slide="next">
+			<a class="right carousel-control" style="background: none;" href="#carousel-overlay-generic" role="button" data-slide="next">
 				<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
 				<span class="sr-only">Next</span>
 			</a>
@@ -568,18 +552,12 @@ $.ajax({
     i = 0;
     while (i < data.Images.length) {
       if (i == 0) {
-        thumbnailImages += `<div class="mu-thumbnail pull-left"><a href="#carousel-example-generic" role="button" data-slide-to="${i}"><img style="width:60px;" src=" ${data.Images[i].ImgURL}" alt="error loading image"></a></div>`;
+        thumbnailImages += `<div class="mu-thumbnail pull-left"><a href="#carousel-overlay-generic" role="button" data-slide-to="${i}"><img style="width:100%;" src=" ${data.Images[i].ImgURL}" alt="error loading image"></a></div>`;
       } else {
-        thumbnailImages += `<div class="mu-thumbnail pull-left"><a href="#carousel-example-generic" role="button" data-slide-to="${i}"><img style="width:60px;" src=" ${data.Images[i].ImgURL}" alt="error loading image"></a></div>`;
+        thumbnailImages += `<div class="mu-thumbnail pull-left"><a href="#carousel-overlay-generic" role="button" data-slide-to="${i}"><img style="width:100%;" src=" ${data.Images[i].ImgURL}" alt="error loading image"></a></div>`;
       }
       i++;
     }
-
-    // MUItems Container (Acc Items but only those with an image)
-    // !NOTE Currently not used, but could be used to hold that second div with class = container and then plug in the muImageCardTemplate
-    // I did not do this as the 2 containers are not nested and as a result, cannot insert the 1 overlay for the whole screen. Reformatting will be needed.
-    var muItemsTemplate = ``;
-    var muVideoTemplate = ``;
 
     // 360 Walkthru from Kuula
     var walkthruVideoTemplate = ``;
@@ -608,7 +586,7 @@ $.ajax({
 					</h3>
 				</div>
 				<div class="container-fluid collapse in" id="collapseVideo" style="color: #fff; background: #fff; padding: 20px 0;">
-					<div class="container-fluid" style="max-width: 1600px; margin: 0 auto;">
+					<div class="container-fluid" style="max-width: 1700px; margin: 0 auto;">
 						<div class="embed-responsive embed-responsive-16by9">
 							<iframe class="embed-responsive-item" src="https://www.youtube.com/embed/${video.URL}"></iframe>
 						</div>
@@ -628,7 +606,7 @@ $.ajax({
 					</h3>
 				</div>
 				<div class="container-fluid collapse in" id="collapse360" style="color: #333; background: #fff; padding: 20px 0;">
-					<div class="container-fluid" style="max-width: 1600px; margin: 0 auto;">
+					<div class="container-fluid" style="max-width: 1700px; margin: 0 auto;">
 						<iframe width="100%" height="640" style="width: 100%; height: 840px; border: none; max-width: 100%;" frameborder="0" allowfullscreen allow="xr-spatial-tracking; gyroscope; accelerometer" scrolling="no" src="https://kuula.co/share/collection/${video.URL}?logo=1&info=0&logosize=170&fs=1&vr=1&zoom=1&autorotate=0.18&autop=10&autopalt=1&thumbs=-1&margin=10&inst=0"></iframe>
 					</div>
 					<div class="text-center">
@@ -649,9 +627,9 @@ $.ajax({
 					</h3>
 				</div>
 				<div class="container-fluid collapse" id="collapsePDF" style="color: #fff; background: #fff; padding: 20px 0;">
-					<div class="container-fluid" style="max-width: 1600px; margin: 0 auto;">
+					<div class="container-fluid" style="max-width: 1700px; margin: 0 auto;">
 						<div class="text-center">
-							<a href="${video.URL}" class="btn btn-primary btn-lg">Download PDF Brochure</a>
+							<a href="${video.URL}" class="btn btn-danger">Download PDF Brochure</a>
 						</div>
 					</div>
 				</div>
@@ -661,21 +639,20 @@ $.ajax({
 
       // VIDEO, 360 TOUR, PDF Anchor Links
       if (video.Platform === 0) {
-        videoButtonsTemplate += `<a href="#scrollVideo" title="View Overview Video"><div class="vehicle-header-icons"><i class="fa fa-video-camera fa-1x"></i><br><span class="vehicle-header-icons-label">Video</span></div></a>`;
+        videoButtonsTemplate += `<a href="#scrollVideo" title="View Overview Video"><div class="vehicle-header-icons"><i class="fa fa-video-camera fa-2x"></i><br><span class="vehicle-header-icons-label">Video</span></div></a>`;
       } else if (video.Platform === 1) {
         videoButtonsTemplate += `<a href="#scroll3D" title="View 360 Degree Tour"><div class="vehicle-header-icons"><i class="fa fa-eercast fa-2x"></i><br><span class="vehicle-header-icons-label">360&deg Tour</span></div></a>`;
       } else if (video.Platform === 2) {
         videoButtonsTemplate += `<a href="#scrollPDF" title="Download PDF Brochure"><div class="vehicle-header-icons"><i class="fa fa-file-pdf-o fa-2x"></i><br><span class="vehicle-header-icons-label">Brochure</span></div></a>`;
       }
-      console.log(videoButtonsTemplate);
     });
 
-    // Major Unit Header with name and manuf logo
+    // Major Unit Header with Year, Make, Model, VIN, Stock Number.
     var muHeaderTemplate = `
 		<div class="vehicle-header-container shadow">
 			<div class="vehicle-name-container">
-				<h3 class="vehicle-title">${prodTitle}</h3>
-				<h4 class="vehicle-subtitle">
+				<h3 class="vehicle-title" style="margin: 5px 0 0 0;">${prodTitle}</h3>
+				<h4 class="vehicle-subtitle" style="margin: 1px 0 5px 0;">
 				<small>Model: </small>${data.ModelCode} 
 				<small class="hidden-xs">VIN: </small><span class="hidden-xs">${vinNumber} </span>
 				<small>Stock Number: </small>${stockNum}
@@ -684,79 +661,71 @@ $.ajax({
 			<div class="vehicle-header-icons-container hidden-xs">
 				${videoButtonsTemplate}
 			</div>
-
 		</div>
-		`;
-
-    // Price Payment Template
-    var ourPriceTemplate = `
-			<h2 class="black" style="font-weight: bold; font-size: 2.5rem;">${yellowTag} ${ourPrice}<br>
-				<small class="red bold">${inventoryStatusTemplate}</small><br>
-			</h2>
 		`;
 
     // Boat Terms for Payment Calculator
     var loanTerms = ``;
     if (data.MSRP > 80000) {
       loanTerms += `
-			<label class="btn btn-danger term-button">
-			<input type="radio" name="months" id="option1" value="24" onChange="showpay()"> 24
-			</label>
-			<label class="btn btn-danger term-button">
-				<input type="radio" name="months" id="option2" value="36" onChange="showpay()"> 36
-			</label>
-			<label class="btn btn-danger term-button">
-				<input type="radio" name="months" id="option3" value="48" onChange="showpay()"> 48
-			</label>
-			<label class="btn btn-danger term-button">
-				<input type="radio" name="months" id="option4" value="60" onChange="showpay()"> 60
-			</label>
-			<label class="btn btn-danger term-button">
-				<input type="radio" name="months" id="option5" value="72" onChange="showpay()"> 72
-			</label>
-			<label class="btn btn-danger term-button">
-				<input type="radio" name="months" id="option6" value="84" onChange="showpay()"> 84
-			</label>
-			<label class="btn btn-danger term-button">
-				<input type="radio" name="months" id="option7" value="96" onChange="showpay()"> 96
-			</label>
-			<label class="btn btn-danger term-button">
-				<input type="radio" name="months" id="option8" value="108" onChange="showpay()"> 108
-			</label>
-			<label class="btn btn-danger term-button">
-				<input type="radio" name="months" id="option9" value="120" onChange="showpay()"> 120
-			</label>
-			<label class="btn btn-danger term-button">
-				<input type="radio" name="months" id="option10" value="144" onChange="showpay()"> 144
-			</label>
-			<label class="btn btn-danger term-button active">
-				<input type="radio" name="months" id="option11" value="180" checked onChange="showpay()"> 180
-			</label>
-			<label class="btn btn-danger term-button">
-				<input type="radio" name="months" id="option12" value="210" onChange="showpay()"> 210
-			</label>
-			<label class="btn btn-danger term-button">
-				<input type="radio" name="months" id="option13" value="240" onChange="showpay()"> 240
-			</label>
-			`;
+		<label class="btn btn-danger term-button">
+		<input type="radio" name="months" id="option1" value="24" onChange="showpay()"> 24
+		</label>
+		<label class="btn btn-danger term-button">
+			<input type="radio" name="months" id="option2" value="36" onChange="showpay()"> 36
+		</label>
+		<label class="btn btn-danger term-button">
+			<input type="radio" name="months" id="option3" value="48" onChange="showpay()"> 48
+		</label>
+		<label class="btn btn-danger term-button">
+			<input type="radio" name="months" id="option4" value="60" onChange="showpay()"> 60
+		</label>
+		<label class="btn btn-danger term-button">
+			<input type="radio" name="months" id="option5" value="72" onChange="showpay()"> 72
+		</label>
+		<label class="btn btn-danger term-button">
+			<input type="radio" name="months" id="option6" value="84" onChange="showpay()"> 84
+		</label>
+		<label class="btn btn-danger term-button">
+			<input type="radio" name="months" id="option7" value="96" onChange="showpay()"> 96
+		</label>
+		<label class="btn btn-danger term-button">
+			<input type="radio" name="months" id="option8" value="108" onChange="showpay()"> 108
+		</label>
+		<label class="btn btn-danger term-button">
+			<input type="radio" name="months" id="option9" value="120" onChange="showpay()"> 120
+		</label>
+		<label class="btn btn-danger term-button">
+			<input type="radio" name="months" id="option10" value="144" onChange="showpay()"> 144
+		</label>
+		<label class="btn btn-danger term-button active">
+			<input type="radio" name="months" id="option11" value="180" checked onChange="showpay()"> 180
+		</label>
+		<label class="btn btn-danger term-button">
+			<input type="radio" name="months" id="option12" value="210" onChange="showpay()"> 210
+		</label>
+		<label class="btn btn-danger term-button">
+			<input type="radio" name="months" id="option13" value="240" onChange="showpay()"> 240
+		</label>
+		`;
     } else {
       loanTerms += `
-			<label class="btn btn-danger term-button">
-			<input type="radio" name="months" id="option1" value="24" onChange="showpay()"> 24
-			</label>
-			<label class="btn btn-danger term-button">
-				<input type="radio" name="months" id="option2" value="36" onChange="showpay()"> 36
-			</label>
-			<label class="btn btn-danger term-button">
-				<input type="radio" name="months" id="option3" value="48" onChange="showpay()"> 48
-			</label>
-			<label class="btn btn-danger term-button active">
-				<input type="radio" name="months" id="option4" value="60" checked onChange="showpay()"> 60
-			</label>
-			<label class="btn btn-danger term-button">
-				<input type="radio" name="months" id="option5" value="72" onChange="showpay()"> 72
-			</label>
-			`;
+		<label class="btn btn-danger term-button">
+		<input type="radio" name="months" id="option1" value="24" onChange="showpay()"> 24
+		</label>
+		<label class="btn btn-danger term-button">
+			<input type="radio" name="months" id="option2" value="36" onChange="showpay()"> 36
+		</label>
+		<label class="btn btn-danger term-button">
+			<input type="radio" name="months" id="option3" value="48" onChange="showpay()"> 48
+		</label>
+		<label class="btn btn-danger term-button active">
+			<input type="radio" name="months" id="option4" value="60" checked onChange="showpay()"> 60
+		</label>
+		<label class="btn btn-danger term-button">
+			<input type="radio" name="months" id="option5" value="72" onChange="showpay()"> 72
+		</label>
+		`;
     }
 
     // Payment Calculator
@@ -766,8 +735,8 @@ $.ajax({
             <form name="calc" method="POST">
                 <a class="payment-toggle" role="button" data-toggle="collapse" href="#paymentSliders" aria-expanded="false" aria-controls="paymentSliders" onClick="showpay()">
                     <h3 class="payment">
-					<small>Payment</small> $<span id="payment"><i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i></span><small>/mo.</small>
-					<span><i class="fa fa-pencil red" style="padding: 3px 9px; border: solid 1px #ccc; border-radius: 6px;" title="Calculate Your Payment"></i></span>
+						<small>Payment</small> $<span id="payment"><i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i></span><small>/mo.</small>
+						<span><i class="fa fa-pencil red" style="padding: 3px 9px; border: solid 1px #ccc; border-radius: 6px;" title="Calculate Your Payment"></i></span>
                     </h3>
                 </a>
 				<input type="hidden" name="loan" size="10" value="${data.OTDPrice}">
@@ -777,7 +746,7 @@ $.ajax({
 						<div class="col-lg-12 downpayment-container">
 							<div class="" style="margin: 25px 0">
 								<span class="fo-label-green"><span class="fo-badge" id="downpaymentRangeValue"></span>% Down</span>
-								<i class="fa fa-spinner fa-level-down fa-1x"></i>
+								<i class="fa fa-spinner fa-level-down fa-2x"></i>
 							</div>
 							<input name="downpayment" type="range" min="0.00" max="30.00" value="10" step="5" class="slider downpayment-bg" id="downpaymentRange" onChange="showpay()">
 							<p class="slider-title"><span class="credit-slider-label pull-left">0%</span>Down Payment<span class="credit-slider-label pull-right">30%</span></p>
@@ -793,7 +762,6 @@ $.ajax({
 						</div>
 
 						<div class="col-md-12 terms-container">
-						
 							<div class="loan-term">
 							<p class="terms-label">Loan Term In months <i class="fa fa-spinner fa-level-down fa-1x"></i></p>
 								<div data-toggle="buttons">
@@ -804,12 +772,14 @@ $.ajax({
 					</div>
 					<input type="hidden" name="pay" size="10">
 					<input type="hidden" onClick="showpay()" value="Calculate">
+					<div style="height: 10px;"></div>
 				</div>
 			</form>
-			<div style="height: 25px;"></div>
-			<p class="small silver">Estimate Only. Financing is subject credit approval.</p>
+			<div style="height: 0px;"></div>
+			<div class="small silver">Estimate Only. Financing is subject credit approval.</div>
+			<div style="height: 5px;"></div>
 			<a href="https://www.flatoutmotorcycles.com/financing-application" class="btn btn-danger" target="_blank">Apply for Financing</a>
-			<div style="height: 20px;"></div>
+			<div style="height: 0px;"></div>
         </div>
 		`;
 
@@ -846,7 +816,7 @@ $.ajax({
 			
 			${muHeaderTemplate}
 			<div class="container-fluid" style="background: #efefef; padding-top: 16px; padding-bottom: 35px;">
-				<div class="row" style="max-width: 1600px; margin:0 auto;">
+				<div class="row" style="max-width: 1700px; margin:0 auto;">
 					<div class="col-xl-9 col-lg-9 col-md-8">
 						${carousel}
 						<div style="padding: 0px; display: block; margin-bottom: 50px;">
@@ -856,13 +826,12 @@ $.ajax({
 					</div>
 	
 					<div class="col-xl-3 col-lg-3 col-md-4">
-						<ul class="list-group shadow">
+						<ul class="list-group rounded shadow">
 							<li class="list-group-item text-center">
 								<h2 class="black" style="font-weight: bold; font-size: 2.8rem;">${yellowTag} ${ourPrice}</h2>
-									<small>MSRP: <s>${unitMSRP}</s></small><br>
-									<small>Savings: ${totalSavings}</small><br>
-									<small class="red bold">${inventoryStatusTemplate}</small><br>
-								
+									<span>MSRP: <s>${unitMSRP}</s></span><br>
+									<span>Savings: ${totalSavings}</span><br>
+									<span class="red bold">${inventoryStatusTemplate}</span><br>
 								<p>${salePriceExpireDate}</p>
 								<hr style="margin: 0; padding: 0;">
 								${paymentCalc}
@@ -882,7 +851,7 @@ $.ajax({
 								${OTDItemsTemplate}
 							</div>
 							<li class="list-group-item bold">
-								<a class="gray collapsed" data-toggle="collapse" href="#collapseNumbers" aria-expanded="false" aria-controls="collapseExample">More Info. <i class="fa fa-chevron-down collapse-icon pull-right" aria-hidden="true"></i></a>
+								<a class="gray collapsed" data-toggle="collapse" href="#collapseNumbers" aria-expanded="false" aria-controls="collapseoverlay">More Info. <i class="fa fa-chevron-down collapse-icon pull-right" aria-hidden="true"></i></a>
 							</li>
 							<div class="collapse" id="collapseNumbers">
 								${unitNumbersTemplate}
@@ -928,7 +897,7 @@ $.ajax({
 
 			${muHeaderTemplate}
 			<div class="container-fluid" style="background: #efefef; padding-top: 16px; padding-bottom: 35px;">
-				<div class="row" style="max-width: 1600px; margin:0 auto;">
+				<div class="row" style="max-width: 1700px; margin:0 auto;">
 					<div class="col-xl-9 col-lg-9 col-md-8">
 						${carousel}
 						<div style="padding: 0px; display: block; margin-bottom: 50px;">
@@ -958,13 +927,13 @@ $.ajax({
 								${accessoryItemsTemplate}
 							</div>
 							<li class="list-group-item bold">
-								<a class="gray fees-box" data-toggle="collapse" href="#collapseFees" aria-expanded="true" aria-controls="collapseExample">Fees <i class="fa fa-chevron-down collapse-icon pull-right" aria-hidden="true"></i></a>
+								<a class="gray fees-box" data-toggle="collapse" href="#collapseFees" aria-expanded="true" aria-controls="collapseoverlay">Fees <i class="fa fa-chevron-down collapse-icon pull-right" aria-hidden="true"></i></a>
 							</li>
 							<div class="collapse in" id="collapseFees">
 								${OTDItemsTemplate}
 							</div>
 							<li class="list-group-item bold">
-								<a class="gray more-info-box collapsed" data-toggle="collapse" href="#collapseNumbers" aria-expanded="true" aria-controls="collapseExample">More Info. <i class="fa fa-chevron-down collapse-icon pull-right" aria-hidden="true"></i></a>
+								<a class="gray more-info-box collapsed" data-toggle="collapse" href="#collapseNumbers" aria-expanded="true" aria-controls="collapseoverlay">More Info. <i class="fa fa-chevron-down collapse-icon pull-right" aria-hidden="true"></i></a>
 							</li>
 							<div class="collapse" id="collapseNumbers">
 								${unitNumbersTemplate}
@@ -992,8 +961,8 @@ $.ajax({
       var ourPrice = numeral(
         data.MSRPUnit +
           data.AccessoryItemsTotal +
-          data.MatItemsTotal -
-          data.DiscountItemsTotal -
+          data.MatItemsTotal +
+          data.DiscountItemsTotal +
           data.TradeInItemsTotal
       ).format("$0,0.00");
       var overlay = `
@@ -1002,8 +971,8 @@ $.ajax({
 			${muHeaderTemplate}
 			<div class="container-fluid" style="background: #efefef; padding-top: 16px; padding-bottom: 35px;">
 				
-				<div class="row" style="max-width: 1600px; margin:0 auto;">
-					<div class="col-xl-9 col-lg-9 col-md-8">
+				<div class="row" style="max-width: 1700px; margin:0 auto;">
+					<div class="col-xl-8 col-lg-8 col-md-8">
 						${carousel}
 						<div style="padding: 0px; display: block; margin-bottom: 50px;">
 							${thumbnailImages}
@@ -1012,7 +981,7 @@ $.ajax({
 						
 					</div>
 	
-					<div class="col-xl-3 col-lg-3 col-md-4">
+					<div class="col-xl-4 col-lg-4 col-md-4">
 						<ul class="list-group shadow">
 							<li class="list-group-item text-center">
 							<h2 class="black" style="font-weight: bold; font-size: 2.8rem;">${yellowTag} ${ourPrice}<br>
@@ -1021,10 +990,9 @@ $.ajax({
 								<small class="red bold">${inventoryStatusTemplate}</small><br>
 							</h2>
 							<p>Now Until: ${salePriceExpireDate}</p>
-							<hr style="margin: 0; padding: 0;">
+							<hr style="margin: 0; padding: 0;" />
 							${paymentCalc}
 							</li>
-							${videoButtonsTemplate}
 							<li class="list-group-item bold">${msrpLabel} <span class="pull-right">${MSRPUnit}</span></li>
 							${matItemsTemplate} 
 							${tradeInItemsTemplate} 
@@ -1035,17 +1003,20 @@ $.ajax({
 								${accessoryItemsTemplate}
 							</div>
 							<li class="list-group-item bold">
-								<a class="gray" data-toggle="collapse" href="#collapseFees" aria-expanded="false" aria-controls="collapseExample">Fees <i class="fa fa-plus collapse-icon pull-right" aria-hidden="true"></i></a>
+								<a class="gray" data-toggle="collapse" href="#collapseFees" aria-expanded="false" aria-controls="collapseoverlay">Fees <i class="fa fa-plus collapse-icon pull-right" aria-hidden="true"></i></a>
 							</li>
 							<div class="collapse" id="collapseFees">
 								${OTDItemsTemplate}
 							</div>
 							<li class="list-group-item bold">
-								<a class="gray" data-toggle="collapse" href="#collapseNumbers" aria-expanded="false" aria-controls="collapseExample">More Info. <i class="fa fa-plus collapse-icon pull-right" aria-hidden="true"></i></a>
+								<a class="gray" data-toggle="collapse" href="#collapseNumbers" aria-expanded="false" aria-controls="collapseoverlay">More Info. <i class="fa fa-plus collapse-icon pull-right" aria-hidden="true"></i></a>
 							</li>
 							<div class="collapse" id="collapseNumbers">
 								${unitNumbersTemplate}
 							</div>
+							<li class="list-group-item">
+								OTD Price: ${data.OTDPrice}
+							</li>
 						</ul>
 						<hr style="clear: both;">
 						${contactMobile}
@@ -1076,7 +1047,7 @@ $.ajax({
 			${muHeaderTemplate}
 			<div class="container-fluid" style="background: #efefef; padding-top: 16px; padding-bottom: 35px;">
 				
-				<div class="row" style="max-width: 1600px; margin:0 auto;">
+				<div class="row" style="max-width: 1700px; margin:0 auto;">
 					<div class="col-xl-9 col-lg-9 col-md-8">
 						${carousel}
 						<div style="padding: 0px; display: block; margin-bottom: 50px;">
@@ -1107,17 +1078,20 @@ $.ajax({
 								${accessoryItemsTemplate}
 							</div>
 							<li class="list-group-item bold">
-								<a class="gray" data-toggle="collapse" href="#collapseFees" aria-expanded="true" aria-controls="collapseExample">Fees <i class="fa fa-chevron-down collapse-icon pull-right" aria-hidden="true"></i></a>
+								<a class="gray" data-toggle="collapse" href="#collapseFees" aria-expanded="true" aria-controls="collapseoverlay">Fees <i class="fa fa-chevron-down collapse-icon pull-right" aria-hidden="true"></i></a>
 							</li>
 							<div class="collapse in" id="collapseFees">
 								${OTDItemsTemplate}
 							</div>
 							<li class="list-group-item bold">
-								<a class="gray collapsed" data-toggle="collapse" href="#collapseNumbers" aria-expanded="false" aria-controls="collapseExample">More Info. <i class="fa fa-chevron-down collapse-icon pull-right" aria-hidden="true"></i></a>
+								<a class="gray collapsed" data-toggle="collapse" href="#collapseNumbers" aria-expanded="false" aria-controls="collapseoverlay">More Info. <i class="fa fa-chevron-down collapse-icon pull-right" aria-hidden="true"></i></a>
 							</li>
 							<div class="collapse" id="collapseNumbers">
 								${unitNumbersTemplate}
 							</div>
+							<li class="list-group-item">
+								  -
+							</li>
 						</ul>
 						<hr style="clear: both;">
 						${contactMobile}
@@ -1132,6 +1106,87 @@ $.ajax({
 			${youtubeVideoTemplate}
 			${pdfBrochureTemplate}
 			`;
+
+      $(".main-content").replaceWith(overlay);
+      //document.getElementsByClassName("main-content").innerHTML = overlay;
+      document.getElementById("muItems").innerHTML = muImageCardTemplate;
+
+      // LEVEL 5
+    } else if (qLevel === 5) {
+      var ourPrice = numeral(
+        data.MSRPUnit +
+          data.AccessoryItemsTotal +
+          data.MatItemsTotal -
+          data.DiscountItemsTotal -
+          data.TradeInItemsTotal
+      ).format("$0,0.00");
+      var overlay = `
+			  
+  
+			  ${muHeaderTemplate}
+			  <div class="container-fluid" style="background: #efefef; padding-top: 16px; padding-bottom: 35px;">
+				  
+				  <div class="row" style="max-width: 1700px; margin:0 auto;">
+					  <div class="col-xl-9 col-lg-9 col-md-8">
+						  ${carousel}
+						  <div style="padding: 0px; display: block; margin-bottom: 50px;">
+							  ${thumbnailImages}
+							  <hr style="clear: both;">
+						  </div>
+						  
+					  </div>
+	  
+					  <div class="col-xl-3 col-lg-3 col-md-4">
+						  <ul class="list-group shadow">
+							  <li class="list-group-item text-center">
+							  <h2 class="black" style="font-weight: bold; font-size: 2.8rem;">${yellowTag} ${ourPrice}<br>
+							  <small>MSRP: <s>${unitMSRP}</s></small><br>
+							  <small>Savings: ${totalSavings}</small><br>
+								  <small class="red bold">${inventoryStatusTemplate}</small><br>
+							  </h2>
+							  <p>Now Until: ${salePriceExpireDate}</p>
+							  <hr style="margin: 0; padding: 0;">
+							  ${paymentCalc}
+							  </li>
+							  ${videoButtonsTemplate}
+							  <li class="list-group-item bold">${msrpLabel} <span class="pull-right">${MSRPUnit}</span></li>
+							  ${matItemsTemplate} 
+							  ${tradeInItemsTemplate} 
+							  ${discountItemsTemplate}
+							  ${freebieItemsTemplate}
+							  ${accessoryLine}
+							  <div class="collapse" id="collapseItems">
+								  ${accessoryItemsTemplate}
+							  </div>
+							  <li class="list-group-item bold">
+								  <a class="gray" data-toggle="collapse" href="#collapseFees" aria-expanded="false" aria-controls="collapseoverlay">Fees <i class="fa fa-plus collapse-icon pull-right" aria-hidden="true"></i></a>
+							  </li>
+							  <div class="collapse" id="collapseFees">
+								  ${OTDItemsTemplate}
+							  </div>
+							  <li class="list-group-item bold">
+								  <a class="gray" data-toggle="collapse" href="#collapseNumbers" aria-expanded="false" aria-controls="collapseoverlay">More Info. <i class="fa fa-plus collapse-icon pull-right" aria-hidden="true"></i></a>
+							  </li>
+							  <div class="collapse" id="collapseNumbers">
+								  ${unitNumbersTemplate}
+							  </div>
+							  <li class="list-group-item">
+								  -
+							  </li>
+						  </ul>
+						  <hr style="clear: both;">
+						  ${contactMobile}
+					  </div>
+				  </div>
+			  </div>
+			  ${featuresTemplate}
+			  ${walkthruVideoTemplate}
+			  ${unitDescripionTemplate}
+			  ${oemDescriptionTemplate}
+			  ${oemSpecsTemplate}
+			  ${youtubeVideoTemplate}
+			  ${pdfBrochureTemplate}
+			  `;
 
       $(".main-content").replaceWith(overlay);
       //document.getElementsByClassName("main-content").innerHTML = overlay;
@@ -1156,10 +1211,11 @@ $.ajax({
 				justify-content: space-between;
 				align-items: stretch;
 				padding: 0 20px;
-				border: solid 1px #ddd;
+				border-bottom: solid 1px #ddd;
 			}
 			.vehicle-name-container {
-				margin-top: -10px;
+				margin: 0px;
+				padding: 5px 0;
 			}
 			.vehicle-header-icons-container {
 				display: flex;
@@ -1219,14 +1275,13 @@ $.ajax({
 				display: block;
 				border-radius: 5px;
 			}
-			.logo-container img {
-			    padding: 0 15px 0 10px;
-		    }
-			div.hidden-print.unit-calls-to-action {
-				display: none;
+			.rounded {
+				border-radius: 10px !important;
+				overflow: hidden;
 			}
-			.appearing-lead {
-				display: none !important;
+			list-group-item:nth-child(even) {
+				border-radius: 10px !important;
+				overflow: hidden;
 			}
 			.bold {
 				font-weight: bold;
@@ -1312,9 +1367,6 @@ $.ajax({
 			.price-lg {
 				font-size: 130%;
 			}
-			h1 {
-				font-weight: bold;
-			}
 			.payment {
 				font-size: 160% !important;
 				font-weight: bold;
@@ -1367,18 +1419,12 @@ $.ajax({
 			a#tradeinTab {
 				display: auto;
 			}
-			button.btn.btn-lg.btn-primary.btn-block.requestQuoteCTA {
-				display: none;
-			}
             .portal-fees {
 				font-size: 13px !important;
 				font-weight: normal;
 				line-height: 16px;
                 padding: 10px 0 0 0;
 				color: #999;
-			}
-			.unit-calls-to-action {
-				display: none !important;
 			}
 
             .payment-toggle:hover,
@@ -1485,20 +1531,22 @@ $.ajax({
 				cursor: pointer;
             }
 			.mu-thumbnail {
-				width: 60px;
-				height: 40px;
-				margin: 0px 2px 2px 0px;
+				width: 6.9%;
+				height: auto;
+				margin: 1px;
 				float: left;
 				clear: right;
 			}
 			.mu-thumbnail img {
 				border: solid 2px #efefef;
+				border-radius: 5px;
 			}
 			.mu-thumbnail img:hover {
-				border: solid 2px red;
+				border: solid 2px #000;
+				border-radius: 5px;
 			}
 			.shadow {
-				box-shadow: 1px 2px 2px 1px rgba(0, 0, 0, 0.2);
+				box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.4);
 			}
 			.mu-feature-card {
 				margin-bottom: 50px;

@@ -34,8 +34,11 @@ body {
   color: #ccc;
   border: solid 1px #444;
 }
-.btn {
+.btn-search {
   background: #444;
   color: #ccc;
   border: solid 1px #444;
+}
+.btn-settings {
+  float: right;
 }

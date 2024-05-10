@@ -27,18 +27,8 @@
       <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container-fluid">
           <div class="navbar-header">
-            <a
-              type="button"
-              class="navbar-brand"
-              data-toggle="modal"
-              data-target="#myModal"
-            >
-              <span
-                style="margin: -1px 5px -2px 0"
-                class="glyphicon glyphicon-cog"
-                aria-hidden="true"
-              ></span>
-              <div style="margin: -22px 0 0 18px; font-weight: 700">verlay</div>
+            <a href="./" type="button" class="navbar-brand">
+              <div style="margin: 0; font-weight: 700">Overlay Preview</div>
             </a>
           </div>
           <form class="navbar-form navbar-left" role="search">
@@ -51,11 +41,25 @@
                 placeholder="Search Stock Number"
                 id="stockNumberInput"
               />
+              <button type="submit" class="btn btn-danger btn-search">
+                <span
+                  style="margin: 0"
+                  class="glyphicon glyphicon-refresh"
+                  aria-hidden="true"
+                ></span>
+              </button>
             </div>
-            <button type="submit" class="btn btn-default">
+
+            <button
+              style="position: absolute; right: 20px"
+              type="button"
+              class="btn btn-danger btn-settings"
+              data-toggle="modal"
+              data-target="#myModal"
+            >
               <span
                 style="margin: 0"
-                class="glyphicon glyphicon-ok"
+                class="glyphicon glyphicon-cog"
                 aria-hidden="true"
               ></span>
             </button>
