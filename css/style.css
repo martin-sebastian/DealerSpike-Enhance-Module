@@ -2,6 +2,22 @@ body {
   margin: 0px;
   padding-top: 50px;
 }
+.navbar-header .container-fluid {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  color: #ccc;
+}
+.navbar-right {
+  margin: 0 auto;
+}
+.navbar-right h5 {
+  margin: 0 0 0 50px;
+  padding: 2px;
+  color: #999;
+}
 .main-content {
   display: flex;
   justify-content: center;
@@ -42,16 +58,8 @@ body {
 .btn-settings {
   float: right;
 }
-
-/* Overlay Styles - copy into script later */
-.our-price-container {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  align-items: stretch;
-  justify-content: center;
-  align-items: center;
+.block {
+  display: block;
   width: 100%;
-  height: 50px;
-  background: #eee;
+  text-align: center;
 }

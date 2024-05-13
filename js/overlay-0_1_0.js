@@ -64,20 +64,21 @@ $.ajax({
       data.Manufacturer +
       " " +
       data.B50ModelName;
-    //var qLevel = data.QuoteLevel;
     var vinNumber = data.VIN;
+    var qLevel = `<span id="qLevel" class="badge" style="padding: 10px; font-weight: 900">${data.QuoteLevel}</span>`;
     var MSRPUnit = numeral(data.MSRPUnit).format("$0,0.00");
     var unitMSRP = numeral(data.MSRP - data.AccessoryItemsTotal).format(
       "$0,0.00"
     );
     var msrpLabel = data.MSRPTitle;
+    var totalOTD = numeral(data.OTDPrice).format("$0,0.00");
     var quotePrice = numeral(data.QuotePrice).format("$0,0.00");
     var salePrice = numeral(data.Price).format("$0,0.00");
     var discount = numeral(data.QuotePrice - data.Price).format("$0,0.00");
     var savings = numeral(data.Savings).format("$0,0.00");
     var eDate = moment(data.ExpirationDate).format("MM/DD/YYYY");
     var disclaimer = `<p class="portal-fees">${data.Disclaimer}</p>`;
-    var foDisclaimer = `<p class="text-center"><small>*Price does NOT include, Manufacturer Surcharge, Manufacturer Commodity Surcharge, Freight, Dealer Document Fee $99, Sales Tax, Title Fee $25. Sale Price INCLUDES all factory incentives (If Applicable). See Flat Out Motorsports for full disclosure on current Fees and Surcharges.</small></p>`;
+    var fomDisclaimer = `<p class="text-center"><small>*Price does NOT include, Manufacturer Surcharge, Manufacturer Commodity Surcharge, Freight, Dealer Document Fee $199, Sales Tax, Title Fee $30. Sale Price INCLUDES all factory incentives (If Applicable). See Flat Out Motorsports for full disclosure on current Fees and Surcharges.</small></p>`;
     var image = data.ImageUrl;
     var linkToUnit = data.DetailUrl;
     var salePriceExpireDate = moment(data.SalePriceExpireDate).format(
@@ -146,8 +147,6 @@ $.ajax({
     }
 
     // OTD Items - 5 items allowed
-    //!NOTE I didn't wanna mess with this one tooo much because I wasn't quite sure if the template here was what you wanted, or if the hard-coded style in the quoteLevel templates was more what you wanted.
-    //If you want to, you can adjust the format here and just go replace the lines in the quote level if/else blocks with this OTDItemsTemplate and it should work just fine.
     var OTDItemsTemplate = ``;
 
     i = 0;
@@ -728,17 +727,18 @@ $.ajax({
 
     // Payment Calculator
     var paymentCalc = `
-        
-		<div class="payment-caclculator text-center" style="padding: 0 1px;">
+		<div class="payment-caclculator text-center">
             <form name="calc" method="POST">
                 <a class="payment-toggle" role="button" data-toggle="collapse" href="#paymentSliders" aria-expanded="false" aria-controls="paymentSliders" onClick="showpay()">
                     <h3 class="payment">
-						<small>Payment</small> $<span id="payment"><i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i></span><small>/mo.</small>
-						<span><i class="fa fa-pencil red" style="padding: 3px 9px; border: solid 1px #ccc; border-radius: 6px;" title="Calculate Your Payment"></i></span>
+						<small>Payment </small>
+						$<span id="payment"><i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i></span>
+						<small>/mo.</small>
+						<i class="fa fa-pencil" title="Calculate Your Payment"></i>
                     </h3>
                 </a>
 				<input type="hidden" name="loan" size="10" value="${data.OTDPrice}">
-				
+				<pre class="hidden">${data.OTDPrice}</pre>
 				<div class="collapse" id="paymentSliders">
 					<div class="row">
 						<div class="col-lg-12 downpayment-container">
@@ -767,17 +767,18 @@ $.ajax({
 								</div>
 							</div>
 						</div>
+						<div style="padding: 5px 0">
+							<a href="https://www.flatoutmotorcycles.com/financing-application" class="btn btn-danger">Apply for Financing</a>
+						</div>
 					</div>
 					<input type="hidden" name="pay" size="10">
 					<input type="hidden" onClick="showpay()" value="Calculate">
 					<div style="height: 10px;"></div>
 				</div>
 			</form>
-			<div style="height: 0px;"></div>
-			<div class="small silver">Estimate Only. Financing is subject credit approval.</div>
-			<div style="height: 5px;"></div>
-			<a href="https://www.flatoutmotorcycles.com/financing-application" class="btn btn-danger" target="_blank">Apply for Financing</a>
-			<div style="height: 0px;"></div>
+			<div class="credit-approval-message small silver">
+				Estimate Only. Subject to credit approval.
+			</div>
         </div>
 		`;
 
@@ -804,7 +805,7 @@ $.ajax({
 			`;
     }
 
-    // LEVEL 3
+    // LEVEL 3 START MAIN TEMPLATE
 
     var ourPrice = numeral(
       data.MSRPUnit +
@@ -816,7 +817,6 @@ $.ajax({
     var overlay = `
 			${muHeaderTemplate}
 			<div class="container-fluid" style="background: #efefef; padding-top: 16px; padding-bottom: 35px;">
-				
 				<div class="row" style="max-width: 1700px; margin:0 auto;">
 					<div class="col-xl-8 col-lg-8 col-md-8">
 						${carousel}
@@ -824,28 +824,25 @@ $.ajax({
 							${thumbnailImages}
 							<hr style="clear: both;">
 						</div>
-						
 					</div>
-	
 					<div class="col-xl-4 col-lg-4 col-md-4">
 						<ul class="list-group shadow">
 							<li class="list-group-item text-center">
-							<div class="our-price-container">
-								<div class="our-price">
-								<h2 class="black" style="font-weight: bold; font-size: 2.8rem;">${yellowTag} ${ourPrice}</h2>
-								</div>
-							<div class="payment">Payment</div>
-							</div>						
-
-							
-							<small>MSRP: <s>${unitMSRP}</s></small><br>
-							<small class="red bold">${inventoryStatusTemplate}</small><br>
-							<small class="red bold">Savings: ${discount}</small><br>
-							
-							<p>Now Until: ${salePriceExpireDate}</p>
-							<hr style="margin: 0; padding: 0;" />
-							${paymentCalc}
+								<div class="price-payment-container">
+									<div class="our-price-container">
+										<div class="our-price-msrp bold">MSRP: <s>${unitMSRP}</s></div>
+										<div class="our-price">${yellowTag} ${ourPrice}</div>
+										<small class="red bold">Savings: ${discount}</small><br>
+										<p>Price Expires: ${salePriceExpireDate}</p>
+										<hr style="margin: 0; padding: 0;" />
+										<small class="red bold">${inventoryStatusTemplate}</small><br>
+									</div>
+									<div class="our-payment">
+										${paymentCalc}
+									</div>
+								</div> <!-- // price-payment-container -->
 							</li>
+
 							<li class="list-group-item bold">${msrpLabel} <span class="pull-right">${MSRPUnit}</span></li>
 							${matItemsTemplate} 
 							${tradeInItemsTemplate} 
@@ -858,22 +855,28 @@ $.ajax({
 							<li class="list-group-item bold">
 								<a class="gray" data-toggle="collapse" href="#collapseFees" aria-expanded="false" aria-controls="collapseoverlay">Fees <i class="fa fa-chevron-down collapse-icon pull-right" aria-hidden="true"></i></a>
 							</li>
-							<div class="collapse" id="collapseFees">
+							<div class="collapse in" id="collapseFees">
 								${OTDItemsTemplate}
 							</div>
+							
+							<li class="list-group-item">
+								<div class="total-otd-price">Total Out The Door Price: <span class="pull-right">${totalOTD}</span></div>
+							</li>
+						</ul>
+						<p class="text-right" style="margin:-15px 10px 25px 0;">Price Expires: ${salePriceExpireDate}</p>
+
+						<ul class="list-group shadow">
 							<li class="list-group-item bold">
 								<a class="gray" data-toggle="collapse" href="#collapseNumbers" aria-expanded="false" aria-controls="collapseoverlay">More Info. <i class="fa fa-chevron-down collapse-icon pull-right" aria-hidden="true"></i></a>
 							</li>
 							<div class="collapse" id="collapseNumbers">
 								${unitNumbersTemplate}
 							</div>
-							<li class="list-group-item">
-								OTD Price: ${data.OTDPrice}
-							</li>
 						</ul>
 						<hr style="clear: both;">
 						${contactMobile}
 					</div>
+					<div class="col-xl-12 col-lg-12 col-md-12 fom-disclaimer">${fomDisclaimer}</div>
 				</div>
 			</div>
 			${featuresTemplate}
@@ -886,6 +889,7 @@ $.ajax({
 			`;
 
     $(".main-content").replaceWith(overlay);
+    $("#qLevel").replaceWith(qLevel);
     //document.getElementsByClassName("main-content").innerHTML = overlay;
     document.getElementById("muItems").innerHTML = muImageCardTemplate;
 
@@ -896,8 +900,11 @@ $.ajax({
 			html {
                 scroll-behavior: smooth;
             }
-			h1, h2, h3, h4, h5 {
-				font-family: Roboto, Helvetica, Arial, sans-serif;
+			body {
+				font-family: Roboto, Arial, Helvetica, sans-serif;
+			}
+			.pointer {
+				cursor: pointer;
 			}
 			.vehicle-header-container {
 				display: flex;
@@ -943,6 +950,32 @@ $.ajax({
 			}
 			.vehicle-subtitle {
 				color: #999;
+			}
+			.our-price-container {
+				max-width: 250px;
+				text-align: right;
+				margin: 0 auto;
+			}
+			.our-price-msrp {
+				font-size: 14px;
+				font-weight: 800;
+			}
+			.our-price {
+				font-size: 24px;
+				font-weight: 800;
+			}
+			.our-payment-container {
+				max-width: 250px;
+				text-align: center;
+				margin: 0 auto;
+			}
+			.total-otd-price {
+				font-size: 18px;
+				font-weight: 800;
+			}
+			.edit-payment-btn {
+				padding: 5px 15px;
+				margin: 0;
 			}
 			.item img {
 				width: 100%;
@@ -1011,8 +1044,10 @@ $.ajax({
 				color: #000;
 			}
 			.payment-caclculator {
-				border: solid 0px #ddd;
-				border-radius: 0px;
+				border: solid 1px #ddd;
+				border-radius: 5px;
+				margin: 10px;
+				padding: 0 10px;
 				background: #fff;
 			}
 			.credit-container,
@@ -1085,6 +1120,16 @@ $.ajax({
 				font-weight: normal;
 				color: #fff;
 			}
+			.price-payment-container {
+				display: flex;
+				flex-direction: row;
+				flex-wrap: wrap;
+				justify-content: space-between;
+				align-items: center;
+				width: 100%;
+				margin: 0 auto;
+				background: #fff;
+			  }
             .portal-price {
                 font-size: 85%;
                 color: #333;
@@ -1240,11 +1285,14 @@ $.ajax({
 				border-radius: 5px;
 			}
 			.shadow {
-				box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.4);
+				box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
 			}
 			.mu-feature-card {
 				margin-bottom: 50px;
 				background: #efefef;
+			}
+			.fom-disclaimer {
+				color: #666;
 			}
             @media only screen and (max-width: 600px) {
                 h3 {
