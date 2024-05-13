@@ -832,10 +832,11 @@ $.ajax({
 									<div class="our-price-container">
 										<div class="our-price-msrp bold">MSRP: <s>${unitMSRP}</s></div>
 										<div class="our-price">${yellowTag} ${ourPrice}</div>
-										<small class="red bold">Savings: ${discount}</small><br>
-										<p>Price Expires: ${salePriceExpireDate}</p>
+										
+										<div class="total-savings"><span class="label label-success bold">Savings: ${discount}</span></div>
+										<div class="price-expires silver">Price Expires: ${salePriceExpireDate}</div>
 										<hr style="margin: 0; padding: 0;" />
-										<small class="red bold">${inventoryStatusTemplate}</small><br>
+										<p class="text-center red bold">${inventoryStatusTemplate}</p>
 									</div>
 									<div class="our-payment">
 										${paymentCalc}
@@ -952,20 +953,28 @@ $.ajax({
 				color: #999;
 			}
 			.our-price-container {
-				max-width: 250px;
-				text-align: right;
+				max-width: 300px;
+				text-align: center;
 				margin: 0 auto;
 			}
 			.our-price-msrp {
-				font-size: 14px;
+				margin: 0;
+				font-size: 12px;
 				font-weight: 800;
 			}
 			.our-price {
+				font-size: 30px;
+				font-weight: 800;
+			}
+			.total-savings {
 				font-size: 24px;
 				font-weight: 800;
 			}
+			.price-expires {
+				font-size: 12px;
+				padding: 5px 0;
+			}
 			.our-payment-container {
-				max-width: 250px;
 				text-align: center;
 				margin: 0 auto;
 			}
@@ -1046,8 +1055,8 @@ $.ajax({
 			.payment-caclculator {
 				border: solid 1px #ddd;
 				border-radius: 5px;
-				margin: 10px;
-				padding: 0 10px;
+				margin: 0 10px;
+				padding: 20px;
 				background: #fff;
 			}
 			.credit-container,
