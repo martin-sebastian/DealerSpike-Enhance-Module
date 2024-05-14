@@ -1055,9 +1055,13 @@ $.ajax({
 			.payment-caclculator {
 				border: solid 1px #ddd;
 				border-radius: 5px;
-				margin: 0 10px;
-				padding: 20px;
+				margin: 50px 0px 50px 0;
+				padding: 10px;
 				background: #fff;
+			}
+			.payment {
+				margin: 0;
+				padding: 0;
 			}
 			.credit-container,
 			.downpayment-container,
