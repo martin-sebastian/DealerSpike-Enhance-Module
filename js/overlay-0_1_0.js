@@ -785,24 +785,24 @@ $.ajax({
     // Call or text
     if (/Android|webOS|Opera Mini/i.test(navigator.userAgent)) {
       var contactMobile = `
-			<div class="text-center" style="margin: 25px 0;">
-				<h4 class="hidden-xs">Questions?&nbsp;&nbsp;<small>Text</small>&nbsp;<strong>${stockNum}</strong>&nbsp;<small>to</small>&nbsp;<strong>317-576-3353</strong><small></small></h4>
-				<div class="visible-xs text-center" style="margin: 25px 0;">
-				<a href="sms:+13175763353?body=Please send me pricing and additional information for stock number: ${stockNum} | ${prodTitle}" class="btn btn-warning mobile-text-btn"><i class="fa fa-comment"></i>&nbsp;&nbsp;Text Us Now For More Info <br><small>Click send after clicking this button </small></a>
-					<a href="tel:3178909110" class="btn btn-info call-btn"><i class="fa fa-phone"></i>&nbsp;&nbsp;Call Our Sales Dept.</a>
-				</div>
+		<div class="text-center" style="margin: 25px 0;">
+			<h4 class="hidden-xs">Questions?&nbsp;&nbsp;<small>Text</small>&nbsp;<strong>${stockNum}</strong>&nbsp;<small>to</small>&nbsp;<strong>317-576-3353</strong><small></small></h4>
+			<div class="visible-xs text-center" style="margin: 25px 0;">
+			<a href="sms:+13175763353?body=Please send me pricing and additional information for stock number: ${stockNum} | ${prodTitle}" class="btn btn-warning mobile-text-btn"><i class="fa fa-comment"></i>&nbsp;&nbsp;Text Us Now For More Info <br><small>Click send after clicking this button </small></a>
+				<a href="tel:3178909110" class="btn btn-info call-btn"><i class="fa fa-phone"></i>&nbsp;&nbsp;Call Our Sales Dept.</a>
 			</div>
-			`;
+		</div>
+		`;
     } else {
       var contactMobile = `
-			<div class="text-center" style="margin: 25px 0;">
-				<h4 class="">Questions?&nbsp;&nbsp;<small>Text</small>&nbsp;<strong>${stockNum}</strong>&nbsp;<small>to</small>&nbsp;<strong>317-576-3353</strong><small></small></h4>
-				<div class="visible-xs text-center" style="margin: 25px 0;">
-				<a href="sms:+13175763353&body=Please send me pricing and additional information for stock number: ${stockNum} | ${prodTitle}" class="btn btn-warning mobile-text-btn"><i class="fa fa-comment"></i>&nbsp;&nbsp;Text Us Now For More Info <br><small>Click send after clicking this button</small></a>
-					<a href="tel:3178909110" class="btn btn-info call-btn"><i class="fa fa-phone"></i>&nbsp;&nbsp;Call Our Sales Dept.</a>
-				</div>
+		<div class="text-center" style="margin: 25px 0;">
+			<h4 class="">Questions?&nbsp;&nbsp;<small>Text</small>&nbsp;<strong>${stockNum}</strong>&nbsp;<small>to</small>&nbsp;<strong>317-576-3353</strong><small></small></h4>
+			<div class="visible-xs text-center" style="margin: 25px 0;">
+			<a href="sms:+13175763353&body=Please send me pricing and additional information for stock number: ${stockNum} | ${prodTitle}" class="btn btn-warning mobile-text-btn"><i class="fa fa-comment"></i>&nbsp;&nbsp;Text Us Now For More Info <br><small>Click send after clicking this button</small></a>
+				<a href="tel:3178909110" class="btn btn-info call-btn"><i class="fa fa-phone"></i>&nbsp;&nbsp;Call Our Sales Dept.</a>
 			</div>
-			`;
+		</div>
+		`;
     }
 
     // LEVEL 3 START MAIN TEMPLATE
@@ -833,11 +833,11 @@ $.ajax({
 										<div class="our-price-msrp">MSRP: <s>${unitMSRP}</s></div>
 										<div class="our-price">${yellowTag} ${ourPrice}</div>
 										<div class="total-savings">
-											<span class="label label-info">
+											<span class="label label-default">
 												Savings
 											</span>
 											<i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-											<span class="label label-success">
+											<span class="label label-danger">
 												${discount}
 											</span>
 										</div>
@@ -1002,6 +1002,7 @@ $.ajax({
 			.price-payment-divider {
 				border-left: solid 1px #ddd;
 				height: 100px;
+				margin: 0 5px;
 			}
 			.total-otd-price {
 				font-size: 18px;
@@ -1351,6 +1352,12 @@ $.ajax({
 			.fom-disclaimer {
 				color: #666;
 			}
+			.iframe {
+				width: 100%;
+				height: 100%;
+				border: none;
+				border-radius: 10px;
+			}
             @media only screen and (max-width: 600px) {
                 h3 {
                   font-size: 120%;
@@ -1361,11 +1368,13 @@ $.ajax({
 				.vehicle-header-container {
 					padding: 0 5px;
 				}
+				.price-payment-divider {
+					display: none;
+				}
               }
 			`;
 
     document.head.appendChild(style);
-
     showpay();
   })
 
