@@ -731,7 +731,7 @@ $.ajax({
             <form name="calc" method="POST">
                 <a class="payment-toggle" role="button" data-toggle="collapse" href="#paymentSliders" aria-expanded="false" aria-controls="paymentSliders" onClick="showpay()">
                     <h3 class="payment">
-						<small>Payment </small>
+						<small>Payment</small>
 						$<span id="payment"><i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i></span>
 						<small>/mo.</small>
 						<i class="fa fa-pencil" title="Calculate Your Payment"></i>
@@ -776,8 +776,8 @@ $.ajax({
 					<div style="height: 10px;"></div>
 				</div>
 			</form>
-			<div class="credit-approval-message small silver">
-				Estimate Only. Subject to credit approval.
+			<div class="credit-approval-message silver">
+				Subject to credit approval.
 			</div>
         </div>
 		`;
@@ -830,16 +830,25 @@ $.ajax({
 							<li class="list-group-item text-center">
 								<div class="price-payment-container">
 									<div class="our-price-container">
-										<div class="our-price-msrp bold">MSRP: <s>${unitMSRP}</s></div>
+										<div class="our-price-msrp">MSRP: <s>${unitMSRP}</s></div>
 										<div class="our-price">${yellowTag} ${ourPrice}</div>
-										
-										<div class="total-savings"><span class="label label-success bold">Savings: ${discount}</span></div>
-										<div class="price-expires silver">Price Expires: ${salePriceExpireDate}</div>
-										<hr style="margin: 0; padding: 0;" />
-										<p class="text-center red bold">${inventoryStatusTemplate}</p>
+										<div class="total-savings">
+											<span class="label label-info">
+												Savings
+											</span>
+											<i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+											<span class="label label-success">
+												${discount}
+											</span>
+										</div>
+										<div class="price-expires silver">
+											Sale Program Ends: ${salePriceExpireDate}
+										</div>										
 									</div>
-									<div class="our-payment">
+									<div class="price-payment-divider"></div>
+									<div class="our-payment-container">
 										${paymentCalc}
+										<p class="text-center red bold">${inventoryStatusTemplate}</p>
 									</div>
 								</div> <!-- // price-payment-container -->
 							</li>
@@ -860,11 +869,11 @@ $.ajax({
 								${OTDItemsTemplate}
 							</div>
 							
-							<li class="list-group-item">
+							<li class="list-group-item otd-li">
 								<div class="total-otd-price">Total Out The Door Price: <span class="pull-right">${totalOTD}</span></div>
 							</li>
 						</ul>
-						<p class="text-right" style="margin:-15px 10px 25px 0;">Price Expires: ${salePriceExpireDate}</p>
+						<p class="text-right bold" style="margin:-15px 5px 25px 0;">Quote Expires: ${eDate}</p>
 
 						<ul class="list-group shadow">
 							<li class="list-group-item bold">
@@ -958,9 +967,11 @@ $.ajax({
 				margin: 0 auto;
 			}
 			.our-price-msrp {
-				margin: 0;
-				font-size: 12px;
-				font-weight: 800;
+				text-align: center;
+				margin: 0 0 -5px 0px;
+				font-size: 13px;
+				letter-spacing: 0px;
+				font-weight: 900;
 			}
 			.our-price {
 				font-size: 30px;
@@ -970,17 +981,34 @@ $.ajax({
 				font-size: 24px;
 				font-weight: 800;
 			}
+			.total-savings i.fa.fa-arrow-circle-right {
+				position: relative;
+				font-size: 19px;
+				font-weight: normal;
+				margin: 0px -12px -5px -8px;
+				padding: 5px;
+				background-color: #fff;
+				border-radius: 50%;
+				z-index: 2;
+			}
 			.price-expires {
-				font-size: 12px;
+				font-size: 13px;
 				padding: 5px 0;
 			}
 			.our-payment-container {
 				text-align: center;
 				margin: 0 auto;
 			}
+			.price-payment-divider {
+				border-left: solid 1px #ddd;
+				height: 100px;
+			}
 			.total-otd-price {
 				font-size: 18px;
 				font-weight: 800;
+			}
+			.otd-li {
+				border-top: solid 5px #EFEFEF;
 			}
 			.edit-payment-btn {
 				padding: 5px 15px;
@@ -1015,12 +1043,14 @@ $.ajax({
 				border-radius: 10px !important;
 				overflow: hidden;
 			}
-			list-group-item:nth-child(even) {
-				border-radius: 10px !important;
-				overflow: hidden;
-			}
 			.bold {
-				font-weight: bold;
+				font-weight: 700;
+			}
+			.bolder {
+				font-weight: 900;
+			}
+			.m-1 {
+				margin: 1px;
 			}
             .black {
                 color: #333;
@@ -1053,15 +1083,29 @@ $.ajax({
 				color: #000;
 			}
 			.payment-caclculator {
-				border: solid 1px #ddd;
+				border: solid 0px #ddd;
 				border-radius: 5px;
-				margin: 50px 0px 50px 0;
-				padding: 10px;
+				margin: 5px auto;
+				padding: 0px;
 				background: #fff;
+			}
+			#payment {
+				font-size: 24px;
+				font-weight: 900;
+				letter-spacing: -1px;
 			}
 			.payment {
 				margin: 0;
 				padding: 0;
+			}
+			.credit-approval-message {
+				font-size: 13px;
+				padding: 1px 0;
+				margin: 5px 0;
+				border-top: solid 1px #ddd;
+			}
+			.small {
+				font-size: 80%;
 			}
 			.credit-container,
 			.downpayment-container,
