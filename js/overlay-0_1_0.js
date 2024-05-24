@@ -942,7 +942,12 @@ $.ajax({
 				font-weight: 900;
 			}
 			.vehicle-header-icons {
-				color: #000;
+				color: #333;
+				text-align: center;
+				float: left;
+			}
+			.vehicle-header-icons:hover {
+				color: #D9534F;
 				text-align: center;
 				float: left;
 			}
