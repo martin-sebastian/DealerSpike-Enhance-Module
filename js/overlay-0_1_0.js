@@ -91,13 +91,12 @@ $.ajax({
     var inventoryStatus = data.UnitStatus;
 
     var unitDescription = ``;
-    if (data.B50Desc.length) {
+    if (data.B50Desc != null) {
       unitDescription += data.B50Desc;
     }
-    var unitSpecs = unitDescription.split(/<b>(.+)/)[1];
-    var unitSpecs = "<b>" + unitSpecs;
 
-    // Arrival Date
+    //var unitSpecs = unitDescription.split(/<b>(.+)/)[1];
+    //var unitSpecs = "<b>" + unitSpecs;
 
     // Discount Item
     var discountTotal = `<li class="list-group-item">Discount <span class="pull-right bold">-${discount}</span></li>`;
@@ -179,25 +178,7 @@ $.ajax({
       i++;
     }
 
-    //!NOTE these vars were not being used, so I'm not entirely sure where to put them. They could easily be attached in the above function if you want though
-    // if (data.TradeInItems[0]) {
-    // 	var tradeZeroAmount = (data.TradeInItems[0].Amount);
-    // } else {
-    // 	var tradeZeroAmount = ``;
-    // }
-    // if (data.TradeInItems[1]) {
-    // 	var tradeOneAmount = (data.TradeInItems[1].Amount);
-    // } else {
-    // 	var tradeOneAmount = ``;
-    // }
-    // if (data.TradeInItems[2]) {
-    // 	var tradeTwoAmount = (data.TradeInItems[2].Amount);
-    // } else {
-    // 	var tradeTwoAmount = ``;
-    // }
-
-    // Accessory items - 12 items allowed
-    //!NOTE Martin, change the number in the while loop to adjust how many items you want to load. I did 30 because that's how many were hard coded earlier, but the comment above says 12 so I dunno which one is desired. Leaving it up to you.
+    // Accessory Items - 100 items allowed
     var accessoryItemsTemplate = ``;
 
     i = 0;
@@ -288,15 +269,7 @@ $.ajax({
       unitNumbersTemplate += `<li class="list-group-item">VIN: <span class="pull-right">${data.VIN}</span></li>`;
     }
 
-    // // Stock Status
-    // if (data.Stocked === true) {
-    // 	var stockStatus = `<span>In Stock: </span>`;
-    // } else {
-    // 	var stockStatus = ``;
-    // }
-
     // Availability
-    //!NOTE I adjusted this as well. Checks if lot is in one of the array rather than if/else through them all.
     var mainLots = ["SUZ", "KAW", "POL", "PREOWNED", "PRE OWNED"];
     var onOrderLots = ["ONORDER", "ON ORDER"];
 
@@ -311,12 +284,6 @@ $.ajax({
     } else if (data.Lot == "IMC") {
       unitLocation = `<small class="red bold">IN STOCK - Indian Showroom</small>`;
     }
-
-    // Order Status and Unit Usage
-    // var orderStatus = `
-    // 	<small class="red bold">${inventoryStatus}: Avail. ${arrivalDate}</small><br>
-    // 	<small>${newUsed}: ${milesHours} miles/hr</small>
-    // `
 
     // Yellow Tag
     if (data.YellowTag === true) {
@@ -355,7 +322,7 @@ $.ajax({
     // Description Notes Template
     var unitDescripionTemplate = ``;
 
-    if (data.B50Desc.length) {
+    if (data.B50Desc != null) {
       unitDescripionTemplate += `
 		<div id="scrollDescription" class="container-fluid" style="padding: 10px 0; border-top: solid 1px #ededed;">
 			<h3 class="bold text-center">
@@ -815,91 +782,92 @@ $.ajax({
         data.TradeInItemsTotal
     ).format("$0,0.00");
     var overlay = `
-			${muHeaderTemplate}
-			<div class="container-fluid" style="background: #efefef; padding-top: 16px; padding-bottom: 35px;">
-				<div class="row" style="max-width: 1700px; margin:0 auto;">
-					<div class="col-xl-8 col-lg-8 col-md-8">
-						${carousel}
-						<div style="padding: 0px; display: block; margin-bottom: 50px;">
-							${thumbnailImages}
-							<hr style="clear: both;">
-						</div>
-					</div>
-					<div class="col-xl-4 col-lg-4 col-md-4">
-						<ul class="list-group shadow">
-							<li class="list-group-item text-center">
-								<div class="price-payment-container">
-									<div class="our-price-container">
-										<div class="our-price-msrp">MSRP: <s>${unitMSRP}</s></div>
-										<div class="our-price">${yellowTag} ${ourPrice}</div>
-										<div class="total-savings">
-											<span class="label label-default">
-												Savings
-											</span>
-											<i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-											<span class="label label-danger">
-												${discount}
-											</span>
-										</div>
-										<div class="price-expires silver">
-											Sale Program Ends: ${salePriceExpireDate}
-										</div>										
-									</div>
-									<div class="price-payment-divider"></div>
-									<div class="our-payment-container">
-										${paymentCalc}
-										<p class="text-center red bold">${inventoryStatusTemplate}</p>
-									</div>
-								</div> <!-- // price-payment-container -->
-							</li>
-
-							<li class="list-group-item bold">${msrpLabel} <span class="pull-right">${MSRPUnit}</span></li>
-							${matItemsTemplate} 
-							${tradeInItemsTemplate} 
-							${discountItemsTemplate}
-							${freebieItemsTemplate}
-							${accessoryLine}
-							<div class="collapse" id="collapseItems">
-								${accessoryItemsTemplate}
-							</div>
-							<li class="list-group-item bold">
-								<a class="gray" data-toggle="collapse" href="#collapseFees" aria-expanded="false" aria-controls="collapseoverlay">Fees <i class="fa fa-chevron-down collapse-icon pull-right" aria-hidden="true"></i></a>
-							</li>
-							<div class="collapse in" id="collapseFees">
-								${OTDItemsTemplate}
-							</div>
-							
-							<li class="list-group-item otd-li">
-								<div class="total-otd-price">Total Out The Door Price: <span class="pull-right">${totalOTD}</span></div>
-							</li>
-						</ul>
-						<p class="text-right bold" style="margin:-15px 5px 25px 0;">Quote Expires: ${eDate}</p>
-
-						<ul class="list-group shadow">
-							<li class="list-group-item bold">
-								<a class="gray" data-toggle="collapse" href="#collapseNumbers" aria-expanded="false" aria-controls="collapseoverlay">More Info. <i class="fa fa-chevron-down collapse-icon pull-right" aria-hidden="true"></i></a>
-							</li>
-							<div class="collapse" id="collapseNumbers">
-								${unitNumbersTemplate}
-							</div>
-						</ul>
+		${muHeaderTemplate}
+		<div class="container-fluid" style="background: #efefef; padding-top: 16px; padding-bottom: 35px;">
+			<div class="row" style="max-width: 1700px; margin:0 auto;">
+				<div class="col-xl-8 col-lg-8 col-md-8">
+					${carousel}
+					<div style="padding: 0px; display: block; margin-bottom: 50px;">
+						${thumbnailImages}
 						<hr style="clear: both;">
-						${contactMobile}
 					</div>
-					<div class="col-xl-12 col-lg-12 col-md-12 fom-disclaimer">${fomDisclaimer}</div>
 				</div>
+				<div class="col-xl-4 col-lg-4 col-md-4">
+					<ul class="list-group shadow">
+						<li class="list-group-item text-center">
+							<div class="price-payment-container">
+								<div class="our-price-container">
+									<div class="our-price-msrp">MSRP: <s>${unitMSRP}</s></div>
+									<div class="our-price">${yellowTag} ${ourPrice}</div>
+									<div class="total-savings">
+										<span class="label label-default">
+											Savings
+										</span>
+										<i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+										<span class="label label-danger">
+											${discount}
+										</span>
+									</div>
+									<div class="price-expires silver">
+										Sale Program Ends: ${salePriceExpireDate}
+									</div>										
+								</div>
+								<div class="price-payment-divider"></div>
+								<div class="our-payment-container">
+									${paymentCalc}
+									<p class="text-center red bold">${inventoryStatusTemplate}</p>
+								</div>
+							</div> <!-- // price-payment-container -->
+						</li>
+
+						<li class="list-group-item bold">${msrpLabel} <span class="pull-right">${MSRPUnit}</span></li>
+						${matItemsTemplate} 
+						${tradeInItemsTemplate} 
+						${discountItemsTemplate}
+						${freebieItemsTemplate}
+						${accessoryLine}
+						<div class="collapse" id="collapseItems">
+							${accessoryItemsTemplate}
+						</div>
+						<li class="list-group-item bold">
+							<a class="gray" data-toggle="collapse" href="#collapseFees" aria-expanded="false" aria-controls="collapseoverlay">Fees <i class="fa fa-chevron-down collapse-icon pull-right" aria-hidden="true"></i></a>
+						</li>
+						<div class="collapse in" id="collapseFees">
+							${OTDItemsTemplate}
+						</div>
+						
+						<li class="list-group-item otd-li">
+							<div class="total-otd-price">Total Out The Door Price: <span class="pull-right">${totalOTD}</span></div>
+						</li>
+					</ul>
+					<p class="text-right bold" style="margin:-15px 5px 25px 0;">Quote Expires: ${eDate}</p>
+
+					<ul class="list-group shadow">
+						<li class="list-group-item bold">
+							<a class="gray" data-toggle="collapse" href="#collapseNumbers" aria-expanded="false" aria-controls="collapseoverlay">More Info. <i class="fa fa-chevron-down collapse-icon pull-right" aria-hidden="true"></i></a>
+						</li>
+						<div class="collapse" id="collapseNumbers">
+							${unitNumbersTemplate}
+						</div>
+					</ul>
+					<hr style="clear: both;">
+					${contactMobile}
+				</div>
+				<div class="col-xl-12 col-lg-12 col-md-12 fom-disclaimer">${fomDisclaimer}</div>
 			</div>
-			${featuresTemplate}
-			${walkthruVideoTemplate}
-			${unitDescripionTemplate}
-			${oemDescriptionTemplate}
-			${oemSpecsTemplate}
-			${youtubeVideoTemplate}
-			${pdfBrochureTemplate}
-			`;
+		</div>
+		${featuresTemplate}
+		${walkthruVideoTemplate}
+		${unitDescripionTemplate}
+		${oemDescriptionTemplate}
+		${oemSpecsTemplate}
+		${youtubeVideoTemplate}
+		${pdfBrochureTemplate}
+		`;
 
     $(".main-content").replaceWith(overlay);
     $("#qLevel").replaceWith(qLevel);
+
     //document.getElementsByClassName("main-content").innerHTML = overlay;
     document.getElementById("muItems").innerHTML = muImageCardTemplate;
 
