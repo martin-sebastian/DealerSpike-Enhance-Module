@@ -26,6 +26,10 @@ body {
   height: 80vh;
   width: 100%;
 }
+.collapse.inxxx i {
+  color: #ff0000;
+  rotate: -90deg;
+}
 .footer-content {
   width: 100%;
   background: #fff;

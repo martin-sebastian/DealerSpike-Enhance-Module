@@ -39,6 +39,21 @@ function showpay() {
   };
 }
 
+let pageStockNumber = null;
+
+// Select all div elements with the class 'vdp-key-feature-detail'
+const featureDetails = document.querySelectorAll(".vdp-key-feature-detail");
+
+featureDetails.forEach((detail) => {
+  // Check if the inner HTML contains 'Stock #'
+  if (detail.innerHTML.includes("Stock #")) {
+    // Select the span within this div and get its text content
+    pageStockNumber = detail.querySelector("span").textContent;
+  }
+});
+
+console.log(pageStockNumber); // Output the stock number
+
 //var stockNum = $('div[itemprop="sku"]').text();
 //var stockNum = (document.querySelectorAll('div.vdp-key-feature-detail > span.pull-right')[5]).textContent;
 //var sn = `SBA8169`;
@@ -326,7 +341,7 @@ $.ajax({
       unitDescripionTemplate += `
 		<div id="scrollDescription" class="container-fluid" style="padding: 10px 0; border-top: solid 1px #ededed;">
 			<h3 class="bold text-center">
-				<a class="black" style="text-decoration: none;" data-toggle="collapse" href="#collapseDescription" aria-expanded="false" aria-controls="collapseDescription">
+				<a class="black collapsed" style="text-decoration: none;" data-toggle="collapse" href="#collapseDescription" aria-expanded="false" aria-controls="collapseDescription">
 					NOTES
 					<i class="fa fa-chevron-down pull-right" style="padding-right: 20px;" aria-hidden="true"></i>
 				</a>
@@ -844,7 +859,7 @@ $.ajax({
 
 					<ul class="list-group shadow">
 						<li class="list-group-item bold">
-							<a class="gray" data-toggle="collapse" href="#collapseNumbers" aria-expanded="false" aria-controls="collapseoverlay">More Info. <i class="fa fa-chevron-down collapse-icon pull-right" aria-hidden="true"></i></a>
+							<a class="gray collapsed" data-toggle="collapse" href="#collapseNumbers" aria-expanded="false" aria-controls="collapseoverlay">More Info. <i class="fa fa-chevron-down collapse-icon pull-right" aria-hidden="true"></i></a>
 						</li>
 						<div class="collapse" id="collapseNumbers">
 							${unitNumbersTemplate}
