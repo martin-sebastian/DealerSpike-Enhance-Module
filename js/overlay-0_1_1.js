@@ -82,7 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
           .join("");
       };
 
-      const murItemsTemplate = generateListItems(data.MUItems, 4, "$0,0.00");
+      const muItemsTemplate = generateListItems(data.MUItems, 4, "$0,0.00");
       const matItemsTemplate = generateListItems(data.MatItems, 4, "$0,0.00");
       const OTDItemsTemplate = generateListItems(data.OTDItems, 9, "$0,0.00");
       const tradeInItemsTemplate = generateListItems(
