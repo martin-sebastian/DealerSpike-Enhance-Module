@@ -39,28 +39,28 @@ function showpay() {
   };
 }
 
-let pageStockNumber = null;
+// let pageStockNumber = null;
 
 // Select all div elements with the class 'vdp-key-feature-detail'
-const featureDetails = document.querySelectorAll(".vdp-key-feature-detail");
+// const featureDetails = document.querySelectorAll(".vdp-key-feature-detail");
 
-featureDetails.forEach((detail) => {
-  // Check if the inner HTML contains 'Stock #'
-  if (detail.innerHTML.includes("Stock #")) {
-    // Select the span within this div and get its text content
-    pageStockNumber = detail.querySelector("span").textContent;
-  }
-});
+// featureDetails.forEach((detail) => {
+//   // Check if the inner HTML contains 'Stock #'
+//   if (detail.innerHTML.includes("Stock #")) {
+//     // Select the span within this div and get its text content
+//     pageStockNumber = detail.querySelector("span").textContent;
+//   }
+// });
 
-console.log(pageStockNumber); // Output the stock number
+// console.log("stock Number:", pageStockNumber); // Output the stock number
 
 //var stockNum = $('div[itemprop="sku"]').text();
 //var stockNum = (document.querySelectorAll('div.vdp-key-feature-detail > span.pull-right')[5]).textContent;
 //var sn = `SBA8169`;
-var sn = urlstocknumber;
-var stockNum = sn;
+var stockNum = urlstocknumber;
+//var stockNum = sn;
 
-//console.log(stockNum);
+console.log("stockNum", stockNum);
 
 $.ajax({
   type: "GET",
@@ -70,7 +70,7 @@ $.ajax({
   //url: "http://192.168.1.8/portal/public/api/majorunit/stocknumber/" + stockNum,
 })
   .done(function (data) {
-    console.log(data.StockNumber);
+    console.log("data.StockNumber", data.StockNumber);
     var prodTitle =
       data.Usage +
       " " +
@@ -399,7 +399,7 @@ $.ajax({
 
     // Feature Highlights Header
     var featuresHeader = ``;
-    if (data.AccessoryItems.length > 0) {
+    if (data.AccessoryItems != null) {
       featuresHeader += `
 		<div id="scrollFeatures" class="container-fluid" style="padding: 10px 0; border-top: solid 1px #ededed;"">
 		<h3 class="bold text-center">
