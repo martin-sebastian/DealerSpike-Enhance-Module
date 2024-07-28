@@ -149,7 +149,7 @@ document.addEventListener("DOMContentLoaded", () => {
         ? `<img src="https://newportal.flatoutmotorcycles.com/Portal/content/icons/ylwtag.png">`
         : ``;
 
-      const unitDescripionTemplate = data.B50Desc
+      const unitDescriptionTemplate = data.B50Desc
         ? `
           ${data.B50Desc} 
         `
@@ -185,13 +185,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const overlay = `
           
-          <div class="container-fluid" style="background: #efefef; padding-top: 16px; padding-bottom: 35px;">
-          ${muHeaderTemplate}
-            <div class="row" style="max-width: 1700px; margin:0 auto;">
-              <div class="col-xl-8 col-lg-8 col-md-8">
-                <img src="${data.ImageUrl}">
-              </div>
-              <div class="col-xl-4 col-lg-4 col-md-4">
+          <div class="container-fluid">
+            ${muHeaderTemplate}
+              <div class="container">
+              <img style="width: 100%" src="${data.ImageUrl}">
                 <ul class="list-group shadow">
                   <li class="list-group-item text-center">
                     <div class="price-payment-container">
@@ -213,7 +210,6 @@ document.addEventListener("DOMContentLoaded", () => {
                       </div>
                       <div class="price-payment-divider"></div>
                       <div class="our-payment-container">
-  
                         <p class="text-center red bold">${inventoryStatusTemplate}</p>
                       </div>
                     </div>
@@ -253,16 +249,12 @@ document.addEventListener("DOMContentLoaded", () => {
                     ${unitNumbersTemplate}
                   </div>
                 </ul>
-                <hr style="clear: both;">
               </div>
-  
-            </div>
           </div>
-
         `;
 
       document.querySelector(".main-content").innerHTML = overlay;
-      //document.getElementById("muItems").innerHTML = muImageCardTemplate;
+
       document.getElementById("qLevel").outerHTML = qLevel;
 
       const style = document.createElement("style");
@@ -272,11 +264,11 @@ document.addEventListener("DOMContentLoaded", () => {
           .pointer { cursor: pointer; }
           .vehicle-header-container {
             display: flex;
-            flex-direction: row;
+            flex-direction: column;
             justify-content: space-between;
             align-items: stretch;
             padding: 0 20px;
-            border-bottom: solid 1px #ddd;
+            border-bottom: solid 1px red;
           }
           .vehicle-name-container { margin: 0px; padding: 5px 0; }
           .vehicle-header-icons-container {
