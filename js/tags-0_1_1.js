@@ -2,36 +2,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
   const urlstocknumber = urlParams.get("search");
-
-  function showpay() {
-    const princ = parseFloat(document.calc.loan.value);
-    const down = parseFloat(document.calc.downpayment.value);
-    const dp = (princ / 100) * down;
-    const term = parseFloat(document.calc.months.value);
-    const intr = parseFloat(document.calc.rate.value) / 1200;
-    const payment =
-      ((princ - dp) * intr) / (1 - Math.pow(1 / (1 + intr), term));
-
-    document.calc.pay.value = payment.toFixed(2);
-    document.getElementById("payment").innerHTML = payment.toFixed(2);
-
-    const updateSliderValue = (sliderId, outputId) => {
-      const slider = document.getElementById(sliderId);
-      const output = document.getElementById(outputId);
-      output.innerHTML = slider.value;
-      slider.oninput = function () {
-        output.innerHTML = this.value;
-      };
-    };
-
-    updateSliderValue("percentRange", "percentRangeValue");
-    updateSliderValue("downpaymentRange", "downpaymentRangeValue");
-  }
-
   const stockNum = urlstocknumber;
 
   console.log("stock Number:", urlstocknumber, stockNum);
 
+  // Payment Calculator
+  // Get data from API and create variables
   fetch(
     `https://newportal.flatoutmotorcycles.com/portal/public/api/majorunit/stocknumber/${stockNum}`
   )
@@ -39,7 +15,8 @@ document.addEventListener("DOMContentLoaded", () => {
     .then((data) => {
       const prodTitle = `${data.Usage} ${data.ModelYear} ${data.Manufacturer} ${data.B50ModelName}`;
       const vinNumber = data.VIN;
-      const qLevel = `<span id="qLevel" class="badge" style="padding: 10px; font-weight: 900">${data.QuoteLevel}</span>`;
+      const stockNumber = data.StockNumber;
+      const qLevel = `<span class="badge" style="padding: 10px; font-weight: 900">${data.QuoteLevel}</span>`;
       const MSRPUnit = numeral(data.MSRPUnit).format("$0,0.00");
       const unitMSRP = numeral(data.MSRP - data.AccessoryItemsTotal).format(
         "$0,0.00"
@@ -61,20 +38,55 @@ document.addEventListener("DOMContentLoaded", () => {
       const newUsed = data.Usage;
       const milesHours = data.Miles;
       const inventoryStatus = data.UnitStatus;
+      // Example usage:
+      const msrp = data.MSRP;
+      const payments = calculatePayments(msrp);
+
+      // Payment Calculator
+      function calculatePayments(msrp) {
+        // Annual interest rate
+        const annualInterestRate = 0.07;
+
+        // Weekly interest rate
+        const weeklyInterestRate = annualInterestRate / 52;
+
+        // Monthly interest rate
+        const monthlyInterestRate = annualInterestRate / 12;
+
+        // Number of weeks and months for the loan term
+        const loanTermWeeks = 72;
+        const loanTermMonths = loanTermWeeks / 4.33; // Approximate number of months
+
+        // Calculate the weekly payment using the formula for an installment loan
+        const weeklyPayment =
+          (msrp * weeklyInterestRate) /
+          (1 - Math.pow(1 + weeklyInterestRate, -loanTermWeeks));
+
+        // Calculate the monthly payment using the formula for an installment loan
+        const monthlyPayment =
+          (msrp * monthlyInterestRate) /
+          (1 - Math.pow(1 + monthlyInterestRate, -loanTermMonths));
+
+        return {
+          weeklyPayment: weeklyPayment.toFixed(2), // Round to 2 decimal places
+          monthlyPayment: monthlyPayment.toFixed(2), // Round to 2 decimal places
+        };
+      }
 
       const generateListItems = (items, maxItems, formatAmount) => {
         return items
           .slice(0, maxItems)
           .map((item) => {
-            return `<li class="list-group-item"><em>${
+            return `<li class="list-group-item">${
               item.Description
-            }</em> <span class="pull-right bold red">${numeral(
-              item.Amount
-            ).format(formatAmount)}</span></li>`;
+            } <span class="pull-right bold red">${numeral(item.Amount).format(
+              formatAmount
+            )}</span></li>`;
           })
           .join("");
       };
-
+      const logo = `<img src="../img/fom-app-logo.svg">`;
+      const vehicleImage = `<img src="${data.ImageUrl}" style="width: 50%; margin: 0 auto;">`;
       const matItemsTemplate = generateListItems(data.MatItems, 4, "$0,0.00");
       const OTDItemsTemplate = generateListItems(data.OTDItems, 9, "$0,0.00");
       const tradeInItemsTemplate = generateListItems(
@@ -84,52 +96,37 @@ document.addEventListener("DOMContentLoaded", () => {
       );
       const accessoryItemsTemplate = generateListItems(
         data.AccessoryItems,
-        100,
+        20,
+        "$0,0.00"
+      );
+      const discountItemsTemplate = generateListItems(
+        data.DiscountItems,
+        20,
         "$0,0.00"
       );
 
-      const inventoryStatusTemplate = (() => {
-        if (data.UnitStatus === "In Inventory" && data.Lot !== "ONORDER") {
-          return `In Stock`;
-        } else if (data.UnitStatus === "Ordered") {
-          return `${data.UnitStatus}, Avail. ${arrivalDate}`;
-        } else if (
-          data.UnitStatus === "In Inventory" &&
-          data.Lot === "ONORDER"
-        ) {
-          return `Ordered, Avail. ${arrivalDate}`;
-        } else if (
-          data.UnitStatus === "In Inventory" &&
-          data.Lot === "SERVICE"
-        ) {
-          return `In Service Being Prepared`;
-        } else {
-          return ``;
-        }
-      })();
-
-      const unitNumbersTemplate = (() => {
-        let template = "";
-        if (inventoryStatus !== null) {
-          template += `<li class="list-group-item">Status: <span class="pull-right">${inventoryStatus}</span></li>`;
-        }
-        if (data.EstimatedArrival !== null) {
-          template += `<li class="list-group-item">Available: <span class="pull-right">${arrivalDate}</span></li>`;
-        }
-        if (data.Usage.length) {
-          template += `<li class="list-group-item">Usage: <span class="pull-right">${newUsed}</span></li>`;
-        }
-        if (data.Miles >= 0) {
-          template += `<li class="list-group-item">Miles/Hours: <span class="pull-right">${milesHours}</span></li>`;
-        }
-        if (data.StockNumber.length) {
-          template += `<li class="list-group-item">Stock #: <span class="pull-right">${stockNum}</span></li>`;
-        }
-        if (data.VIN.length) {
-          template += `<li class="list-group-item">VIN: <span class="pull-right">${data.VIN}</span></li>`;
-        }
-        return template;
-      })();
+      // const unitNumbersTemplate = (() => {
+      //   let template = "";
+      //   if (inventoryStatus !== null) {
+      //     template += `<li class="list-group-item">Status: <span class="pull-right">${inventoryStatus}</span></li>`;
+      //   }
+      //   if (data.EstimatedArrival !== null) {
+      //     template += `<li class="list-group-item">Available: <span class="pull-right">${arrivalDate}</span></li>`;
+      //   }
+      //   if (data.Usage.length) {
+      //     template += `<li class="list-group-item">Usage: <span class="pull-right">${newUsed}</span></li>`;
+      //   }
+      //   if (data.Miles >= 0) {
+      //     template += `<li class="list-group-item">Miles/Hours: <span class="pull-right">${milesHours}</span></li>`;
+      //   }
+      //   if (data.StockNumber.length) {
+      //     template += `<li class="list-group-item">Stock #: <span class="pull-right">${stockNum}</span></li>`;
+      //   }
+      //   if (data.VIN.length) {
+      //     template += `<li class="list-group-item">VIN: <span class="pull-right">${data.VIN}</span></li>`;
+      //   }
+      //   return template;
+      // })();
 
       const unitLocation = (() => {
         const mainLots = ["SUZ", "KAW", "POL", "PREOWNED", "PRE OWNED"];
@@ -162,18 +159,18 @@ document.addEventListener("DOMContentLoaded", () => {
         `
         : ``;
 
-      const muHeaderTemplate = `
-          <div class="vehicle-header-container shadow">
-            <div class="vehicle-name-container">
-              <h3 class="vehicle-title" style="margin: 5px 0 0 0;">${prodTitle}</h3>
-              <h4 class="vehicle-subtitle" style="margin: 1px 0 5px 0;">
-                <small>Model: </small>${data.ModelCode} 
-                <small class="hidden-xs">VIN: </small><span class="hidden-xs">${vinNumber} </span>
-                <small>Stock Number: </small>${stockNum}
-              </h4>
-            </div>
+      const vehicleHeaderTemplate = `
+        <div class="vehicle-header-container">
+          <div class="vehicle-name-container">
+            <h3 class="vehicle-title">${prodTitle}</h3>
+            <h4 class="vehicle-subtitle">
+              <small>Model: </small>${data.ModelCode} 
+              <small>VIN: </small><span>${vinNumber} </span>
+              <small>Stock# </small>${data.StockNumber}
+            </h4>
           </div>
-        `;
+        </div>
+      `;
 
       const ourPrice = numeral(
         data.MSRPUnit +
@@ -185,15 +182,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const overlay = `
           
-          <div class="container-fluid">
-            ${muHeaderTemplate}
-              <div class="container">
-              <img style="width: 100%" src="${data.ImageUrl}">
-                <ul class="list-group shadow">
+        <div class="print-tag shadow">
+          <i class="fa fa-circle block" style="font-size: 24px; margin: 20px auto;"></i>
+          <div class="logo-container">${logo}</div>
+              ${vehicleHeaderTemplate}
+            <div class="print-tag-body">
+                <ul class="list-group">
                   <li class="list-group-item text-center">
                     <div class="price-payment-container">
                       <div class="our-price-container">
-                        <div class="our-price-msrp">MSRP: <s>${unitMSRP}</s></div>
+                        <div class="our-price-msrp gray">MSRP: <s>${unitMSRP}</s></div>
                         <div class="our-price">${yellowTag} ${ourPrice}</div>
                         <div class="total-savings">
                           <span class="label label-default">
@@ -204,95 +202,138 @@ document.addEventListener("DOMContentLoaded", () => {
                             ${discount}
                           </span>
                         </div>
-                        <div class="price-expires silver">
+                        <div class="price-expires gray">
                           Sale Program Ends: ${salePriceExpireDate}
                         </div>                    
                       </div>
-                      <div class="price-payment-divider"></div>
+                      
                       <div class="our-payment-container">
-                        <p class="text-center red bold">${inventoryStatusTemplate}</p>
+                        <h3 class="text-center black bold">$${payments.monthlyPayment}/mo</h3>
                       </div>
                     </div>
                   </li>
-                  <li class="list-group-item bold">${
-                    data.MSRPTitle
-                  } <span class="pull-right">${MSRPUnit}</span></li>
-                  ${matItemsTemplate} 
-                  ${tradeInItemsTemplate} 
-        
-                  ${
-                    accessoryItemsTemplate
-                      ? `<li class="list-group-item bold">
-                    <a class="gray collapsed" data-toggle="collapse" href="#collapseItems" aria-expanded="false" aria-controls="collapseoverlay">Features <i class="fa fa-chevron-down collapse-icon pull-right" aria-hidden="true"></i></a>
-                  </li>
-                  <div class="collapse" id="collapseItems">
-                    ${accessoryItemsTemplate}
-                  </div>`
-                      : ""
-                  }
-                  <li class="list-group-item bold">
-                    <a class="gray" data-toggle="collapse" href="#collapseFees" aria-expanded="false" aria-controls="collapseoverlay">Fees <i class="fa fa-chevron-down collapse-icon pull-right" aria-hidden="true"></i></a>
-                  </li>
-                  <div class="collapse in" id="collapseFees">
-                    ${OTDItemsTemplate}
-                  </div>
-                  <li class="list-group-item otd-li">
-                    <div class="total-otd-price">Total Out The Door Price: <span class="pull-right">${totalOTD}</span></div>
-                  </li>
+                  <li class="list-group-item bold">${data.MSRPTitle} <span class="pull-right">${MSRPUnit}</span></li>
+                  ${matItemsTemplate}
+                  ${discountItemsTemplate}
+                  ${tradeInItemsTemplate}
+                  ${accessoryItemsTemplate}
                 </ul>
-                <p class="text-right bold" style="margin:-15px 5px 25px 0;">Quote Expires: ${eDate}</p>
-                <ul class="list-group shadow">
-                  <li class="list-group-item bold">
-                    <a class="gray collapsed" data-toggle="collapse" href="#collapseNumbers" aria-expanded="false" aria-controls="collapseoverlay">More Info. <i class="fa fa-chevron-down collapse-icon pull-right" aria-hidden="true"></i></a>
-                  </li>
-                  <div class="collapse" id="collapseNumbers">
-                    ${unitNumbersTemplate}
-                  </div>
-                </ul>
-              </div>
+                <div class="vehicle-image-container">
+                  ${vehicleImage}
+                </div>
+            </div>
           </div>
         `;
 
       document.querySelector(".main-content").innerHTML = overlay;
 
-      document.getElementById("qLevel").outerHTML = qLevel;
+      document.getElementById("quoteLevel").innerHTML = qLevel;
+      console.log(qLevel);
 
       const style = document.createElement("style");
+
       style.innerHTML = `
+
+          @font-face {
+            font-family: 'Roboto';
+            src: url('../fonts/Roboto/Roboto-Thin.ttf') format('truetype');
+            font-weight: 100;
+            font-style: normal;
+          }
+
+          @font-face {
+            font-family: 'Roboto';
+            src: url('../fonts/Roboto/Roboto-ThinItalic.ttf') format('truetype');
+            font-weight: 100;
+            font-style: italic;
+          }
+
+          @font-face {
+            font-family: 'Roboto';
+            src: url('../fonts/Roboto/Roboto-Light.ttf') format('truetype');
+            font-weight: 300;
+            font-style: normal;
+          }
+
+          @font-face {
+            font-family: 'Roboto';
+            src: url('../fonts/Roboto/Roboto-Regular.ttf') format('truetype');
+            font-weight: 400;
+            font-style: normal;
+          }
+
+          @font-face {
+            font-family: 'Roboto';
+            src: url('../fonts/Roboto/Roboto-Italic.ttf') format('truetype');
+            font-weight: 400;
+            font-style: italic;
+          }
+
+          @font-face {
+            font-family: 'Roboto';
+            src: url('../fonts/Roboto/Roboto-Medium.ttf') format('truetype');
+            font-weight: 500;
+            font-style: normal;
+          }
+
+          @font-face {
+            font-family: 'Roboto';
+            src: url('../fonts/Roboto/Roboto-MediumItalic.ttf') format('truetype');
+            font-weight: 500;
+            font-style: italic;
+          }
+
+          @font-face {
+            font-family: 'Roboto';
+            src: url('../fonts/Roboto/Roboto-Bold.ttf') format('truetype');
+            font-weight: 700;
+            font-style: normal;
+          }
+
+          @font-face {
+            font-family: 'Roboto Black';
+            src: url('../fonts/Roboto/Roboto-Black.ttf') format('truetype');
+            font-weight: 900;
+            font-style: normal;
+          }
+
           html { scroll-behavior: smooth; }
-          body { font-family: Roboto, Arial, Helvetica, sans-serif; }
+          body { font-family: 'Roboto'; font-weight: 400; font-style: normal; }
+          h1, h2, h3, h4 { 
+            font-family: 'Roboto Black';
+            font-style: normal; 
+            margin: 0; 
+            padding: 0; 
+          }
           .pointer { cursor: pointer; }
           .vehicle-header-container {
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             justify-content: space-between;
             align-items: stretch;
-            padding: 0 20px;
-            border-bottom: solid 1px red;
+            padding: 0 10px;
           }
-          .vehicle-name-container { margin: 0px; padding: 5px 0; }
-          .vehicle-header-icons-container {
-            display: flex;
-            flex-flow: row nowrap;
-            align-items: center;
-            gap: 20px;
+          .print-tag {
+            width: 4in;
+            height: 10.5in;
+            border: solid 1px #ccc;
+            border-radius: 5px;
+            margin: 0px auto;
+            padding: 0;
+            background: #fff;
+            overflow-y: hidden;
+            transform: rotate(0deg);
+            zoom: 0.8; /* Adjust the value to zoom in or out */
           }
-          .vehicle-header-icons-label {
-            color: #000;
-            text-transform: uppercase;
-            text-align: center;
-            font-size: 11px;
-            font-weight: 900;
-          }
-          .vehicle-header-icons { color: #333; text-align: center; float: left; }
-          .vehicle-header-icons:hover { color: #D9534F; text-align: center; float: left; }
-          .vehicle-manufacturer-logo-container { justify-content: flex-end; margin: auto 0; }
-          .vehicle-manufacturer-logo { width: 150px; }
-          .vehicle-title { justify-content: flex-start; color: #222; font-weight: 800; }
-          .vehicle-subtitle { color: #999; }
-          .our-price-container { max-width: 300px; text-align: center; margin: 0 auto; }
+          .logo-container { text-align: center; padding: 0px 10px; }
+          .vehicle-image-container { text-align: center; padding: 10px; }
+          .vehicle-image-container img { border-radius: 10px; }
+          .vehicle-name-container { margin: 5px 0px; padding: 5px 0px; text-align: center; }
+          .vehicle-title { font-size: 24px; justify-content: flex-start; color: #222; font-weight: 900; }
+          .vehicle-subtitle { font-size: 14px; color: #666; margin: 10px 0; }
+          .our-price-container { max-width: 4in; text-align: center; margin: 0 auto; }
           .our-price-msrp { text-align: center; margin: 0 0 -5px 0px; font-size: 13px; letter-spacing: 0px; font-weight: 900; }
-          .our-price { font-size: 30px; font-weight: 800; }
+          .our-price { font-size: 30px; font-weight: 900; }
           .total-savings { font-size: 24px; font-weight: 800; }
           .total-savings i.fa.fa-arrow-circle-right {
             position: relative; font-size: 19px; font-weight: normal;
@@ -301,7 +342,7 @@ document.addEventListener("DOMContentLoaded", () => {
           }
           .price-expires { font-size: 13px; padding: 5px 0; }
           .our-payment-container { text-align: center; margin: 0 auto; }
-          .price-payment-divider { border-left: solid 1px #ddd; height: 100px; margin: 0 5px; }
+          .price-payment-divider { border-left: solid 1px #ddd; height: 10px; margin: 0 5px; }
           .total-otd-price { font-size: 18px; font-weight: 800; }
           .otd-li { border-top: solid 5px #EFEFEF; }
           .edit-payment-btn { padding: 5px 15px; margin: 0; }
@@ -346,7 +387,7 @@ document.addEventListener("DOMContentLoaded", () => {
             border-radius: 5px; font-size: 13px; font-weight: normal; color: #fff;
           }
           .price-payment-container {
-            display: flex; flex-direction: row; flex-wrap: wrap;
+            display: flex; flex-direction: column; flex-wrap: wrap;
             justify-content: space-between; align-items: center;
             width: 100%; margin: 0 auto; background: #fff;
           }
@@ -423,7 +464,6 @@ document.addEventListener("DOMContentLoaded", () => {
         `;
 
       document.head.appendChild(style);
-      showpay();
     })
     .catch((error) => {
       console.error(error);

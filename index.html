@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DealerSpike FOM Overlay</title>
+    <title>Flat Out Motorsports</title>
     <link rel="icon" type="image/x-icon" href="/img/favicon.png" />
     <!-- Latest compiled and minified CSS -->
     <link
@@ -19,63 +19,28 @@
       integrity="sha384-6pzBo3FDv/PJ8r2KRkGHifhEocL+1X2rVCTTkUfGk7/0pbek5mMa1upzvWbrUbOZ"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="css/font-awesome.css" />
-    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="./css/font-awesome.css" />
+    <link rel="stylesheet" href="./css/style.css" />
   </head>
   <body>
     <header>
       <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container-fluid">
           <div class="navbar-header">
-            <a href="./" type="button" class="navbar-brand">
-              <div style="margin: 0; font-weight: 700">Overlay Preview</div>
+            <a class="navbar-brand" href="#">
+              <img
+                alt="FOM"
+                src="./img/app-logo.svg"
+                style="width: 200px; margin-top: -7px"
+              />
             </a>
           </div>
-          <form class="navbar-form navbar-left" role="search">
-            <div class="form-group">
-              <input
-                type="text"
-                name="search"
-                value=""
-                class="form-control"
-                placeholder="Enter Stock Number"
-                id="stockNumberInput"
-              />
-              <button type="submit" class="btn btn-danger btn-search">
-                <span
-                  style="margin: 0"
-                  class="glyphicon glyphicon-refresh"
-                  aria-hidden="true"
-                ></span>
-              </button>
-            </div>
-
-            <div id="quoteLevel" class="navbar-right" style="color: #fff">
-              <h5>
-                Quote Level:
-                <span
-                  id="qLevel"
-                  class="badge"
-                  style="padding: 10px; font-weight: 900"
-                  >0</span
-                >
-              </h5>
-            </div>
-
-            <button
-              style="position: absolute; right: 20px"
-              type="button"
-              class="btn btn-danger btn-settings"
-              data-toggle="modal"
-              data-target="#aboutModal"
-            >
-              <span
-                style="margin: 0; padding: 0"
-                class="glyphicon glyphicon-cog"
-                aria-hidden="true"
-              ></span>
-            </button>
-          </form>
+          <a href="/overlay" type="button" class="btn btn-danger navbar-btn">
+            Overlay
+          </a>
+          <a href="/tags" type="button" class="btn btn-danger navbar-btn"
+            >Tags</a
+          >
         </div>
       </nav>
     </header>
@@ -87,9 +52,9 @@
         </div>
       </div>
     </main>
-    <footer>
+    <footer class="navbar navbar-inverse navbar-fixed-bottom shadow">
       <div class="footer-content">
-        <p style="color: #333; text-align: left">Overlay V.0.8.1</p>
+        <p>Overlay V.0.8.1</p>
       </div>
     </footer>
     <div
@@ -164,8 +129,7 @@
       integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
       crossorigin="anonymous"
     ></script>
-    <script src="js/numeral.js"></script>
-    <script src="js/moment.js"></script>
-    <script src="js/overlay-0_1_0.js"></script>
+    <script src="./js/numeral.js"></script>
+    <script src="./js/moment.js"></script>
   </body>
 </html>

@@ -1,9 +1,13 @@
 body {
   margin: 0px;
-  padding-top: 50px;
+  padding-top: 0px;
+  font-family: "Roboto", sans-serif;
+  color: #333;
+  background: #eee;
 }
 body * {
   scroll-margin-top: 50px;
+  scroll-margin-bottom: 400px;
 }
 .navbar-header .container-fluid {
   display: flex;
@@ -25,17 +29,17 @@ body * {
   display: flex;
   justify-content: center;
   align-items: center;
-  color: #ccc;
-  height: 80vh;
+  color: #222;
+  min-height: 100vh;
+  height: 100%;
   width: 100%;
 }
 .footer-content {
   width: 100%;
-  background: #fff;
   padding: 20px;
-  margin: 0px;
-  height: 800px;
-  border-top: solid 1px #eee;
+  margin: 0 auto;
+  height: 50px;
+  color: #ccc;
 }
 .modal-body {
   background-color: none;
@@ -65,4 +69,7 @@ body * {
   display: block;
   width: 100%;
   text-align: center;
+}
+.shadow {
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
 }
