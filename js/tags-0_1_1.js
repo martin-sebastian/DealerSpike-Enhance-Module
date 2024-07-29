@@ -429,7 +429,6 @@ document.addEventListener("DOMContentLoaded", () => {
           .mu-thumbnail { width: 6.9%; height: auto; margin: 1px; float: left; clear: right; }
           .mu-thumbnail img { border: solid 2px #efefef; border-radius: 5px; }
           .mu-thumbnail img:hover { border: solid 2px #000; border-radius: 5px; }
-          .shadow { box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1); }
           .mu-feature-card { margin-bottom: 50px; background: #efefef; }
           .fom-disclaimer { color: #666; }
           .iframe { width: 100%; height: 100%; border: none; border-radius: 10px; }

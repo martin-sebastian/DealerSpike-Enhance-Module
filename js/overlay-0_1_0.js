@@ -80,7 +80,7 @@ $.ajax({
       " " +
       data.B50ModelName;
     var vinNumber = data.VIN;
-    var qLevel = `<span id="qLevel" class="badge" style="padding: 10px; font-weight: 900">${data.QuoteLevel}</span>`;
+    const qLevel = `<span class="badge" style="margin-left: 100px; padding: 10px 15px; font-weight: 900">Quote Level ${data.QuoteLevel}</span>`;
     var MSRPUnit = numeral(data.MSRPUnit).format("$0,0.00");
     var unitMSRP = numeral(data.MSRP - data.AccessoryItemsTotal).format(
       "$0,0.00"
@@ -923,7 +923,8 @@ $.ajax({
 		`;
 
     $(".main-content").replaceWith(overlay);
-    $("#qLevel").replaceWith(qLevel);
+    document.getElementById("quoteLevel").innerHTML = qLevel;
+    console.log(qLevel);
 
     document.getElementById("muItems").innerHTML = muImageCardTemplate;
 
@@ -1403,9 +1404,6 @@ $.ajax({
 	.mu-thumbnail img:hover {
 		border: solid 2px #000;
 		border-radius: 5px;
-	}
-	.shadow {
-		box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
 	}
 	.mu-feature-card {
 		margin-bottom: 50px;
