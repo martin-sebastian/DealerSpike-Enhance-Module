@@ -58,11 +58,16 @@
           const xmlDoc = parser.parseFromString(data, "text/xml");
           const units = xmlDoc.getElementsByTagName("Unit");
 
+          console.log(`Number of units found: ${units.length}`);
+
           const tableBody = document
             .getElementById("vehicleTable")
             .getElementsByTagName("tbody")[0];
 
-          for (let unit of units) {
+          for (let i = 0; i < units.length; i++) {
+            const unit = units[i];
+            console.log(`Processing unit ${i + 1}`);
+
             const title =
               unit.getElementsByTagName("Title")[0]?.textContent || "N/A";
             const stockNumber =
@@ -85,6 +90,19 @@
               unit.getElementsByTagName("Color")[0]?.textContent || "N/A";
             const usage =
               unit.getElementsByTagName("Usage")[0]?.textContent || "N/A";
+
+            console.log({
+              title,
+              stockNumber,
+              vin,
+              price,
+              manufacturer,
+              year,
+              modelType,
+              modelTypeStyle,
+              color,
+              usage,
+            });
 
             const row = document.createElement("tr");
             row.innerHTML = `
