@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>FOM Tags</title>
+    <title>Vehicle Tags</title>
     <link rel="icon" type="image/x-icon" href="../img/favicon.png" />
     <!-- Latest compiled and minified CSS -->
     <link
@@ -24,7 +24,7 @@
   </head>
   <body>
     <header>
-      <nav class="navbar navbar-inverse navbar-fixed-top">
+      <nav class="navbar navbar-inverse navbar-fixed-top shadow hidden">
         <div class="container-fluid">
           <div class="navbar-header">
             <a href="./" type="button" class="navbar-brand">
@@ -78,20 +78,106 @@
           </form>
         </div>
       </nav>
+      <nav class="navbar navbar-inverse navbar-fixed-top shadow">
+        <div class="container-fluid">
+          <!-- Brand and toggle get grouped for better mobile display -->
+          <div class="navbar-header">
+            <button
+              type="button"
+              class="navbar-toggle collapsed"
+              data-toggle="collapse"
+              data-target="#bs-example-navbar-collapse-1"
+              aria-expanded="false"
+            >
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">
+              <img
+                alt="FOM"
+                src="../img/app-logo.svg"
+                style="width: 200px; margin-top: -7px"
+              />
+            </a>
+          </div>
+
+          <!-- Collect the nav links, forms, and other content for toggling -->
+          <div
+            class="collapse navbar-collapse"
+            id="bs-example-navbar-collapse-1"
+          >
+            <ul class="nav navbar-nav">
+              <li>
+                <a href="/">Overlay <span class="sr-only">(current)</span></a>
+              </li>
+              <li class="active">
+                <a href="/tags">Tags <span class="sr-only">(current)</span></a>
+              </li>
+            </ul>
+            <form class="navbar-form navbar-left" role="search">
+              <div class="form-group">
+                <input
+                  type="text"
+                  name="search"
+                  value=""
+                  class="form-control"
+                  placeholder="Enter Stock Number"
+                  id="stockNumberInput"
+                />
+                <button type="submit" class="btn btn-danger btn-search">
+                  <span
+                    style="margin: 0"
+                    class="glyphicon glyphicon-chevron-right"
+                    aria-hidden="true"
+                  ></span>
+                </button>
+              </div>
+              <div id="quoteLevel" class="navbar-right" style="color: #fff">
+                <h5>
+                  Quote Level:
+                  <span
+                    id="qLevel"
+                    class="badge"
+                    style="padding: 10px; font-weight: 900"
+                    >0</span
+                  >
+                </h5>
+              </div>
+            </form>
+            <ul class="nav navbar-nav navbar-right">
+              <li>
+                <a href="#"
+                  ><span
+                    style="margin: 0; padding: 0"
+                    class="glyphicon glyphicon-cog"
+                    aria-hidden="true"
+                    data-toggle="modal"
+                    data-target="#aboutModal"
+                  ></span
+                ></a>
+              </li>
+            </ul>
+          </div>
+          <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+      </nav>
     </header>
 
-    <main class="my-5 py-5">
+    <main>
       <div class="main-content">
-        <div class="container">
+        <div class="container-fluid">
           <h1 class="block">Enter Stock Number</h1>
-          <h4 class="block">To Preview Vehicle Overlay</h4>
+          <h4 class="block">To Preview Vehicle Tags</h4>
         </div>
       </div>
     </main>
 
-    <footer class="hidden">
+    <footer class="navbar-fixed-bottom shadow hidden">
       <div class="footer-content">
-        <p style="color: #333; text-align: left">Overlay V.0.8.1</p>
+        <p style="color: #333; text-align: left">Vehicle Tags V.0.8.1</p>
       </div>
     </footer>
     <div
