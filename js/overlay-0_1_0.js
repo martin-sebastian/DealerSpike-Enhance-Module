@@ -379,7 +379,7 @@ $.ajax({
 
     if (data.B50Desc != null) {
       unitDescripionTemplate += `
-		<div id="scrollDescription" class="container-fluid" style="padding: 10px 0; border-top: solid 1px #ededed;">
+		<div id="scrollDescription" class="container-fluid" style="padding: 10px 0; border-top: solid 1px #ededed; background: #fff;">
 			<h3 class="bold text-center">
 				<a class="more-info-section black collapsed" style="text-decoration: none; margin: 0 auto;" data-toggle="collapse" href="#collapseDescription" aria-expanded="false" aria-controls="collapseDescription">
 					NOTES
@@ -400,7 +400,7 @@ $.ajax({
 
     if (typeof oemDescription !== "undefined") {
       oemDescriptionTemplate += `
-		<div id="scrollOemDescription" class="container-fluid" style="padding: 10px 0; border-top: solid 1px #ededed;">
+		<div id="scrollOemDescription" class="container-fluid" style="padding: 10px 0; border-top: solid 1px #ededed; background: #fff;">
 			<h3 class="bold text-center">
 				<a class="more-info-section black collapsed" style="text-decoration: none;" data-toggle="collapse" href="#collapseOemDescription" aria-expanded="false" aria-controls="collapseOemDescription">
 					DESCRIPTION
@@ -421,7 +421,7 @@ $.ajax({
 
     if (typeof oemSpecs !== "undefined") {
       oemSpecsTemplate += `
-		<div id="scrollDescription" class="container-fluid" style="padding: 10px 0; border-top: solid 1px #eee;">
+		<div id="scrollDescription" class="container-fluid" style="padding: 10px 0; border-top: solid 1px #ededed; background: #fff;">
 			<h3 class="bold text-center">
 				<a class="more-info-section black collapsed" style="text-decoration: none;" data-toggle="collapse" href="#collapseOemSpecs" aria-expanded="false" aria-controls="collapseOemSpecs">
 					TECH SPECS
@@ -441,7 +441,7 @@ $.ajax({
     var featuresHeader = ``;
     if (data.AccessoryItems != null) {
       featuresHeader += `
-		<div id="scrollFeatures" class="container-fluid" style="padding: 10px 0; border-top: solid 1px #eee;"">
+		<div id="scrollFeatures" class="container-fluid" style="padding: 10px 0; border-top: solid 1px #ededed; background: #fff;">
 		<h3 class="bold text-center">
 			<a class="more-info-section black collapsed" style=" text-decoration: none;" data-toggle="collapse" href="#collapseFeatures" aria-expanded="false" aria-controls="collapseFeatures">
 				FEATURE HIGHLIGHTS
