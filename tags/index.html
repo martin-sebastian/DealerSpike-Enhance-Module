@@ -24,60 +24,6 @@
   </head>
   <body>
     <header>
-      <nav class="navbar navbar-inverse navbar-fixed-top shadow hidden">
-        <div class="container-fluid">
-          <div class="navbar-header">
-            <a href="/" type="button" class="navbar-brand">
-              <div style="margin: 0; font-weight: 700">Print Tags</div>
-            </a>
-          </div>
-          <form class="navbar-form navbar-left" role="search">
-            <div class="form-group">
-              <input
-                type="text"
-                name="search"
-                value=""
-                class="form-control"
-                placeholder="Enter Stock Number"
-                id="stockNumberInput"
-              />
-              <button type="submit" class="btn btn-danger btn-search">
-                <span
-                  style="margin: 0"
-                  class="glyphicon glyphicon-refresh"
-                  aria-hidden="true"
-                ></span>
-              </button>
-            </div>
-
-            <div id="quoteLevel" class="navbar-right" style="color: #fff">
-              <h5>
-                Quote Level:
-                <span
-                  id="qLevel"
-                  class="badge"
-                  style="padding: 10px; font-weight: 900"
-                  >0</span
-                >
-              </h5>
-            </div>
-
-            <button
-              style="position: absolute; right: 20px"
-              type="button"
-              class="btn btn-danger btn-settings"
-              data-toggle="modal"
-              data-target="#aboutModal"
-            >
-              <span
-                style="margin: 0; padding: 0"
-                class="glyphicon glyphicon-cog"
-                aria-hidden="true"
-              ></span>
-            </button>
-          </form>
-        </div>
-      </nav>
       <nav class="navbar navbar-inverse navbar-fixed-top shadow">
         <div class="container-fluid">
           <!-- Brand and toggle get grouped for better mobile display -->
@@ -94,7 +40,7 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="/">
               <img
                 alt="FOM"
                 src="../img/app-logo.svg"
@@ -110,7 +56,9 @@
           >
             <ul class="nav navbar-nav">
               <li>
-                <a href="/">Overlay <span class="sr-only">(current)</span></a>
+                <a href="/overlay"
+                  >Overlay <span class="sr-only">(current)</span></a
+                >
               </li>
               <li class="active">
                 <a href="/tags">Tags <span class="sr-only">(current)</span></a>
@@ -134,17 +82,11 @@
                   ></span>
                 </button>
               </div>
-              <div id="quoteLevel" class="navbar-right" style="color: #fff">
-                <h5>
-                  Quote Level:
-                  <span
-                    id="qLevel"
-                    class="badge"
-                    style="padding: 10px; font-weight: 900"
-                    >0</span
-                  >
-                </h5>
-              </div>
+              <div
+                id="quoteLevel"
+                class="navbar-right"
+                style="color: #fff"
+              ></div>
             </form>
             <ul class="nav navbar-nav navbar-right">
               <li>
@@ -167,12 +109,16 @@
     </header>
 
     <main>
+      <div class="tags-spacer hidden-print"></div>
       <div class="main-content">
         <div class="container-fluid">
-          <h1 class="block">Enter Stock Number</h1>
-          <h4 class="block">To Preview Vehicle Tags</h4>
+          <div class="tag-container shadow">
+            <div class="tag-left"></div>
+            <div class="tag-right"></div>
+          </div>
         </div>
       </div>
+      <div class="tags-spacer hidden-print"></div>
     </main>
 
     <footer class="navbar-fixed-bottom shadow hidden">

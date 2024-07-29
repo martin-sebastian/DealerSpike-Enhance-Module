@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const prodTitle = `${data.Usage} ${data.ModelYear} ${data.Manufacturer} ${data.B50ModelName}`;
       const vinNumber = data.VIN;
       const stockNumber = data.StockNumber;
-      const qLevel = `<span class="badge" style="padding: 10px; font-weight: 900">${data.QuoteLevel}</span>`;
+      const qLevel = `<span class="badge" style="margin-left: 100px; padding: 10px 15px; font-weight: 900">Quote Level ${data.QuoteLevel}</span>`;
       const MSRPUnit = numeral(data.MSRPUnit).format("$0,0.00");
       const unitMSRP = numeral(data.MSRP - data.AccessoryItemsTotal).format(
         "$0,0.00"
@@ -105,29 +105,6 @@ document.addEventListener("DOMContentLoaded", () => {
         "$0,0.00"
       );
 
-      // const unitNumbersTemplate = (() => {
-      //   let template = "";
-      //   if (inventoryStatus !== null) {
-      //     template += `<li class="list-group-item">Status: <span class="pull-right">${inventoryStatus}</span></li>`;
-      //   }
-      //   if (data.EstimatedArrival !== null) {
-      //     template += `<li class="list-group-item">Available: <span class="pull-right">${arrivalDate}</span></li>`;
-      //   }
-      //   if (data.Usage.length) {
-      //     template += `<li class="list-group-item">Usage: <span class="pull-right">${newUsed}</span></li>`;
-      //   }
-      //   if (data.Miles >= 0) {
-      //     template += `<li class="list-group-item">Miles/Hours: <span class="pull-right">${milesHours}</span></li>`;
-      //   }
-      //   if (data.StockNumber.length) {
-      //     template += `<li class="list-group-item">Stock #: <span class="pull-right">${stockNum}</span></li>`;
-      //   }
-      //   if (data.VIN.length) {
-      //     template += `<li class="list-group-item">VIN: <span class="pull-right">${data.VIN}</span></li>`;
-      //   }
-      //   return template;
-      // })();
-
       const unitLocation = (() => {
         const mainLots = ["SUZ", "KAW", "POL", "PREOWNED", "PRE OWNED"];
         const onOrderLots = ["ONORDER", "ON ORDER"];
@@ -182,7 +159,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const overlay = `
           
-        <div class="print-tag shadow">
+        <div class="print-tag">
           <i class="fa fa-circle block" style="font-size: 24px; margin: 20px auto;"></i>
           <div class="logo-container">${logo}</div>
               ${vehicleHeaderTemplate}
@@ -225,7 +202,8 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
         `;
 
-      document.querySelector(".main-content").innerHTML = overlay;
+      document.querySelector(".tag-left").innerHTML = overlay;
+      document.querySelector(".tag-right").innerHTML = overlay;
 
       document.getElementById("quoteLevel").innerHTML = qLevel;
       console.log(qLevel);
@@ -323,7 +301,7 @@ document.addEventListener("DOMContentLoaded", () => {
             background: #fff;
             overflow-y: hidden;
             transform: rotate(0deg);
-            zoom: 0.8; /* Adjust the value to zoom in or out */
+            zoom: 1; /* Adjust the value to zoom in or out */
           }
           .logo-container { text-align: center; padding: 0px 10px; }
           .vehicle-image-container { text-align: center; padding: 10px; }
