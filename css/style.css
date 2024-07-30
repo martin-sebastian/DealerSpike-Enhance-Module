@@ -11,8 +11,8 @@ body {
   cursor: pointer;
 }
 .fa-times-circle {
-  color: #f00;
-  font-size: 3.5em;
+  color: #222;
+  font-size: 3em;
 }
 .navbar-header .container-fluid {
   display: flex;
