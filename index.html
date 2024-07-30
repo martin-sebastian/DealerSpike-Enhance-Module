@@ -30,29 +30,12 @@
         font-size: 10px;
         text-transform: uppercase;
       }
-      tr {
-        position: relative;
-      }
-      .moreinfo-row {
-        display: ;
-        position: absolute;
-        background: transparent;
-        left: 0;
-        top: 30px;
-        margin: 5px 0;
-        padding: 5px;
-        width: 60%;
-        height: 100px;
-        font-size: 10px;
-        clear: right;
-      }
     </style>
   </head>
   <body data-bs-theme="dark">
-    <header>
+    <header class="my-0">
       <nav
-        class="navbar bg-dark border-bottom border-body fixed-top navbar-expand-lg"
-        data-bs-theme="dark"
+        class="navbar navbar-expand-lg border-bottom bg-body-tertiary fixed-top"
       >
         <div class="container-fluid">
           <a class="navbar-brand" href="/">
@@ -94,7 +77,7 @@
               </li>
             </ul>
           </div>
-          <button id="toggleThemeButton" class="btn btn-primary my-3">
+          <button id="toggleThemeButton" class="btn btn-danger">
             <i class="fa fa-lightbulb-o" aria-hidden="true"></i>
           </button>
         </div>
@@ -219,8 +202,8 @@
                           <div class="btn-group nowrap" role="group" aria-label="Vehicles">
                             <a href="/overlay/index.html?search=${stockNumber}" type="button" class="btn btn-danger action-button"><i class="fa fa-file-text mx-1"></i><small>Web Overlay</small></a>
                             <a href="/tags/index.html?search=${stockNumber}" type="button" class="btn btn-danger action-button"><i class="fa fa-tag mx-1"></i><small>Hang Tag</small></a>
-                            <a type="button" class="btn btn-danger action-button" disabled><i class="fa fa-key mx-1"></i><small>Key Tag</small></a>
-                            <a type="button" class="btn btn-danger action-button" disabled><i class="fa fa-folder mx-1"></i><small>Deal Jacket</small></a>
+                            <a href="/key-tags/index.html?search=${stockNumber}" type="button" class="btn btn-danger action-button"><i class="fa fa-key mx-1"></i><small>Key Tag</small></a>
+                            <a href="/deal-jacket/index.html?search=${stockNumber}" type="button" class="btn btn-danger action-button"><i class="fa fa-folder mx-1"></i><small>Deal Jacket</small></a>
                           </div>  
                         </td>
                     `;

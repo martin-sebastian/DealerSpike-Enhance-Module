@@ -5,9 +5,14 @@ body {
   color: #333;
   background: #eee;
 }
-body * {
-  scroll-margin-top: 50px;
-  scroll-margin-bottom: 400px;
+.close button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+.fa-times-circle {
+  color: #f00;
+  font-size: 3.5em;
 }
 .navbar-header .container-fluid {
   display: flex;
