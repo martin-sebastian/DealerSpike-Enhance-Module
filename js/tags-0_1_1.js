@@ -160,7 +160,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const overlay = `
           
         <div class="print-tag">
-          <i class="fa fa-circle block" style="font-size: 24px; margin: 20px auto;"></i>
+          <div class="text-center">
+            <i class="fa fa-circle block" style="font-size: 24px; margin: 20px auto;"></i>
+          </div>
           <div class="logo-container">${logo}</div>
               ${vehicleHeaderTemplate}
             <div class="print-tag-body">
@@ -205,7 +207,7 @@ document.addEventListener("DOMContentLoaded", () => {
       document.querySelector(".tag-left").innerHTML = overlay;
       document.querySelector(".tag-right").innerHTML = overlay;
 
-      document.getElementById("quoteLevel").innerHTML = qLevel;
+      //document.getElementById("quoteLevel").innerHTML = qLevel;
       console.log(qLevel);
 
       const style = document.createElement("style");
@@ -297,14 +299,15 @@ document.addEventListener("DOMContentLoaded", () => {
             border: solid 1px #ccc;
             border-radius: 5px;
             margin: 0px auto;
-            padding: 0;
+            padding: 0 10px;
             background: #fff;
             overflow-y: hidden;
             transform: rotate(0deg);
             zoom: 1; /* Adjust the value to zoom in or out */
           }
+            .list-group-item { font-size: 12px; }
           .logo-container { text-align: center; padding: 0px 10px; }
-          .vehicle-image-container { text-align: center; padding: 10px; }
+          .vehicle-image-container { text-align: center; padding: 0px 20px; }
           .vehicle-image-container img { border-radius: 10px; }
           .vehicle-name-container { margin: 5px 0px; padding: 5px 0px; text-align: center; }
           .vehicle-title { font-size: 24px; justify-content: flex-start; color: #222; font-weight: 900; }

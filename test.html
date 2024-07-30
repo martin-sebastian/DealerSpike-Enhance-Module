@@ -50,10 +50,7 @@
   </head>
   <body data-bs-theme="dark">
     <header>
-      <nav
-        class="navbar bg-dark border-bottom border-body fixed-top navbar-expand-lg"
-        data-bs-theme="dark"
-      >
+      <nav class="navbar border-bottom border-body fixed-top navbar-expand-lg">
         <div class="container-fluid">
           <a class="navbar-brand" href="/">
             <img
@@ -84,13 +81,15 @@
                 >
               </li>
               <li class="nav-item">
-                <a href="/tags/" class="nav-link">Hang Tags</a>
+                <a class="nav-link" href="/tags/">Hang Tags</a>
               </li>
               <li class="nav-item">
-                <a href="/key-tags/" class="nav-link">Key Tags</a>
+                <a class="nav-link disabled" aria-disabled="true">Key Tags</a>
               </li>
               <li class="nav-item">
-                <a href="/deal-jacket/" class="nav-link">Deal Jacket</a>
+                <a class="nav-link disabled" aria-disabled="true"
+                  >Deal Jacket</a
+                >
               </li>
             </ul>
           </div>
@@ -125,12 +124,12 @@
           >
             <thead>
               <tr>
-                <th>Manufacturer</th>
-                <th>Title</th>
-                <th>Stock Number</th>
-                <th>Type</th>
-                <th>Style</th>
-                <th>Color</th>
+                <th data-column="manufacturer">Manufacturer</th>
+                <th data-column="title">Title</th>
+                <th data-column="stockNumber">Stock Number</th>
+                <th data-column="modelType">Type</th>
+                <th data-column="modelTypeStyle">Style</th>
+                <th data-column="color">Color</th>
                 <th class="align-right">View / Print</th>
               </tr>
             </thead>
@@ -295,6 +294,9 @@
               const currentTheme = body.getAttribute("data-bs-theme");
               const newTheme = currentTheme === "dark" ? "light" : "dark";
               body.setAttribute("data-bs-theme", newTheme);
+              document
+                .querySelector("nav")
+                .setAttribute("data-bs-theme", newTheme);
             }
           </script>
           <script src="/js/filter-table.js"></script>

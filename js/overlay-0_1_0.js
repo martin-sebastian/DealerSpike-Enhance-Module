@@ -923,7 +923,7 @@ $.ajax({
 		`;
 
     $(".main-content").replaceWith(overlay);
-    document.getElementById("quoteLevel").innerHTML = qLevel;
+    //document.getElementById("quoteLevel").innerHTML = qLevel;
     console.log(qLevel);
 
     document.getElementById("muItems").innerHTML = muImageCardTemplate;
@@ -978,7 +978,8 @@ $.ajax({
 		justify-content: space-between;
 		align-items: stretch;
 		padding: 0 20px;
-		border-bottom: solid 1px #ddd;
+		border-bottom: solid 0px #ddd;
+		background: #fff;
 	}
 	.vehicle-name-container {
 		margin: 0px;

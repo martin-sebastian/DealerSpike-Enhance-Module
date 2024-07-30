@@ -64,42 +64,6 @@ body * {
 .tag-left {
   margin: 0;
 }
-.footer-content {
-  width: 100%;
-  padding: 20px;
-  margin: 0 auto;
-  height: 50px;
-  color: #ccc;
-}
-.modal-body {
-  background-color: none;
-  background-image: url("../img/flatout-building.jpg");
-  background-size: cover;
-  background-repeat: no-repeat;
-  padding: 5px 10px 200px 20px;
-  overflow: hidden;
-}
-.modal-body h1 {
-  font-weight: bold;
-}
-.form-control {
-  background: #444;
-  color: #ccc;
-  border: solid 1px #444;
-}
-.btn-search {
-  background: #444;
-  color: #ccc;
-  border: solid 1px #444;
-}
-.btn-settings {
-  float: right;
-}
-.block {
-  display: block;
-  width: 100%;
-  text-align: center;
-}
 .shadow {
-  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
 }
