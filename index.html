@@ -16,7 +16,6 @@
         white-space: nowrap;
       }
       th {
-        background-color: #f2f2f2;
         cursor: pointer;
       }
       th.sort-asc::after {
@@ -33,7 +32,7 @@
     </style>
   </head>
   <body data-bs-theme="dark">
-    <header class="my-0">
+    <header>
       <nav
         class="navbar navbar-expand-lg border-bottom bg-body-tertiary fixed-top"
       >
@@ -108,6 +107,7 @@
           >
             <thead>
               <tr>
+                <th>Image</th>
                 <th>Manufacturer</th>
                 <th>Title</th>
                 <th>Stock Number</th>
@@ -148,6 +148,8 @@
                   const item = items[i];
                   console.log(`Processing item ${i + 1}`);
 
+                  const image =
+                    item.getElementsByTagName("image")[0]?.textContent || "N/A";
                   const title =
                     item.getElementsByTagName("title")[0]?.textContent || "N/A";
                   const stockNumber =
@@ -174,6 +176,7 @@
                     item.getElementsByTagName("usage")[0]?.textContent || "N/A";
 
                   console.log({
+                    image,
                     title,
                     stockNumber,
                     vin,
@@ -188,6 +191,9 @@
 
                   const row = document.createElement("tr");
                   row.innerHTML = `
+                        <td>
+                          <img src="${image}" alt="${title}" width="100" />
+                        </td>
                         <td>${manufacturer}</td>
                         <td>${usage} ${title} 
                           <div class="visually-hidden-focusable">${stockNumber}</div>

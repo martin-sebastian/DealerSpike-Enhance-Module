@@ -6,7 +6,7 @@ body {
   background: #eee;
 }
 .close button {
-  background: none;
+  background: transparent;
   border: none;
   cursor: pointer;
 }
