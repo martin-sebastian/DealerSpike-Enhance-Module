@@ -44,7 +44,12 @@
         font-size: 12px;
         font-weight: 700;
         text-transform: uppercase;
+        opacity: 0.7;
         min-width: 80px;
+      }
+      th:hover {
+        background: #bb2d3b;
+        opacity: 1;
       }
       .badge {
         font-size: 14px;
@@ -160,7 +165,7 @@
         <div class="card-body table-responsive">
           <div class="d-flex justify-content-between">
             <h5 class="w-100">
-              Vehicles List
+              Vehicles
               <span id="rowCount" class="badge bg-danger float-end"
                 >Total Rows: 0</span
               >
@@ -169,16 +174,16 @@
           <table id="vehiclesTable" class="px-5 table table-sm table-hover">
             <thead>
               <tr>
-                <th width="120">Image</th>
-                <th width="100">Year</th>
+                <th>Image</th>
+                <th class="text-center">Year</th>
                 <th width="200" class="text-nowrap">Make</th>
                 <th class="text-nowrap">Model</th>
                 <th class="text-nowrap">Stock Number</th>
                 <th>Type</th>
                 <th>Style</th>
                 <th>Color</th>
-                <th width="80" class="align-middle">Usage</th>
-                <th class="align-text-right">View / Print</th>
+                <th width="80" class="text-center">Usage</th>
+                <th class="text-end">View / Print</th>
               </tr>
             </thead>
             <tbody>
@@ -261,14 +266,14 @@
 
             const row = document.createElement("tr");
             row.innerHTML = `
-              <td class="align-middle">
+              <td>
                 ${
                   imageUrl !== "N/A"
                     ? `<img src="${imageUrl}" alt="${title}" width="80" />`
                     : `<i class="fa fa-picture-o fa-3x" aria-hidden="true"></i>`
                 }
               </td>
-              <td><span class="badge text-bg-secondary">${year}</span></td>
+              <td class="text-center"><span class="badge text-bg-secondary">${year}</span></td>
               <td>${manufacturer}</td>
               <td class="text-nowrap">
                 <span class="visually-hidden">${stockNumber} ${vin} ${usage} ${year} ${manufacturer} ${modelName} ${color}</span>
@@ -279,8 +284,8 @@
               <td class="text-wrap pe-4">${modelType}</td>
               <td class="text-wrap pe-4">${modelTypeStyle}</td>
               <td class="text-wrap pe-4">${color}</td>
-              <td><span class="badge text-bg-secondary">${usage}</span></td>
-              <td class="align-right text-nowrap">
+              <td class="text-center"><span class="badge text-bg-secondary">${usage}</span></td>
+              <td class="text-end text-nowrap">
                 <div class="btn-group nowrap" role="group" aria-label="Vehicles">
                   <a href="./overlay/index.html?search=${stockNumber}" type="button" class="btn btn-danger action-button"><i class="fa fa-file-text mx-1"></i><small>Web Overlay</small></a>
                   <a href="./tags/index.html?search=${stockNumber}" type="button" class="btn btn-danger action-button"><i class="fa fa-tag mx-1"></i><small>Hang Tag</small></a>
