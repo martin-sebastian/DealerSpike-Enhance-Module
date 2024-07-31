@@ -118,7 +118,7 @@
             </ul>
           </div>
           <button id="toggleThemeButton" class="btn btn-danger">
-            <i class="fa fa-lightbulb-o" aria-hidden="true"></i>
+            <i id="themeIcon" class="fa fa-lightbulb-o" aria-hidden="true"></i>
           </button>
         </div>
       </nav>
@@ -126,7 +126,7 @@
     <div class="container-fluid py-5 my-5">
       <div class="card">
         <div class="card-header">
-          <div class="">
+          <div>
             <form class="d-flex flex-row" role="search">
               <input
                 class="form-control p-2"
@@ -298,7 +298,7 @@
             tableBody.appendChild(row);
           }
 
-          console.log("Data successfully inserted into table");
+          //console.log("Data successfully inserted into table");
 
           // Add event listeners for sorting
           const headers = document.querySelectorAll("#vehiclesTable th");
