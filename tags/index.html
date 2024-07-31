@@ -23,10 +23,28 @@
     <link rel="stylesheet" href="../css/style.css" />
   </head>
   <body>
-    <header class="close">
-      <button onclick="history.back()">
-        <i class="fa fa-times-circle" aria-hidden="true"></i>
-      </button>
+    <header class="hidden-print">
+      <div class="print-header navbar-fixed-top">
+        <h2>Print Hang Tags</h2>
+        <div class="print-buttons">
+          <button
+            class="btn btn-success"
+            type="button"
+            value="Print this page"
+            onClick="window.print()"
+          >
+            <i class="fa fa-print fa-2x" aria-hidden="true"></i>
+          </button>
+          <button
+            class="btn btn-danger"
+            type="button"
+            value="Close this page"
+            onclick="history.back()"
+          >
+            <i class="fa fa-times fa-2x" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
     </header>
     <main>
       <div class="tags-spacer hidden-print"></div>

@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   console.log("stock Number:", pageStockNumber);
 
-  const stockNum = urlstocknumber;
+  const stockNum = pageStockNumber;
 
   fetch(
     `https://newportal.flatoutmotorcycles.com/portal/public/api/majorunit/stocknumber/${stockNum}`
