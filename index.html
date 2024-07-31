@@ -24,16 +24,42 @@
       th.sort-desc::after {
         content: " \25BC";
       }
+      td {
+        vertical-align: middle;
+        font-size: 13px;
+        font-weight: 700;
+        text-transform: uppercase;
+        width: 50px;
+        white-space: nowrap;
+        overflow: hidden;
+      }
+      td:nth-child(-n + 3) {
+        font-weight: 700;
+        width: 50px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      th {
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        min-width: 80px;
+      }
+      .badge {
+        font-size: 14px;
+        font-weight: 700;
+      }
       .action-button small {
         display: block;
-        font-size: 10px;
+        font-size: 9px;
         text-transform: uppercase;
       }
       .table img {
-        width: 100px;
+        width: 80px;
+        border-radius: 5px;
       }
-      .vehicle-title {
-        width: 20px;
+      .vehicle-model {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -46,7 +72,7 @@
         class="navbar navbar-expand-lg border-bottom bg-body-tertiary fixed-top"
       >
         <div class="container-fluid">
-          <a class="navbar-brand" href="/">
+          <a class="navbar-brand" href="./">
             <img
               id="logo"
               src="./img/fom-app-logo-01.svg"
@@ -95,13 +121,13 @@
     <div class="container-fluid py-5 my-5">
       <div class="card">
         <div class="card-header">
-          <div class="d-flex flex-row mb-2">
-            <form class="d-flex" role="search">
+          <div class="">
+            <form class="d-flex flex-row" role="search">
               <input
-                class="form-control me-2"
-                style="width: 100%"
+                class="form-control p-2"
+                style="width: 800px; margin: 0 auto; border-radius: 30px"
                 type="text"
-                placeholder="Search by title, stock number, or VIN"
+                placeholder="&nbsp;&nbsp;&nbsp;Search by title, stock number, or VIN"
                 aria-label="Search"
                 id="searchFilter"
                 title="Filter vehicles by year, name, stock number, or VIN"
@@ -109,16 +135,16 @@
               />
               <select
                 id="usageFilter"
-                class="form-select"
+                class="form-select me-2 d-none"
                 onchange="filterByUsage()"
               >
-                <option value="">New or Used</option>
+                <option value="">New/Used</option>
                 <option value="New">New</option>
                 <option value="Used">Used</option>
               </select>
               <select
                 id="manufacturerFilter"
-                class="form-select"
+                class="form-select me-2 d-none"
                 onchange="filterByManufacturer()"
               >
                 <option value="">Manufacturer</option>
@@ -143,14 +169,15 @@
           <table id="vehiclesTable" class="px-5 table table-sm table-hover">
             <thead>
               <tr>
-                <th>Image</th>
-                <th class="text-nowrap">Manufacturer</th>
-                <th class="text-nowrap">Title</th>
+                <th width="120">Image</th>
+                <th width="100">Year</th>
+                <th width="200" class="text-nowrap">Make</th>
+                <th class="text-nowrap">Model</th>
                 <th class="text-nowrap">Stock Number</th>
                 <th>Type</th>
                 <th>Style</th>
                 <th>Color</th>
-                <th class="text-nowrap">Usage</th>
+                <th width="80" class="align-middle">Usage</th>
                 <th class="align-text-right">View / Print</th>
               </tr>
             </thead>
@@ -205,6 +232,8 @@
               "N/A";
             const year =
               item.getElementsByTagName("year")[0]?.textContent || "N/A";
+            const modelName =
+              item.getElementsByTagName("model_name")[0]?.textContent || "N/A";
             const modelType =
               item.getElementsByTagName("model_type")[0]?.textContent || "N/A";
             const modelTypeStyle =
@@ -223,6 +252,7 @@
               price,
               manufacturer,
               year,
+              modelName,
               modelType,
               modelTypeStyle,
               color,
@@ -231,23 +261,25 @@
 
             const row = document.createElement("tr");
             row.innerHTML = `
-              <td>
+              <td class="align-middle">
                 ${
                   imageUrl !== "N/A"
-                    ? `<img src="${imageUrl}" alt="${title}" width="100" />`
-                    : `<i class="fa fa-picture-o fa-4x" aria-hidden="true"></i>`
+                    ? `<img src="${imageUrl}" alt="${title}" width="80" />`
+                    : `<i class="fa fa-picture-o fa-3x" aria-hidden="true"></i>`
                 }
               </td>
+              <td><span class="badge text-bg-secondary">${year}</span></td>
               <td>${manufacturer}</td>
               <td class="text-nowrap">
-                <h5 class="opacity-75 text-nowrap text-truncate">${usage} ${title}</h5>
-                <div class="opacity-50 text-nowrap">${stockNumber} ${vin} ${color}</div>
+                <span class="visually-hidden">${stockNumber} ${vin} ${usage} ${year} ${manufacturer} ${modelName} ${color}</span>
+                <div class="vehicle-model text-nowrap text-truncate">${modelName}</div>
+                <div class="visually-hidden">VIN: ${vin}</div>
               </td>
               <td>${stockNumber}</td>
-              <td>${modelType}</td>
-              <td>${modelTypeStyle}</td>
-              <td>${color}</td>
-              <td>${usage}</td>
+              <td class="text-wrap pe-4">${modelType}</td>
+              <td class="text-wrap pe-4">${modelTypeStyle}</td>
+              <td class="text-wrap pe-4">${color}</td>
+              <td><span class="badge text-bg-secondary">${usage}</span></td>
               <td class="align-right text-nowrap">
                 <div class="btn-group nowrap" role="group" aria-label="Vehicles">
                   <a href="./overlay/index.html?search=${stockNumber}" type="button" class="btn btn-danger action-button"><i class="fa fa-file-text mx-1"></i><small>Web Overlay</small></a>
