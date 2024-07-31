@@ -1,3 +1,7 @@
+// Overlay by Martin Sebastian
+
+const urlstocknumber = null;
+
 document.addEventListener("DOMContentLoaded", () => {
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
@@ -28,17 +32,17 @@ document.addEventListener("DOMContentLoaded", () => {
     updateSliderValue("downpaymentRange", "downpaymentRangeValue");
   }
 
-  let pageStockNumber = null;
+  // let pageStockNumber = null;
 
-  document.querySelectorAll(".vdp-key-feature-detail").forEach((detail) => {
-    if (detail.innerHTML.includes("Stock #")) {
-      pageStockNumber = detail.querySelector("span").textContent;
-    }
-  });
+  // document.querySelectorAll(".vdp-key-feature-detail").forEach((detail) => {
+  //   if (detail.innerHTML.includes("Stock #")) {
+  //     pageStockNumber = detail.querySelector("span").textContent;
+  //   }
+  // });
 
-  console.log("stock Number:", pageStockNumber);
+  console.log("stock Number:", urlstocknumber);
 
-  const stockNum = pageStockNumber;
+  const stockNum = urlstocknumber;
 
   fetch(
     `https://newportal.flatoutmotorcycles.com/portal/public/api/majorunit/stocknumber/${stockNum}`
@@ -82,17 +86,24 @@ document.addEventListener("DOMContentLoaded", () => {
           .join("");
       };
 
-      const muItemsTemplate = generateListItems(data.MUItems, 4, "$0,0.00");
+      //const muItemsTemplate = generateListItems(data.MUItems, 4, "$0,0.00");
       const matItemsTemplate = generateListItems(data.MatItems, 4, "$0,0.00");
-      const OTDItemsTemplate = generateListItems(data.OTDItems, 9, "$0,0.00");
-      const tradeInItemsTemplate = generateListItems(
-        data.TradeInItems,
-        5,
+      const discountItemsTemplate = generateListItems(
+        data.DiscountItems,
+        10,
         "$0,0.00"
       );
+      const otdItemsTemplate = generateListItems(data.OTDItems, 9, "$0,0.00");
+
       const accessoryItemsTemplate = generateListItems(
         data.AccessoryItems,
         100,
+        "$0,0.00"
+      );
+
+      const tradeInItemsTemplate = generateListItems(
+        data.TradeInItems,
+        5,
         "$0,0.00"
       );
 
@@ -648,7 +659,7 @@ document.addEventListener("DOMContentLoaded", () => {
                   ${matItemsTemplate} 
                   ${tradeInItemsTemplate} 
                   ${discountItemsTemplate}
-                  ${freebieItemsTemplate}
+
                   ${
                     accessoryItemsTemplate
                       ? `<li class="list-group-item bold">
@@ -663,7 +674,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     <a class="gray" data-toggle="collapse" href="#collapseFees" aria-expanded="false" aria-controls="collapseoverlay">Fees <i class="fa fa-chevron-down collapse-icon pull-right" aria-hidden="true"></i></a>
                   </li>
                   <div class="collapse in" id="collapseFees">
-                    ${OTDItemsTemplate}
+                    ${otdItemsTemplate}
                   </div>
                   <li class="list-group-item otd-li">
                     <div class="total-otd-price">Total Out The Door Price: <span class="pull-right">${totalOTD}</span></div>
@@ -695,7 +706,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       document.querySelector(".main-content").innerHTML = overlay;
       document.getElementById("muItems").innerHTML = muImageCardTemplate;
-      document.getElementById("qLevel").outerHTML = qLevel;
+      //document.getElementById("qLevel").outerHTML = qLevel;
 
       const style = document.createElement("style");
       style.innerHTML = `

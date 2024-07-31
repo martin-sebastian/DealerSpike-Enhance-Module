@@ -70,18 +70,18 @@
 
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item">
+              <li class="nav-item d-none">
                 <a class="nav-link active" aria-current="page" href="./overlay/"
                   >Overlay</a
                 >
               </li>
-              <li class="nav-item">
+              <li class="nav-item d-none">
                 <a href="./tags/" class="nav-link">Hang Tags</a>
               </li>
-              <li class="nav-item">
+              <li class="nav-item d-none">
                 <a href="./key-tags/" class="nav-link">Key Tags</a>
               </li>
-              <li class="nav-item">
+              <li class="nav-item d-none">
                 <a href="./deal-jacket/" class="nav-link">Deal Jacket</a>
               </li>
             </ul>
@@ -147,9 +147,9 @@
                 <th class="text-nowrap">Manufacturer</th>
                 <th class="text-nowrap">Title</th>
                 <th class="text-nowrap">Stock Number</th>
-                <th class="text-nowrap">Type</th>
-                <th class="text-nowrap">Style</th>
-                <th class="text-nowrap">Color</th>
+                <th>Type</th>
+                <th>Style</th>
+                <th>Color</th>
                 <th class="text-nowrap">Usage</th>
                 <th class="align-text-right">View / Print</th>
               </tr>
@@ -240,15 +240,15 @@
               </td>
               <td>${manufacturer}</td>
               <td class="text-nowrap">
-                <h5 class="opacity-75 text-truncate">${usage} ${title}</h5>
-                <div class="opacity-50">${stockNumber} ${vin} ${color}</div>
+                <h5 class="opacity-75 text-nowrap text-truncate">${usage} ${title}</h5>
+                <div class="opacity-50 text-nowrap">${stockNumber} ${vin} ${color}</div>
               </td>
               <td>${stockNumber}</td>
               <td>${modelType}</td>
               <td>${modelTypeStyle}</td>
               <td>${color}</td>
               <td>${usage}</td>
-              <td class="align-right">
+              <td class="align-right text-nowrap">
                 <div class="btn-group nowrap" role="group" aria-label="Vehicles">
                   <a href="./overlay/index.html?search=${stockNumber}" type="button" class="btn btn-danger action-button"><i class="fa fa-file-text mx-1"></i><small>Web Overlay</small></a>
                   <a href="./tags/index.html?search=${stockNumber}" type="button" class="btn btn-danger action-button"><i class="fa fa-tag mx-1"></i><small>Hang Tag</small></a>
