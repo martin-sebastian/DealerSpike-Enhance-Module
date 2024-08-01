@@ -161,7 +161,7 @@ document.addEventListener("DOMContentLoaded", () => {
           
         <div class="print-tag">
           <div class="text-center">
-            <i class="fa fa-circle block" style="font-size: 24px; margin: 20px auto;"></i>
+            <i class="fa fa-circle" style="font-size: 20px; margin: 5px auto;"></i>
           </div>
           <div class="logo-container">${logo}</div>
               ${vehicleHeaderTemplate}
@@ -197,15 +197,19 @@ document.addEventListener("DOMContentLoaded", () => {
                   ${tradeInItemsTemplate}
                   ${OTDItemsTemplate}
                 </ul>
+                <div class="text-center">
+                  <div id="qrcode"></div>
+                  <h4>SCAN FOR MORE INFO</h4>
+                </div>
             </div>
-          </div>
+        </div>
         `;
 
       const overlayRight = `
-          
+
         <div class="print-tag">
           <div class="text-center">
-            <i class="fa fa-circle block" style="font-size: 24px; margin: 20px auto;"></i>
+            <i class="fa fa-circle" style="font-size: 20px; margin: 5px auto;"></i>
           </div>
           <div class="logo-container">${logo}</div>
               ${vehicleHeaderTemplate}
@@ -216,13 +220,16 @@ document.addEventListener("DOMContentLoaded", () => {
                   </li>
                   ${accessoryItemsTemplate}
                 </ul>
-        
+                ${unitDescriptionTemplate}
             </div>
           </div>
         `;
 
       document.querySelector(".tag-left").innerHTML = overlay;
       document.querySelector(".tag-right").innerHTML = overlayRight;
+
+      // QR Code Generator
+      new QRCode(document.getElementById("qrcode"), data.DetailUrl);
 
       //document.getElementById("quoteLevel").innerHTML = qLevel;
       console.log(qLevel);
@@ -239,7 +246,7 @@ document.addEventListener("DOMContentLoaded", () => {
           }
           .print-tag {
             width: 4in;
-            height: 10.5in;
+            height: 10.75in;
             border: solid 1px #ccc;
             border-radius: 5px;
             margin: 0px auto;
@@ -249,11 +256,12 @@ document.addEventListener("DOMContentLoaded", () => {
             transform: rotate(0deg);
             zoom: 1; /* Adjust the value to zoom in or out */
           }
-            .list-group-item { font-size: 12px; }
+          #qrcode img { margin: 0 auto; width: 200px; height: 200px; }
+          .list-group-item { font-size: 12px; }
           .logo-container { text-align: center; padding: 0px 10px; }
           .vehicle-image-container { text-align: center; padding: 0; }
           .vehicle-image-container img { border-radius: 10px; }
-          .vehicle-name-container { margin: 5px 0px; padding: 5px 0px; text-align: center; }
+          .vehicle-name-container { margin: 0px; padding: 0px; text-align: center; }
           .vehicle-title { font-size: 24px; justify-content: flex-start; color: #222; font-weight: 900; }
           .vehicle-subtitle { font-size: 14px; color: #666; margin: 10px 0; }
           .our-price-container { max-width: 4in; text-align: center; margin: 0 auto; }
