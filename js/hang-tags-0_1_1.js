@@ -185,7 +185,6 @@ document.addEventListener("DOMContentLoaded", () => {
                           Sale Program Ends: ${salePriceExpireDate}
                         </div>                    
                       </div>
-                      
                       <div class="our-payment-container">
                         <h3 class="text-center black bold">$${payments.monthlyPayment}/mo</h3>
                       </div>
@@ -256,6 +255,7 @@ document.addEventListener("DOMContentLoaded", () => {
             transform: rotate(0deg);
             zoom: 1; /* Adjust the value to zoom in or out */
           }
+            #text { font-size: 22px; }
           #qrcode img { margin: 0 auto; width: 200px; height: 200px; }
           .list-group-item { font-size: 12px; }
           .logo-container { text-align: center; padding: 0px 10px; }
@@ -381,6 +381,9 @@ document.addEventListener("DOMContentLoaded", () => {
           .slider::-moz-range-thumb:hover, .slider::-moz-range-thumb:active {
             width: 46px; height: 46px; border-radius: 50%; background: #EE0000; cursor: pointer;
           }
+          .hidden-text {
+            display: none;
+          }
           .mu-thumbnail { width: 6.9%; height: auto; margin: 1px; float: left; clear: right; }
           .mu-thumbnail img { border: solid 2px #efefef; border-radius: 5px; }
           .mu-thumbnail img:hover { border: solid 2px #000; border-radius: 5px; }
@@ -400,4 +403,32 @@ document.addEventListener("DOMContentLoaded", () => {
     .catch((error) => {
       console.error(error);
     });
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+  // Include quotes around the target text if they are present in the HTML
+  const targetText =
+    '" Price does NOT include, Manufacturer Surcharge, Manufacturer Commodity Surcharge, Freight, Dealer Document Fee $99, Sales Tax, Title Fee $25. Sale Price INCLUDES all factory incentives (If Applicable). See Flat Out Motorsports for full disclosure on current Fees and Surcharges. "';
+
+  // Select the element that potentially contains the text
+  const printTagBody = document.querySelector(".print-tag-body");
+
+  if (printTagBody) {
+    // Iterate over child nodes to find text nodes
+    const textNodes = Array.from(printTagBody.childNodes).filter(
+      (node) => node.nodeType === Node.TEXT_NODE
+    );
+
+    textNodes.forEach((node) => {
+      if (node.textContent.includes(targetText)) {
+        // Wrap the text node in a span with a class
+        const span = document.createElement("span");
+        span.className = "hidden-text";
+        span.textContent = node.textContent;
+
+        // Replace the text node with the span
+        printTagBody.replaceChild(span, node);
+      }
+    });
+  }
 });
