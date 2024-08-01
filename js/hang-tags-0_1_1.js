@@ -219,7 +219,9 @@ document.addEventListener("DOMContentLoaded", () => {
                   </li>
                   ${accessoryItemsTemplate}
                 </ul>
+                <div class="vehicle-description">
                 ${unitDescriptionTemplate}
+                </div>
             </div>
           </div>
         `;
@@ -246,7 +248,7 @@ document.addEventListener("DOMContentLoaded", () => {
           .print-tag {
             width: 4in;
             height: 10.75in;
-            border: solid 1px #ccc;
+            border: solid 1px #ddd;
             border-radius: 5px;
             margin: 0px auto;
             padding: 0 10px;
@@ -261,6 +263,7 @@ document.addEventListener("DOMContentLoaded", () => {
           .logo-container { text-align: center; padding: 0px 10px; }
           .vehicle-image-container { text-align: center; padding: 0; }
           .vehicle-image-container img { border-radius: 10px; }
+          .vehicle-description { border: solid 1px #ddd; border-radius: 5px; padding: 10px; margin: 5px 0; }
           .vehicle-name-container { margin: 0px; padding: 0px; text-align: center; }
           .vehicle-title { font-size: 24px; justify-content: flex-start; color: #222; font-weight: 900; }
           .vehicle-subtitle { font-size: 14px; color: #666; margin: 10px 0; }
@@ -395,6 +398,14 @@ document.addEventListener("DOMContentLoaded", () => {
             h4 { font-size: 100%; }
             .vehicle-header-container { padding: 0 5px; }
             .price-payment-divider { display: none; }
+          }
+            @media print {
+            @page { 
+                size: portrait;
+                margin: 0%;
+                page-header: none;
+                page-footer: none;
+            }
           }
         `;
 
