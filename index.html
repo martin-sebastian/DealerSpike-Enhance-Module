@@ -126,6 +126,7 @@
     <div class="container-fluid py-5 my-5">
       <div class="card">
         <div class="card-header">
+<<<<<<< Updated upstream
           <div>
             <form class="d-flex flex-row" role="search">
               <input
@@ -138,6 +139,23 @@
                 title="Filter vehicles by year, name, stock number, or VIN"
                 onkeyup="filterVehiclesBySearch()"
               />
+=======
+          <div class="">
+            <form class="d-flex flex-row justify-content-between" role="search">
+              <h3>Vehicles</h3>
+              <div>
+                <input
+                  class="form-control"
+                  style="width: 800px; margin: 0 auto; border-radius: 30px"
+                  type="text"
+                  placeholder="Search by title, stock number, type, style, color or VIN"
+                  aria-label="Search"
+                  id="searchFilter"
+                  title="Filter vehicles by year, name, stock number, or VIN"
+                  onkeyup="filterVehiclesBySearch()"
+                />
+              </div>
+>>>>>>> Stashed changes
               <select
                 id="usageFilter"
                 class="form-select me-2 d-none"
@@ -147,18 +165,31 @@
                 <option value="New">New</option>
                 <option value="Used">Used</option>
               </select>
-              <select
-                id="manufacturerFilter"
-                class="form-select me-2 d-none"
-                onchange="filterByManufacturer()"
-              >
-                <option value="">Manufacturer</option>
-                <option value="Can-Am">Can-Am</option>
-                <option value="Kawasaki">Kawasaki</option>
-                <option value="Suzuki">Suzuki</option>
-                <option value="Polaris Industries">Polaris Industries</option>
-                <option value="Indian Motorcycle">Indian Motorcycle</option>
-              </select>
+              <div>
+                <select
+                  id="manufacturerFilter"
+                  class="form-select me-2"
+                  onchange="filterByManufacturer()"
+                >
+                  <option value="">Manufacturer</option>
+                  <option value="BMW">BMW</option>
+                  <option value="Can-Am">Can-Am</option>
+                  <option value="Harley-Davidson">Harley Davidson</option>
+                  <option value="Honda">Honda</option>
+                  <option value="Indian Motorcycle">Indian Motorcycle</option>
+                  <option value="Kawasaki">Kawasaki</option>
+                  <option value="Scarab">Scarab</option>
+                  <option value="Sea-Doo">Sea-Doo</option>
+                  <option value="South Bay">South Bay</option>
+                  <option value="Suzuki">Suzuki</option>
+                  <option value="Suzuki Marine">Suzuki Marine</option>
+                  <option value="Polaris Industries">Polaris Industries</option>
+                  <option value="Vanderhall">Vanderhall</option>
+                  <option value="Victory Motorcycles">
+                    Victory Motorcycles
+                  </option>
+                </select>
+              </div>
             </form>
           </div>
         </div>
@@ -276,7 +307,7 @@
               <td class="text-center"><span class="badge text-bg-secondary">${year}</span></td>
               <td>${manufacturer}</td>
               <td class="text-nowrap">
-                <span class="visually-hidden">${stockNumber} ${vin} ${usage} ${year} ${manufacturer} ${modelName} ${color}</span>
+                <span class="visually-hidden">${stockNumber} ${vin} ${usage} ${year} ${manufacturer} ${modelName} ${modelType} ${modelTypeStyle} ${color}</span>
                 <div class="vehicle-model text-nowrap text-truncate">${modelName}</div>
                 <div class="visually-hidden">VIN: ${vin}</div>
               </td>
@@ -287,9 +318,9 @@
               <td class="text-center"><span class="badge text-bg-secondary">${usage}</span></td>
               <td class="text-end text-nowrap">
                 <div class="btn-group nowrap" role="group" aria-label="Vehicles">
-                  <a href="./overlay/index.html?search=${stockNumber}" type="button" class="btn btn-danger action-button"><i class="fa fa-file-text mx-1"></i><small>Web Overlay</small></a>
-                  <a href="./tags/index.html?search=${stockNumber}" type="button" class="btn btn-danger action-button"><i class="fa fa-tag mx-1"></i><small>Hang Tag</small></a>
-                  <a href="./key-tags/index.html?search=${stockNumber}" type="button" class="btn btn-danger action-button"><i class="fa fa-key mx-1"></i><small>Key Tag</small></a>
+                  <a href="./overlay/?search=${stockNumber}" type="button" class="btn btn-danger action-button"><i class="fa fa-file-text mx-1"></i><small>Web Overlay</small></a>
+                  <a href="./hang-tags/?search=${stockNumber}" type="button" class="btn btn-danger action-button"><i class="fa fa-tag mx-1"></i><small>Hang Tag</small></a>
+                  <a href="./key-tags/?vehicle=${stockNumber}" type="button" class="btn btn-danger action-button"><i class="fa fa-key mx-1"></i><small>Key Tag</small></a>
                   <a href="./deal-jacket/index.html?search=${stockNumber}" type="button" class="btn btn-danger action-button"><i class="fa fa-folder mx-1"></i><small>Deal Jacket</small></a>
                 </div>  
               </td>

@@ -46,7 +46,7 @@ function filterByManufacturer() {
   table = document.getElementById("vehiclesTable");
   tr = table.getElementsByTagName("tr");
   for (i = 0; i < tr.length; i++) {
-    td = tr[i].getElementsByTagName("td")[1]; // Manufacturer column
+    td = tr[i].getElementsByTagName("td")[2]; // Manufacturer column
     if (td) {
       txtValue = td.textContent || td.innerText;
       if (filter === "" || txtValue.toUpperCase().indexOf(filter) > -1) {
