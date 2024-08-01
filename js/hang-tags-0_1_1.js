@@ -86,7 +86,7 @@ document.addEventListener("DOMContentLoaded", () => {
           .join("");
       };
       const logo = `<img src="../img/fom-app-logo.svg">`;
-      const vehicleImage = `<img src="${data.ImageUrl}" style="width: 50%; margin: 0 auto;">`;
+      const vehicleImage = `<img src="${data.ImageUrl}" style="width: 100%;">`;
       const matItemsTemplate = generateListItems(data.MatItems, 4, "$0,0.00");
       const OTDItemsTemplate = generateListItems(data.OTDItems, 9, "$0,0.00");
       const tradeInItemsTemplate = generateListItems(
@@ -195,17 +195,34 @@ document.addEventListener("DOMContentLoaded", () => {
                   ${matItemsTemplate}
                   ${discountItemsTemplate}
                   ${tradeInItemsTemplate}
+                  ${OTDItemsTemplate}
+                </ul>
+            </div>
+          </div>
+        `;
+
+      const overlayRight = `
+          
+        <div class="print-tag">
+          <div class="text-center">
+            <i class="fa fa-circle block" style="font-size: 24px; margin: 20px auto;"></i>
+          </div>
+          <div class="logo-container">${logo}</div>
+              ${vehicleHeaderTemplate}
+            <div class="print-tag-body">
+                <ul class="list-group">
+                  <li class="list-group-item text-center">
+                    <h3 class="bold">Accessories</h3>
+                  </li>
                   ${accessoryItemsTemplate}
                 </ul>
-                <div class="vehicle-image-container">
-                  ${vehicleImage}
-                </div>
+        
             </div>
           </div>
         `;
 
       document.querySelector(".tag-left").innerHTML = overlay;
-      document.querySelector(".tag-right").innerHTML = overlay;
+      document.querySelector(".tag-right").innerHTML = overlayRight;
 
       //document.getElementById("quoteLevel").innerHTML = qLevel;
       console.log(qLevel);
@@ -234,7 +251,7 @@ document.addEventListener("DOMContentLoaded", () => {
           }
             .list-group-item { font-size: 12px; }
           .logo-container { text-align: center; padding: 0px 10px; }
-          .vehicle-image-container { text-align: center; padding: 0px 20px; }
+          .vehicle-image-container { text-align: center; padding: 0; }
           .vehicle-image-container img { border-radius: 10px; }
           .vehicle-name-container { margin: 5px 0px; padding: 5px 0px; text-align: center; }
           .vehicle-title { font-size: 24px; justify-content: flex-start; color: #222; font-weight: 900; }
