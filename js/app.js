@@ -10,6 +10,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         : "./img/fom-app-logo-02.svg";
     updateThemeIcon(savedTheme);
   }
+  console.log(`Theme loaded from session storage: ${savedTheme}`);
+
+  // Add event listener for the theme toggle button
+  const toggleThemeButton = document.getElementById("toggleThemeButton");
+  if (toggleThemeButton) {
+    toggleThemeButton.addEventListener("click", toggleTheme);
+  }
 
   // Fetch and process XML data
   fetchData();
@@ -85,7 +92,7 @@ async function fetchData() {
                 : `<i class="fa fa-picture-o fa-3x" aria-hidden="true"></i>`
             }
           </td>
-          <td><span class="badge text-bg-secondary">${year}</span></td>
+          <td class="text-center"><span class="badge text-bg-secondary">${year}</span></td>
           <td>${manufacturer}</td>
           <td class="text-nowrap">
             <span class="visually-hidden">${stockNumber} ${vin} ${usage} ${year} ${manufacturer} ${modelName} ${modelType} ${modelTypeStyle} ${color}</span>
@@ -96,7 +103,7 @@ async function fetchData() {
           <td class="text-wrap pe-4">${modelType}</td>
           <td class="text-wrap pe-4">${modelTypeStyle}</td>
           <td class="text-wrap pe-4">${color}</td>
-          <td><span class="badge text-bg-secondary">${usage}</span></td>
+          <td class="text-center"><span class="badge text-bg-secondary">${usage}</span></td>
           <td class="align-right text-nowrap">
             <div class="btn-group nowrap" role="group" aria-label="Vehicles">
               <a href="./overlay/?search=${stockNumber}" type="button" class="btn btn-danger action-button"><i class="fa fa-file-text mx-1"></i><small>Web Overlay</small></a>
