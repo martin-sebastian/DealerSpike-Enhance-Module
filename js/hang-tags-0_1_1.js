@@ -166,7 +166,7 @@ document.addEventListener("DOMContentLoaded", () => {
           
         <div class="print-tag">
           <div class="text-center">
-            <i class="fa fa-circle" style="font-size: 20px; margin: 25px auto;"></i>
+            <i class="fa fa-circle" style="font-size: 20px; margin: 30px auto;"></i>
           </div>
           <div class="logo-container">${logo}</div>
               ${vehicleHeaderTemplate}
@@ -213,7 +213,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         <div class="print-tag">
           <div class="text-center">
-            <i class="fa fa-circle" style="font-size: 20px; margin: 25px auto;"></i>
+            <i class="fa fa-circle" style="font-size: 20px; margin: 30px auto;"></i>
           </div>
           <div class="logo-container">${logo}</div>
               ${vehicleHeaderTemplate}
