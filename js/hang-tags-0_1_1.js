@@ -26,7 +26,12 @@ document.addEventListener("DOMContentLoaded", () => {
       const quotePrice = numeral(data.QuotePrice).format("$0,0.00");
       const salePrice = numeral(data.Price).format("$0,0.00");
       const discount = numeral(data.QuotePrice - data.Price).format("$0,0.00");
-      const savings = numeral(data.Savings).format("$0,0.00");
+      const savings = numeral(
+        (data.DiscountItemsTotal +
+          data.MatItemsTotal +
+          data.TradeInItemsTotal) *
+          -1
+      ).format("$0,0.00");
       const eDate = moment(data.ExpirationDate).format("MM/DD/YYYY");
       const disclaimer = `<p class="portal-fees">${data.Disclaimer}</p>`;
       const fomDisclaimer = `<p class="text-center"><small>*Price does NOT include, Manufacturer Surcharge, Manufacturer Commodity Surcharge, Freight, Dealer Document Fee $199, Sales Tax, Title Fee $30. Sale Price INCLUDES all factory incentives (If Applicable). See Flat Out Motorsports for full disclosure on current Fees and Surcharges.</small></p>`;
@@ -45,7 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // Payment Calculator
       function calculatePayments(msrp) {
         // Annual interest rate
-        const annualInterestRate = 0.07;
+        const annualInterestRate = 0.1;
 
         // Weekly interest rate
         const weeklyInterestRate = annualInterestRate / 52;
@@ -54,7 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const monthlyInterestRate = annualInterestRate / 12;
 
         // Number of weeks and months for the loan term
-        const loanTermWeeks = 72;
+        const loanTermWeeks = 312;
         const loanTermMonths = loanTermWeeks / 4.33; // Approximate number of months
 
         // Calculate the weekly payment using the formula for an installment loan
@@ -161,7 +166,7 @@ document.addEventListener("DOMContentLoaded", () => {
           
         <div class="print-tag">
           <div class="text-center">
-            <i class="fa fa-circle" style="font-size: 20px; margin: 5px auto;"></i>
+            <i class="fa fa-circle" style="font-size: 20px; margin: 25px auto;"></i>
           </div>
           <div class="logo-container">${logo}</div>
               ${vehicleHeaderTemplate}
@@ -177,8 +182,8 @@ document.addEventListener("DOMContentLoaded", () => {
                             Savings
                           </span>
                           <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-                          <span class="label label-danger">
-                            ${discount}
+                          <span class="label label-success">
+                            ${savings}
                           </span>
                         </div>
                         <div class="price-expires gray">
@@ -186,7 +191,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         </div>                    
                       </div>
                       <div class="our-payment-container">
-                        <h3 class="text-center black bold">$${payments.monthlyPayment}/mo</h3>
+                        <!-- Payment HERE -->
                       </div>
                     </div>
                   </li>
@@ -208,7 +213,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         <div class="print-tag">
           <div class="text-center">
-            <i class="fa fa-circle" style="font-size: 20px; margin: 5px auto;"></i>
+            <i class="fa fa-circle" style="font-size: 20px; margin: 25px auto;"></i>
           </div>
           <div class="logo-container">${logo}</div>
               ${vehicleHeaderTemplate}
@@ -268,12 +273,12 @@ document.addEventListener("DOMContentLoaded", () => {
           .vehicle-title { font-size: 24px; justify-content: flex-start; color: #222; font-weight: 900; }
           .vehicle-subtitle { font-size: 14px; color: #666; margin: 10px 0; }
           .our-price-container { max-width: 4in; text-align: center; margin: 0 auto; }
-          .our-price-msrp { text-align: center; margin: 0 0 -5px 0px; font-size: 13px; letter-spacing: 0px; font-weight: 900; }
-          .our-price { font-size: 30px; font-weight: 900; }
+          .our-price-msrp { text-align: center; margin: 0 0 -5px 0px; font-size: 18px; letter-spacing: 0px; font-weight: 900; }
+          .our-price { font-size: 48px; font-weight: 900; letter-spacing: -2px; color: #dd1f26; }
           .total-savings { font-size: 24px; font-weight: 800; }
           .total-savings i.fa.fa-arrow-circle-right {
             position: relative; font-size: 19px; font-weight: normal;
-            margin: 0px -12px -5px -8px; padding: 5px; background-color: #fff;
+            margin: 0px 0px -5px 4px; padding: 5px; background-color: #fff;
             border-radius: 50%; z-index: 2;
           }
           .price-expires { font-size: 13px; padding: 5px 0; }
