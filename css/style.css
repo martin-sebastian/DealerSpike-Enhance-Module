@@ -6,6 +6,9 @@ body {
   background-color: #eee;
   background-image: url("../img/dots.png");
 }
+.hidden {
+  display: none;
+}
 .print-header h2 {
   font-weight: 900;
 }

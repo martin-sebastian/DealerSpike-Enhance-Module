@@ -12,23 +12,6 @@ $.ajax({
 })
   .done(function (data) {
     if (typeof data.StockNumber !== "undefined") {
-      var unitMSRP = numeral(data.MSRP).format("$0,0.00");
-      var salePrice = numeral(data.SalePrice).format("$0,0.00");
-      var photo = `<img src="${data.B50ImageUrl}">`;
-      var lastPhoto = `<img src="${data.LastImageUrl}">`;
-      var lsDescription = data.B50Desc;
-      var vehicleStockNumber = data.StockNumber;
-      var vehicleModelYear = data.ModelYear;
-      var vehicleModelCode = data.ModelCode;
-      var vehicleColor = data.Color;
-      var vehicleVin = data.VIN;
-      var vehicleModelName = data.ModelName;
-      var friendlyModelName = data.B50ModelName;
-      var vehicleDescription = data.B50Desc;
-      var standardFeatures = data.StandardFeatures;
-
-      var modelVinStock = `<p>Model: <span class="bold">${vehicleModelCode}</span> | Color: <span class="bold">${vehicleColor}</span> | VIN: <span class="bold">${vehicleVin}</span> | Stock Number: <span class="bold">${vehicleStockNumber}</span></p>`;
-
       document.getElementById("modelUsage").innerHTML = data.Usage;
       document.getElementById("stockNumber").innerHTML = data.StockNumber;
       document.getElementById("modelYear").innerHTML = data.ModelYear;
@@ -49,8 +32,3 @@ $.ajax({
   .fail(function (jqXHR, textStatus, errorThrown) {
     console.log(jqXHR.responseText || textStatus);
   });
-
-// initialize popover
-$(function () {
-  $('[data-toggle="popover"]').popover();
-});

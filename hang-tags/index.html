@@ -20,10 +20,34 @@
     <header class="hidden-print">
       <div class="print-header navbar-fixed-top">
         <h2>PREVIEW HANG TAGS</h2>
-        <span class="gray"
-          >*Set Printer margin to none, scale to default, and turn off headers
-          and footers in print driver settings.</span
-        >
+        <div class="text-start">
+          <div class="checkbox">
+            <strong>HIDE ELEMENTS: </strong>
+            <label>
+              <input
+                type="checkbox"
+                id="msrpCheckBox"
+                onclick="hideMSRP()"
+                checked
+              />
+              MSRP
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                id="savingsCheckBox"
+                onclick="hideSavings()"
+                checked
+              />
+              Savings
+            </label>
+          </div>
+
+          <span class="gray"
+            >Printer Settings: Set Printer margin to none, scale to default, and
+            turn off headers and footers in print driver settings.</span
+          >
+        </div>
         <div class="print-buttons">
           <button
             class="btn btn-success"
@@ -56,10 +80,29 @@
       </div>
       <div class="tags-spacer hidden-print"></div>
     </main>
-
+    <script src="../js/qrcode.min.js"></script>
     <script src="../js/numeral.js"></script>
     <script src="../js/moment.js"></script>
     <script src="../js/hang-tags-0_1_1.js"></script>
-    <script src="../js/qrcode.min.js"></script>
+    <script>
+      function hideMSRP() {
+        var msrpcheckBox = document.getElementById("msrpCheckBox");
+        var elementMSRP = document.getElementById("msrpLine");
+        if (msrpcheckBox.checked == true) {
+          elementMSRP.classList.remove("hidden");
+        } else {
+          elementMSRP.classList.add("hidden");
+        }
+      }
+      function hideSavings() {
+        var savingscheckBox = document.getElementById("savingsCheckBox");
+        var elementSavings = document.getElementById("savingsLine");
+        if (savingscheckBox.checked == true) {
+          elementSavings.classList.remove("hidden");
+        } else {
+          elementSavings.classList.add("hidden");
+        }
+      }
+    </script>
   </body>
 </html>

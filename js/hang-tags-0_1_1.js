@@ -175,9 +175,9 @@ document.addEventListener("DOMContentLoaded", () => {
                   <li class="list-group-item text-center">
                     <div class="price-payment-container">
                       <div class="our-price-container">
-                        <div class="our-price-msrp gray">MSRP: <s>${unitMSRP}</s></div>
+                        <div id="msrpLine" class="our-price-msrp gray">MSRP: <s>${unitMSRP}</s></div>
                         <div class="our-price">${yellowTag} ${ourPrice}</div>
-                        <div class="total-savings">
+                        <div id="savingsLine" class="total-savings">
                           <span class="label label-default">
                             Savings
                           </span>
@@ -233,6 +233,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
       document.querySelector(".tag-left").innerHTML = overlay;
       document.querySelector(".tag-right").innerHTML = overlayRight;
+
+      function hideMSRP() {
+        var elementMSRP = document.getElementById("msrpLine");
+        elementMSRP.classList.add("hidden");
+      }
+
+      function hideSavings() {
+        var elementSavings = document.getElementById("savingsLine");
+        elementSavings.classList.add("hidden");
+      }
 
       // QR Code Generator
       new QRCode(document.getElementById("qrcode"), data.DetailUrl);
