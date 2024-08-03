@@ -85,26 +85,25 @@ async function fetchData() {
 
       const row = document.createElement("tr");
       row.innerHTML = `
-          <td class="align-middle">
+          <td class="text-start" style="width: 80px">
             ${
               imageUrl !== "N/A"
-                ? `<img src="${imageUrl}" alt="${title}" width="80" />`
+                ? `<img src="${imageUrl}" alt="${title}" />`
                 : `<i class="fa fa-picture-o fa-3x" aria-hidden="true"></i>`
             }
           </td>
           <td class="text-center"><span class="badge text-bg-secondary">${year}</span></td>
-          <td>${manufacturer}</td>
-          <td class="text-nowrap">
-            <span class="visually-hidden">${stockNumber} ${vin} ${usage} ${year} ${manufacturer} ${modelName} ${modelType} ${modelTypeStyle} ${color}</span>
+          <td class="text-wrap" style="width: 100px">${manufacturer}</td>
+          <td class="text-nowrap pe-2">
             <div class="vehicle-model text-nowrap text-truncate">${modelName}</div>
+            <span class="visually-hidden">${stockNumber} ${vin} ${usage} ${year} ${manufacturer} ${modelName} ${modelType} ${modelTypeStyle} ${color}</span>
             <div class="visually-hidden">VIN: ${vin}</div>
           </td>
-          <td>${stockNumber}</td>
-          <td class="text-wrap pe-4">${modelType}</td>
-          <td class="text-wrap pe-4">${modelTypeStyle}</td>
-          <td class="text-wrap pe-4">${color}</td>
-          <td class="text-center"><span class="badge text-bg-secondary">${usage}</span></td>
-          <td class="align-right text-nowrap">
+          <td class="pe-5">${stockNumber}</td>
+          <td class="text-wrap pe-5">${modelType}</td>
+          <td class="text-wrap pe-5">${color}</td>
+          <td class="text-center" style="width: 80px;"><span class="badge text-bg-secondary">${usage}</span></td>
+          <td class="text-end text-nowrap" style="width: 335px">
             <div class="btn-group nowrap" role="group" aria-label="Vehicles">
               <a href="./overlay/?search=${stockNumber}" type="button" class="btn btn-danger action-button"><i class="fa fa-file-text mx-1"></i><small>Web Overlay</small></a>
               <a href="./hang-tags/?search=${stockNumber}" type="button" class="btn btn-danger action-button"><i class="fa fa-tag mx-1"></i><small>Hang Tag</small></a>
@@ -197,11 +196,11 @@ function updateThemeIcon(theme) {
     .querySelector("i");
   console.log(`Updating theme icon for theme: ${theme}`);
   if (theme === "dark") {
-    toggleThemeButton.classList.remove("fa-lightbulb-o");
+    toggleThemeButton.classList.remove("fa-sun-o");
     toggleThemeButton.classList.add("fa-moon-o");
   } else {
     toggleThemeButton.classList.remove("fa-moon-o");
-    toggleThemeButton.classList.add("fa-lightbulb-o");
+    toggleThemeButton.classList.add("fa-sun-o");
   }
 }
 
