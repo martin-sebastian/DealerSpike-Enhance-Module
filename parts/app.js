@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
   const apiUrl =
-    "http://int.lightspeedadp.com/lsapi/Part/76014343?$top=1000&$filter=OnHand gt '1'";
+    "https://int.lightspeedadp.com/lsapi/Part/76014343?$top=1000&$filter=OnHand gt '1'";
 
   fetch(apiUrl, {
     method: "GET",
