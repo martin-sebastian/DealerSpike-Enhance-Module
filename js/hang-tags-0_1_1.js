@@ -319,7 +319,7 @@ document.addEventListener("DOMContentLoaded", () => {
           .vehicle-subtitle { font-size: 14px; color: #666; margin: 10px 0; }
           .our-price-container { text-align: center; margin: 0 auto; }
           .our-price-msrp { text-align: center; margin: 0 0 -5px 0px; font-size: 18px; letter-spacing: 0px; font-weight: 900; }
-          .our-price { font-size: 48px; margin: 0; padding: 0; font-weight: 900; letter-spacing: -2px; color: #dd1f26; }
+          .our-price { font-size: 48px; margin: 0; padding: 0; font-weight: 900; letter-spacing: -4px; color: #dd1f26; }
           .total-savings { font-size: 24px; font-weight: 800; }
           .total-savings i.fa.fa-arrow-circle-right {
             position: relative; font-size: 19px; font-weight: normal;
