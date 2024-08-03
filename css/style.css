@@ -75,11 +75,12 @@ body {
   align-items: center;
   width: 8.5in;
   height: 11in;
-  gap: 0.25in;
+  gap: 0.0125in;
   background: #fff;
   color: #333;
 }
-.tag-left {
+.tag-left,
+.tag-right {
   margin: 0;
 }
 .shadow {

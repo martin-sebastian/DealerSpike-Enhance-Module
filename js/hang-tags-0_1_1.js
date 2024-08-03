@@ -296,9 +296,9 @@ document.addEventListener("DOMContentLoaded", () => {
             padding: 0 10px;
           }
           .print-tag {
-            width: 4in;
+            width: 4.0in;
             height: 10.75in;
-            border: solid 1px #fff;
+            border: solid 0px #ccc;
             border-radius: 5px;
             margin: 0px auto;
             padding: 0 10px;
