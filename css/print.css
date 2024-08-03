@@ -1,0 +1,6 @@
+@media print {
+  * {
+    color: inherit !important;
+    background: inherit !important;
+  }
+}
