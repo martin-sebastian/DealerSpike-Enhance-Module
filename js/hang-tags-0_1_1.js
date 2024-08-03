@@ -99,11 +99,25 @@ document.addEventListener("DOMContentLoaded", () => {
         5,
         "$0,0.00"
       );
-      const accessoryItemsTemplate = generateListItems(
-        data.AccessoryItems,
-        20,
-        "$0,0.00"
-      );
+      // ACCESSORY ITEMS TEMPLATE
+      let accessoryItemsTemplate = ""; // Declare the variable outside
+
+      // Check if data.AccessoryItems is not null, undefined, empty string, or empty array
+      if (
+        data.AccessoryItems !== null &&
+        typeof data.AccessoryItems !== "undefined" &&
+        data.AccessoryItems.length > 0 &&
+        data.AccessoryItems.length > 0
+      ) {
+        accessoryItemsTemplate = `
+        <h5 class="bold">Accessory Items</h5>
+        ${generateListItems(data.AccessoryItems, 30, "$0,0.00")}
+      `;
+      } else {
+        accessoryItemsTemplate = ""; // Handle the case when data.AccessoryItems is null, undefined, empty, or an empty array
+      }
+
+      // DISCOUNT ITEMS TEMPLATE
       const discountItemsTemplate = generateListItems(
         data.DiscountItems,
         20,
@@ -134,12 +148,26 @@ document.addEventListener("DOMContentLoaded", () => {
         `
         : ``;
 
-      const standardFeaturesTemplate = data.StandardFeatures;
-      typeof data.StandardFeatures !== "undefined"
-        ? `
-        ${data.StandardFeatures}
-        `
-        : ``;
+      // STANDARD FEATURES TEMPLATE
+      let standardFeaturesTemplate = ""; // Declare the variable outside
+
+      // Check if data.StandardFeatures is not null, undefined, or an empty string
+      if (
+        data.StandardFeatures !== null &&
+        typeof data.StandardFeatures !== "undefined" &&
+        data.StandardFeatures.trim().length > 0
+      ) {
+        standardFeaturesTemplate = `
+        <h5 class="bold">Standard Features</h5>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            ${data.StandardFeatures}
+          </div>
+        </div>
+      `;
+      } else {
+        standardFeaturesTemplate = ""; // Handle the case when data.StandardFeatures is null, undefined, or empty
+      }
 
       const vehicleHeaderTemplate = `
         <div class="vehicle-header-container">
@@ -214,21 +242,28 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="print-tag">
           <div class="text-center">
             <i class="fa fa-circle" style="font-size: 20px; margin: 30px auto;"></i>
-          </div>
-          <div class="logo-container">${logo}</div>
+          </div> <!-- End Circle Text Center -->
+            <div class="logo-container">
+              ${logo}
+            </div> <!-- End Logo Container -->
               ${vehicleHeaderTemplate}
             <div class="print-tag-body">
                 <ul class="list-group">
-                  <li class="list-group-item text-center">
-                    <h3 class="bold">Accessories</h3>
-                  </li>
                   ${accessoryItemsTemplate}
                 </ul>
                 <div class="vehicle-description">
-                ${unitDescriptionTemplate}
+                  ${unitDescriptionTemplate}
                 </div>
-            </div>
-          </div>
+            </div> <!-- End Print Tag Body -->
+            <div class="print-tag-footer">
+              <div class="navbar-default navbar-fixed-bottom text-center" style="background: #fff;">
+                <div class="our-price">
+                ${yellowTag} ${ourPrice}
+                </div>
+                <div class="price-expires gray text-center">Sale Program Ends: ${salePriceExpireDate}</div>
+              </div> <!-- End Navbar Fixed Bottom -->
+            </div> <!-- End Print Tag Footer -->
+        </div> <!-- End Print Tag -->
         `;
 
       document.querySelector(".tag-left").innerHTML = overlay;
@@ -278,19 +313,20 @@ document.addEventListener("DOMContentLoaded", () => {
           .logo-container { text-align: center; padding: 0px 10px; }
           .vehicle-image-container { text-align: center; padding: 0; }
           .vehicle-image-container img { border-radius: 10px; }
-          .vehicle-description { border: solid 1px #ddd; border-radius: 5px; padding: 10px; margin: 5px 0; }
+          .vehicle-description { border: solid 1px #ddd; border-radius: 5px; padding: 10px; margin: 0; }
           .vehicle-name-container { margin: 0px; padding: 0px; text-align: center; }
           .vehicle-title { font-size: 24px; justify-content: flex-start; color: #222; font-weight: 900; }
           .vehicle-subtitle { font-size: 14px; color: #666; margin: 10px 0; }
-          .our-price-container { max-width: 4in; text-align: center; margin: 0 auto; }
+          .our-price-container { text-align: center; margin: 0 auto; }
           .our-price-msrp { text-align: center; margin: 0 0 -5px 0px; font-size: 18px; letter-spacing: 0px; font-weight: 900; }
-          .our-price { font-size: 48px; font-weight: 900; letter-spacing: -2px; color: #dd1f26; }
+          .our-price { font-size: 48px; margin: 0; padding: 0; font-weight: 900; letter-spacing: -2px; color: #dd1f26; }
           .total-savings { font-size: 24px; font-weight: 800; }
           .total-savings i.fa.fa-arrow-circle-right {
             position: relative; font-size: 19px; font-weight: normal;
             margin: 0px 0px -5px 4px; padding: 5px; background-color: #fff;
             border-radius: 50%; z-index: 2;
           }
+          .panel { margin: 10px 0; }
           .price-expires { font-size: 13px; padding: 5px 0; }
           .our-payment-container { text-align: center; margin: 0 auto; }
           .price-payment-divider { border-left: solid 1px #ddd; height: 10px; margin: 0 5px; }
