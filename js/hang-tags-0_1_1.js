@@ -42,6 +42,8 @@ document.addEventListener("DOMContentLoaded", () => {
       const arrivalDate = moment(data.EstimatedArrival).format("MM/DD/YYYY");
       const newUsed = data.Usage;
       const milesHours = data.Miles;
+      const metricType = data.B50MetricType;
+      const metricValue = data.B50MetricValue;
       const inventoryStatus = data.UnitStatus;
       // Example usage:
       const msrp = data.MSRP;
@@ -173,9 +175,10 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="vehicle-header-container">
           <div class="vehicle-name-container">
             <h3 class="vehicle-title">${prodTitle}</h3>
+            <h4 style="margin: 0; padding: 0;">${metricType}: ${metricValue}</h4>
             <h4 class="vehicle-subtitle">
               <small>Model: </small>${data.ModelCode} 
-              <small>VIN: </small><span>${vinNumber} </span>
+              <small>VIN: </small><span>${vinNumber} </span><br />
               <small>Stock# </small>${data.StockNumber}
             </h4>
           </div>
