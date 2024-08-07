@@ -116,7 +116,7 @@ document.addEventListener("DOMContentLoaded", () => {
         ${generateListItems(data.AccessoryItems, 30, "$0,0.00")}
       `;
       } else {
-        accessoryItemsTemplate = ""; // Handle the case when data.AccessoryItems is null, undefined, empty, or an empty array
+        accessoryItemsTemplate = vehicleImage; // Handle the case when data.AccessoryItems is null, undefined, empty, or an empty array
       }
 
       // DISCOUNT ITEMS TEMPLATE
@@ -151,9 +151,9 @@ document.addEventListener("DOMContentLoaded", () => {
       //   : ``;
 
       // DESCRIPTION TEMPLATE
-      let unitDescriptionTemplate = "321"; // Declare the variable outside
+      let unitDescriptionTemplate = ""; // Declare the variable outside
 
-      // Check if data.StandardFeatures is not null, undefined, or an empty string
+      // Check if data.B50Desc is not null, undefined, or an empty string
       if (
         data.B50Desc !== null &&
         typeof data.B50Desc !== "null" &&
@@ -169,7 +169,7 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
       `;
       } else {
-        unitDescriptionTemplate = ""; // Handle the case when data.StandardFeatures is null, undefined, or empty
+        unitDescriptionTemplate = "123"; // Handle the case when data.StandardFeatures is null, undefined, or empty
       }
 
       // // STANDARD FEATURES TEMPLATE
