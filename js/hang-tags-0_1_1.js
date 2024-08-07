@@ -144,32 +144,54 @@ document.addEventListener("DOMContentLoaded", () => {
         ? `<img src="https://newportal.flatoutmotorcycles.com/Portal/content/icons/ylwtag.png">`
         : ``;
 
-      const unitDescriptionTemplate = data.B50Desc
-        ? `
-          ${data.B50Desc} 
-        `
-        : ``;
+      // const unitDescriptionTemplate = data.B50Desc
+      //   ? `
+      //     ${data.B50Desc}
+      //   `
+      //   : ``;
 
-      // STANDARD FEATURES TEMPLATE
-      let standardFeaturesTemplate = ""; // Declare the variable outside
+      // DESCRIPTION TEMPLATE
+      let unitDescriptionTemplate = "321"; // Declare the variable outside
 
       // Check if data.StandardFeatures is not null, undefined, or an empty string
       if (
-        data.StandardFeatures !== null &&
-        typeof data.StandardFeatures !== "undefined" &&
-        data.StandardFeatures.trim().length > 0
+        data.B50Desc !== null &&
+        typeof data.B50Desc !== "null" &&
+        typeof data.B50Desc !== "undefined" &&
+        data.B50Desc.trim().length > 0
       ) {
-        standardFeaturesTemplate = `
-        <h5 class="bold">Standard Features</h5>
+        unitDescriptionTemplate = `
+        <h5 class="bold">Description</h5>
         <div class="panel panel-default">
           <div class="panel-body">
-            ${data.StandardFeatures}
+            ${data.B50Desc}
           </div>
         </div>
       `;
       } else {
-        standardFeaturesTemplate = ""; // Handle the case when data.StandardFeatures is null, undefined, or empty
+        unitDescriptionTemplate = ""; // Handle the case when data.StandardFeatures is null, undefined, or empty
       }
+
+      // // STANDARD FEATURES TEMPLATE
+      // let standardFeaturesTemplate = ""; // Declare the variable outside
+
+      // // Check if data.StandardFeatures is not null, undefined, or an empty string
+      // if (
+      //   data.StandardFeatures !== null &&
+      //   typeof data.StandardFeatures !== "undefined" &&
+      //   data.StandardFeatures.trim().length > 0
+      // ) {
+      //   standardFeaturesTemplate = `
+      //   <h5 class="bold">Standard Features</h5>
+      //   <div class="panel panel-default">
+      //     <div class="panel-body">
+      //       ${data.StandardFeatures}
+      //     </div>
+      //   </div>
+      // `;
+      // } else {
+      //   standardFeaturesTemplate = ""; // Handle the case when data.StandardFeatures is null, undefined, or empty
+      // }
 
       const vehicleHeaderTemplate = `
         <div class="vehicle-header-container">
@@ -255,17 +277,17 @@ document.addEventListener("DOMContentLoaded", () => {
                   ${accessoryItemsTemplate}
                 </ul>
                 <div class="vehicle-description">
-                  ${unitDescriptionTemplate}
+                   ${unitDescriptionTemplate}
                 </div>
             </div> <!-- End Print Tag Body -->
-            <div class="print-tag-footer">
-              <div class="navbar-default navbar-fixed-bottom text-center" style="background: #fff;">
-                <div class="our-price">
+            <div class="container-fluid">
+              <div class="navbar-danger navbar-fixed-bottom text-center" style="border-radius: 5px; background: #EE0000 !important; padding-top: 15px;">
+                <div class="our-price" style="color: #fff !important;">
                 ${yellowTag} ${ourPrice}
                 </div>
-                <div class="price-expires gray text-center">Sale Program Ends: ${salePriceExpireDate}</div>
+                <div class="price-expires text-center" style="color: #ccc !important; padding: 0 0 10px 0;">Sale Program Ends: ${salePriceExpireDate}</div>
               </div> <!-- End Navbar Fixed Bottom -->
-            </div> <!-- End Print Tag Footer -->
+            </div> <!-- End Container -->
         </div> <!-- End Print Tag -->
         `;
 
@@ -311,22 +333,22 @@ document.addEventListener("DOMContentLoaded", () => {
             zoom: 1; /* Adjust the value to zoom in or out */
           }
             #text { font-size: 22px; }
-          #qrcode img { margin: 0 auto; width: 200px; height: 200px; }
+          #qrcode img { margin: 0 auto; width: 172px; height: 172px; }
           .list-group-item { font-size: 12px; }
           .logo-container { text-align: center; padding: 0px 10px; }
           .vehicle-image-container { text-align: center; padding: 0; }
           .vehicle-image-container img { border-radius: 10px; }
-          .vehicle-description { border: solid 1px #ddd; border-radius: 5px; padding: 10px; margin: 0; }
+          .vehicle-description { margin: 0; }
           .vehicle-name-container { margin: 0px; padding: 0px; text-align: center; }
           .vehicle-title { font-size: 24px; justify-content: flex-start; color: #222; font-weight: 900; }
           .vehicle-subtitle { font-size: 14px; color: #666; margin: 10px 0; }
           .our-price-container { text-align: center; margin: 0 auto; }
-          .our-price-msrp { text-align: center; margin: 0 0 -5px 0px; font-size: 18px; letter-spacing: 0px; font-weight: 900; }
-          .our-price { font-size: 48px; margin: 0; padding: 0; font-weight: 900; letter-spacing: -1px; color: #dd1f26; }
+          .our-price-msrp { text-align: center; margin: 0 0 -5px 0px; font-size: 18px; letter-spacing: 0px; font-weight: 800; color: #999 !important; }
+          .our-price { font-size: 48px; line-height: 48px; margin: 0; padding: 5px; font-weight: 900; letter-spacing: -1px; color: #dd1f26 !important; }
           .total-savings { font-size: 24px; font-weight: 800; }
           .total-savings i.fa.fa-arrow-circle-right {
             position: relative; font-size: 19px; font-weight: normal;
-            margin: 0px 0px -5px 4px; padding: 5px; background-color: #fff;
+            margin: 0px -10px -5px -4px; padding: 5px; background-color: #fff !important;
             border-radius: 50%; z-index: 2;
           }
           .panel { margin: 10px 0; }
@@ -441,6 +463,7 @@ document.addEventListener("DOMContentLoaded", () => {
           .hidden-text {
             display: none;
           }
+          .print-tag-footer {height: 200px; border-radius: 5px; background: #fff; padding: 10px 0; margin: 0; }
           .mu-thumbnail { width: 6.9%; height: auto; margin: 1px; float: left; clear: right; }
           .mu-thumbnail img { border: solid 2px #efefef; border-radius: 5px; }
           .mu-thumbnail img:hover { border: solid 2px #000; border-radius: 5px; }
@@ -460,6 +483,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 page-header: none;
                 page-footer: none;
             }
+            body { margin: 0; padding: 0; }
+            .label-success { background-color: #5cb85c !important; color: #fff !important; border: 1px solid #5cb85c !important; }
+            .label-default { background-color: #777 !important; color: #fff !important; border: 1px solid #777 !important; }
+            .navbar { background-color: #EE0000 !important; }
           }
         `;
 
