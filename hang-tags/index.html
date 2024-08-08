@@ -42,6 +42,51 @@
               />
               Savings
             </label>
+            <label>
+              <input
+                type="checkbox"
+                id="rebatesCheckBox"
+                onclick="hideRebates()"
+                checked
+              />
+              Rebates
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                id="discountsCheckBox"
+                onclick="hideDiscounts()"
+                checked
+              />
+              Discounts
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                id="feesCheckBox"
+                onclick="hideFees()"
+                checked
+              />
+              Fees & Taxes
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                id="photoCheckBox"
+                onclick="hidePhoto()"
+                checked
+              />
+              Photo
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                id="descriptionCheckBox"
+                onclick="hideDescription()"
+                checked
+              />
+              Description
+            </label>
           </div>
 
           <span class="gray"
@@ -111,6 +156,53 @@
           elementSavings.classList.remove("hidden");
         } else {
           elementSavings.classList.add("hidden");
+        }
+      }
+      function hideRebates() {
+        var rebatescheckBox = document.getElementById("rebatesCheckBox");
+        var elementRebates = document.getElementById("rebatesLine");
+        if (rebatescheckBox.checked == true) {
+          elementRebates.classList.remove("hidden");
+        } else {
+          elementRebates.classList.add("hidden");
+        }
+      }
+      function hideDiscounts() {
+        var discountscheckBox = document.getElementById("discountsCheckBox");
+        var elementDiscounts = document.getElementById("discountsLine");
+        if (discountscheckBox.checked == true) {
+          elementDiscounts.classList.remove("hidden");
+        } else {
+          elementDiscounts.classList.add("hidden");
+        }
+      }
+      function hideFees() {
+        var feescheckBox = document.getElementById("feesCheckBox");
+        var elementFees = document.getElementById("feesLine");
+        if (feescheckBox.checked == true) {
+          elementFees.classList.remove("hidden");
+        } else {
+          elementFees.classList.add("hidden");
+        }
+      }
+      function hidePhoto() {
+        var photocheckBox = document.getElementById("photoCheckBox");
+        var elementPhoto = document.getElementById("photoLine");
+        if (photocheckBox.checked == true) {
+          elementPhoto.classList.remove("hidden");
+        } else {
+          elementPhoto.classList.add("hidden");
+        }
+      }
+      function hideDescription() {
+        var descriptioncheckBox = document.getElementById(
+          "descriptionCheckBox"
+        );
+        var elementDescription = document.getElementById("descriptionLine");
+        if (descriptioncheckBox.checked == true) {
+          elementDescription.classList.remove("hidden");
+        } else {
+          elementDescription.classList.add("hidden");
         }
       }
     </script>

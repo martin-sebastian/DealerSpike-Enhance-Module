@@ -93,7 +93,7 @@ document.addEventListener("DOMContentLoaded", () => {
           .join("");
       };
       const logo = `<img src="../img/fom-app-logo.svg">`;
-      const vehicleImage = `<img src="${data.ImageUrl}" style="width: 100%;">`;
+      const vehicleImage = `<div class="" id="photoLine"><img src="${data.ImageUrl}" style="width: 100%; border-radius: 5px; overflow: hidden;"></div>`;
       const matItemsTemplate = generateListItems(data.MatItems, 4, "$0,0.00");
       const OTDItemsTemplate = generateListItems(data.OTDItems, 9, "$0,0.00");
       const tradeInItemsTemplate = generateListItems(
@@ -157,41 +157,42 @@ document.addEventListener("DOMContentLoaded", () => {
       if (
         data.B50Desc !== null &&
         typeof data.B50Desc !== "null" &&
-        typeof data.B50Desc !== "undefined" &&
         data.B50Desc.trim().length > 0
       ) {
         unitDescriptionTemplate = `
-        <h5 class="bold">Description</h5>
-        <div class="panel panel-default">
-          <div class="panel-body">
-            ${data.B50Desc}
+        <div class="" id="descriptionLine">
+          <h5 class="bold">Description</h5>
+          <div class="panel panel-default">
+            <div class="panel-body">
+              ${data.B50Desc}
+            </div>
           </div>
         </div>
       `;
       } else {
-        unitDescriptionTemplate = "123"; // Handle the case when data.StandardFeatures is null, undefined, or empty
+        unitDescriptionTemplate = ""; // Handle the case when data.StandardFeatures is null, undefined, or empty
       }
 
-      // // STANDARD FEATURES TEMPLATE
-      // let standardFeaturesTemplate = ""; // Declare the variable outside
+      // STANDARD FEATURES TEMPLATE
+      let standardFeaturesTemplate = ""; // Declare the variable outside
 
-      // // Check if data.StandardFeatures is not null, undefined, or an empty string
-      // if (
-      //   data.StandardFeatures !== null &&
-      //   typeof data.StandardFeatures !== "undefined" &&
-      //   data.StandardFeatures.trim().length > 0
-      // ) {
-      //   standardFeaturesTemplate = `
-      //   <h5 class="bold">Standard Features</h5>
-      //   <div class="panel panel-default">
-      //     <div class="panel-body">
-      //       ${data.StandardFeatures}
-      //     </div>
-      //   </div>
-      // `;
-      // } else {
-      //   standardFeaturesTemplate = ""; // Handle the case when data.StandardFeatures is null, undefined, or empty
-      // }
+      // Check if data.StandardFeatures is not null, undefined, or an empty string
+      if (
+        data.StandardFeatures !== null &&
+        typeof data.StandardFeatures !== "undefined" &&
+        data.StandardFeatures.trim().length > 0
+      ) {
+        standardFeaturesTemplate = `
+        <h5 class="bold">Standard Features</h5>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            ${data.StandardFeatures}
+          </div>
+        </div>
+      `;
+      } else {
+        standardFeaturesTemplate = ""; // Handle the case when data.StandardFeatures is null, undefined, or empty
+      }
 
       const vehicleHeaderTemplate = `
         <div class="vehicle-header-container">
@@ -249,10 +250,10 @@ document.addEventListener("DOMContentLoaded", () => {
                     </div>
                   </li>
                   <li class="list-group-item bold">${data.MSRPTitle} <span class="pull-right">${MSRPUnit}</span></li>
-                  ${matItemsTemplate}
-                  ${discountItemsTemplate}
-                  ${tradeInItemsTemplate}
-                  ${OTDItemsTemplate}
+                  <div class="" id="rebatesLine">${matItemsTemplate}</div>
+                  <div class="" id="discountsLine">${discountItemsTemplate}</div>
+                  <div class="" id="tradeInsLine">${tradeInItemsTemplate}</div>
+                  <div class="" id="feesLine">${OTDItemsTemplate}</div>
                 </ul>
                 <div class="text-center">
                   <div id="qrcode"></div>
@@ -278,6 +279,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 </ul>
                 <div class="vehicle-description">
                    ${unitDescriptionTemplate}
+                   ${standardFeaturesTemplate}
                 </div>
             </div> <!-- End Print Tag Body -->
             <div class="container-fluid">
