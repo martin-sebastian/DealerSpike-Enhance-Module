@@ -67,6 +67,15 @@ async function fetchData() {
         item.getElementsByTagName("model_typestyle")[0]?.textContent || "N/A";
       const color = item.getElementsByTagName("color")[0]?.textContent || "N/A";
       const usage = item.getElementsByTagName("usage")[0]?.textContent || "N/A";
+      // Count Images for each item
+      const imageElements = item.getElementsByTagName("imageurl");
+
+      const photos =
+        imageElements.length > 10
+          ? `<span class="badge text-bg-success"><i class="fa fa-check"></i><br />Done</span>`
+          : `<span class="badge text-bg-warning"><i class="fa fa-camera"></i> <br /><span style="font-size: 10px;">Needs Photos</span></span>`;
+
+      console.log(photos);
 
       console.log({
         imageUrl,
@@ -96,16 +105,17 @@ async function fetchData() {
           <td class="text-wrap" style="width: 100px">${manufacturer}</td>
           <td class="text-nowrap pe-2">
             <div class="vehicle-model text-nowrap text-truncate">${modelName}</div>
-            <span class="visually-hidden">${stockNumber} ${vin} ${usage} ${year} ${manufacturer} ${modelName} ${modelType} ${modelTypeStyle} ${color}</span>
+            <span class="visually-hidden">${stockNumber} ${vin} ${usage} ${year} ${manufacturer} ${modelName} ${modelType} ${modelTypeStyle} ${color} ${photos}</span>
             <div class="visually-hidden">VIN: ${vin}</div>
           </td>
           <td class="pe-5">${stockNumber}</td>
           <td class="text-wrap pe-5">${modelType}</td>
           <td class="text-wrap pe-5">${color}</td>
           <td class="text-center" style="width: 80px;"><span class="badge text-bg-secondary">${usage}</span></td>
+          <td class="text-center" style="width: 80px;">${photos}</td>
           <td class="text-end text-nowrap" style="width: 335px">
             <div class="btn-group nowrap" role="group" aria-label="Vehicles">
-              <a href="./overlay/?search=${stockNumber}" type="button" class="btn btn-danger action-button"><i class="fa fa-file-text mx-1"></i><small>Web Overlay</small></a>
+              <a href="./overlay/?search=${stockNumber}" type="button" class="btn btn-danger action-button"><i class="fa fa-file-text mx-1"></i><small>Web Preview</small></a>
               <a href="./hang-tags/?search=${stockNumber}" type="button" class="btn btn-danger action-button"><i class="fa fa-tag mx-1"></i><small>Hang Tag</small></a>
               <a href="./key-tags/?vehicle=${stockNumber}" type="button" class="btn btn-danger action-button"><i class="fa fa-key mx-1"></i><small>Key Tag</small></a>
               <a href="./deal-jacket/index.html?search=${stockNumber}" type="button" class="btn btn-danger action-button"><i class="fa fa-folder mx-1"></i><small>Deal Jacket</small></a>
