@@ -72,18 +72,19 @@ async function fetchData() {
 
       const photos =
         imageElements.length > 10
-          ? `<span class="badge text-bg-success" style="font-weight: 500">
-              <span class="fa-stack">
-                <i class="fa fa-circle-o fa-stack-2x text-light"></i>
-                <i class="fa fa-check fa-check-1x text-light"></i>
-              </span>
-          <span style="font-size: 10px;">Done</span>`
-          : ` <span class="badge text-bg-warning">
-                <span class="fa-stack">
-                  <i class="fa fa-camera fa-stack-1x"></i>
-                  <i class="fa fa-ban fa-stack-2x text-secondary"></i>
+          ? `<span class="badge text-bg-success">
+                <span class="fa-stack" style="font-size: 10px;">
+                  <i class="fa fa-circle-o fa-stack-2x"></i>
+                  <i class="fa fa-check fa-stack-1x"></i>
                 </span>
-                <span style="font-size: 10px;">Needs Photos</span>
+                <span class="mt-0 mb-0" style="font-size: 10px;">Done</span>
+              </span>`
+          : ` <span class="badge text-bg-warning">
+                <span class="fa-stack" style="font-size: 10px;">
+                  <i class="fa fa-camera fa-stack-1x"></i>
+                  <i class="fa fa-ban fa-stack-2x text-danger"></i>
+                </span>
+                <span class="mt-0 mb-0" style="font-size: 10px;"> Needs Photos </span>
               </span>`;
 
       console.log(photos);
@@ -101,6 +102,7 @@ async function fetchData() {
         modelTypeStyle,
         color,
         usage,
+        photos,
       });
 
       const row = document.createElement("tr");
@@ -123,7 +125,7 @@ async function fetchData() {
           <td class="text-wrap pe-5">${modelType}</td>
           <td class="text-wrap pe-5">${color}</td>
           <td class="text-center" style="width: 80px;"><span class="badge text-bg-secondary">${usage}</span></td>
-          <td class="text-center" style="width: 80px;">${photos}</td>
+          <td class="text-center" style="width: 60px;">${photos}</td>
           <td class="text-end text-nowrap" style="width: 335px">
             <div class="btn-group nowrap" role="group" aria-label="Vehicles">
               <a href="./overlay/?search=${stockNumber}" type="button" class="btn btn-danger action-button"><i class="fa fa-file-text mx-1"></i><small>Web Preview</small></a>
@@ -264,7 +266,7 @@ function filterTable() {
 
   // Update row count
   document.getElementById("rowCount").textContent =
-    "Total Rows: " + visibleRows;
+    "Total Units: " + visibleRows;
 }
 
 // Event listeners for input and dropdown changes
