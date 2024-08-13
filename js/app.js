@@ -72,8 +72,19 @@ async function fetchData() {
 
       const photos =
         imageElements.length > 10
-          ? `<span class="badge text-bg-success"><i class="fa fa-check"></i><br />Done</span>`
-          : `<span class="badge text-bg-warning"><i class="fa fa-camera"></i> <br /><span style="font-size: 10px;">Needs Photos</span></span>`;
+          ? `<span class="badge text-bg-success" style="font-weight: 500">
+              <span class="fa-stack">
+                <i class="fa fa-circle-o fa-stack-2x text-light"></i>
+                <i class="fa fa-check fa-check-1x text-light"></i>
+              </span>
+          <span style="font-size: 10px;">Done</span>`
+          : ` <span class="badge text-bg-warning">
+                <span class="fa-stack">
+                  <i class="fa fa-camera fa-stack-1x"></i>
+                  <i class="fa fa-ban fa-stack-2x text-secondary"></i>
+                </span>
+                <span style="font-size: 10px;">Needs Photos</span>
+              </span>`;
 
       console.log(photos);
 
