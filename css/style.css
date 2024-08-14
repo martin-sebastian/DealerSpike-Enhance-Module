@@ -12,6 +12,11 @@ body {
 .print-header h2 {
   font-weight: 900;
 }
+.overlay-header {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+}
 .print-header {
   display: flex;
   flex-direction: row;

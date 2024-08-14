@@ -86,11 +86,13 @@ $.ajax({
       "$0,0.00"
     );
     var msrpLabel = data.MSRPTitle;
+    var msrpTotal = numeral(data.MSRPUnit).format("$0,0.00");
     var totalOTD = numeral(data.OTDPrice).format("$0,0.00");
     var quotePrice = numeral(data.QuotePrice).format("$0,0.00");
     var salePrice = numeral(data.Price).format("$0,0.00");
     var discount = numeral(data.QuotePrice - data.Price).format("$0,0.00");
     var savings = numeral(data.Savings).format("$0,0.00");
+
     var eDate = moment(data.ExpirationDate).format("MM/DD/YYYY");
     var disclaimer = `<p class="portal-fees">${data.Disclaimer}</p>`;
     var fomDisclaimer = `<p class="text-center"><small>*Price does NOT include, Manufacturer Surcharge, Manufacturer Commodity Surcharge, Freight, Dealer Document Fee $199, Sales Tax, Title Fee $30. Sale Price INCLUDES all factory incentives (If Applicable). See Flat Out Motorsports for full disclosure on current Fees and Surcharges.</small></p>`;
@@ -302,6 +304,13 @@ $.ajax({
       i++;
     }
 
+    var totalSavings = numeral(
+      data.DiscountItemsTotal +
+        data.MatItemsTotal +
+        data.TradeInItemsTotal +
+        data.AccessoryItemsTotal
+    ).format("$0,0.00");
+
     // Unit Numbers & status info
     var unitNumbersTemplate = ``;
 
@@ -379,7 +388,7 @@ $.ajax({
 
     if (data.B50Desc != null) {
       unitDescripionTemplate += `
-		<div id="scrollDescription" class="container-fluid" style="padding: 10px 0; border-top: solid 1px #ededed; background: #fff;">
+		<div id="scrollDescription" class="container-fluid" style="padding: 10px 0; border-top: solid 1px #ededed; border-bottom: solid 1px #ededed; background: #fff;">
 			<h3 class="bold text-center">
 				<a class="more-info-section black collapsed" style="text-decoration: none; margin: 0 auto;" data-toggle="collapse" href="#collapseDescription" aria-expanded="false" aria-controls="collapseDescription">
 					NOTES
@@ -387,8 +396,9 @@ $.ajax({
 				</a>
 			</h3>
 			<div class="collapse" id="collapseDescription">
-				<div style="margin: 0 auto; max-width: 900px; padding: 20px;">
-					<p class="text-left" style="padding: 10px 0; margin: 0 20px;">${unitDescription} ${data.StandardFeatures}</p>
+				<div style="margin: 0 auto; max-width: 1700px; padding: 20px;">
+					<blockquote>${unitDescription}</blockquote>
+					<blockquote> ${data.StandardFeatures}</blockquote>
 				</div>
 			</div>
 		</div>
@@ -854,7 +864,7 @@ $.ajax({
 						<li class="list-group-item text-center">
 							<div class="price-payment-container">
 								<div class="our-price-container">
-									<div class="our-price-msrp">MSRP: <s>${unitMSRP}</s></div>
+									<div class="our-price-msrp">MSRP: <s>${msrpTotal}</s></div>
 									<div class="our-price">${yellowTag} ${ourPrice}</div>
 									<div class="total-savings">
 										<span class="label label-default">
@@ -862,7 +872,7 @@ $.ajax({
 										</span>
 										<i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
 										<span class="label label-danger">
-											${discount}
+											${totalSavings}
 										</span>
 									</div>
 									<div class="price-expires silver">
