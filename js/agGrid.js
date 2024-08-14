@@ -8,27 +8,28 @@ document.addEventListener("DOMContentLoaded", () => {
       {
         headerCheckboxSelection: true, // Enable select all checkbox in header
         checkboxSelection: true, // Enable checkbox selection for each row
-        width: 50, // Set the column width
+        width: 40, // Set the column width
       },
       {
         field: "imageUrl",
         headerName: "Image",
-        width: 100,
+        width: 90,
         cellRenderer: (params) =>
           params.value !== "N/A"
             ? `<img src="${params.value}" alt="Image" width="50" />`
             : `<i class="fa fa-picture-o fa-3x" aria-hidden="true"></i>`,
       },
-      { field: "make", headerName: "Make" },
+      { field: "make", headerName: "Make", width: 110 },
       { field: "model", headerName: "Model" },
-      { field: "year", headerName: "Year" },
+      { field: "year", headerName: "Year", width: 80 },
       { field: "stockNumber", headerName: "Stock Number" },
       { field: "type", headerName: "Type" },
       { field: "color", headerName: "Color" },
-      { field: "usage", headerName: "Usage" },
+      { field: "usage", headerName: "Usage", width: 80 },
       {
         field: "price",
         headerName: "Price",
+        width: 110,
         cellRenderer: (params) =>
           new Intl.NumberFormat("en-US", {
             style: "currency",
@@ -37,22 +38,22 @@ document.addEventListener("DOMContentLoaded", () => {
       },
       {
         headerName: "Actions",
-        width: 250,
+        width: 330,
         cellRenderer: (params) => {
           const stockNumber = params.data.stockNumber;
 
           return `
-            <div class="btn-group me-5" role="group" aria-label="Action Buttons">
-              <button class="btn btn-primary btn-sm" onclick="viewDetails('${stockNumber}')">View</button>
-              <button class="btn btn-secondary btn-sm" onclick="editItem('${stockNumber}')">Edit</button>
-              <button class="btn btn-danger btn-sm" onclick="deleteItem('${stockNumber}')">Delete</button>
+            <div class="btn-group pe-1" role="group" aria-label="Action Buttons">
+              <button class="btn btn-danger" onclick="viewDetails('${stockNumber}')">View</button>
+              <button class="btn btn-danger" onclick="editItem('${stockNumber}')">Edit</button>
+              <button class="btn btn-danger" onclick="deleteItem('${stockNumber}')">Delete</button>
             </div>
           `;
         },
       },
     ],
     defaultColDef: {
-      flex: 1, // Adjust column width to fit available space
+      flex: 0, // Adjust column width to fit available space
     },
     rowSelection: "multiple", // Enable row selection
     loadingOverlayComponent: "agLoadingOverlay", // Use default AG Grid loading overlay

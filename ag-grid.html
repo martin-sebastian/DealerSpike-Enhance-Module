@@ -32,19 +32,28 @@
       }
     </style>
   </head>
-  <body>
+  <body data-bs-theme="dark">
     <header>
       <h1>AG Grid</h1>
     </header>
+    <div class="example-wrapper">
+      <div class="example-header my-2">
+          <span>Search:</span>
+          <input class="form-control" type="text" id="filter-text-box" placeholder="Filter..." oninput="onFilterTextBoxChanged()" />
+      </div>
+      <div id="myGridTest" class="ag-theme-quartz"></div>
+    </div>
+    
 
     <!-- Your Data Grid container -->
     <div class="ag-theme-quartz-dark" style="height: 90vh" id="myGrid"></div>
 
+    <!-- Modal -->
     <div id="detailsModal" class="modal" tabindex="-1">
-      <div class="modal-dialog">
+      <div class="modal-dialog modal-fullscreen">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Modal title</h5>
+            <h5 id="vehicleTitle" class="modal-title">Modal title</h5>
             <button
               type="button"
               class="btn-close"
@@ -52,16 +61,17 @@
               aria-label="Close"
             ></button>
           </div>
-          <div class="modal-body">
-            <div class="card">
+          <div class="modal-body d-flex flex-row align-items-stretch"">
+            <div class="card m-2" style="width: 50%;">
               <img
                 id="vehicleImage"
                 class="card-img-top"
                 src=""
                 alt="Vehicle Image"
+                style="width: 100%"
               />
               <div class="card-body">
-                <h5 class="card-title" id="vehicleTitle"></h5>
+                <h5 class="card-title" id="cardVehicleTitle"></h5>
                 <ul class="list-group list-group-flush">
                   <li class="list-group-item">
                     <strong>Make:</strong> <span id="vehicleMake"></span>
@@ -89,7 +99,19 @@
                     <strong>Price:</strong> <span id="vehiclePrice"></span>
                   </li>
                 </ul>
-              </div>
+              </div> <!-- /.card-body -->
+            </div> <!-- /.card -->
+            <div class="card m-2" style="width: 50%;">
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                  <label for="exampleInputYear" class="form-label">Password</label>
+                  <input type="text" class="form-control" id="exampleInputYear">  
+                </li>
+                <li class="list-group-item">A second item</li>
+                <li class="list-group-item">A third item</li>
+                <li class="list-group-item">A fourth item</li>
+                <li class="list-group-item">And a fifth one</li>
+              </ul>
             </div>
           </div>
           <div class="modal-footer">
@@ -105,14 +127,14 @@
         </div>
       </div>
     </div>
-
+    <!-- Includes all JS & CSS for the JavaScript Data Grid -->
+    <script src="https://cdn.jsdelivr.net/npm/ag-grid-community/dist/ag-grid-community.min.js"></script>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
       crossorigin="anonymous"
     ></script>
-    <!-- Includes all JS & CSS for the JavaScript Data Grid -->
-    <script src="https://cdn.jsdelivr.net/npm/ag-grid-community/dist/ag-grid-community.min.js"></script>
+    <script src="https://kit.fontawesome.com/94dbe15899.js" crossorigin="anonymous"></script>
     <script src="./js/agGrid.js"></script>
   </body>
 </html>
