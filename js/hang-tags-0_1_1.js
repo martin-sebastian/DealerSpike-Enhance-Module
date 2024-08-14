@@ -17,10 +17,8 @@ document.addEventListener("DOMContentLoaded", () => {
       const vinNumber = data.VIN;
       const stockNumber = data.StockNumber;
       const qLevel = `<span class="badge" style="margin-left: 100px; padding: 10px 15px; font-weight: 900">Quote Level ${data.QuoteLevel}</span>`;
-      const MSRPUnit = numeral(data.MSRPUnit).format("$0,0.00");
-      const unitMSRP = numeral(data.MSRP - data.AccessoryItemsTotal).format(
-        "$0,0.00"
-      );
+      const msrpPlusAccessories = data.MSRP + data.AccessoryItemsTotal;
+      const unitMSRP = numeral(data.MSRPUnit).format("$0,0.00");
       const oemDescription = data.B50Desc;
       const totalOTD = numeral(data.OTDPrice).format("$0,0.00");
       const quotePrice = numeral(data.QuotePrice).format("$0,0.00");
@@ -112,11 +110,11 @@ document.addEventListener("DOMContentLoaded", () => {
         data.AccessoryItems.length > 0
       ) {
         accessoryItemsTemplate = `
-        <h5 class="bold">Accessory Items</h5>
+        <h5 class="bold">Added Accessories</h5>
         ${generateListItems(data.AccessoryItems, 30, "$0,0.00")}
       `;
       } else {
-        accessoryItemsTemplate = vehicleImage; // Handle the case when data.AccessoryItems is null, undefined, empty, or an empty array
+        accessoryItemsTemplate = ""; // Handle the case when data.AccessoryItems is null, undefined, empty, or an empty array
       }
 
       // DISCOUNT ITEMS TEMPLATE
@@ -209,7 +207,7 @@ document.addEventListener("DOMContentLoaded", () => {
       `;
 
       const ourPrice = numeral(
-        data.MSRPUnit +
+        data.MSRP +
           data.AccessoryItemsTotal +
           data.MatItemsTotal +
           data.DiscountItemsTotal +
@@ -229,7 +227,7 @@ document.addEventListener("DOMContentLoaded", () => {
                   <li class="list-group-item text-center">
                     <div class="price-payment-container">
                       <div class="our-price-container">
-                        <div id="msrpLine" class="our-price-msrp gray">MSRP: <s>${unitMSRP}</s></div>
+                        <div id="msrpLine" class="our-price-msrp gray">MSRP: <s>${msrpPlusAccessories}</s></div>
                         <div class="our-price">${yellowTag} ${ourPrice}</div>
                         <div id="savingsLine" class="total-savings">
                           <span class="label label-default">
@@ -249,7 +247,7 @@ document.addEventListener("DOMContentLoaded", () => {
                       </div>
                     </div>
                   </li>
-                  <li class="list-group-item bold">${data.MSRPTitle} <span class="pull-right">${MSRPUnit}</span></li>
+                  <li class="list-group-item bold">${data.MSRPTitle} <span class="pull-right">${unitMSRP}</span></li>
                   <div class="" id="rebatesLine">${matItemsTemplate}</div>
                   <div class="" id="discountsLine">${discountItemsTemplate}</div>
                   <div class="" id="tradeInsLine">${tradeInItemsTemplate}</div>
@@ -274,6 +272,9 @@ document.addEventListener("DOMContentLoaded", () => {
             </div> <!-- End Logo Container -->
               ${vehicleHeaderTemplate}
             <div class="print-tag-body">
+                <div class="vehicle-image-container">
+                  ${vehicleImage}
+                </div>
                 <ul class="list-group">
                   ${accessoryItemsTemplate}
                 </ul>
@@ -281,6 +282,7 @@ document.addEventListener("DOMContentLoaded", () => {
                    ${unitDescriptionTemplate}
                    ${standardFeaturesTemplate}
                 </div>
+                
             </div> <!-- End Print Tag Body -->
             <div class="container-fluid">
               <div class="navbar-danger navbar-fixed-bottom text-center" style="border-radius: 5px; background: #EE0000 !important; padding-top: 15px;">
@@ -340,7 +342,7 @@ document.addEventListener("DOMContentLoaded", () => {
           .logo-container { text-align: center; padding: 0px 10px; }
           .vehicle-image-container { text-align: center; padding: 0; }
           .vehicle-image-container img { border-radius: 10px; }
-          .vehicle-description { margin: 0; }
+          .vehicle-description { margin: 0; font-size: 11px; }
           .vehicle-name-container { margin: 0px; padding: 0px; text-align: center; }
           .vehicle-title { font-size: 24px; justify-content: flex-start; color: #222; font-weight: 900; }
           .vehicle-subtitle { font-size: 14px; color: #666; margin: 10px 0; }
