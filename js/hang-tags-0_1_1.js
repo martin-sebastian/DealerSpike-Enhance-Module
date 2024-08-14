@@ -17,7 +17,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const vinNumber = data.VIN;
       const stockNumber = data.StockNumber;
       const qLevel = `<span class="badge" style="margin-left: 100px; padding: 10px 15px; font-weight: 900">Quote Level ${data.QuoteLevel}</span>`;
-      const msrpPlusAccessories = data.MSRP + data.AccessoryItemsTotal;
+      const msrpPlusAccessories = numeral(
+        data.MSRP + data.AccessoryItemsTotal
+      ).format("$0,0.00");
       const unitMSRP = numeral(data.MSRPUnit).format("$0,0.00");
       const oemDescription = data.B50Desc;
       const totalOTD = numeral(data.OTDPrice).format("$0,0.00");
