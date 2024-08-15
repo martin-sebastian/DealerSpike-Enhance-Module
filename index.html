@@ -55,9 +55,15 @@
         font-size: 14px;
         font-weight: 700;
       }
-      .action-button small {
+      .action-button-group i {
+        display: block;
+        font-size: 20px;
+        text-transform: uppercase;
+      }
+      .action-button-group a {
         display: block;
         font-size: 9px;
+        padding: 5px 10px;
         text-transform: uppercase;
       }
       .table img {
@@ -73,6 +79,9 @@
         font-size: 24px;
         font-weight: 500;
         text-transform: uppercase;
+      }
+      .offcanvas {
+        width: 320px !important;
       }
     </style>
   </head>
@@ -114,11 +123,6 @@
             <div class="offcanvas-body">
               <form class="d-flex flex-column row-gap-3 my-3" role="search">
                 <div class="w-100 d-flex flex-column row-gap-2">
-                  <select id="usageFilter" class="form-select me-2">
-                    <option value="">Usage</option>
-                    <option value="New">New</option>
-                    <option value="Used">Used</option>
-                  </select>
                   <select id="yearFilter" class="form-select me-2">
                     <option value="">Year</option>
                     <option value="2025">2025</option>
@@ -155,7 +159,27 @@
                     <option value="Vanderhall">Vanderhall</option>
                     <option value="Victory Motorcycles">Victory Motorcycles</option>
                   </select>
-                  <button class="btn btn-danter" onclick="resetSelectElement(getSelection)">Reset</button>
+                  <select id="typeFilter" class="form-select me-2">
+                    <option value="">Type</option>
+                    <option value="ATV">ATV</option>
+                    <option value="Cruiser/V-Twin">Cruiser/V-Twin</option>
+                    <option value="Dirt Bikes">Dirt Bikes</option>
+                    <option value="Pontoons">Pontoons</option>
+                    <option value="PWC">PWC</option>
+                    <option value="Side x Side">Side x Side</option>
+                    <option value="Street Bikes">Street Bikes</option>
+                  </select>
+                  <select id="usageFilter" class="form-select me-2">
+                    <option value="">Usage</option>
+                    <option value="New">New</option>
+                    <option value="Used">Used</option>
+                  </select>
+                  <select id="photosFilter" class="form-select me-2">
+                    <option value="">In-House Photos</option>
+                    <option value="Done">Done</option>
+                    <option value="Needs Photos">Needs Photo</option>
+                  </select>
+                  <button class="btn btn-warning" onclick="filterTable()">Reset</button>
                 </div>
               </form>
               <ul class="navbar-nav justify-content-end flex-grow-1 pe-3 d-none">
@@ -225,19 +249,19 @@
               <span id="rowCount" class="badge bg-danger float-end">Total Rows: 0</span>
             </h5>
           </div>
-          <table id="vehiclesTable" class="px-5 table table-sm table-hover">
+          <table id="vehiclesTable" class="px-5 table table-sm table-hover w-100">
             <thead>
               <tr>
-                <th width="120">Image</th>
-                <th class="text-center" width="100">Year</th>
-                <th width="200" class="text-nowrap">Make</th>
+                <th>Image</th>
+                <th class="text-center px-5">Year</th>
+                <th class="text-nowrap">Make</th>
                 <th class="text-nowrap">Model</th>
                 <th class="text-nowrap">Stock Number</th>
                 <th>Type</th>
                 <th>Color</th>
-                <th width="80" class="text-center">Usage</th>
-                <th width="80" class="text-center">Photos</th>
-                <th class="text-end">View / Print</th>
+                <th class="text-center">Usage</th>
+                <th class="text-center">Photos</th>
+                <th class="text-end">Actions</th>
               </tr>
             </thead>
             <tbody>
