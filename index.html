@@ -130,14 +130,14 @@
               ></button>
             </div>
             <div class="offcanvas-body">
-              <form class="d-flex my-3" role="search">
+              <form class="d-flex flex-column row-gap-3 my-3" role="search">
                 <input
                   class="form-control me-2"
                   type="search"
                   placeholder="Search"
                   aria-label="Search"
                 />
-                <div class="w-100">
+                <div class="w-100 d-flex flex-column row-gap-2">
                   <select id="manufacturerFilter" class="form-select me-2">
                     <option value="">Manufacturer</option>
                     <option value="BMW">BMW</option>
@@ -159,9 +159,16 @@
                       Victory Motorcycles
                     </option>
                   </select>
+                  <select id="usageFilter" class="form-select me-2">
+                    <option value="">New/Used</option>
+                    <option value="New">New</option>
+                    <option value="Used">Used</option>
+                  </select>
                 </div>
               </form>
-              <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+              <ul
+                class="navbar-nav justify-content-end flex-grow-1 pe-3 d-none"
+              >
                 <li class="nav-item">
                   <a class="nav-link active" aria-current="page" href="./"
                     >Home</a
@@ -236,43 +243,16 @@
       <div class="card">
         <div class="card-header">
           <div class="">
-            <form class="d-flex flex-row justify-content-between" role="search">
-              <h3></h3>
+            <form class="d-flex flex-row justify-content-center" role="search">
               <div class="w-50">
                 <input
                   class="form-control me-5 w-100"
                   type="search"
-                  placeholder="Search"
+                  placeholder="Search by year, make, model, stock number, or VIN"
                   aria-label="Search"
                   id="searchFilter"
                   title="Filter vehicles by year, name, stock number, or VIN"
                 />
-              </div>
-              <select id="usageFilter" class="form-select me-2 d-none">
-                <option value="">New/Used</option>
-                <option value="New">New</option>
-                <option value="Used">Used</option>
-              </select>
-              <div>
-                <select id="manufacturerFilter" class="form-select me-2">
-                  <option value="">Manufacturer</option>
-                  <option value="BMW">BMW</option>
-                  <option value="Can-Am">Can-Am</option>
-                  <option value="Harley-Davidson">Harley Davidson</option>
-                  <option value="Honda">Honda</option>
-                  <option value="Indian Motorcycle">Indian Motorcycle</option>
-                  <option value="Kawasaki">Kawasaki</option>
-                  <option value="Scarab">Scarab</option>
-                  <option value="Sea-Doo">Sea-Doo</option>
-                  <option value="South Bay">South Bay</option>
-                  <option value="Suzuki">Suzuki</option>
-                  <option value="Suzuki Marine">Suzuki Marine</option>
-                  <option value="Polaris Industries">Polaris Industries</option>
-                  <option value="Vanderhall">Vanderhall</option>
-                  <option value="Victory Motorcycles">
-                    Victory Motorcycles
-                  </option>
-                </select>
               </div>
             </form>
           </div>
