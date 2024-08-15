@@ -86,7 +86,9 @@
   </head>
   <body data-bs-theme="dark">
     <header>
-      <nav class="navbar bg-body-tertiary fixed-top">
+      <nav
+        class="navbar navbar-expand-lg border-bottom bg-body-tertiary fixed-top"
+      >
         <div class="container-fluid">
           <a class="navbar-brand" href="./">
             <img
@@ -98,135 +100,65 @@
               class="d-inline-block align-text-top"
             />
           </a>
-          <button id="toggleThemeButton" class="navbar-toggler py-2 px-3 mx-1">
-            <i class="fa fa-moon-o"></i>
-            <!-- Initial icon, changes on theme switch -->
-          </button>
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="offcanvas"
-            data-bs-target="#offcanvasScrolling"
-            aria-controls="offcanvasNavbar"
-            aria-label="Toggle navigation"
-          >
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div
-            class="offcanvas offcanvas-end"
-            data-bs-scroll="true"
-            data-bs-backdrop="false"
-            tabindex="-1"
-            id="offcanvasScrolling"
-            aria-labelledby="offcanvasScrollingLabel"
-          >
-            <div class="offcanvas-header">
-              <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
+          <div class="btn-group" role="group" aria-label="Basic example">
+            <button id="toggleThemeButton" class="navbar-toggler px-3 mx-1">
+              <i class="fa fa-moon-o"></i>
+              <!-- Initial icon, changes on theme switch -->
+            </button>
+            <button
+              class="navbar-toggler"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#navbarMenuContent"
+              aria-controls="navbarMenuContent"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span class="navbar-toggler-icon"></span>
+            </button>
+          </div>
+          <div class="collapse navbar-collapse" id="navbarMenuContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item mx-2">
+                <a class="nav-link active" aria-current="page" href="./overlay/"
+                  ><i class="bi bi-house mx-1"></i> Home</a
+                >
+              </li>
+              <li class="nav-item mx-2">
+                <a
+                  href="https://newportal.flatoutmotorcycles.com/Portal/admin/muindex"
+                  class="nav-link"
+                >
+                  <i class="bi bi-window-dock mx-1"></i>
+                  Portal</a
+                >
+              </li>
+              <li class="nav-item mx-2">
+                <a
+                  href="https://newportal.flatoutmotorcycles.com/Service/Home/ROSpec"
+                  class="nav-link"
+                  ><i class="bi bi-calendar-day mx-1"></i> Schedule</a
+                >
+              </li>
+              <li class="nav-item mx-2">
+                <a href="./deal-jacket/" class="nav-link"
+                  ><i class="bi bi-speedometer2 mx-1"></i> Dashboard</a
+                >
+              </li>
+            </ul>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
               <button
+                id="toggleThemeButton"
+                class="btn btn-default me-md-2"
                 type="button"
-                class="btn-close"
-                data-bs-dismiss="offcanvas"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div class="offcanvas-body">
-              <form class="d-flex my-3" role="search">
-                <input
-                  class="form-control me-2"
-                  type="search"
-                  placeholder="Search"
-                  aria-label="Search"
-                />
-                <div class="w-100">
-                  <select id="manufacturerFilter" class="form-select me-2">
-                    <option value="">Manufacturer</option>
-                    <option value="BMW">BMW</option>
-                    <option value="Can-Am">Can-Am</option>
-                    <option value="Harley-Davidson">Harley Davidson</option>
-                    <option value="Honda">Honda</option>
-                    <option value="Indian Motorcycle">Indian Motorcycle</option>
-                    <option value="Kawasaki">Kawasaki</option>
-                    <option value="Scarab">Scarab</option>
-                    <option value="Sea-Doo">Sea-Doo</option>
-                    <option value="South Bay">South Bay</option>
-                    <option value="Suzuki">Suzuki</option>
-                    <option value="Suzuki Marine">Suzuki Marine</option>
-                    <option value="Polaris Industries">
-                      Polaris Industries
-                    </option>
-                    <option value="Vanderhall">Vanderhall</option>
-                    <option value="Victory Motorcycles">
-                      Victory Motorcycles
-                    </option>
-                  </select>
-                </div>
-              </form>
-              <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-                <li class="nav-item">
-                  <a class="nav-link active" aria-current="page" href="./"
-                    >Home</a
-                  >
-                </li>
-                <li class="nav-item">
-                  <a
-                    class="nav-link"
-                    href="https://newportal.flatoutmotorcycles.com/Portal/admin/muindex"
-                    >Inventory</a
-                  >
-                </li>
-                <li class="nav-item">
-                  <a
-                    class="nav-link"
-                    href="https://newportal.flatoutmotorcycles.com/Service/"
-                    >Service</a
-                  >
-                </li>
-                <li class="nav-item">
-                  <a
-                    class="nav-link"
-                    href="https://newportal.flatoutmotorcycles.com/PartSharkOps/"
-                    >Ecommerce</a
-                  >
-                </li>
-                <li class="nav-item dropdown">
-                  <a
-                    class="nav-link dropdown-toggle"
-                    href="#"
-                    role="button"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    <i class="bi bi-grid-3x3-gap-fill"></i> Apps
-                  </a>
-                  <ul class="dropdown-menu">
-                    <li>
-                      <a
-                        class="dropdown-item"
-                        href="https://newportal.flatoutmotorcycles.com/Portal/"
-                        ><i class="bi bi-grid-3x3-gap-fill"></i> Sales Portal</a
-                      >
-                    </li>
-                    <li>
-                      <a
-                        class="dropdown-item"
-                        href="https://newportal.flatoutmotorcycles.com/Service/"
-                        ><i class="bi bi-grid-3x3-gap-fill"></i> Service
-                        Schedule</a
-                      >
-                    </li>
-                    <li>
-                      <hr class="dropdown-divider" />
-                    </li>
-                    <li>
-                      <a
-                        class="dropdown-item"
-                        href="https://newportal.flatoutmotorcycles.com/PartSharkOps/"
-                        >Part Shark Ops</a
-                      >
-                    </li>
-                  </ul>
-                </li>
-              </ul>
+                onclick="toggleTheme()"
+              >
+                <i class="fa fa-moon-o mx-1"></i>
+                <!-- Initial icon, changes on theme switch -->
+              </button>
+              <button class="btn btn-outline-danger" type="button">
+                Login
+              </button>
             </div>
           </div>
         </div>
