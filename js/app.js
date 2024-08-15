@@ -122,7 +122,7 @@ async function fetchData() {
             <div class="visually-hidden">VIN: ${vin}</div>
           </td>
           <td class="pe-5">${stockNumber}</td>
-          <td class="text-wrap pe-5">${modelType}</td>
+          <td class="text-nowrap pe-5">${modelType}</td>
           <td class="text-wrap pe-5">${color}</td>
           <td class="text-center" style="width: 80px;"><span class="badge text-bg-secondary">${usage}</span></td>
           <td class="text-center" style="width: 60px;">${photos}</td>
