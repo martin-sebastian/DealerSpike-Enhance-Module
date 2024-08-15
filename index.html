@@ -4,18 +4,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="32x32"
-      href="./img/favicon-32x32.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="16x16"
-      href="./img/favicon-16x16.png"
-    />
+    <link rel="icon" type="image/png" sizes="32x32" href="./img/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="./img/favicon-16x16.png" />
     <link rel="manifest" href="./img/site.webmanifest" />
     <title>Print Tags</title>
     <link
@@ -24,10 +14,7 @@
       integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
       crossorigin="anonymous"
     />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
-    />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
     <link href="./css/font-awesome.css" rel="stylesheet" />
     <style>
       .nowrap {
@@ -82,6 +69,11 @@
         overflow: hidden;
         text-overflow: ellipsis;
       }
+      .photos-status {
+        font-size: 24px;
+        font-weight: 500;
+        text-transform: uppercase;
+      }
     </style>
   </head>
   <body data-bs-theme="dark">
@@ -89,29 +81,24 @@
       <nav class="navbar bg-body-tertiary fixed-top">
         <div class="container-fluid">
           <a class="navbar-brand" href="./">
-            <img
-              id="logo"
-              src="./img/fom-app-logo-01.svg"
-              alt="Logo"
-              width="180"
-              height="30.6"
-              class="d-inline-block align-text-top"
-            />
+            <img id="logo" src="./img/fom-app-logo-01.svg" alt="Logo" width="180" height="30.6" class="d-inline-block align-text-top" />
           </a>
-          <button id="toggleThemeButton" class="navbar-toggler py-2 px-3 mx-1">
-            <i class="fa fa-moon-o"></i>
-            <!-- Initial icon, changes on theme switch -->
-          </button>
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="offcanvas"
-            data-bs-target="#offcanvasScrolling"
-            aria-controls="offcanvasNavbar"
-            aria-label="Toggle navigation"
-          >
-            <span class="navbar-toggler-icon"></span>
-          </button>
+          <div class="toggles-group">
+            <button id="toggleThemeButton" class="navbar-toggler py-2 px-3 mx-1">
+              <i class="fa fa-moon-o"></i>
+              <!-- Initial icon, changes on theme switch -->
+            </button>
+            <button
+              class="navbar-toggler py-2 px-3 mx-1"
+              type="button"
+              data-bs-toggle="offcanvas"
+              data-bs-target="#offcanvasScrolling"
+              aria-controls="offcanvasNavbar"
+              aria-label="Toggle navigation"
+            >
+              <i class="bi bi-filter-right"></i>
+            </button>
+          </div>
           <div
             class="offcanvas offcanvas-end"
             data-bs-scroll="true"
@@ -121,23 +108,36 @@
             aria-labelledby="offcanvasScrollingLabel"
           >
             <div class="offcanvas-header">
-              <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
-              <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="offcanvas"
-                aria-label="Close"
-              ></button>
+              <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Filters</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
             <div class="offcanvas-body">
               <form class="d-flex flex-column row-gap-3 my-3" role="search">
-                <input
-                  class="form-control me-2"
-                  type="search"
-                  placeholder="Search"
-                  aria-label="Search"
-                />
                 <div class="w-100 d-flex flex-column row-gap-2">
+                  <select id="usageFilter" class="form-select me-2">
+                    <option value="">Usage</option>
+                    <option value="New">New</option>
+                    <option value="Used">Used</option>
+                  </select>
+                  <select id="yearFilter" class="form-select me-2">
+                    <option value="">Year</option>
+                    <option value="2025">2025</option>
+                    <option value="2024">2024</option>
+                    <option value="2023">2023</option>
+                    <option value="2022">2022</option>
+                    <option value="2021">2021</option>
+                    <option value="2020">2020</option>
+                    <option value="2019">2019</option>
+                    <option value="2018">2018</option>
+                    <option value="2017">2017</option>
+                    <option value="2016">2016</option>
+                    <option value="2015">2015</option>
+                    <option value="2015">2014</option>
+                    <option value="2015">2013</option>
+                    <option value="2015">2012</option>
+                    <option value="2015">2011</option>
+                    <option value="2015">2010</option>
+                  </select>
                   <select id="manufacturerFilter" class="form-select me-2">
                     <option value="">Manufacturer</option>
                     <option value="BMW">BMW</option>
@@ -151,85 +151,46 @@
                     <option value="South Bay">South Bay</option>
                     <option value="Suzuki">Suzuki</option>
                     <option value="Suzuki Marine">Suzuki Marine</option>
-                    <option value="Polaris Industries">
-                      Polaris Industries
-                    </option>
+                    <option value="Polaris Industries">Polaris Industries</option>
                     <option value="Vanderhall">Vanderhall</option>
-                    <option value="Victory Motorcycles">
-                      Victory Motorcycles
-                    </option>
+                    <option value="Victory Motorcycles">Victory Motorcycles</option>
                   </select>
-                  <select id="usageFilter" class="form-select me-2">
-                    <option value="">New/Used</option>
-                    <option value="New">New</option>
-                    <option value="Used">Used</option>
-                  </select>
+                  <button class="btn btn-danter" onclick="resetSelectElement(getSelection)">Reset</button>
                 </div>
               </form>
-              <ul
-                class="navbar-nav justify-content-end flex-grow-1 pe-3 d-none"
-              >
+              <ul class="navbar-nav justify-content-end flex-grow-1 pe-3 d-none">
                 <li class="nav-item">
-                  <a class="nav-link active" aria-current="page" href="./"
-                    >Home</a
-                  >
+                  <a class="nav-link active" aria-current="page" href="./">Home</a>
                 </li>
                 <li class="nav-item">
-                  <a
-                    class="nav-link"
-                    href="https://newportal.flatoutmotorcycles.com/Portal/admin/muindex"
-                    >Inventory</a
-                  >
+                  <a class="nav-link" href="https://newportal.flatoutmotorcycles.com/Portal/admin/muindex">Inventory</a>
                 </li>
                 <li class="nav-item">
-                  <a
-                    class="nav-link"
-                    href="https://newportal.flatoutmotorcycles.com/Service/"
-                    >Service</a
-                  >
+                  <a class="nav-link" href="https://newportal.flatoutmotorcycles.com/Service/">Service</a>
                 </li>
                 <li class="nav-item">
-                  <a
-                    class="nav-link"
-                    href="https://newportal.flatoutmotorcycles.com/PartSharkOps/"
-                    >Ecommerce</a
-                  >
+                  <a class="nav-link" href="https://newportal.flatoutmotorcycles.com/PartSharkOps/">Ecommerce</a>
                 </li>
                 <li class="nav-item dropdown">
-                  <a
-                    class="nav-link dropdown-toggle"
-                    href="#"
-                    role="button"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
+                  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="bi bi-grid-3x3-gap-fill"></i> Apps
                   </a>
                   <ul class="dropdown-menu">
                     <li>
-                      <a
-                        class="dropdown-item"
-                        href="https://newportal.flatoutmotorcycles.com/Portal/"
+                      <a class="dropdown-item" href="https://newportal.flatoutmotorcycles.com/Portal/"
                         ><i class="bi bi-grid-3x3-gap-fill"></i> Sales Portal</a
                       >
                     </li>
                     <li>
-                      <a
-                        class="dropdown-item"
-                        href="https://newportal.flatoutmotorcycles.com/Service/"
-                        ><i class="bi bi-grid-3x3-gap-fill"></i> Service
-                        Schedule</a
+                      <a class="dropdown-item" href="https://newportal.flatoutmotorcycles.com/Service/"
+                        ><i class="bi bi-grid-3x3-gap-fill"></i> Service Schedule</a
                       >
                     </li>
                     <li>
                       <hr class="dropdown-divider" />
                     </li>
                     <li>
-                      <a
-                        class="dropdown-item"
-                        href="https://newportal.flatoutmotorcycles.com/PartSharkOps/"
-                        >Part Shark Ops</a
-                      >
+                      <a class="dropdown-item" href="https://newportal.flatoutmotorcycles.com/PartSharkOps/">Part Shark Ops</a>
                     </li>
                   </ul>
                 </li>
@@ -261,9 +222,7 @@
           <div class="d-flex justify-content-between">
             <h5 class="w-100 pb-3 border-bottom">
               Inventory
-              <span id="rowCount" class="badge bg-danger float-end"
-                >Total Rows: 0</span
-              >
+              <span id="rowCount" class="badge bg-danger float-end">Total Rows: 0</span>
             </h5>
           </div>
           <table id="vehiclesTable" class="px-5 table table-sm table-hover">

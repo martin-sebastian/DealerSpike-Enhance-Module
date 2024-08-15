@@ -4,10 +4,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   if (savedTheme) {
     document.body.setAttribute("data-bs-theme", savedTheme);
     const logo = document.getElementById("logo");
-    logo.src =
-      savedTheme === "dark"
-        ? "./img/fom-app-logo-01.svg"
-        : "./img/fom-app-logo-02.svg";
+    logo.src = savedTheme === "dark" ? "./img/fom-app-logo-01.svg" : "./img/fom-app-logo-02.svg";
     updateThemeIcon(savedTheme);
   }
   console.log(`Theme loaded from session storage: ${savedTheme}`);
@@ -25,9 +22,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 async function fetchData() {
   try {
     console.log("Fetching XML data...");
-    const response = await fetch(
-      "https://www.flatoutmotorcycles.com/unitinventory_univ.xml"
-    );
+    const response = await fetch("https://www.flatoutmotorcycles.com/unitinventory_univ.xml");
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
@@ -39,32 +34,22 @@ async function fetchData() {
 
     console.log(`Number of items found: ${items.length}`);
 
-    const tableBody = document
-      .getElementById("vehiclesTable")
-      .getElementsByTagName("tbody")[0];
+    const tableBody = document.getElementById("vehiclesTable").getElementsByTagName("tbody")[0];
 
     for (let i = 0; i < items.length; i++) {
       const item = items[i];
       console.log(`Processing item ${i + 1}`);
 
-      const imageUrl =
-        item
-          .getElementsByTagName("images")[0]
-          ?.getElementsByTagName("imageurl")[0]?.textContent || "N/A";
+      const imageUrl = item.getElementsByTagName("images")[0]?.getElementsByTagName("imageurl")[0]?.textContent || "N/A";
       const title = item.getElementsByTagName("title")[0]?.textContent || "N/A";
-      const stockNumber =
-        item.getElementsByTagName("stocknumber")[0]?.textContent || "N/A";
+      const stockNumber = item.getElementsByTagName("stocknumber")[0]?.textContent || "N/A";
       const vin = item.getElementsByTagName("vin")[0]?.textContent || "N/A";
       const price = item.getElementsByTagName("price")[0]?.textContent || "N/A";
-      const manufacturer =
-        item.getElementsByTagName("manufacturer")[0]?.textContent || "N/A";
+      const manufacturer = item.getElementsByTagName("manufacturer")[0]?.textContent || "N/A";
       const year = item.getElementsByTagName("year")[0]?.textContent || "N/A";
-      const modelName =
-        item.getElementsByTagName("model_name")[0]?.textContent || "N/A";
-      const modelType =
-        item.getElementsByTagName("model_type")[0]?.textContent || "N/A";
-      const modelTypeStyle =
-        item.getElementsByTagName("model_typestyle")[0]?.textContent || "N/A";
+      const modelName = item.getElementsByTagName("model_name")[0]?.textContent || "N/A";
+      const modelType = item.getElementsByTagName("model_type")[0]?.textContent || "N/A";
+      const modelTypeStyle = item.getElementsByTagName("model_typestyle")[0]?.textContent || "N/A";
       const color = item.getElementsByTagName("color")[0]?.textContent || "N/A";
       const usage = item.getElementsByTagName("usage")[0]?.textContent || "N/A";
       // Count Images for each item
@@ -72,19 +57,13 @@ async function fetchData() {
 
       const photos =
         imageElements.length > 10
-          ? `<span class="badge text-bg-success">
-                <span class="fa-stack" style="font-size: 10px;">
-                  <i class="fa fa-circle-o fa-stack-2x"></i>
-                  <i class="fa fa-check fa-stack-1x"></i>
-                </span>
-                <span class="mt-0 mb-0" style="font-size: 10px;">Done</span>
+          ? `<span class="photos-status" title="In-House Photos Done">
+                <i class="bi bi-check-circle"></i>
+                <span class="mt-0 mb-0 visually-hidden" style="font-size: 10px;">Done</span>
               </span>`
-          : ` <span class="badge text-bg-warning">
-                <span class="fa-stack" style="font-size: 10px;">
-                  <i class="fa fa-camera fa-stack-1x"></i>
-                  <i class="fa fa-ban fa-stack-2x text-danger"></i>
-                </span>
-                <span class="mt-0 mb-0" style="font-size: 10px;"> Needs Photos </span>
+          : ` <span class="photos-status" title="Awaiting Photo Shoot">
+                <i class="bi bi-camera2 text-warning"></i>
+                <span class="mt-0 mb-0 visually-hidden" style="font-size: 10px;"> Needs Photos </span>
               </span>`;
 
       console.log(photos);
@@ -108,11 +87,7 @@ async function fetchData() {
       const row = document.createElement("tr");
       row.innerHTML = `
           <td class="text-start" style="width: 80px">
-            ${
-              imageUrl !== "N/A"
-                ? `<img src="${imageUrl}" alt="${title}" />`
-                : `<i class="fa fa-picture-o fa-3x" aria-hidden="true"></i>`
-            }
+            ${imageUrl !== "N/A" ? `<img src="${imageUrl}" alt="${title}" />` : `<i class="fa fa-picture-o fa-3x" aria-hidden="true"></i>`}
           </td>
           <td class="text-center"><span class="badge text-bg-secondary">${year}</span></td>
           <td class="text-wrap" style="width: 100px">${manufacturer}</td>
@@ -163,12 +138,8 @@ function sortTableByColumn(header) {
   const order = header.classList.contains("sort-asc") ? "desc" : "asc";
 
   rows.sort((a, b) => {
-    const aText = a.querySelector(
-      `td:nth-child(${header.cellIndex + 1})`
-    ).textContent;
-    const bText = b.querySelector(
-      `td:nth-child(${header.cellIndex + 1})`
-    ).textContent;
+    const aText = a.querySelector(`td:nth-child(${header.cellIndex + 1})`).textContent;
+    const bText = b.querySelector(`td:nth-child(${header.cellIndex + 1})`).textContent;
 
     if (aText < bText) {
       return order === "asc" ? -1 : 1;
@@ -203,10 +174,7 @@ function toggleTheme() {
   console.log(`Current theme: ${currentTheme}, New theme: ${newTheme}`);
   body.setAttribute("data-bs-theme", newTheme);
   const logo = document.getElementById("logo");
-  logo.src =
-    newTheme === "dark"
-      ? "./img/fom-app-logo-01.svg"
-      : "./img/fom-app-logo-02.svg";
+  logo.src = newTheme === "dark" ? "./img/fom-app-logo-01.svg" : "./img/fom-app-logo-02.svg";
   updateThemeIcon(newTheme);
   // Save the new theme to session storage
   sessionStorage.setItem("theme", newTheme);
@@ -214,9 +182,7 @@ function toggleTheme() {
 
 // Function to update the theme icon
 function updateThemeIcon(theme) {
-  const toggleThemeButton = document
-    .getElementById("toggleThemeButton")
-    .querySelector("i");
+  const toggleThemeButton = document.getElementById("toggleThemeButton").querySelector("i");
   console.log(`Updating theme icon for theme: ${theme}`);
   if (theme === "dark") {
     toggleThemeButton.classList.remove("fa-sun-o");
@@ -229,12 +195,10 @@ function updateThemeIcon(theme) {
 
 // Filter Table by search input and manufacturer dropdown
 function filterTable() {
-  const searchInput = document
-    .getElementById("searchFilter")
-    .value.toUpperCase();
-  const manufacturerFilter = document
-    .getElementById("manufacturerFilter")
-    .value.toUpperCase();
+  const searchInput = document.getElementById("searchFilter").value.toUpperCase();
+  const manufacturerFilter = document.getElementById("manufacturerFilter").value.toUpperCase();
+  const usageFilter = document.getElementById("usageFilter").value.toUpperCase();
+  const yearFilter = document.getElementById("yearFilter").value.toUpperCase();
   const table = document.getElementById("vehiclesTable");
   const tr = table.getElementsByTagName("tr");
 
@@ -244,17 +208,20 @@ function filterTable() {
     // Start from 1 to skip the header row
     const titleTd = tr[i].getElementsByTagName("td")[3]; // Title column
     const manufacturerTd = tr[i].getElementsByTagName("td")[2]; // Manufacturer column
+    const usageTd = tr[i].getElementsByTagName("td")[7]; // Usage column
+    const yearTd = tr[i].getElementsByTagName("td")[1]; // Year column
 
-    if (titleTd && manufacturerTd) {
+    if (titleTd && manufacturerTd && usageTd) {
       const titleTxt = titleTd.textContent || titleTd.innerText;
-      const manufacturerTxt =
-        manufacturerTd.textContent || manufacturerTd.innerText;
+      const manufacturerTxt = manufacturerTd.textContent || manufacturerTd.innerText;
+      const usageTxt = usageTd.textContent || usageTd.innerText;
+      const yearTxt = yearTd.textContent || yearTd.innerText;
 
       if (
-        (titleTxt.toUpperCase().indexOf(searchInput) > -1 ||
-          searchInput === "") &&
-        (manufacturerTxt.toUpperCase().indexOf(manufacturerFilter) > -1 ||
-          manufacturerFilter === "")
+        (titleTxt.toUpperCase().indexOf(searchInput) > -1 || searchInput === "") &&
+        (manufacturerTxt.toUpperCase().indexOf(manufacturerFilter) > -1 || manufacturerFilter === "") &&
+        (usageTxt.toUpperCase().indexOf(usageFilter) > -1 || usageFilter === "") &&
+        (yearTxt.toUpperCase().indexOf(yearFilter) > -1 || yearFilter === "")
       ) {
         tr[i].style.display = "";
         visibleRows++;
@@ -265,12 +232,24 @@ function filterTable() {
   }
 
   // Update row count
-  document.getElementById("rowCount").textContent =
-    "Total Units: " + visibleRows;
+  document.getElementById("rowCount").textContent = "Total Units: " + visibleRows;
 }
 
 // Event listeners for input and dropdown changes
 document.getElementById("searchFilter").addEventListener("keyup", filterTable);
-document
-  .getElementById("manufacturerFilter")
-  .addEventListener("change", filterTable);
+document.getElementById("manufacturerFilter").addEventListener("change", filterTable);
+document.getElementById("usageFilter").addEventListener("change", filterTable);
+document.getElementById("yearFilter").addEventListener("change", filterTable);
+
+// Clear search input and trigger filtering when 'x' button is clicked
+document.getElementById("searchFilter").addEventListener("input", function () {
+  if (!this.value) {
+    filterTable();
+  }
+});
+
+// Reset filters
+function resetSelectElement() {
+  selecElement.selectedIndex = 0; // first option is selected, or
+  // -1 for no option selected
+}
