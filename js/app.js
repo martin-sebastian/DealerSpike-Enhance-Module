@@ -177,27 +177,26 @@ async function fetchData() {
 
       const row = document.createElement("tr");
       row.innerHTML = `
-          <td class="text-start" style="width: 80px">
+          <td class="text-start">
             ${imageUrl !== "N/A" ? `<img src="${imageUrl}" alt="${title}" />` : `<i class="fa fa-picture-o fa-3x" aria-hidden="true"></i>`}
           </td>
-          <td class="text-center"><span class="badge text-bg-secondary">${year}</span></td>
-          <td class="text-wrap" style="width: 100px">${manufacturer}</td>
+          <td class="text-center px-2"><span class="badge text-bg-secondary">${year}</span></td>
+          <td class="pe-2">${manufacturer}</td>
           <td class="text-nowrap pe-2">
-            <div class="vehicle-model text-nowrap text-truncate">${modelName}</div>
+            <div class="vehicle-model text-truncate">${modelName}</div>
             <span class="visually-hidden">${stockNumber} ${vin} ${usage} ${year} ${manufacturer} ${modelName} ${modelType} ${modelTypeStyle} ${color} ${photos}</span>
             <div class="visually-hidden">VIN: ${vin}</div>
           </td>
-          <td class="pe-5">${stockNumber}</td>
-          <td class="text-nowrap pe-5">${modelType}</td>
-          <td class="text-wrap pe-5">${color}</td>
-          <td class="text-center" style="width: 80px;"><span class="badge text-bg-secondary">${usage}</span></td>
-          <td class="text-center" style="width: 60px;">${photos}</td>
-          <td class="text-end text-nowrap" style="width: 335px">
-            <div class="btn-group nowrap" role="group" aria-label="Vehicles">
-              <a href="./overlay/?search=${stockNumber}" type="button" class="btn btn-danger action-button"><i class="fa fa-file-text mx-1"></i><small>Web Preview</small></a>
-              <a href="./hang-tags/?search=${stockNumber}" type="button" class="btn btn-danger action-button"><i class="fa fa-tag mx-1"></i><small>Hang Tag</small></a>
-              <a href="./key-tags/?vehicle=${stockNumber}" type="button" class="btn btn-danger action-button"><i class="fa fa-key mx-1"></i><small>Key Tag</small></a>
-              <a href="./deal-jacket/index.html?search=${stockNumber}" type="button" class="btn btn-danger action-button"><i class="fa fa-folder mx-1"></i><small>Deal Jacket</small></a>
+          <td class="pe-2">${stockNumber}</td>
+          <td class="text-nowrap pe-2">${modelType}</td>
+          <td class="text-wrap pe-2">${color}</td>
+          <td class="text-center"><span class="badge text-bg-secondary">${usage}</span></td>
+          <td class="text-center px-2">${photos}</td>
+          <td class="text-end text-nowrap">
+            <div class="btn-group nowrap action-button-group" role="group" aria-label="Vehicles">
+              <a href="./overlay/?search=${stockNumber}" type="button" class="btn btn-danger action-button"><i class="bi bi-card-heading"></i><small>Web Preview</small></a>
+              <a href="./hang-tags/?search=${stockNumber}" type="button" class="btn btn-danger action-button"><i class="bi bi-tags"></i><small>Hang Tags</small></a>
+              <a href="./key-tags/?vehicle=${stockNumber}" type="button" class="btn btn-danger action-button"><i class="bi bi-tag"></i><small>Key Tag</small></a>
             </div>  
           </td>
       `;

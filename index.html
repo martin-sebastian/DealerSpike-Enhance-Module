@@ -57,13 +57,16 @@
       }
       .action-button-group i {
         display: block;
-        font-size: 20px;
+        color: #fff;
+        font-size: 18px;
+        padding: 1px 0;
         text-transform: uppercase;
       }
-      .action-button-group a {
+      .action-button-group small {
         display: block;
+        min-width: 50px;
         font-size: 9px;
-        padding: 5px 10px;
+        padding: 0;
         text-transform: uppercase;
       }
       .table img {
@@ -80,14 +83,20 @@
         font-weight: 500;
         text-transform: uppercase;
       }
-      .offcanvas {
-        width: 320px !important;
-      }
       .placeholder {
         border-radius: 5px;
         padding: 10px;
         margin: 5px 0;
         height: 15px;
+      }
+      .offcanvas {
+        width: 320px !important;
+      }
+      .side-menu-footer {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        padding: 10px 0;
       }
     </style>
   </head>
@@ -185,7 +194,11 @@
                     <option value="Done">Done</option>
                     <option value="Needs Photos">Needs Photo</option>
                   </select>
-                  <button class="btn btn-warning" onclick="filterTable()">Reset</button>
+                  <nav class="side-menu-footer">
+                    <div class="container">
+                      <button class="btn btn-warning" onclick="filterTable()">Reset all filters</button>
+                    </div>
+                  </nav>
                 </div>
               </form>
               <ul class="navbar-nav justify-content-end flex-grow-1 pe-3 d-none">
@@ -249,8 +262,7 @@
         <div class="card-body table-responsive">
           <div class="d-flex justify-content-between">
             <h5 class="w-100 pb-3 border-bottom">
-              Inventory
-              <span id="rowCount" class="badge bg-danger float-end">Total Rows: 0</span>
+              <span id="rowCount" class="badge bg-danger">Total Rows: 0</span>
             </h5>
           </div>
           <table id="vehiclesTable" class="px-5 table table-sm table-hover w-100">
