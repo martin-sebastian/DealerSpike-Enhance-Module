@@ -12,8 +12,7 @@ function showpay() {
   var dp = (princ / 100) * down;
   var term = document.calc.months.value;
   var intr = document.calc.rate.value / 1200;
-  document.calc.pay.value =
-    ((princ - dp) * intr) / (1 - Math.pow(1 / (1 + intr), term));
+  document.calc.pay.value = ((princ - dp) * intr) / (1 - Math.pow(1 / (1 + intr), term));
   document.calc.pay.value = document.calc.pay.value;
   var payment = ((princ - dp) * intr) / (1 - Math.pow(1 / (1 + intr), term));
   var payment = payment.toFixed();
@@ -64,27 +63,16 @@ console.log("stockNum", stockNum);
 
 $.ajax({
   type: "GET",
-  url:
-    "https://newportal.flatoutmotorcycles.com/portal/public/api/majorunit/stocknumber/" +
-    stockNum,
+  url: "https://newportal.flatoutmotorcycles.com/portal/public/api/majorunit/stocknumber/" + stockNum,
   //url: "http://192.168.1.8/portal/public/api/majorunit/stocknumber/" + stockNum,
 })
   .done(function (data) {
     console.log("data.StockNumber", data.StockNumber);
-    var prodTitle =
-      data.Usage +
-      " " +
-      data.ModelYear +
-      " " +
-      data.Manufacturer +
-      " " +
-      data.B50ModelName;
+    var prodTitle = data.Usage + " " + data.ModelYear + " " + data.Manufacturer + " " + data.B50ModelName;
     var vinNumber = data.VIN;
     const qLevel = `<span class="badge" style="margin-left: 100px; padding: 10px 15px; font-weight: 900">Quote Level ${data.QuoteLevel}</span>`;
     var MSRPUnit = numeral(data.MSRPUnit).format("$0,0.00");
-    var unitMSRP = numeral(data.MSRP - data.AccessoryItemsTotal).format(
-      "$0,0.00"
-    );
+    var unitMSRP = numeral(data.MSRP - data.AccessoryItemsTotal).format("$0,0.00");
     var msrpLabel = data.MSRPTitle;
     var msrpTotal = numeral(data.MSRPUnit).format("$0,0.00");
     var totalOTD = numeral(data.OTDPrice).format("$0,0.00");
@@ -98,9 +86,7 @@ $.ajax({
     var fomDisclaimer = `<p class="text-center"><small>*Price does NOT include, Manufacturer Surcharge, Manufacturer Commodity Surcharge, Freight, Dealer Document Fee $199, Sales Tax, Title Fee $30. Sale Price INCLUDES all factory incentives (If Applicable). See Flat Out Motorsports for full disclosure on current Fees and Surcharges.</small></p>`;
     var image = data.ImageUrl;
     var linkToUnit = data.DetailUrl;
-    var salePriceExpireDate = moment(data.SalePriceExpireDate).format(
-      "MM/DD/YYYY"
-    );
+    var salePriceExpireDate = moment(data.SalePriceExpireDate).format("MM/DD/YYYY");
 
     var arrivalDate = moment(data.EstimatedArrival).format("MM/DD/YYYY");
     var newUsed = data.Usage;
@@ -139,9 +125,7 @@ $.ajax({
     i = 0;
     while (i < 4) {
       if (data.MUItems[i]) {
-        muItemsTemplate += `<li class="list-group-item"><em>${
-          data.MUItems[i].Description
-        }</em> <span class="pull-right bold red">-${numeral(
+        muItemsTemplate += `<li class="list-group-item"><em>${data.MUItems[i].Description}</em> <span class="pull-right bold red">-${numeral(
           data.MUItems[i].Amount
         ).format("$0,0.00")}</span></li>`;
       }
@@ -169,15 +153,11 @@ $.ajax({
     for (var i = 0; i < 9; i++) {
       if (data.MatItems && data.MatItems[i]) {
         if (data.MatItems[i].Description == "Indiana Sales Tax") {
-          matItemsTemplate += `<li class="list-group-item">${
-            data.MatItems[i].Description
-          } <span class="pull-rightxxx">${numeral(
+          matItemsTemplate += `<li class="list-group-item">${data.MatItems[i].Description} <span class="pull-rightxxx">${numeral(
             data.MatItems[i].Amount
           ).format("$0,0.00")}</span></li>`;
         } else {
-          matItemsTemplate += `<li class="list-group-item"><em>${
-            data.MatItems[i].Description
-          }</em> <span class="pull-right">${numeral(
+          matItemsTemplate += `<li class="list-group-item"><em>${data.MatItems[i].Description}</em> <span class="pull-right">${numeral(
             data.MatItems[i].Amount
           ).format("$0,0.00")}</span></li>`;
         }
@@ -207,16 +187,10 @@ $.ajax({
 
     for (var i = 0; i < 9; i++) {
       if (data.OTDItems && data.OTDItems[i]) {
-        var listItemClass = data.OTDItems[i].Description.startsWith(
-          "Indiana Sales Tax"
-        )
-          ? "list-group-item tax"
-          : "list-group-item";
+        var listItemClass = data.OTDItems[i].Description.startsWith("Indiana Sales Tax") ? "list-group-item tax" : "list-group-item";
         OTDItemsTemplate += `<li class="${listItemClass}"><div class="otd-item-description">${
           data.OTDItems[i].Description
-        }</div> <div class="otd-item-amount">${numeral(
-          data.OTDItems[i].Amount
-        ).format("$0,0.00")}</div></li>`;
+        }</div> <div class="otd-item-amount">${numeral(data.OTDItems[i].Amount).format("$0,0.00")}</div></li>`;
       }
     }
 
@@ -226,9 +200,7 @@ $.ajax({
     i = 0;
     while (i < 5) {
       if (data.TradeInItems[i]) {
-        tradeInItemsTemplate += `<li class="list-group-item"><em>${
-          data.TradeInItems[i].Description
-        }</em> <span class="pull-right bold red">${numeral(
+        tradeInItemsTemplate += `<li class="list-group-item"><em>${data.TradeInItems[i].Description}</em> <span class="pull-right bold red">${numeral(
           data.TradeInItems[i].Amount
         ).format("$0,0.00")}</span></li>`;
       }
@@ -242,19 +214,13 @@ $.ajax({
     while (i < 100) {
       if (data.AccessoryItems[i]) {
         if (data.AccessoryItems[i].Included == false) {
-          accessoryItemsTemplate += `<li class="list-group-item">${
-            data.AccessoryItems[i].Description
-          } <span class="pull-right">${numeral(
+          accessoryItemsTemplate += `<li class="list-group-item">${data.AccessoryItems[i].Description} <span class="pull-right">${numeral(
             data.AccessoryItems[i].Amount
           ).format("$0,0.00")}</span></li>`;
         } else {
-          accessoryItemsTemplate += `<li class="list-group-item"><small>${
-            data.AccessoryItems[i].Description
-          }</small> <span class="red">(<small>value:${numeral(
+          accessoryItemsTemplate += `<li class="list-group-item"><small>${data.AccessoryItems[i].Description}</small> <span class="red">(<small>value:${numeral(
             data.AccessoryItems[i].Amount
-          ).format(
-            "$0,0.00"
-          )})</small></span> <span class="pull-right">Included</span></li>`;
+          ).format("$0,0.00")})</small></span> <span class="pull-right">Included</span></li>`;
         }
       }
       i++;
@@ -265,10 +231,7 @@ $.ajax({
 
     if ($(data.AccessoryItems[0]).length && data.AccessoryItemsTotal > 0) {
       var accessoryLine = `<li class="list-group-item"><a class="gray bold collapsed" data-toggle="collapse" href="#collapseItems" aria-expanded="false" aria-controls="collapseoverlay">Features <i class="fa fa-chevron-down collapse-icon" aria-hidden="true"></i></a> <span class=""> - ${accTotal}</span></li>`;
-    } else if (
-      $(data.AccessoryItems[0]).length &&
-      data.AccessoryItemsTotal < 1
-    ) {
+    } else if ($(data.AccessoryItems[0]).length && data.AccessoryItemsTotal < 1) {
       var accessoryLine = `<li class="list-group-item"><a class="gray bold collapsed" data-toggle="collapse" href="#collapseItems" aria-expanded="false" aria-controls="collapseoverlay">Features <i class="fa fa-chevron-down collapse-icon" aria-hidden="true"></i></a> <span class="gray"> - Included</span></li>`;
     } else {
       var accessoryLine = ``;
@@ -280,9 +243,7 @@ $.ajax({
     i = 0;
     while (i < 3) {
       if (data.FreeItems[i]) {
-        freebieItemsTemplate += `<li class="list-group-item"><em>${
-          data.FreeItems[i].Description
-        } (value: ${numeral(data.FreeItems[i].Amount).format(
+        freebieItemsTemplate += `<li class="list-group-item"><em>${data.FreeItems[i].Description} (value: ${numeral(data.FreeItems[i].Amount).format(
           "$0,0.00"
         )})</em> <span class="pull-right">Free</span></li>`;
       }
@@ -295,21 +256,14 @@ $.ajax({
     i = 0;
     while (i < 3) {
       if (data.DiscountItems[i]) {
-        discountItemsTemplate += `<li class="list-group-item"><em>${
-          data.DiscountItems[i].Description
-        }</em> <span class="pull-right bold red">${numeral(
+        discountItemsTemplate += `<li class="list-group-item"><em>${data.DiscountItems[i].Description}</em> <span class="pull-right bold red">${numeral(
           data.DiscountItems[i].Amount
         ).format("$0,0.00")}</span></li>`;
       }
       i++;
     }
 
-    var totalSavings = numeral(
-      data.DiscountItemsTotal +
-        data.MatItemsTotal +
-        data.TradeInItemsTotal +
-        data.AccessoryItemsTotal
-    ).format("$0,0.00");
+    var totalSavings = numeral(data.DiscountItemsTotal + data.MatItemsTotal + data.TradeInItemsTotal + data.AccessoryItemsTotal).format("$0,0.00");
 
     // Unit Numbers & status info
     var unitNumbersTemplate = ``;
@@ -410,7 +364,7 @@ $.ajax({
 
     if (typeof oemDescription !== "undefined") {
       oemDescriptionTemplate += `
-		<div id="scrollOemDescription" class="container-fluid" style="padding: 10px 0; border-top: solid 1px #ededed; background: #fff;">
+		<div id="scrollOemDescription" class="container-fluid d-print-none" style="padding: 10px 0; border-top: solid 1px #ededed; background: #fff;">
 			<h3 class="bold text-center">
 				<a class="more-info-section black collapsed" style="text-decoration: none;" data-toggle="collapse" href="#collapseOemDescription" aria-expanded="false" aria-controls="collapseOemDescription">
 					DESCRIPTION
@@ -431,7 +385,7 @@ $.ajax({
 
     if (typeof oemSpecs !== "undefined") {
       oemSpecsTemplate += `
-		<div id="scrollDescription" class="container-fluid" style="padding: 10px 0; border-top: solid 1px #ededed; background: #fff;">
+		<div id="scrollDescription" class="container-fluid d-print-none" style="padding: 10px 0; border-top: solid 1px #ededed; background: #fff;">
 			<h3 class="bold text-center">
 				<a class="more-info-section black collapsed" style="text-decoration: none;" data-toggle="collapse" href="#collapseOemSpecs" aria-expanded="false" aria-controls="collapseOemSpecs">
 					TECH SPECS
@@ -475,10 +429,7 @@ $.ajax({
       //data.AccessoryItems.sort((a, b) => a.Number - b.Number);
 
       while (i < data.AccessoryItems.length) {
-        if (
-          data.AccessoryItems[i].ImgURL &&
-          data.AccessoryItems[i].Included === false
-        ) {
+        if (data.AccessoryItems[i].ImgURL && data.AccessoryItems[i].Included === false) {
           muImageCardTemplate += `
 			<div class="col-md-3 col-sm-6">
 				<div class="mu-feature-card shadow">
@@ -492,11 +443,7 @@ $.ajax({
 				</div>
 			</div>
 			`;
-        } else if (
-          data.AccessoryItems[i].ImgURL &&
-          data.AccessoryItems[i].Included === true &&
-          data.AccessoryItems[i].Amount > 0
-        ) {
+        } else if (data.AccessoryItems[i].ImgURL && data.AccessoryItems[i].Included === true && data.AccessoryItems[i].Amount > 0) {
           muImageCardTemplate += `
 			<div class="col-md-3 col-sm-6">
 				<div class="mu-feature-card shadow">
@@ -510,11 +457,7 @@ $.ajax({
 				</div>
 			</div>
 			`;
-        } else if (
-          data.AccessoryItems[i].ImgURL &&
-          data.AccessoryItems[i].Included === true &&
-          data.AccessoryItems[i].Amount === 0
-        ) {
+        } else if (data.AccessoryItems[i].ImgURL && data.AccessoryItems[i].Included === true && data.AccessoryItems[i].Amount === 0) {
           muImageCardTemplate += `
 			<div class="col-md-3 col-sm-6">
 				<div class="mu-feature-card shadow">
@@ -543,9 +486,7 @@ $.ajax({
         carouselImages += `<div class="item"><img src=" ${data.Images[i].ImgURL}" alt="error loading image"></div><div class="carousel-caption"></div>`;
       }
 
-      let itemIndex = data.MUItems.findIndex(
-        (item) => item.Id == data.Images[i].MUItemId
-      );
+      let itemIndex = data.MUItems.findIndex((item) => item.Id == data.Images[i].MUItemId);
 
       if (itemIndex != -1) {
         data.MUItems[itemIndex].ImgURL = data.Images[i].ImgURL;
@@ -646,7 +587,7 @@ $.ajax({
 		`;
       } else if (video.Platform === 2) {
         pdfBrochureTemplate += `
-			<div style="border-top: solid 1px #ddd; border-top: solid 1px #ededed;">
+			<div class="d-print-none" style="border-top: solid 1px #ddd; border-top: solid 1px #ededed;">
 				<div id="scrollPDF" class="container-fluid" style="color: #333; background: #fff; padding: 10px 0;">
 					<h3 class="text-center bold">
 					<a class="more-info-section black collapsed" style="text-decoration: none;" data-toggle="collapse" href="#collapsePDF" aria-expanded="false" aria-controls="collapsePDF">
@@ -655,7 +596,7 @@ $.ajax({
 						</a>
 					</h3>
 				</div>
-				<div class="container-fluid collapse" id="collapsePDF" style="color: #fff; background: #fff; padding: 20px 0;">
+				<div class="container-fluid collapse d-print-none" id="collapsePDF" style="color: #fff; background: #fff; padding: 20px 0;">
 					<div class="container-fluid" style="max-width: 1700px; margin: 0 auto;">
 						<div class="text-center">
 							<embed src="${video.URL}" width="1700" height="600" type="application/pdf"><br>
@@ -841,13 +782,7 @@ $.ajax({
 
     // LEVEL 3 START MAIN TEMPLATE
 
-    var ourPrice = numeral(
-      data.MSRPUnit +
-        data.AccessoryItemsTotal +
-        data.MatItemsTotal +
-        data.DiscountItemsTotal +
-        data.TradeInItemsTotal
-    ).format("$0,0.00");
+    var ourPrice = numeral(data.MSRPUnit + data.AccessoryItemsTotal + data.MatItemsTotal + data.DiscountItemsTotal + data.TradeInItemsTotal).format("$0,0.00");
     var overlay = `
 		${muHeaderTemplate}
 		<div class="container-fluid" style="background: #efefef; padding-top: 16px; padding-bottom: 35px;">

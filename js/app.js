@@ -180,7 +180,7 @@ async function fetchData() {
           <td class="text-start">
             ${imageUrl !== "N/A" ? `<img src="${imageUrl}" alt="${title}" />` : `<i class="fa fa-picture-o fa-3x" aria-hidden="true"></i>`}
           </td>
-          <td class="text-center px-2"><span class="badge text-bg-secondary">${year}</span></td>
+          <td class="text-center px-3"><span class="badge text-bg-secondary">${year}</span></td>
           <td class="pe-2">${manufacturer}</td>
           <td class="text-nowrap pe-2">
             <div class="vehicle-model text-truncate">${modelName}</div>
@@ -296,7 +296,7 @@ function filterTable() {
   for (let i = 1; i < tr.length; i++) {
     const titleTd = tr[i].getElementsByTagName("td")[3]; // Title column
     const manufacturerTd = tr[i].getElementsByTagName("td")[2]; // Manufacturer column
-    const typeTd = tr[i].getElementsByTagName("td")[5]; // Type column
+    const typeTd = tr[i].getElementsByTagName("td")[4]; // Type column
     const usageTd = tr[i].getElementsByTagName("td")[7]; // Usage column
     const yearTd = tr[i].getElementsByTagName("td")[1]; // Year column
     const photosTd = tr[i].getElementsByTagName("td")[8]; // Photos column (new)

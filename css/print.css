@@ -1,6 +1,40 @@
 @media print {
+  @page {
+    size: portrait;
+    margin: 0%;
+    page-header: none;
+    page-footer: none;
+  }
   * {
     color: inherit !important;
     background: inherit !important;
+    background-color: inherit !important;
+  }
+  body {
+    margin: 0;
+    padding: 0;
+  }
+  .label-success {
+    background-color: #5cb85c !important;
+    color: #fff !important;
+    border: 1px solid #5cb85c !important;
+  }
+  .label-warning {
+    background-color: #5cb85c !important;
+    color: #fff !important;
+    border: 1px solid #5cb85c !important;
+  }
+  .label-danger {
+    background-color: #dc3545 !important;
+    color: #fff !important;
+    border: 1px solid #dc3545 !important;
+  }
+  .label-default {
+    background-color: #777 !important;
+    color: #fff !important;
+    border: 1px solid #777 !important;
+  }
+  .navbar {
+    background-color: #ee0000 !important;
   }
 }

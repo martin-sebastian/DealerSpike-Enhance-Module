@@ -21,28 +21,23 @@
     />
     <link rel="stylesheet" href="../css/font-awesome.css" />
     <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="../css/print.css" />
   </head>
   <body>
-    <header class="overlay-header">
-      <div class="print-buttons">
-        <button
-          class="btn btn-success"
-          type="button"
-          value="Print this page"
-          onClick="window.print()"
-        >
-          <i class="fa fa-print fa-2x" aria-hidden="true"></i>
-        </button>
-        <button
-          class="btn btn-danger"
-          type="button"
-          value="Close this page"
-          onclick="history.back()"
-        >
-          <i class="fa fa-times fa-2x" aria-hidden="true"></i>
-        </button>
+    <header class="hidden-print">
+      <div class="print-header navbar-fixed-top">
+        <h2>PREVIEW WEB OVERLAY</h2>
+        <div class="print-buttons">
+          <button class="btn btn-success" type="button" value="Print this page" onClick="window.print()">
+            <i class="fa fa-print" aria-hidden="true"></i>
+          </button>
+          <button class="btn btn-danger" type="button" value="Close this page" onclick="history.back()">
+            <i class="fa fa-times" aria-hidden="true"></i>
+          </button>
+        </div>
       </div>
     </header>
+    <div class="spacer-60"></div>
     <main>
       <div class="main-content">
         <div class="container">
@@ -53,11 +48,7 @@
     </main>
     <div class="spacer-300"></div>
 
-    <script
-      src="https://code.jquery.com/jquery-1.12.4.min.js"
-      integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
-      crossorigin="anonymous"
-    ></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
 
     <!-- Latest compiled and minified JavaScript -->
     <script

@@ -8,36 +8,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Payment Calculator
   // Get data from API and create variables
-  fetch(
-    `https://newportal.flatoutmotorcycles.com/portal/public/api/majorunit/stocknumber/${stockNum}`
-  )
+  fetch(`https://newportal.flatoutmotorcycles.com/portal/public/api/majorunit/stocknumber/${stockNum}`)
     .then((response) => response.json())
     .then((data) => {
       const prodTitle = `${data.Usage} ${data.ModelYear} ${data.Manufacturer} ${data.B50ModelName}`;
       const vinNumber = data.VIN;
       const stockNumber = data.StockNumber;
       const qLevel = `<span class="badge" style="margin-left: 100px; padding: 10px 15px; font-weight: 900">Quote Level ${data.QuoteLevel}</span>`;
-      const msrpPlusAccessories = numeral(
-        data.MSRP + data.AccessoryItemsTotal
-      ).format("$0,0.00");
+      const msrpPlusAccessories = numeral(data.MSRP + data.AccessoryItemsTotal).format("$0,0.00");
       const unitMSRP = numeral(data.MSRPUnit).format("$0,0.00");
       const oemDescription = data.B50Desc;
       const totalOTD = numeral(data.OTDPrice).format("$0,0.00");
       const quotePrice = numeral(data.QuotePrice).format("$0,0.00");
       const salePrice = numeral(data.Price).format("$0,0.00");
       const discount = numeral(data.QuotePrice - data.Price).format("$0,0.00");
-      const savings = numeral(
-        (data.DiscountItemsTotal +
-          data.MatItemsTotal +
-          data.TradeInItemsTotal) *
-          -1
-      ).format("$0,0.00");
+      const savings = numeral((data.DiscountItemsTotal + data.MatItemsTotal + data.TradeInItemsTotal) * -1).format("$0,0.00");
       const eDate = moment(data.ExpirationDate).format("MM/DD/YYYY");
       const disclaimer = `<p class="portal-fees">${data.Disclaimer}</p>`;
       const fomDisclaimer = `<p class="text-center"><small>*Price does NOT include, Manufacturer Surcharge, Manufacturer Commodity Surcharge, Freight, Dealer Document Fee $199, Sales Tax, Title Fee $30. Sale Price INCLUDES all factory incentives (If Applicable). See Flat Out Motorsports for full disclosure on current Fees and Surcharges.</small></p>`;
-      const salePriceExpireDate = moment(data.SalePriceExpireDate).format(
-        "MM/DD/YYYY"
-      );
+      const salePriceExpireDate = moment(data.SalePriceExpireDate).format("MM/DD/YYYY");
 
       const arrivalDate = moment(data.EstimatedArrival).format("MM/DD/YYYY");
       const newUsed = data.Usage;
@@ -65,14 +54,10 @@ document.addEventListener("DOMContentLoaded", () => {
         const loanTermMonths = loanTermWeeks / 4.33; // Approximate number of months
 
         // Calculate the weekly payment using the formula for an installment loan
-        const weeklyPayment =
-          (msrp * weeklyInterestRate) /
-          (1 - Math.pow(1 + weeklyInterestRate, -loanTermWeeks));
+        const weeklyPayment = (msrp * weeklyInterestRate) / (1 - Math.pow(1 + weeklyInterestRate, -loanTermWeeks));
 
         // Calculate the monthly payment using the formula for an installment loan
-        const monthlyPayment =
-          (msrp * monthlyInterestRate) /
-          (1 - Math.pow(1 + monthlyInterestRate, -loanTermMonths));
+        const monthlyPayment = (msrp * monthlyInterestRate) / (1 - Math.pow(1 + monthlyInterestRate, -loanTermMonths));
 
         return {
           weeklyPayment: weeklyPayment.toFixed(2), // Round to 2 decimal places
@@ -84,11 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return items
           .slice(0, maxItems)
           .map((item) => {
-            return `<li class="list-group-item">${
-              item.Description
-            } <span class="pull-right bold red">${numeral(item.Amount).format(
-              formatAmount
-            )}</span></li>`;
+            return `<li class="list-group-item">${item.Description} <span class="pull-right bold red">${numeral(item.Amount).format(formatAmount)}</span></li>`;
           })
           .join("");
       };
@@ -96,21 +77,12 @@ document.addEventListener("DOMContentLoaded", () => {
       const vehicleImage = `<div class="" id="photoLine"><img src="${data.ImageUrl}" style="width: 100%; border-radius: 5px; overflow: hidden;"></div>`;
       const matItemsTemplate = generateListItems(data.MatItems, 4, "$0,0.00");
       const OTDItemsTemplate = generateListItems(data.OTDItems, 9, "$0,0.00");
-      const tradeInItemsTemplate = generateListItems(
-        data.TradeInItems,
-        5,
-        "$0,0.00"
-      );
+      const tradeInItemsTemplate = generateListItems(data.TradeInItems, 5, "$0,0.00");
       // ACCESSORY ITEMS TEMPLATE
       let accessoryItemsTemplate = ""; // Declare the variable outside
 
       // Check if data.AccessoryItems is not null, undefined, empty string, or empty array
-      if (
-        data.AccessoryItems !== null &&
-        typeof data.AccessoryItems !== "undefined" &&
-        data.AccessoryItems.length > 0 &&
-        data.AccessoryItems.length > 0
-      ) {
+      if (data.AccessoryItems !== null && typeof data.AccessoryItems !== "undefined" && data.AccessoryItems.length > 0 && data.AccessoryItems.length > 0) {
         accessoryItemsTemplate = `
         <h5 class="bold">Added Accessories</h5>
         ${generateListItems(data.AccessoryItems, 30, "$0,0.00")}
@@ -120,11 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       // DISCOUNT ITEMS TEMPLATE
-      const discountItemsTemplate = generateListItems(
-        data.DiscountItems,
-        20,
-        "$0,0.00"
-      );
+      const discountItemsTemplate = generateListItems(data.DiscountItems, 20, "$0,0.00");
 
       const unitLocation = (() => {
         const mainLots = ["SUZ", "KAW", "POL", "PREOWNED", "PRE OWNED"];
@@ -140,9 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       })();
 
-      const yellowTag = data.YellowTag
-        ? `<img src="https://newportal.flatoutmotorcycles.com/Portal/content/icons/ylwtag.png">`
-        : ``;
+      const yellowTag = data.YellowTag ? `<img src="https://newportal.flatoutmotorcycles.com/Portal/content/icons/ylwtag.png">` : ``;
 
       // const unitDescriptionTemplate = data.B50Desc
       //   ? `
@@ -154,11 +120,7 @@ document.addEventListener("DOMContentLoaded", () => {
       let unitDescriptionTemplate = ""; // Declare the variable outside
 
       // Check if data.B50Desc is not null, undefined, or an empty string
-      if (
-        data.B50Desc !== null &&
-        typeof data.B50Desc !== "null" &&
-        data.B50Desc.trim().length > 0
-      ) {
+      if (data.B50Desc !== null && typeof data.B50Desc !== "null" && data.B50Desc.trim().length > 0) {
         unitDescriptionTemplate = `
         <div class="" id="descriptionLine">
           <h5 class="bold">Description</h5>
@@ -177,11 +139,7 @@ document.addEventListener("DOMContentLoaded", () => {
       let standardFeaturesTemplate = ""; // Declare the variable outside
 
       // Check if data.StandardFeatures is not null, undefined, or an empty string
-      if (
-        data.StandardFeatures !== null &&
-        typeof data.StandardFeatures !== "undefined" &&
-        data.StandardFeatures.trim().length > 0
-      ) {
+      if (data.StandardFeatures !== null && typeof data.StandardFeatures !== "undefined" && data.StandardFeatures.trim().length > 0) {
         standardFeaturesTemplate = `
         <h5 class="bold">Standard Features</h5>
         <div class="panel panel-default">
@@ -208,13 +166,7 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
       `;
 
-      const ourPrice = numeral(
-        data.MSRP +
-          data.AccessoryItemsTotal +
-          data.MatItemsTotal +
-          data.DiscountItemsTotal +
-          data.TradeInItemsTotal
-      ).format("$0,0.00");
+      const ourPrice = numeral(data.MSRP + data.AccessoryItemsTotal + data.MatItemsTotal + data.DiscountItemsTotal + data.TradeInItemsTotal).format("$0,0.00");
 
       const overlay = `
           
@@ -482,7 +434,7 @@ document.addEventListener("DOMContentLoaded", () => {
             .vehicle-header-container { padding: 0 5px; }
             .price-payment-divider { display: none; }
           }
-            @media print {
+          @media print {
             @page { 
                 size: portrait;
                 margin: 0%;
@@ -513,9 +465,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (printTagBody) {
     // Iterate over child nodes to find text nodes
-    const textNodes = Array.from(printTagBody.childNodes).filter(
-      (node) => node.nodeType === Node.TEXT_NODE
-    );
+    const textNodes = Array.from(printTagBody.childNodes).filter((node) => node.nodeType === Node.TEXT_NODE);
 
     textNodes.forEach((node) => {
       if (node.textContent.includes(targetText)) {
