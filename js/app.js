@@ -284,6 +284,7 @@ function updateThemeIcon(theme) {
 function filterTable() {
   const searchInput = document.getElementById("searchFilter").value.toUpperCase();
   const manufacturerFilter = document.getElementById("manufacturerFilter").value.toUpperCase();
+  const typeFilter = document.getElementById("typeFilter").value.toUpperCase();
   const usageFilter = document.getElementById("usageFilter").value.toUpperCase();
   const yearFilter = document.getElementById("yearFilter").value.toUpperCase();
   const photosFilter = document.getElementById("photosFilter").value.toUpperCase(); // New photos filter
@@ -295,6 +296,7 @@ function filterTable() {
   for (let i = 1; i < tr.length; i++) {
     const titleTd = tr[i].getElementsByTagName("td")[3]; // Title column
     const manufacturerTd = tr[i].getElementsByTagName("td")[2]; // Manufacturer column
+    const typeTd = tr[i].getElementsByTagName("td")[5]; // Type column
     const usageTd = tr[i].getElementsByTagName("td")[7]; // Usage column
     const yearTd = tr[i].getElementsByTagName("td")[1]; // Year column
     const photosTd = tr[i].getElementsByTagName("td")[8]; // Photos column (new)
@@ -302,6 +304,7 @@ function filterTable() {
     if (titleTd && manufacturerTd && usageTd && photosTd) {
       const titleTxt = titleTd.textContent || titleTd.innerText;
       const manufacturerTxt = manufacturerTd.textContent || manufacturerTd.innerText;
+      const typeTxt = typeTd.textContent || typeTd.innerText;
       const usageTxt = usageTd.textContent || usageTd.innerText;
       const yearTxt = yearTd.textContent || yearTd.innerText;
       const photosTxt = photosTd.textContent || photosTd.innerText;
@@ -309,6 +312,7 @@ function filterTable() {
       if (
         (titleTxt.toUpperCase().indexOf(searchInput) > -1 || searchInput === "") &&
         (manufacturerTxt.toUpperCase().indexOf(manufacturerFilter) > -1 || manufacturerFilter === "") &&
+        (typeTxt.toUpperCase().indexOf(typeFilter) > -1 || typeFilter === "") &&
         (usageTxt.toUpperCase().indexOf(usageFilter) > -1 || usageFilter === "") &&
         (yearTxt.toUpperCase().indexOf(yearFilter) > -1 || yearFilter === "") &&
         (photosTxt.toUpperCase().indexOf(photosFilter) > -1 || photosFilter === "") // New photos filter condition
@@ -328,6 +332,7 @@ function filterTable() {
 // Event listeners for input and dropdown changes
 document.getElementById("searchFilter").addEventListener("keyup", filterTable);
 document.getElementById("manufacturerFilter").addEventListener("change", filterTable);
+document.getElementById("typeFilter").addEventListener("change", filterTable);
 document.getElementById("usageFilter").addEventListener("change", filterTable);
 document.getElementById("photosFilter").addEventListener("change", filterTable);
 document.getElementById("yearFilter").addEventListener("change", filterTable);
