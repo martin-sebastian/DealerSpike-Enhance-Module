@@ -187,8 +187,8 @@ async function fetchData() {
             <span class="visually-hidden">${stockNumber} ${vin} ${usage} ${year} ${manufacturer} ${modelName} ${modelType} ${modelTypeStyle} ${color} ${photos}</span>
             <div class="visually-hidden">VIN: ${vin}</div>
           </td>
-          <td class="pe-2">${stockNumber}</td>
           <td class="text-nowrap pe-2">${modelType}</td>
+          <td class="pe-2"><span class="badge text-bg-danger">${stockNumber}</span></td>
           <td class="text-wrap pe-2">${color}</td>
           <td class="text-center"><span class="badge text-bg-secondary">${usage}</span></td>
           <td class="text-center px-2">${photos}</td>

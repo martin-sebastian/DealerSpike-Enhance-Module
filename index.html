@@ -22,6 +22,15 @@
       }
       th {
         cursor: pointer;
+        opacity: 0.7;
+      }
+      th:hover {
+        cursor: pointer;
+        opacity: 1;
+      }
+      th:hover::after {
+        cursor: pointer;
+        content: " \25B2";
       }
       th.sort-asc::after {
         content: " \25B2";
@@ -59,13 +68,15 @@
         display: block;
         color: #fff;
         font-size: 18px;
-        padding: 1px 0;
+        padding: 0;
         text-transform: uppercase;
       }
       .action-button-group small {
         display: block;
         min-width: 50px;
-        font-size: 9px;
+        font-size: 10px;
+        line-height: 10px;
+        font-weight: 700;
         padding: 0;
         text-transform: uppercase;
       }
@@ -176,11 +187,16 @@
                   </select>
                   <select id="typeFilter" class="form-select me-2">
                     <option value="">Type</option>
+                    <option value="3 Wheel Motorcycle">3 Wheel Motorcycle</option>
                     <option value="ATV">ATV</option>
+                    <option value="Boat Trailers">Boat Trailers</option>
+                    <option value="Boats">Boats</option>
                     <option value="Cruiser/V-Twin">Cruiser/V-Twin</option>
                     <option value="Dirt Bikes">Dirt Bikes</option>
-                    <option value="Pontoons">Pontoons</option>
+                    <option value="Outboard Motors">Outboard Motors</option>
                     <option value="PWC">PWC</option>
+                    <option value="Pontoons">Pontoons</option>
+                    <option value="Scooters">Scooters</option>
                     <option value="Side x Side">Side x Side</option>
                     <option value="Street Bikes">Street Bikes</option>
                   </select>
@@ -192,7 +208,7 @@
                   <select id="photosFilter" class="form-select me-2">
                     <option value="">In-House Photos</option>
                     <option value="Done">Done</option>
-                    <option value="Needs Photos">Needs Photo</option>
+                    <option value="Needs Photos">Needs Photos</option>
                   </select>
                   <nav class="side-menu-footer">
                     <div class="container">
@@ -272,8 +288,8 @@
                 <th class="text-center px-5">Year</th>
                 <th class="text-nowrap">Make</th>
                 <th class="text-nowrap">Model</th>
-                <th class="text-nowrap">Stock Number</th>
                 <th>Type</th>
+                <th class="text-nowrap">Stock Number</th>
                 <th>Color</th>
                 <th class="text-center">Usage</th>
                 <th class="text-center">Photos</th>
