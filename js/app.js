@@ -169,7 +169,7 @@ async function fetchData() {
               <span class="mt-0 mb-0 visually-hidden" style="font-size: 10px;">Done</span>
             </span>`
           : `<span class="photos-status" title="Awaiting Photo Shoot">
-              <i class="bi bi-camera2 text-warning"></i>
+              <i class="bi bi-camera2 text-danger"></i>
               <span class="mt-0 mb-0 visually-hidden" style="font-size: 10px;"> Needs Photos </span>
             </span>`;
 
@@ -188,15 +188,23 @@ async function fetchData() {
             <div class="visually-hidden">VIN: ${vin}</div>
           </td>
           <td class="text-nowrap pe-2">${modelType}</td>
-          <td class="pe-2"><span class="badge text-bg-danger">${stockNumber}</span></td>
+          <td class="text-nowrap pe-2"><span class="badge text-bg-danger">${stockNumber}</span></td>
           <td class="text-wrap pe-2">${color}</td>
           <td class="text-center"><span class="badge text-bg-secondary">${usage}</span></td>
           <td class="text-center px-2">${photos}</td>
           <td class="text-end text-nowrap">
-            <div class="btn-group nowrap action-button-group" role="group" aria-label="Vehicles">
-              <a href="./overlay/?search=${stockNumber}" type="button" class="btn btn-danger action-button"><i class="bi bi-card-heading"></i><small>Web Preview</small></a>
-              <a href="./hang-tags/?search=${stockNumber}" type="button" class="btn btn-danger action-button"><i class="bi bi-tags"></i><small>Hang Tags</small></a>
-              <a href="./key-tags/?vehicle=${stockNumber}" type="button" class="btn btn-danger action-button"><i class="bi bi-tag"></i><small>Key Tag</small></a>
+            <div class="btn-groupxxx nowrap action-button-group" role="group" aria-label="Vehicles">
+              <a href="./overlay/?search=${stockNumber}" 
+              type="button" 
+              class="btn btn-danger action-button" 
+              title="Web Preview"
+              data-bs-toggle="tooltip"
+              data-bs-placement="top"
+              data-bs-custom-class="custom-tooltip"
+              data-bs-title="This top tooltip is themed via CSS variables."
+              ><i class="bi bi-card-heading"></i></a>
+              <a href="./hang-tags/?search=${stockNumber}" type="button" class="btn btn-danger action-button" title="Hang Tags"><i class="bi bi-tags"></i></a>
+              <a href="./key-tags/?vehicle=${stockNumber}" type="button" class="btn btn-danger action-button" title="Key Tag"><i class="bi bi-tag"></i></a>
             </div>  
           </td>
       `;
