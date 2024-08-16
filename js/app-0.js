@@ -15,114 +15,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     toggleThemeButton.addEventListener("click", toggleTheme);
   }
 
-  // Show placeholder while fetching XML data
-  showPlaceholder();
-
   // Fetch and process XML data
   fetchData();
 });
-
-function showPlaceholder() {
-  const tableBody = document.getElementById("vehiclesTable").getElementsByTagName("tbody")[0];
-  tableBody.innerHTML = `
-    <tr class="placeholder-glow">
-      <td><span class="placeholder col-7"></span></td>
-      <td class="text-center"><span class="placeholder col-3"></span></td>
-      <td><span class="placeholder col-6"></span></td>
-      <td style="width: 30%;"><span class="placeholder col-7"></span></td>
-      <td><span class="placeholder col-7"></span></td>
-      <td><span class="placeholder col-3"></span></td>
-      <td><span class="placeholder col-3"></span></td>
-      <td class="text-center"><span class="placeholder col-7"></span></td>
-      <td class="text-center"><span class="placeholder col-6"></span></td>
-      <td class="text-end"><span class="placeholder col-12"></span></td>
-    </tr>
-    <tr class="placeholder-glow">
-      <td><span class="placeholder col-7"></span></td>
-      <td class="text-center"><span class="placeholder col-3"></span></td>
-      <td><span class="placeholder col-4"></span></td>
-      <td><span class="placeholder col-12"></span></td>
-      <td><span class="placeholder col-5"></span></td>
-      <td><span class="placeholder col-8"></span></td>
-      <td><span class="placeholder col-8"></span></td>
-      <td class="text-center"><span class="placeholder col-7"></span></td>
-      <td class="text-center"><span class="placeholder col-6"></span></td>
-      <td class="text-end"><span class="placeholder col-12"></span></td>
-    </tr>
-    <tr class="placeholder-glow">
-      <td><span class="placeholder col-7"></span></td>
-      <td class="text-center"><span class="placeholder col-3"></span></td>
-      <td><span class="placeholder col-6"></span></td>
-      <td style="width: 30%;"><span class="placeholder col-7"></span></td>
-      <td><span class="placeholder col-7"></span></td>
-      <td><span class="placeholder col-3"></span></td>
-      <td><span class="placeholder col-3"></span></td>
-      <td class="text-center"><span class="placeholder col-7"></span></td>
-      <td class="text-center"><span class="placeholder col-6"></span></td>
-      <td class="text-end"><span class="placeholder col-12"></span></td>
-    </tr>
-    <tr class="placeholder-glow">
-      <td><span class="placeholder col-7"></span></td>
-      <td class="text-center"><span class="placeholder col-3"></span></td>
-      <td><span class="placeholder col-4"></span></td>
-      <td><span class="placeholder col-12"></span></td>
-      <td><span class="placeholder col-5"></span></td>
-      <td><span class="placeholder col-8"></span></td>
-      <td><span class="placeholder col-8"></span></td>
-      <td class="text-center"><span class="placeholder col-7"></span></td>
-      <td class="text-center"><span class="placeholder col-6"></span></td>
-      <td class="text-end"><span class="placeholder col-12"></span></td>
-    </tr>
-    <tr class="placeholder-glow">
-      <td><span class="placeholder col-7"></span></td>
-      <td class="text-center"><span class="placeholder col-3"></span></td>
-      <td><span class="placeholder col-6"></span></td>
-      <td style="width: 30%;"><span class="placeholder col-7"></span></td>
-      <td><span class="placeholder col-7"></span></td>
-      <td><span class="placeholder col-3"></span></td>
-      <td><span class="placeholder col-3"></span></td>
-      <td class="text-center"><span class="placeholder col-7"></span></td>
-      <td class="text-center"><span class="placeholder col-6"></span></td>
-      <td class="text-end"><span class="placeholder col-12"></span></td>
-    </tr>
-    <tr class="placeholder-glow">
-      <td><span class="placeholder col-7"></span></td>
-      <td class="text-center"><span class="placeholder col-3"></span></td>
-      <td><span class="placeholder col-4"></span></td>
-      <td><span class="placeholder col-12"></span></td>
-      <td><span class="placeholder col-5"></span></td>
-      <td><span class="placeholder col-8"></span></td>
-      <td><span class="placeholder col-8"></span></td>
-      <td class="text-center"><span class="placeholder col-7"></span></td>
-      <td class="text-center"><span class="placeholder col-6"></span></td>
-      <td class="text-end"><span class="placeholder col-12"></span></td>
-    </tr>
-    <tr class="placeholder-glow">
-      <td><span class="placeholder col-7"></span></td>
-      <td class="text-center"><span class="placeholder col-3"></span></td>
-      <td><span class="placeholder col-6"></span></td>
-      <td style="width: 30%;"><span class="placeholder col-7"></span></td>
-      <td><span class="placeholder col-7"></span></td>
-      <td><span class="placeholder col-3"></span></td>
-      <td><span class="placeholder col-3"></span></td>
-      <td class="text-center"><span class="placeholder col-7"></span></td>
-      <td class="text-center"><span class="placeholder col-6"></span></td>
-      <td class="text-end"><span class="placeholder col-12"></span></td>
-    </tr>
-    <tr class="placeholder-glow">
-      <td><span class="placeholder col-7"></span></td>
-      <td class="text-center"><span class="placeholder col-3"></span></td>
-      <td><span class="placeholder col-4"></span></td>
-      <td><span class="placeholder col-12"></span></td>
-      <td><span class="placeholder col-5"></span></td>
-      <td><span class="placeholder col-8"></span></td>
-      <td><span class="placeholder col-8"></span></td>
-      <td class="text-center"><span class="placeholder col-7"></span></td>
-      <td class="text-center"><span class="placeholder col-6"></span></td>
-      <td class="text-end"><span class="placeholder col-12"></span></td>
-    </tr>
-  `;
-}
 
 async function fetchData() {
   try {
@@ -140,7 +35,6 @@ async function fetchData() {
     console.log(`Number of items found: ${items.length}`);
 
     const tableBody = document.getElementById("vehiclesTable").getElementsByTagName("tbody")[0];
-    tableBody.innerHTML = ""; // Clear placeholder
 
     for (let i = 0; i < items.length; i++) {
       const item = items[i];
@@ -158,49 +52,64 @@ async function fetchData() {
       const modelTypeStyle = item.getElementsByTagName("model_typestyle")[0]?.textContent || "N/A";
       const color = item.getElementsByTagName("color")[0]?.textContent || "N/A";
       const usage = item.getElementsByTagName("usage")[0]?.textContent || "N/A";
-
       // Count Images for each item
       const imageElements = item.getElementsByTagName("imageurl");
 
       const photos =
         imageElements.length > 10
           ? `<span class="photos-status" title="In-House Photos Done">
-              <i class="bi bi-check-circle"></i>
-              <span class="mt-0 mb-0 visually-hidden" style="font-size: 10px;">Done</span>
-            </span>`
-          : `<span class="photos-status" title="Awaiting Photo Shoot">
-              <i class="bi bi-camera2 text-warning"></i>
-              <span class="mt-0 mb-0 visually-hidden" style="font-size: 10px;"> Needs Photos </span>
-            </span>`;
+                <i class="bi bi-check-circle text-success"></i>
+                <span class="mt-0 mb-0 visually-hidden" style="font-size: 10px;">Done</span>
+              </span>`
+          : ` <span class="photos-status" title="Awaiting Photo Shoot">
+                <i class="bi bi-camera2 text-warning"></i>
+                <span class="mt-0 mb-0 visually-hidden" style="font-size: 10px;"> Needs Photos </span>
+              </span>`;
 
       console.log(photos);
 
+      console.log({
+        imageUrl,
+        title,
+        stockNumber,
+        vin,
+        price,
+        manufacturer,
+        year,
+        modelName,
+        modelType,
+        modelTypeStyle,
+        color,
+        usage,
+        photos,
+      });
+
       const row = document.createElement("tr");
       row.innerHTML = `
-          <td class="text-start" style="width: 80px">
+          <td class="text-start overflow-hidden text-wrap">
             ${imageUrl !== "N/A" ? `<img src="${imageUrl}" alt="${title}" />` : `<i class="fa fa-picture-o fa-3x" aria-hidden="true"></i>`}
           </td>
-          <td class="text-center"><span class="badge text-bg-secondary">${year}</span></td>
-          <td class="text-wrap" style="width: 100px">${manufacturer}</td>
-          <td class="text-nowrap pe-2">
-            <div class="vehicle-model text-nowrap text-truncate">${modelName}</div>
+          <td class="text-center px-3"><span class="badge text-bg-secondary">${year}</span></td>
+          <td class="text-wrap">${manufacturer}</td>
+          <td class="text-nowrap">
+            <div class="d-block text-truncate">${modelName}</div>
             <span class="visually-hidden">${stockNumber} ${vin} ${usage} ${year} ${manufacturer} ${modelName} ${modelType} ${modelTypeStyle} ${color} ${photos}</span>
             <div class="visually-hidden">VIN: ${vin}</div>
           </td>
-          <td class="pe-5">${stockNumber}</td>
-          <td class="text-nowrap pe-5">${modelType}</td>
-          <td class="text-wrap pe-5">${color}</td>
-          <td class="text-center" style="width: 80px;"><span class="badge text-bg-secondary">${usage}</span></td>
-          <td class="text-center" style="width: 60px;">${photos}</td>
-          <td class="text-end text-nowrap" style="width: 335px">
-            <div class="btn-group nowrap" role="group" aria-label="Vehicles">
-              <a href="./overlay/?search=${stockNumber}" type="button" class="btn btn-danger action-button"><i class="fa fa-file-text mx-1"></i><small>Web Preview</small></a>
-              <a href="./hang-tags/?search=${stockNumber}" type="button" class="btn btn-danger action-button"><i class="fa fa-tag mx-1"></i><small>Hang Tag</small></a>
-              <a href="./key-tags/?vehicle=${stockNumber}" type="button" class="btn btn-danger action-button"><i class="fa fa-key mx-1"></i><small>Key Tag</small></a>
-              <a href="./deal-jacket/index.html?search=${stockNumber}" type="button" class="btn btn-danger action-button"><i class="fa fa-folder mx-1"></i><small>Deal Jacket</small></a>
+          <td class="pe-2">${stockNumber}</td>
+          <td class="pe-3"><span class="d-block text-truncate">${modelType}</span></td>
+          <td class="pe-3"><div class="d-block text-wrap text-truncate">${color}</div></td>
+          <td class="text-center px-3"><span class="badge text-bg-secondary">${usage}</span></td>
+          <td class="text-center px-3">${photos}</td>
+          <td class="text-end text-nowrap">
+            <div class="btn-group action-button-group" role="group" aria-label="Vehicles">
+              <a href="./overlay/?search=${stockNumber}" type="button" class="btn btn-secondary btn-sm"><i class="bi bi-tags"></i> Preview</a>
+              <a href="./hang-tags/?search=${stockNumber}" type="button" class="btn btn-secondary btn-sm"><i class="bi bi-tag"></i>Hang Tag</a>
+              <a href="./key-tags/?vehicle=${stockNumber}" type="button" class="btn btn-secondary btn-sm"><i class="bi bi-key"></i>Key Tag</a>
+              <a href="./deal-jacket/index.html?search=${stockNumber}" type="button" class="btn btn-secondary btn-sm"><i class="bi bi-folder2"></i>Deal Jacket</a>
             </div>  
           </td>
-      `;
+        `;
 
       tableBody.appendChild(row);
     }
@@ -220,6 +129,7 @@ async function fetchData() {
   }
 }
 
+// Sort Table
 function sortTableByColumn(header) {
   const table = document.getElementById("vehiclesTable");
   const tableBody = table.getElementsByTagName("tbody")[0];
@@ -270,6 +180,7 @@ function toggleTheme() {
   sessionStorage.setItem("theme", newTheme);
 }
 
+// Function to update the theme icon
 function updateThemeIcon(theme) {
   const toggleThemeButton = document.getElementById("toggleThemeButton").querySelector("i");
   console.log(`Updating theme icon for theme: ${theme}`);
@@ -282,29 +193,34 @@ function updateThemeIcon(theme) {
   }
 }
 
+// Filter Table by search input and manufacturer dropdown
 function filterTable() {
   const searchInput = document.getElementById("searchFilter").value.toUpperCase();
   const manufacturerFilter = document.getElementById("manufacturerFilter").value.toUpperCase();
   const usageFilter = document.getElementById("usageFilter").value.toUpperCase();
   const yearFilter = document.getElementById("yearFilter").value.toUpperCase();
-  const photosFilter = document.getElementById("photosFilter").value.toUpperCase(); // New photos filter
+  const typeFilter = document.getElementById("typeFilter").value.toUpperCase();
+  const photosFilter = document.getElementById("photosFilter").value.toUpperCase();
   const table = document.getElementById("vehiclesTable");
   const tr = table.getElementsByTagName("tr");
 
   let visibleRows = 0;
 
   for (let i = 1; i < tr.length; i++) {
+    // Start from 1 to skip the header row
     const titleTd = tr[i].getElementsByTagName("td")[3]; // Title column
     const manufacturerTd = tr[i].getElementsByTagName("td")[2]; // Manufacturer column
     const usageTd = tr[i].getElementsByTagName("td")[7]; // Usage column
     const yearTd = tr[i].getElementsByTagName("td")[1]; // Year column
-    const photosTd = tr[i].getElementsByTagName("td")[8]; // Photos column (new)
+    const typeTd = tr[i].getElementsByTagName("td")[5]; // Year column
+    const photosTd = tr[i].getElementsByTagName("td")[8]; // Photos Needed column
 
-    if (titleTd && manufacturerTd && usageTd && photosTd) {
+    if (titleTd && manufacturerTd && usageTd) {
       const titleTxt = titleTd.textContent || titleTd.innerText;
       const manufacturerTxt = manufacturerTd.textContent || manufacturerTd.innerText;
       const usageTxt = usageTd.textContent || usageTd.innerText;
       const yearTxt = yearTd.textContent || yearTd.innerText;
+      const typeTxt = typeTd.textContent || typeTd.innerText;
       const photosTxt = photosTd.textContent || photosTd.innerText;
 
       if (
@@ -312,7 +228,8 @@ function filterTable() {
         (manufacturerTxt.toUpperCase().indexOf(manufacturerFilter) > -1 || manufacturerFilter === "") &&
         (usageTxt.toUpperCase().indexOf(usageFilter) > -1 || usageFilter === "") &&
         (yearTxt.toUpperCase().indexOf(yearFilter) > -1 || yearFilter === "") &&
-        (photosTxt.toUpperCase().indexOf(photosFilter) > -1 || photosFilter === "") // New photos filter condition
+        (typeTxt.toUpperCase().indexOf(typeFilter) > -1 || typeFilter === "") &&
+        (photosTxt.toUpperCase().indexOf(photosFilter) > -1 || photosFilter === "")
       ) {
         tr[i].style.display = "";
         visibleRows++;
@@ -330,5 +247,19 @@ function filterTable() {
 document.getElementById("searchFilter").addEventListener("keyup", filterTable);
 document.getElementById("manufacturerFilter").addEventListener("change", filterTable);
 document.getElementById("usageFilter").addEventListener("change", filterTable);
-document.getElementById("photosFilter").addEventListener("change", filterTable);
 document.getElementById("yearFilter").addEventListener("change", filterTable);
+document.getElementById("typeFilter").addEventListener("change", filterTable);
+document.getElementById("photosFilter").addEventListener("change", filterTable);
+
+// Clear search input and trigger filtering when 'x' button is clicked
+document.getElementById("searchFilter").addEventListener("input", function () {
+  if (!this.value) {
+    filterTable();
+  }
+});
+
+// Reset filters
+function resetSelectElement() {
+  selecElement.selectedIndex = 0; // first option is selected, or
+  // -1 for no option selected
+}
