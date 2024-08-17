@@ -236,16 +236,11 @@ document.addEventListener("DOMContentLoaded", () => {
                    ${unitDescriptionTemplate}
                    ${standardFeaturesTemplate}
                 </div>
-                
             </div> <!-- End Print Tag Body -->
-            <div class="container-fluid">
-              <div class="navbar-danger navbar-fixed-bottom text-center" style="border-radius: 5px; background: #EE0000 !important; padding-top: 15px;">
-                <div class="our-price" style="color: #fff !important;">
-                ${yellowTag} ${ourPrice}
-                </div>
-                <div class="price-expires text-center" style="color: #ccc !important; padding: 0 0 10px 0;">Sale Program Ends: ${salePriceExpireDate}</div>
-              </div> <!-- End Navbar Fixed Bottom -->
-            </div> <!-- End Container -->
+            <div class="fixed-bottom text-center" style="border-radius: 5px; background: #EE0000 !important;">
+              <div class="our-price" style="color: #fff !important;">${yellowTag} ${ourPrice}</div>
+              <div class="price-expires text-center" style="color: #eee !important;">Sale Program Ends: ${salePriceExpireDate}</div>
+            </div>
         </div> <!-- End Print Tag -->
         `;
 
@@ -290,7 +285,11 @@ document.addEventListener("DOMContentLoaded", () => {
             transform: rotate(0deg);
             zoom: 1; /* Adjust the value to zoom in or out */
           }
-            #text { font-size: 22px; }
+          .fixed-bottom {
+            position: fixed;
+            bottom: 0;
+          }
+          #text { font-size: 22px; }
           #qrcode img { margin: 0 auto; width: 172px; height: 172px; }
           .list-group-item { font-size: 12px; }
           .logo-container { text-align: center; padding: 0px 10px; }

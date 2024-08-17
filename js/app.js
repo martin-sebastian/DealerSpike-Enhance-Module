@@ -148,6 +148,7 @@ async function fetchData() {
 
       const imageUrl = item.getElementsByTagName("images")[0]?.getElementsByTagName("imageurl")[0]?.textContent || "N/A";
       const title = item.getElementsByTagName("title")[0]?.textContent || "N/A";
+      const webURL = item.getElementsByTagName("link")[0]?.textContent || "N/A";
       const stockNumber = item.getElementsByTagName("stocknumber")[0]?.textContent || "N/A";
       const vin = item.getElementsByTagName("vin")[0]?.textContent || "N/A";
       const price = item.getElementsByTagName("price")[0]?.textContent || "N/A";
@@ -158,6 +159,10 @@ async function fetchData() {
       const modelTypeStyle = item.getElementsByTagName("model_typestyle")[0]?.textContent || "N/A";
       const color = item.getElementsByTagName("color")[0]?.textContent || "N/A";
       const usage = item.getElementsByTagName("usage")[0]?.textContent || "N/A";
+
+      console.log(
+        `Item ${i + 1}: ${title} ${stockNumber} ${vin} ${price} ${manufacturer} ${year} ${modelName} ${modelType} ${modelTypeStyle} ${color} ${usage}`
+      );
 
       // Count Images for each item
       const imageElements = item.getElementsByTagName("imageurl");
@@ -173,8 +178,6 @@ async function fetchData() {
               <span class="mt-0 mb-0 visually-hidden" style="font-size: 10px;"> Needs Photos </span>
             </span>`;
 
-      console.log(photos);
-
       const usageColor = usage === "New" ? "text-bg-success" : "text-bg-secondary";
 
       const row = document.createElement("tr");
@@ -185,15 +188,15 @@ async function fetchData() {
           <td class="text-center px-2">
             <span class="badge text-bg-secondary">${year}</span>
           </td>
-          <td class="pe-2">${manufacturer}</td>
-          <td class="text-nowrap pe-2">
+          <td class="">${manufacturer}</td>
+          <td class="text-nowrap">
             <div class="vehicle-model text-truncate">${modelName}</div>
               <span class="visually-hidden">${vin} ${usage} ${year} ${manufacturer} ${modelName} ${modelType} ${modelTypeStyle} ${color} ${photos}</span>
             <div class="visually-hidden">${stockNumber} ${vin}</div>
           </td>
           <td class="pe-4">${modelType}</td>
-          <td class="text-nowrap pe-2">
-            ${stockNumber}
+          <td class="pe-2">
+            <span class="badge text-bg-danger">${stockNumber}</span>
             <button type="button" class="btn btn-sm" title="Copy Stock Number" onclick="navigator.clipboard.writeText('${stockNumber}')">
               <i class="bi bi-clipboard"></i>
             </button>
@@ -202,18 +205,22 @@ async function fetchData() {
           <td class="text-center"><span class="badge ${usageColor}">${usage}</span></td>
           <td class="text-center px-2">${photos}</td>
           <td class="text-end text-nowrap">
-            <div class="nowrap action-button-group" role="group" aria-label="Vehicles">
-              <a href="./overlay/?search=${stockNumber}" 
+            <div class="action-button-group" role="group" aria-label="Vehicles">
+              <a
+              href="./overlay/?search=${stockNumber}" 
               type="button" 
               class="btn btn-danger action-button mx-1" 
               title="Web Preview"
               data-bs-toggle="tooltip"
               data-bs-placement="top"
               data-bs-custom-class="custom-tooltip"
-              data-bs-title="This top tooltip is themed via CSS variables."
-              ><i class="bi bi-card-heading"></i></a>
+              data-bs-title="Major Unit Pricing & More Info."
+              >
+              <i class="bi bi-card-heading"></i>
+              </a>
               <a href="./hang-tags/?search=${stockNumber}" type="button" class="btn btn-danger action-button mx-1" title="Hang Tags"><i class="bi bi-tags"></i></a>
               <a href="./key-tags/?vehicle=${stockNumber}" type="button" class="btn btn-danger action-button mx-1" title="Key Tag"><i class="bi bi-tag"></i></a>
+              <a href="${webURL}" target="_blank" type="button" class="btn btn-danger action-button mx-1" title="Web Page"><i class="bi bi-browser-chrome"></i></a>
             </div>  
           </td>
       `;
@@ -343,7 +350,7 @@ function filterTable() {
   }
 
   // Update row count
-  document.getElementById("rowCount").textContent = "Total Units: " + visibleRows;
+  document.getElementById("rowCount").textContent = "Showing " + visibleRows + " Units";
 }
 
 // Event listeners for input and dropdown changes

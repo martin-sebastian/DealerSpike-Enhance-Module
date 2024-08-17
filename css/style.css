@@ -36,16 +36,14 @@ body {
   color: #333;
   font-weight: 900;
 }
-.show-hide-elements {
-  width: 50%;
-  height: 50px;
-  padding: 0 10px;
+.hide-elements {
+  padding: 5px 10px;
   background: #fff;
   border: solid 1px #ddd;
   border-radius: 5px;
-  color: #333;
-  overflow-y: hidden;
-  overflow-x: auto;
+}
+.hide-elements label {
+  margin: 0 5px;
 }
 .fa-times-circle {
   color: #222;

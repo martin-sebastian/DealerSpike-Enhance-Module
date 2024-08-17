@@ -122,7 +122,6 @@
           <div class="toggles-group">
             <button id="toggleThemeButton" class="btn btn-outline-secondary px-3 mx-1">
               <i id="theme-icon" class="bi bi-moon-stars"></i>
-              <!-- Initial icon, changes on theme switch -->
             </button>
             <button
               class="btn btn-danger py-0 px-2 mx-1"
@@ -215,99 +214,70 @@
                   <nav class="side-menu-footer">V.0.1.0</nav>
                 </div>
               </form>
-              <ul class="navbar-nav justify-content-end flex-grow-1 pe-3 d-none">
-                <li class="nav-item">
-                  <a class="nav-link active" aria-current="page" href="./">Home</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="https://newportal.flatoutmotorcycles.com/Portal/admin/muindex">Inventory</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="https://newportal.flatoutmotorcycles.com/Service/">Service</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="https://newportal.flatoutmotorcycles.com/PartSharkOps/">Ecommerce</a>
-                </li>
-                <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="bi bi-grid-3x3-gap-fill"></i> Apps
-                  </a>
-                  <ul class="dropdown-menu">
-                    <li>
-                      <a class="dropdown-item" href="https://newportal.flatoutmotorcycles.com/Portal/"><i class="bi bi-grid-3x3-gap-fill"></i> Sales Portal</a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="https://newportal.flatoutmotorcycles.com/Service/"
-                        ><i class="bi bi-grid-3x3-gap-fill"></i> Service Schedule</a
-                      >
-                    </li>
-                    <li>
-                      <hr class="dropdown-divider" />
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="https://newportal.flatoutmotorcycles.com/PartSharkOps/">Part Shark Ops</a>
-                    </li>
-                  </ul>
-                </li>
-              </ul>
             </div>
           </div>
         </div>
       </nav>
     </header>
-    <div class="container-fluid py-5 my-5">
-      <div class="card">
-        <div class="card-header text-center">
-          <div class="container">
-            <form class="w-100" role="search">
-              <div class="row g-2">
-                <div class="col-md-10">
-                  <input
-                    class="form-control w-100"
-                    type="search"
-                    placeholder="Search by year, make, model, stock number, or VIN"
-                    aria-label="Search"
-                    id="searchFilter"
-                    title="Filter vehicles by year, name, stock number, or VIN"
-                  />
-                </div>
-                <div class="col-md-2">
-                  <button type="button" id="rowCount" class="btn btn-danger w-100">Showing 0 Units</button>
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
-        <div class="card-body table-responsive">
-          <div class="d-flex justify-content-between"></div>
-          <table id="vehiclesTable" class="px-5 table table-sm table-hover w-100">
-            <thead>
-              <tr>
-                <th>Image</th>
-                <th class="text-center px-2">Year</th>
-                <th class="">Make</th>
-                <th class="">Model</th>
-                <th>Type</th>
-                <th class="">Stock Number</th>
-                <th>Color</th>
-                <th class="text-center">Usage</th>
-                <th class="text-center">Photos</th>
-                <th class="text-end text-nowrap px-2 mx-5">Details, Print Tags, Web Page</th>
-              </tr>
-            </thead>
-            <tbody>
-              <!-- Data will be inserted here -->
-            </tbody>
-          </table>
-        </div>
+    <main class="container">
+      <div class="d-flex justify-content-between align-items-center my-3">
+        <h3 class="text-uppercase fw-bolder m-0">Print Tags</h3>
       </div>
-    </div>
+      <div class="table-responsive mt-2">
+        <table id="myTable" class="table table-striped table-hover table-bordered table-sm">
+          <thead>
+            <tr>
+              <th data-column="images">Photos</th>
+              <th data-column="year">Year</th>
+              <th data-column="make">Make</th>
+              <th data-column="model">Model</th>
+              <th data-column="type">Type</th>
+              <th data-column="usage">Usage</th>
+              <th data-column="vin">VIN</th>
+              <th data-column="location">Location</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody">
+            <!-- Data to be dynamically inserted here -->
+          </tbody>
+        </table>
+      </div>
+    </main>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const body = document.body;
+        const themeToggleButton = document.getElementById("toggleThemeButton");
+        const themeIcon = document.getElementById("theme-icon");
+
+        function setTheme(theme) {
+          body.setAttribute("data-bs-theme", theme);
+          localStorage.setItem("theme", theme);
+          themeIcon.className = theme === "light" ? "bi bi-brightness-high" : "bi bi-moon-stars";
+        }
+
+        themeToggleButton.addEventListener("click", function () {
+          const currentTheme = body.getAttribute("data-bs-theme");
+          const newTheme = currentTheme === "light" ? "dark" : "light";
+          setTheme(newTheme);
+        });
+
+        const savedTheme = localStorage.getItem("theme");
+        if (savedTheme) {
+          setTheme(savedTheme);
+        }
+      });
+
+      function filterTable() {
+        // Implement your table filter logic here
+      }
+    </script>
+    <script src="./js/new.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.11/clipboard.min.js"></script>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
       crossorigin="anonymous"
     ></script>
-    <script src="./js/app.js"></script>
   </body>
 </html>
