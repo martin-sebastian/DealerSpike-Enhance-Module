@@ -15,9 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
         headerName: "Image",
         width: 90,
         cellRenderer: (params) =>
-          params.value !== "N/A"
-            ? `<img src="${params.value}" alt="Image" width="50" />`
-            : `<i class="fa fa-picture-o fa-3x" aria-hidden="true"></i>`,
+          params.value !== "N/A" ? `<img src="${params.value}" alt="Image" width="50" />` : `<i class="fa fa-picture-o fa-3x" aria-hidden="true"></i>`,
       },
       { field: "make", headerName: "Make", width: 110 },
       { field: "model", headerName: "Model" },
@@ -43,10 +41,10 @@ document.addEventListener("DOMContentLoaded", () => {
           const stockNumber = params.data.stockNumber;
 
           return `
-            <div class="btn-group pe-1" role="group" aria-label="Action Buttons">
-              <button class="btn btn-danger" onclick="viewDetails('${stockNumber}')">View</button>
-              <button class="btn btn-danger" onclick="editItem('${stockNumber}')">Edit</button>
-              <button class="btn btn-danger" onclick="deleteItem('${stockNumber}')">Delete</button>
+            <div class="btn-groupxxx pe-1" role="group" aria-label="Action Buttons">
+              <button class="btn btn-warning btn-sm" onclick="viewDetails('${stockNumber}')">View</button>
+              <button class="btn btn-warning btn-sm" onclick="editItem('${stockNumber}')">Edit</button>
+              <button class="btn btn-warning btn-sm" onclick="deleteItem('${stockNumber}')">Delete</button>
             </div>
           `;
         },
@@ -62,10 +60,8 @@ document.addEventListener("DOMContentLoaded", () => {
       gridApi = params.api; // Assign gridApi on grid ready
       await fetchAndSetData(); // Fetch data after grid is ready
     },
-    overlayLoadingTemplate:
-      '<span class="ag-overlay-loading-center">Loading data...</span>',
-    overlayNoRowsTemplate:
-      '<span class="ag-overlay-no-rows-center">No data available</span>',
+    overlayLoadingTemplate: '<span class="ag-overlay-loading-center">Loading data...</span>',
+    overlayNoRowsTemplate: '<span class="ag-overlay-no-rows-center">No data available</span>',
   };
 
   // Create the Data Grid
@@ -101,9 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
 async function fetchData() {
   try {
     console.log("Fetching XML data...");
-    const response = await fetch(
-      "https://www.flatoutmotorcycles.com/unitinventory_univ.xml"
-    );
+    const response = await fetch("https://www.flatoutmotorcycles.com/unitinventory_univ.xml");
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
@@ -117,24 +111,16 @@ async function fetchData() {
 
     // Process XML data into rowData format
     const rowData = Array.from(items).map((item) => {
-      const make =
-        item.getElementsByTagName("manufacturer")[0]?.textContent || "N/A";
-      const model =
-        item.getElementsByTagName("model_name")[0]?.textContent || "N/A";
+      const make = item.getElementsByTagName("manufacturer")[0]?.textContent || "N/A";
+      const model = item.getElementsByTagName("model_name")[0]?.textContent || "N/A";
       const year = item.getElementsByTagName("year")[0]?.textContent || "N/A";
-      const stockNumber =
-        item.getElementsByTagName("stocknumber")[0]?.textContent || "N/A";
-      const type =
-        item.getElementsByTagName("model_type")[0]?.textContent || "N/A";
+      const stockNumber = item.getElementsByTagName("stocknumber")[0]?.textContent || "N/A";
+      const type = item.getElementsByTagName("model_type")[0]?.textContent || "N/A";
       const color = item.getElementsByTagName("color")[0]?.textContent || "N/A";
       const usage = item.getElementsByTagName("usage")[0]?.textContent || "N/A";
-      const priceText =
-        item.getElementsByTagName("price")[0]?.textContent || "0";
+      const priceText = item.getElementsByTagName("price")[0]?.textContent || "0";
       const price = parseFloat(priceText.replace(/[^0-9.-]+/g, "")); // Convert to a number
-      const imageUrl =
-        item
-          .getElementsByTagName("images")[0]
-          ?.getElementsByTagName("imageurl")[0]?.textContent || "N/A";
+      const imageUrl = item.getElementsByTagName("images")[0]?.getElementsByTagName("imageurl")[0]?.textContent || "N/A";
 
       return {
         make,
@@ -167,9 +153,7 @@ function viewDetails(stockNumber) {
 
     // Set data in the modal
     document.getElementById("vehicleImage").src = row.imageUrl;
-    document.getElementById(
-      "vehicleTitle"
-    ).textContent = `${row.make} ${row.model}`;
+    document.getElementById("vehicleTitle").textContent = `${row.make} ${row.model}`;
     document.getElementById("vehicleMake").textContent = row.make;
     document.getElementById("vehicleModel").textContent = row.model;
     document.getElementById("vehicleYear").textContent = row.year;
@@ -177,13 +161,10 @@ function viewDetails(stockNumber) {
     document.getElementById("vehicleType").textContent = row.type;
     document.getElementById("vehicleColor").textContent = row.color;
     document.getElementById("vehicleUsage").textContent = row.usage;
-    document.getElementById("vehiclePrice").textContent = new Intl.NumberFormat(
-      "en-US",
-      {
-        style: "currency",
-        currency: "USD",
-      }
-    ).format(row.price);
+    document.getElementById("vehiclePrice").textContent = new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+    }).format(row.price);
 
     // Show the modal
     const modalElement = document.getElementById("detailsModal");
@@ -198,11 +179,7 @@ function editItem(stockNumber) {
 }
 
 function deleteItem(stockNumber) {
-  if (
-    confirm(
-      `Are you sure you want to delete item with stock number: ${stockNumber}?`
-    )
-  ) {
+  if (confirm(`Are you sure you want to delete item with stock number: ${stockNumber}?`)) {
     alert(`Deleting item with stock number: ${stockNumber}`);
     // Implement delete logic here
   }
