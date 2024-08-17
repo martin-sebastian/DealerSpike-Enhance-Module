@@ -165,46 +165,55 @@ async function fetchData() {
       const photos =
         imageElements.length > 10
           ? `<span class="photos-status" title="In-House Photos Done">
-              <i class="bi bi-check-circle"></i>
+              <i class="bi bi-camera2 text-warning"></i>
               <span class="mt-0 mb-0 visually-hidden" style="font-size: 10px;">Done</span>
             </span>`
           : `<span class="photos-status" title="Awaiting Photo Shoot">
-              <i class="bi bi-camera2 text-danger"></i>
+              <i class="bi bi-camera2 text-secondary"></i>
               <span class="mt-0 mb-0 visually-hidden" style="font-size: 10px;"> Needs Photos </span>
             </span>`;
 
       console.log(photos);
+
+      const usageColor = usage === "New" ? "text-bg-success" : "text-bg-secondary";
 
       const row = document.createElement("tr");
       row.innerHTML = `
           <td class="text-start">
             ${imageUrl !== "N/A" ? `<img src="${imageUrl}" alt="${title}" />` : `<i class="fa fa-picture-o fa-3x" aria-hidden="true"></i>`}
           </td>
-          <td class="text-center px-3"><span class="badge text-bg-secondary">${year}</span></td>
+          <td class="text-center px-2">
+            <span class="badge text-bg-secondary">${year}</span>
+          </td>
           <td class="pe-2">${manufacturer}</td>
           <td class="text-nowrap pe-2">
             <div class="vehicle-model text-truncate">${modelName}</div>
-            <span class="visually-hidden">${stockNumber} ${vin} ${usage} ${year} ${manufacturer} ${modelName} ${modelType} ${modelTypeStyle} ${color} ${photos}</span>
-            <div class="visually-hidden">VIN: ${vin}</div>
+              <span class="visually-hidden">${vin} ${usage} ${year} ${manufacturer} ${modelName} ${modelType} ${modelTypeStyle} ${color} ${photos}</span>
+            <div class="visually-hidden">${stockNumber} ${vin}</div>
           </td>
-          <td class="text-nowrap pe-2">${modelType}</td>
-          <td class="text-nowrap pe-2"><span class="badge text-bg-danger">${stockNumber}</span></td>
+          <td class="pe-4">${modelType}</td>
+          <td class="text-nowrap pe-2">
+            ${stockNumber}
+            <button type="button" class="btn btn-sm" title="Copy Stock Number" onclick="navigator.clipboard.writeText('${stockNumber}')">
+              <i class="bi bi-clipboard"></i>
+            </button>
+          </td>
           <td class="text-wrap pe-2">${color}</td>
-          <td class="text-center"><span class="badge text-bg-secondary">${usage}</span></td>
+          <td class="text-center"><span class="badge ${usageColor}">${usage}</span></td>
           <td class="text-center px-2">${photos}</td>
           <td class="text-end text-nowrap">
-            <div class="btn-groupxxx nowrap action-button-group" role="group" aria-label="Vehicles">
+            <div class="nowrap action-button-group" role="group" aria-label="Vehicles">
               <a href="./overlay/?search=${stockNumber}" 
               type="button" 
-              class="btn btn-danger action-button" 
+              class="btn btn-danger action-button mx-1" 
               title="Web Preview"
               data-bs-toggle="tooltip"
               data-bs-placement="top"
               data-bs-custom-class="custom-tooltip"
               data-bs-title="This top tooltip is themed via CSS variables."
               ><i class="bi bi-card-heading"></i></a>
-              <a href="./hang-tags/?search=${stockNumber}" type="button" class="btn btn-danger action-button" title="Hang Tags"><i class="bi bi-tags"></i></a>
-              <a href="./key-tags/?vehicle=${stockNumber}" type="button" class="btn btn-danger action-button" title="Key Tag"><i class="bi bi-tag"></i></a>
+              <a href="./hang-tags/?search=${stockNumber}" type="button" class="btn btn-danger action-button mx-1" title="Hang Tags"><i class="bi bi-tags"></i></a>
+              <a href="./key-tags/?vehicle=${stockNumber}" type="button" class="btn btn-danger action-button mx-1" title="Key Tag"><i class="bi bi-tag"></i></a>
             </div>  
           </td>
       `;
@@ -281,11 +290,11 @@ function updateThemeIcon(theme) {
   const toggleThemeButton = document.getElementById("toggleThemeButton").querySelector("i");
   console.log(`Updating theme icon for theme: ${theme}`);
   if (theme === "dark") {
-    toggleThemeButton.classList.remove("fa-sun-o");
-    toggleThemeButton.classList.add("fa-moon-o");
+    toggleThemeButton.classList.remove("bi-brightness-high");
+    toggleThemeButton.classList.add("bi-moon-stars");
   } else {
-    toggleThemeButton.classList.remove("fa-moon-o");
-    toggleThemeButton.classList.add("fa-sun-o");
+    toggleThemeButton.classList.remove("bi-moon-stars");
+    toggleThemeButton.classList.add("bi-brightness-high");
   }
 }
 
