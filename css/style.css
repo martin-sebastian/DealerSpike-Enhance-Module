@@ -2,6 +2,8 @@ body {
   margin: 0px;
   padding-top: 0px;
   font-family: "Roboto", sans-serif;
+}
+.dots {
   color: #333;
   background-color: #eee;
   background-image: url("../img/dots.png");
@@ -134,4 +136,94 @@ body {
 }
 .shadow {
   box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+}
+
+/* data table styles */
+.nowrap {
+  white-space: nowrap;
+}
+#rowCount {
+  font-size: 16px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+th {
+  cursor: pointer;
+  opacity: 0.4;
+}
+th:hover {
+  cursor: pointer;
+  opacity: 1;
+}
+th:hover::after {
+  cursor: pointer;
+  content: " \25B2";
+}
+th.sort-asc::after {
+  content: " \25B2";
+}
+th.sort-desc::after {
+  content: " \25BC";
+}
+td {
+  vertical-align: middle;
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+th {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  min-width: 100px;
+}
+.badge {
+  font-size: 14px;
+  font-weight: 700;
+}
+.action-button-group i {
+  display: block;
+  color: #fff;
+  font-size: 18px;
+  padding: 0;
+  text-transform: uppercase;
+}
+.action-button-group small {
+  display: block;
+  min-width: 50px;
+  font-size: 10px;
+  line-height: 10px;
+  font-weight: 700;
+  padding: 0;
+  text-transform: uppercase;
+}
+.table img {
+  width: 80px;
+  border-radius: 5px;
+}
+.vehicle-model {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.photos-status {
+  font-size: 24px;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+.placeholder {
+  border-radius: 5px;
+  padding: 10px;
+  margin: 5px 0;
+  height: 15px;
+}
+.offcanvas {
+  width: 320px !important;
+  opacity: 0.94;
+}
+.side-menu-footer {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: 10px 0;
 }

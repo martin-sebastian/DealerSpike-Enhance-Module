@@ -16,91 +16,7 @@
     />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
     <link href="./css/font-awesome.css" rel="stylesheet" />
-    <style>
-      .nowrap {
-        white-space: nowrap;
-      }
-      th {
-        cursor: pointer;
-        opacity: 0.4;
-      }
-      th:hover {
-        cursor: pointer;
-        opacity: 1;
-      }
-      th:hover::after {
-        cursor: pointer;
-        content: " \25B2";
-      }
-      th.sort-asc::after {
-        content: " \25B2";
-      }
-      th.sort-desc::after {
-        content: " \25BC";
-      }
-      td {
-        vertical-align: middle;
-        font-size: 14px;
-        font-weight: 700;
-        text-transform: uppercase;
-      }
-      th {
-        font-size: 10px;
-        font-weight: 700;
-        text-transform: uppercase;
-        min-width: 100px;
-      }
-      .badge {
-        font-size: 14px;
-        font-weight: 700;
-      }
-      .action-button-group i {
-        display: block;
-        color: #fff;
-        font-size: 18px;
-        padding: 0;
-        text-transform: uppercase;
-      }
-      .action-button-group small {
-        display: block;
-        min-width: 50px;
-        font-size: 10px;
-        line-height: 10px;
-        font-weight: 700;
-        padding: 0;
-        text-transform: uppercase;
-      }
-      .table img {
-        width: 80px;
-        border-radius: 5px;
-      }
-      .vehicle-model {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-      .photos-status {
-        font-size: 24px;
-        font-weight: 500;
-        text-transform: uppercase;
-      }
-      .placeholder {
-        border-radius: 5px;
-        padding: 10px;
-        margin: 5px 0;
-        height: 15px;
-      }
-      .offcanvas {
-        width: 320px !important;
-        opacity: 0.94;
-      }
-      .side-menu-footer {
-        position: absolute;
-        bottom: 0;
-        right: 0;
-        padding: 10px 0;
-      }
-    </style>
+    <link href="./css/style.css" rel="stylesheet" />
   </head>
   <body data-bs-theme="dark">
     <header>
@@ -245,24 +161,31 @@
         </div>
       </nav>
     </header>
-    <div class="container-fluid py-5 my-5">
-      <div class="card">
+    <div class="container-fluid">
+      <div class="spacer-50"></div>
+      <div class="card my-5 mx-1">
         <div class="card-header text-center">
           <div class="container">
             <form class="w-100" role="search">
               <div class="row g-2">
-                <div class="col-md-10">
-                  <input
-                    class="form-control w-100"
-                    type="search"
-                    placeholder="Search by year, make, model, stock number, or VIN"
-                    aria-label="Search"
-                    id="searchFilter"
-                    title="Filter vehicles by year, name, stock number, or VIN"
-                  />
+                <div class="col-md-9">
+                  <label class="visually-hidden" for="inlineFormInputGroupUsername">Filter</label>
+                  <div class="input-group">
+                    <div class="input-group-text"><i class="bi bi-search"></i></div>
+                    <input
+                      type="search"
+                      class="form-control"
+                      placeholder="Search"
+                      aria-label="Search"
+                      id="searchFilter"
+                      title="Filter vehicles by year, name, stock number, or VIN"
+                    />
+                  </div>
                 </div>
-                <div class="col-md-2">
-                  <button type="button" id="rowCount" class="btn btn-danger w-100">Showing 0 Units</button>
+                <div class="col-md-3">
+                  <button id="rowCount" class="btn btn-danger w-100" onclick="filterTable()">
+                    <i class="bi bi-lightning-charge"></i> Resetting filters . . .
+                  </button>
                 </div>
               </div>
             </form>

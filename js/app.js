@@ -350,7 +350,7 @@ function filterTable() {
   }
 
   // Update row count
-  document.getElementById("rowCount").textContent = "Showing " + visibleRows + " Units";
+  document.getElementById("rowCount").textContent = "Showing " + visibleRows + " Results";
 }
 
 // Event listeners for input and dropdown changes
