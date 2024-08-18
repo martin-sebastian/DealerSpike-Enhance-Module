@@ -342,7 +342,7 @@ $.ajax({
 
     if (data.B50Desc != null) {
       unitDescripionTemplate += `
-		<div id="scrollDescription" class="container-fluid" style="padding: 10px 0; border-top: solid 1px #ededed; border-bottom: solid 1px #ededed; background: #fff;">
+		<div id="scrollDescription" class="container-fluid" style="padding: 10px 0; border-top: solid 0px #ededed; border-bottom: solid 1px #ededed; background: #fff;">
 			<h3 class="bold text-center">
 				<a class="more-info-section black collapsed" style="text-decoration: none; margin: 0 auto;" data-toggle="collapse" href="#collapseDescription" aria-expanded="false" aria-controls="collapseDescription">
 					NOTES
@@ -405,7 +405,7 @@ $.ajax({
     var featuresHeader = ``;
     if (data.AccessoryItems != null) {
       featuresHeader += `
-		<div id="scrollFeatures" class="container-fluid" style="padding: 10px 0; border-top: solid 1px #ededed; background: #fff;">
+		<div id="scrollFeatures" class="container-fluid" style="padding: 10px 0; border-bottom: solid 1px #ededed; background: #fff;">
 		<h3 class="bold text-center">
 			<a class="more-info-section black collapsed" style=" text-decoration: none;" data-toggle="collapse" href="#collapseFeatures" aria-expanded="false" aria-controls="collapseFeatures">
 				FEATURE HIGHLIGHTS
@@ -546,7 +546,7 @@ $.ajax({
     data.Videos.forEach((video) => {
       if (video.Platform === 0) {
         youtubeVideoTemplate += `
-			<div style="border-top: solid 1px #ddd; border-top: solid 1px #ededed;">
+			<div style="border-top: solid 0px #ddd; border-bottom: solid 1px #ededed;">
 				<div id="scrollVideo" class="container-fluid" style="color: #333; background: #fff; padding: 10px 0;">
 					<h3 class="text-center bold">
 					<a class="more-info-section black collapsed" style="text-decoration: none;" data-toggle="collapse" href="#collapseVideo" aria-expanded="false" aria-controls="collapseVideo">
@@ -566,7 +566,7 @@ $.ajax({
 		`;
       } else if (video.Platform === 1) {
         walkthruVideoTemplate += `
-			<div style="border-top: solid 1px #ddd; border-top: solid 1px #ededed;">
+			<div style="border-top: solid 0px #ddd; border-bottom: solid 1px #ededed;">
 				<div id="scroll3D" class="container-fluid" style="color: #333; background: #fff; padding: 10px 0;">
 					<h3 class="text-center bold">
 						<a class="more-info-section black collapsed" style="text-decoration: none;" data-toggle="collapse" href="#collapse360" aria-expanded="false" aria-controls="collapse360">
@@ -785,7 +785,7 @@ $.ajax({
     var ourPrice = numeral(data.MSRPUnit + data.AccessoryItemsTotal + data.MatItemsTotal + data.DiscountItemsTotal + data.TradeInItemsTotal).format("$0,0.00");
     var overlay = `
 		${muHeaderTemplate}
-		<div class="container-fluid" style="background: #efefef; padding-top: 16px; padding-bottom: 35px;">
+		<div id="overlayContainer" class="container-fluid" style="background: #efefef; padding-top: 16px; padding-bottom: 35px;">
 			<div class="row" style="max-width: 1700px; margin:0 auto;">
 				<div class="col-xl-8 col-lg-8 col-md-8">
 					${carousel}
@@ -855,7 +855,6 @@ $.ajax({
 					<hr style="clear: both;">
 					${contactMobile}
 				</div>
-				
 			</div>
 		</div>
 		${featuresTemplate}
@@ -882,6 +881,9 @@ $.ajax({
 	}
 	body {
 		font-family: Roboto, Arial, Helvetica, sans-serif;
+	}
+	.mobile-preview {
+		width: 600px;
 	}
 	.pointer {
 		cursor: pointer;
