@@ -162,30 +162,26 @@
       </nav>
     </header>
     <div class="container-fluid">
-      <div class="spacer-50"></div>
-      <div class="card my-5 mx-1">
+      <div class="spacer-50 my-3"></div>
+      <div class="card mb-5 mx-1">
         <div class="card-header text-center">
           <div class="container">
             <form class="w-100" role="search">
-              <div class="row g-2">
-                <div class="col-md-9">
-                  <label class="visually-hidden" for="inlineFormInputGroupUsername">Filter</label>
+              <div class="row g-0">
+                <div class="col-md-12">
                   <div class="input-group">
-                    <div class="input-group-text"><i class="bi bi-search"></i></div>
                     <input
                       type="search"
-                      class="form-control"
+                      class="form-control form-control-lg"
                       placeholder="Search"
                       aria-label="Search"
                       id="searchFilter"
                       title="Filter vehicles by year, name, stock number, or VIN"
                     />
+                    <button id="rowCount" class="btn btn-secondary btn-lg px-5" onclick="filterTable()">
+                      <i class="bi bi-lightning-charge"></i> Resetting . . .
+                    </button>
                   </div>
-                </div>
-                <div class="col-md-3">
-                  <button id="rowCount" class="btn btn-danger w-100" onclick="filterTable()">
-                    <i class="bi bi-lightning-charge"></i> Resetting filters . . .
-                  </button>
                 </div>
               </div>
             </form>

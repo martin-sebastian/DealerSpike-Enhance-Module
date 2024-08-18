@@ -350,7 +350,7 @@ function filterTable() {
   }
 
   // Update row count
-  document.getElementById("rowCount").textContent = "Showing " + visibleRows + " Results";
+  document.getElementById("rowCount").textContent = visibleRows + " Results";
 }
 
 // Event listeners for input and dropdown changes
