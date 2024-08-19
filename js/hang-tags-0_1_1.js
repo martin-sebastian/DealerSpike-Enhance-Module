@@ -1,14 +1,14 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const queryString = window.location.search;
-  const urlParams = new URLSearchParams(queryString);
-  const urlstocknumber = urlParams.get("search");
-  const stockNum = urlstocknumber;
+  // const queryString = window.location.search;
+  // const urlParams = new URLSearchParams(queryString);
+  // const urlstocknumber = urlParams.get("search");
+  // const stockNum = urlstocknumber;
 
-  console.log("stock Number:", urlstocknumber, stockNum);
+  // console.log("stock Number:", urlstocknumber, stockNum);
 
   // Payment Calculator
   // Get data from API and create variables
-  fetch(`https://newportal.flatoutmotorcycles.com/portal/public/api/majorunit/stocknumber/${stockNum}`)
+  fetch(`https://newportal.flatoutmotorcycles.com/portal/public/api/majorunit/stocknumber/${stockNumber}`)
     .then((response) => response.json())
     .then((data) => {
       const prodTitle = `${data.Usage} ${data.ModelYear} ${data.Manufacturer} ${data.B50ModelName}`;

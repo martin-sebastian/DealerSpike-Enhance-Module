@@ -1,12 +1,13 @@
 body {
   margin: 0px;
-  padding-top: 0px;
+  padding: 0px;
   font-family: "Roboto", sans-serif;
 }
 .dots {
   color: #333;
   background-color: #eee;
-  background-image: url("../img/dots.png");
+  background-image: url("../img/dots.png") !important;
+  background-repeat: repeat;
 }
 .hidden {
   display: none;
@@ -144,8 +145,7 @@ body {
 }
 #rowCount {
   font-size: 16px;
-  font-weight: 700;
-  text-transform: uppercase;
+  font-weight: 400;
 }
 th {
   cursor: pointer;
@@ -202,6 +202,7 @@ th {
   border-radius: 5px;
 }
 .vehicle-model {
+  width: 240px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -223,6 +224,8 @@ th {
 }
 .side-menu-footer {
   position: absolute;
+  background: none;
+  border: none;
   bottom: 0;
   right: 0;
   padding: 10px 0;

@@ -22,6 +22,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   fetchData();
 });
 
+const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+const tooltipList = [...tooltipTriggerList].map((tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl));
+
 function showPlaceholder() {
   const tableBody = document.getElementById("vehiclesTable").getElementsByTagName("tbody")[0];
   tableBody.innerHTML = `
@@ -185,25 +188,25 @@ async function fetchData() {
           <td class="text-start">
             ${imageUrl !== "N/A" ? `<img src="${imageUrl}" alt="${title}" />` : `<i class="fa fa-picture-o fa-3x" aria-hidden="true"></i>`}
           </td>
-          <td class="text-center px-2">
+          <td class="text-center">
             <span class="badge text-bg-secondary">${year}</span>
           </td>
-          <td class="">${manufacturer}</td>
-          <td class="text-nowrap">
+          <td>${manufacturer}</td>
+          <td>
             <div class="vehicle-model text-truncate">${modelName}</div>
               <span class="visually-hidden">${vin} ${usage} ${year} ${manufacturer} ${modelName} ${modelType} ${modelTypeStyle} ${color} ${photos}</span>
             <div class="visually-hidden">${stockNumber} ${vin}</div>
           </td>
-          <td class="pe-4">${modelType}</td>
-          <td class="pe-2">
+          <td>${modelType}</td>
+          <td>
             <span class="badge text-bg-danger">${stockNumber}</span>
             <button type="button" class="btn btn-sm" title="Copy Stock Number" onclick="navigator.clipboard.writeText('${stockNumber}')">
               <i class="bi bi-clipboard"></i>
             </button>
           </td>
-          <td class="text-wrap pe-2">${color}</td>
+          <td class="">${color}</td>
           <td class="text-center"><span class="badge ${usageColor}">${usage}</span></td>
-          <td class="text-center px-2">${photos}</td>
+          <td class="text-center">${photos}</td>
           <td class="text-end text-nowrap">
             <div class="action-button-group" role="group" aria-label="Vehicles">
               <a
@@ -213,14 +216,13 @@ async function fetchData() {
               title="Web Preview"
               data-bs-toggle="tooltip"
               data-bs-placement="top"
-              data-bs-custom-class="custom-tooltip"
               data-bs-title="Major Unit Pricing & More Info."
               >
               <i class="bi bi-card-heading"></i>
               </a>
               <a href="./hang-tags/?search=${stockNumber}" type="button" class="btn btn-danger action-button mx-1" title="Hang Tags"><i class="bi bi-tags"></i></a>
               <a href="./key-tags/?vehicle=${stockNumber}" type="button" class="btn btn-danger action-button mx-1" title="Key Tag"><i class="bi bi-tag"></i></a>
-              <a href="${webURL}" target="_blank" type="button" class="btn btn-danger action-button mx-1" title="Web Page"><i class="bi bi-browser-chrome"></i></a>
+              <button type="button" class="btn btn-danger action-button mx-1" title="Key Tag" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="${stockNumber}"><i class="bi bi-circle"></i></button>
             </div>  
           </td>
       `;
@@ -348,9 +350,10 @@ function filterTable() {
       }
     }
   }
-
+  // row count button
+  const resetIcon = `<i class="bi bi-lightning-charge-fill me-2 float-start"></i>`;
   // Update row count
-  document.getElementById("rowCount").textContent = visibleRows + " Results";
+  document.getElementById("rowCount").innerHTML = resetIcon + visibleRows + ` of ${tr.length - 1} Vehicles`;
 }
 
 // Event listeners for input and dropdown changes
@@ -360,3 +363,23 @@ document.getElementById("typeFilter").addEventListener("change", filterTable);
 document.getElementById("usageFilter").addEventListener("change", filterTable);
 document.getElementById("photosFilter").addEventListener("change", filterTable);
 document.getElementById("yearFilter").addEventListener("change", filterTable);
+
+// Modal Script
+const exampleModal = document.getElementById("exampleModal");
+if (exampleModal) {
+  exampleModal.addEventListener("show.bs.modal", (event) => {
+    // Button that triggered the modal
+    const button = event.relatedTarget;
+    // Extract info from data-bs-* attributes
+    const recipient = button.getAttribute("data-bs-whatever");
+    // If necessary, you could initiate an Ajax request here
+    // and then do the updating in a callback.
+
+    // Update the modal's content.
+    const modalTitle = exampleModal.querySelector(".modal-title");
+    const modalBodyInput = exampleModal.querySelector(".modal-body input");
+
+    modalTitle.textContent = `New message to ${recipient}`;
+    modalBodyInput.value = recipient;
+  });
+}
