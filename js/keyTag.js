@@ -1,5 +1,5 @@
-let stockNum = stockNumber;
-async function keyTag(stockNum) {
+// Function to fetch the data
+async function keyTag(stockNumber) {
   try {
     const response = await fetch("https://newportal.flatoutmotorcycles.com/portal/public/api/majorunit/stocknumber/" + stockNumber);
 
@@ -8,7 +8,6 @@ async function keyTag(stockNum) {
     }
 
     const data = await response.json();
-    console.log(data);
 
     if (typeof data.StockNumber !== "undefined") {
       document.getElementById("modelUsage").innerHTML = data.Usage;
@@ -24,15 +23,23 @@ async function keyTag(stockNum) {
       keyTagElement.classList.add("hidden");
 
       document.getElementById("message").innerHTML = `
-          <div class="warning-icon-container text-center">
-            <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-          </div>
-          <p class="error-message">
-            No data available, click 
-            <i class="fa fa-info-circle" aria-hidden="true"></i> icon next to print button for instructions.
-          </p>`;
+        <div class="warning-icon-container text-center">
+          <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+        </div>
+        <p class="error-message">
+          No data available, click 
+          <i class="fa fa-info-circle" aria-hidden="true"></i> icon next to print button for instructions.
+        </p>`;
     }
   } catch (error) {
     console.log(error.message);
   }
 }
+
+// Add event listeners to all buttons
+document.querySelectorAll("button[data-bs-whatever]").forEach((button) => {
+  button.addEventListener("click", function (event) {
+    const stockNumber = event.target.getAttribute("data-bs-whatever");
+    keyTag(stockNumber);
+  });
+});

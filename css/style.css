@@ -230,3 +230,102 @@ th {
   right: 0;
   padding: 10px 0;
 }
+
+/* Key Tags */
+.warning-icon-container {
+  text-align: center;
+  font-size: 300%;
+  color: red;
+  padding-top: 80px;
+}
+.error-message {
+  text-align: center;
+  font-size: large;
+}
+
+.blank-line {
+  background: #ccc;
+  border-radius: 4px;
+  height: 11px;
+  margin-bottom: 10px;
+}
+.key-tag-container {
+  border: solid 1px #ccc;
+  border-radius: 10px;
+  padding: 0px 5px;
+  margin-top: 3px;
+  width: 1.5in;
+  height: 2in;
+  background: #fff;
+  zoom: 2;
+}
+.keytag-label {
+  font-size: 6px;
+  color: #999;
+  margin: -8px 0 0px 0;
+  padding-left: 0px;
+}
+.model-usage {
+  text-align: center;
+  font-size: 12px;
+  line-height: 18px;
+  font-weight: bold;
+  border-bottom: solid 1px #eee;
+}
+.stock-number {
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  border-bottom: solid 1px #eee;
+}
+.model-year {
+  text-align: center;
+  font-size: 12px;
+  font-weight: bold;
+  border-bottom: solid 1px #eee;
+}
+.manufacturer {
+  text-align: center;
+  font-size: 14px;
+  font-weight: bold;
+  border-bottom: solid 1px #eee;
+}
+.model-name {
+  text-align: center;
+  font-size: 12px;
+  line-height: 24px;
+  font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border-bottom: solid 1px #eee;
+}
+.model-code {
+  text-align: center;
+  font-size: 11px;
+  line-height: 24px;
+  font-weight: bold;
+  border-bottom: solid 1px #eee;
+}
+.model-color {
+  text-align: center;
+  font-size: 12px;
+  line-height: 20px;
+  font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border-bottom: solid 1px #eee;
+}
+.model-vin {
+  text-align: center;
+  font-size: 11px;
+  font-weight: bold;
+  line-height: 20px;
+  border-bottom: solid 1px #eee;
+}
+@media print {
+  .key-tag-container {
+    zoom: 1;
+  }
+}

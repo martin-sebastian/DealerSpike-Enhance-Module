@@ -1,0 +1,12 @@
+app.js:361 Uncaught TypeError: Cannot read properties of null (reading 'addEventListener')
+    at app.js:361:46
+app.js:10 Theme loaded from session storage: null
+app.js:132 Fetching XML data...
+app.js:138 XML data fetched successfully
+app.js:143 Number of items found: 309
+app.js:233 Data successfully inserted into table
+app.js:244 Error fetching XML: TypeError: Cannot read properties of null (reading 'value')
+    at filterTable (app.js:312:75)
+    at fetchData (app.js:242:5)
+fetchData @ app.js:244
+127.0.0.1/:1 Unchecked runtime.lastError: The message port closed before a response was received.
