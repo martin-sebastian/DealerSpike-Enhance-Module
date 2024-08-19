@@ -15,11 +15,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     toggleThemeButton.addEventListener("click", toggleTheme);
   }
 
-  // add event lister for key tag button
-  const toggleKeyTagButton = document.getElementById("toggleKeyTagButton");
-  if (toggleKeyTagButton) {
-    toggleKeyTagButton.addEventListener("click", toggleKeyTag);
-
   // Show placeholder while fetching XML data
   showPlaceholder();
 
@@ -227,7 +222,7 @@ async function fetchData() {
               </a>
               <a href="./hang-tags/?search=${stockNumber}" type="button" class="btn btn-danger action-button mx-1" title="Hang Tags"><i class="bi bi-tags"></i></a>
               <a href="./key-tags/?vehicle=${stockNumber}" type="button" class="btn btn-danger action-button mx-1" title="Key Tag"><i class="bi bi-tag"></i></a>
-              <button type="button" id="toggleKeyTagButton" class="btn btn-danger action-button mx-1" title="Key Tag" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="${stockNumber}" onclick="keyTag()"><i class="bi bi-circle"></i></button>
+              <button type="button" id="toggleKeyTagButton" class="btn btn-danger action-button mx-1" title="Key Tag" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="${stockNumber}" onclick="keyTag()><i class="bi bi-circle"></i></button>
             </div>  
           </td>
       `;
@@ -361,8 +356,6 @@ function filterTable() {
   document.getElementById("rowCount").innerHTML = resetIcon + visibleRows + ` of ${tr.length - 1} Vehicles`;
 }
 
-
-
 // Event listeners for input and dropdown changes
 document.getElementById("searchFilter").addEventListener("keyup", filterTable);
 document.getElementById("manufacturerFilter").addEventListener("change", filterTable);
@@ -371,22 +364,22 @@ document.getElementById("usageFilter").addEventListener("change", filterTable);
 document.getElementById("photosFilter").addEventListener("change", filterTable);
 document.getElementById("yearFilter").addEventListener("change", filterTable);
 
-// // Modal Script
-// const exampleModal = document.getElementById("exampleModal");
-// if (exampleModal) {
-//   exampleModal.addEventListener("show.bs.modal", (event) => {
-//     // Button that triggered the modal
-//     const button = event.relatedTarget;
-//     // Extract info from data-bs-* attributes
-//     const recipient = button.getAttribute("data-bs-whatever");
-//     // If necessary, you could initiate an Ajax request here
-//     // and then do the updating in a callback.
+// Modal Script
+const exampleModal = document.getElementById("exampleModal");
+if (exampleModal) {
+  exampleModal.addEventListener("show.bs.modal", (event) => {
+    // Button that triggered the modal
+    const button = event.relatedTarget;
+    // Extract info from data-bs-* attributes
+    const recipient = button.getAttribute("data-bs-whatever");
+    // If necessary, you could initiate an Ajax request here
+    // and then do the updating in a callback.
 
-//     // Update the modal's content.
-//     const modalTitle = exampleModal.querySelector(".modal-title");
-//     const modalBodyInput = exampleModal.querySelector(".modal-body input");
+    // Update the modal's content.
+    const modalTitle = exampleModal.querySelector(".modal-title");
+    const modalBodyInput = exampleModal.querySelector(".modal-body input");
 
-//     modalTitle.textContent = `New message to ${recipient}`;
-//     modalBodyInput.value = recipient;
-//   });
-// }
+    modalTitle.textContent = `New message to ${recipient}`;
+    modalBodyInput.value = recipient;
+  });
+}
