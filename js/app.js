@@ -180,28 +180,31 @@ async function fetchData() {
 
         const row = document.createElement("tr");
         row.innerHTML = `
-          <td class="text-start">
+          <td class="text-center">
             ${imageUrl !== "N/A" ? `<img src="${imageUrl}" alt="${title}" />` : `<i class="fa fa-picture-o fa-3x" aria-hidden="true"></i>`}
           </td>
           <td class="text-center">
             <span class="badge text-bg-secondary">${year}</span>
           </td>
-          <td>${manufacturer}</td>
+          <td class="w-5">${manufacturer}</td>
           <td>
-            <div class="vehicle-model text-truncate">${modelName}</div>
-              <span class="visually-hidden">${vin} ${usage} ${year} ${manufacturer} ${modelName} ${modelType} ${modelTypeStyle} ${color} ${photos}</span>
-            <div class="visually-hidden">${stockNumber} ${vin}</div>
+            <div class="text-truncate">${modelName}</div>
+              <span class="visually-hidden">${stockNumber} ${vin} ${usage} ${year} ${manufacturer} ${modelName} ${modelType} ${modelTypeStyle} ${color} ${photos}</span>
+            <small class="">${title}</small>
           </td>
           <td>${modelType}</td>
           <td>
-            <span class="badge text-bg-danger">${stockNumber}</span>
-            <button type="button" class="btn btn-sm" title="Copy Stock Number" onclick="navigator.clipboard.writeText('${stockNumber}')">
-              <i class="bi bi-clipboard"></i>
-            </button>
+          <div class="row text-nowrap">
+ 
+            <div class="w-10">
+              <button type="button" class="btn btn-outline-secondary" title="Copy Stock Number" onclick="navigator.clipboard.writeText('${stockNumber}')">
+                ${stockNumber} <i class="bi bi-clipboard ms-2"></i>
+              </button>
+              </div>
           </td>
-          <td class="">${color}</td>
-          <td class="text-center"><span class="badge ${usageColor}">${usage}</span></td>
-          <td class="text-center">${photos}</td>
+          <td class="w-5 text-end">${color}</td>
+          <td class="w-5 text-center"><span class="badge ${usageColor}">${usage}</span></td>
+          <td class="w-5 text-center">${photos}</td>
           <td class="text-end text-nowrap">
             <div class="action-button-group" role="group" aria-label="Vehicles">
               <a
