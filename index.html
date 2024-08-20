@@ -20,6 +20,27 @@
           <a class="navbar-brand" href="./">
             <img id="logo" src="./img/fom-app-logo-01.svg" alt="Logo" width="180" height="30.6" />
           </a>
+          <form class="d-flex" style="width: 350px" role="search">
+            <label for="searchFilter" class="visually-hidden">Search</label>
+            <input
+              type="text"
+              class="form-control w-100"
+              placeholder="Search"
+              aria-label="Search"
+              id="searchFilter"
+              list="datalistOptions"
+              title="Filter vehicles by year, name, stock number, or VIN"
+              autocomplete="off"
+            />
+            <datalist id="datalistOptions">
+              <!-- Options -->
+            </datalist>
+            <button id="rowCount" class="btn btn-outline-secondary mx-1" onclick="filterTable()">
+              <div class="spinner-border spinner-border-sm" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </button>
+          </form>
           <div class="toggles-group">
             <button id="toggleThemeButton" class="btn btn-outline-secondary px-3 mx-1" type="button">
               <i id="theme-icon" class="bi bi-moon-stars"></i>
@@ -125,39 +146,9 @@
     </nav>
 
     <main class="container-fluid d-print-none">
-      <div class="spacer-100"></div>
+      <div class="spacer-75"></div>
       <div class="card">
-        <div class="card-header">
-          <div class="sticky-top">
-            <form role="search">
-              <div class="row g-2">
-                <div class="col-md-10">
-                  <label for="searchFilter" class="visually-hidden">Search</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    placeholder="Search"
-                    aria-label="Search"
-                    id="searchFilter"
-                    list="datalistOptions"
-                    title="Filter vehicles by year, name, stock number, or VIN"
-                    autocomplete="off"
-                  />
-                  <datalist id="datalistOptions">
-                    <!-- Options -->
-                  </datalist>
-                </div>
-                <div class="col-md-2">
-                  <button id="rowCount" class="btn btn-outline-secondary w-100" onclick="filterTable()">
-                    <div class="spinner-border spinner-border-sm" role="status">
-                      <span class="visually-hidden">Loading...</span>
-                    </div>
-                  </button>
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
+        <div class="card-header">Inventory</div>
 
         <div class="card-body">
           <div class="table-responsive">
@@ -192,21 +183,19 @@
             <h1 class="modal-title fs-5" id="keytagModalLabel">StockNumber</h1>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <div class="modal-body dots">
-            <div class="main-content">
-              <!-- Elements to display the fetched data -->
-              <div id="keytagContainer" class="key-tag-container text-truncate">
-                <div id="modelUsage" class="model-usage text-truncate">New or Used</div>
-                <div id="stockNumber" class="stock-number text-truncate">Stock Number</div>
-                <div id="modelYear" class="model-year text-truncate">Year</div>
-                <div id="manufacturer" class="manufacturer text-truncate">Manufacturer</div>
-                <div id="modelName" class="model-name text-truncate">Model Name</div>
-                <div id="modelCode" class="model-code text-truncate">Model Code</div>
-                <div id="modelColor" class="model-color text-truncate">Model Color</div>
-                <div id="modelVin" class="model-vin text-truncate">VIN NUMBER</div>
-              </div>
-              <div id="message"></div>
+          <div class="modal-body main-content">
+            <!-- Elements to display the fetched data -->
+            <div id="keytagContainer" class="key-tag-container text-truncate">
+              <div id="modelUsage" class="model-usage text-truncate">New or Used</div>
+              <div id="stockNumber" class="stock-number text-truncate">Stock Number</div>
+              <div id="modelYear" class="model-year text-truncate">Year</div>
+              <div id="manufacturer" class="manufacturer text-truncate">Manufacturer</div>
+              <div id="modelName" class="model-name text-truncate">Model Name</div>
+              <div id="modelCode" class="model-code text-truncate">Model Code</div>
+              <div id="modelColor" class="model-color text-truncate">Model Color</div>
+              <div id="modelVin" class="model-vin text-truncate">VIN NUMBER</div>
             </div>
+            <div id="message"></div>
           </div>
           <div class="modal-footer d-print-none">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

@@ -388,7 +388,8 @@ function filterTable() {
   const resetIcon = `<i class="bi bi-lightning-charge-fill me-2 float-end"></i>`;
   const rowCountElement = document.getElementById("rowCount");
   if (rowCountElement) {
-    rowCountElement.innerHTML = `Results: ` + visibleRows + ` of ${tr.length - 1}` + resetIcon;
+    //rowCountElement.innerHTML = visibleRows + ` of ${tr.length - 1}` + resetIcon;
+    rowCountElement.innerHTML = visibleRows;
   }
 }
 
@@ -418,47 +419,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
-
-// document.getElementById("printTag").addEventListener("click", function () {
-//   // Get the keytagContainer content
-//   const keytagContent = document.getElementById("keytagContainer").innerHTML;
-
-//   // Create a new window or document for printing
-//   const printWindow = window.open("", "", "width=800,height=600");
-
-//   // Write the content to the new window
-//   printWindow.document.write(`
-//     <html>
-//       <head>
-//         <title>Print Key Tag</title>
-//         <style>
-//           body {
-//             font-family: Arial, sans-serif;
-//           }
-//           .key-tag-container {
-//             background-color: lightgray;
-//             padding: 10px;
-//             margin: 20px;
-//           }
-//         </style>
-//       </head>
-//       <body>
-//         ${keytagContent}
-//       </body>
-//     </html>
-//   `);
-
-//   // Close the document to ensure the content is rendered before print
-//   printWindow.document.close();
-
-//   // Trigger the print dialog
-//   printWindow.print();
-
-//   // Optional: Close the print window after printing
-//   printWindow.onafterprint = function () {
-//     printWindow.close();
-//   };
-// });
 
 // Function to fetch the data
 async function keyTag(stockNumber) {
