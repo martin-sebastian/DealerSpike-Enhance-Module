@@ -22,23 +22,109 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // Fetch and process XML data
   fetchData();
-
-  // // Add event listeners to all buttons that should trigger the modal
-  // document.querySelectorAll("button[data-bs-stocknumber]").forEach((button) => {
-  //   button.addEventListener("click", function (event) {
-  //     const stockNumber = event.target.getAttribute("data-bs-stocknumber");
-  //     console.log(`Stock Number: ${stockNumber}`);
-  //     //const keytagModalLabel = document.getElementById("keytagModalLabel").innerHTML;
-  //     keyTag(stockNumber);
-  //   });
-  // });
 });
 
 function showPlaceholder() {
   const tableBody = document.getElementById("vehiclesTable").getElementsByTagName("tbody")[0];
   if (tableBody) {
     tableBody.innerHTML = `
-      <tr class="placeholder-glow">
+    <tr class="placeholder-glow">
+      <td><span class="placeholder col-7"></span></td>
+      <td class="text-center"><span class="placeholder col-3"></span></td>
+      <td><span class="placeholder col-6"></span></td>
+      <td style="width: 30%;"><span class="placeholder col-7"></span></td>
+      <td><span class="placeholder col-7"></span></td>
+      <td><span class="placeholder col-3"></span></td>
+      <td><span class="placeholder col-3"></span></td>
+      <td class="text-center"><span class="placeholder col-7"></span></td>
+      <td class="text-center"><span class="placeholder col-6"></span></td>
+      <td class="text-end"><span class="placeholder col-12"></span></td>
+    </tr>
+    <tr class="placeholder-glow">
+      <td><span class="placeholder col-7"></span></td>
+      <td class="text-center"><span class="placeholder col-3"></span></td>
+      <td><span class="placeholder col-4"></span></td>
+      <td><span class="placeholder col-12"></span></td>
+      <td><span class="placeholder col-5"></span></td>
+      <td><span class="placeholder col-8"></span></td>
+      <td><span class="placeholder col-8"></span></td>
+      <td class="text-center"><span class="placeholder col-7"></span></td>
+      <td class="text-center"><span class="placeholder col-6"></span></td>
+      <td class="text-end"><span class="placeholder col-12"></span></td>
+    </tr>
+    <tr class="placeholder-glow">
+      <td><span class="placeholder col-7"></span></td>
+      <td class="text-center"><span class="placeholder col-3"></span></td>
+      <td><span class="placeholder col-6"></span></td>
+      <td style="width: 30%;"><span class="placeholder col-7"></span></td>
+      <td><span class="placeholder col-7"></span></td>
+      <td><span class="placeholder col-3"></span></td>
+      <td><span class="placeholder col-3"></span></td>
+      <td class="text-center"><span class="placeholder col-7"></span></td>
+      <td class="text-center"><span class="placeholder col-6"></span></td>
+      <td class="text-end"><span class="placeholder col-12"></span></td>
+    </tr>
+    <tr class="placeholder-glow">
+      <td><span class="placeholder col-7"></span></td>
+      <td class="text-center"><span class="placeholder col-3"></span></td>
+      <td><span class="placeholder col-4"></span></td>
+      <td><span class="placeholder col-12"></span></td>
+      <td><span class="placeholder col-5"></span></td>
+      <td><span class="placeholder col-8"></span></td>
+      <td><span class="placeholder col-8"></span></td>
+      <td class="text-center"><span class="placeholder col-7"></span></td>
+      <td class="text-center"><span class="placeholder col-6"></span></td>
+      <td class="text-end"><span class="placeholder col-12"></span></td>
+    </tr>
+    <tr class="placeholder-glow">
+      <td><span class="placeholder col-7"></span></td>
+      <td class="text-center"><span class="placeholder col-3"></span></td>
+      <td><span class="placeholder col-6"></span></td>
+      <td style="width: 30%;"><span class="placeholder col-7"></span></td>
+      <td><span class="placeholder col-7"></span></td>
+      <td><span class="placeholder col-3"></span></td>
+      <td><span class="placeholder col-3"></span></td>
+      <td class="text-center"><span class="placeholder col-7"></span></td>
+      <td class="text-center"><span class="placeholder col-6"></span></td>
+      <td class="text-end"><span class="placeholder col-12"></span></td>
+    </tr>
+    <tr class="placeholder-glow">
+      <td><span class="placeholder col-7"></span></td>
+      <td class="text-center"><span class="placeholder col-3"></span></td>
+      <td><span class="placeholder col-4"></span></td>
+      <td><span class="placeholder col-12"></span></td>
+      <td><span class="placeholder col-5"></span></td>
+      <td><span class="placeholder col-8"></span></td>
+      <td><span class="placeholder col-8"></span></td>
+      <td class="text-center"><span class="placeholder col-7"></span></td>
+      <td class="text-center"><span class="placeholder col-6"></span></td>
+      <td class="text-end"><span class="placeholder col-12"></span></td>
+    </tr>
+    <tr class="placeholder-glow">
+      <td><span class="placeholder col-7"></span></td>
+      <td class="text-center"><span class="placeholder col-3"></span></td>
+      <td><span class="placeholder col-6"></span></td>
+      <td style="width: 30%;"><span class="placeholder col-7"></span></td>
+      <td><span class="placeholder col-7"></span></td>
+      <td><span class="placeholder col-3"></span></td>
+      <td><span class="placeholder col-3"></span></td>
+      <td class="text-center"><span class="placeholder col-7"></span></td>
+      <td class="text-center"><span class="placeholder col-6"></span></td>
+      <td class="text-end"><span class="placeholder col-12"></span></td>
+    </tr>
+    <tr class="placeholder-glow">
+      <td><span class="placeholder col-7"></span></td>
+      <td class="text-center"><span class="placeholder col-3"></span></td>
+      <td><span class="placeholder col-4"></span></td>
+      <td><span class="placeholder col-12"></span></td>
+      <td><span class="placeholder col-5"></span></td>
+      <td><span class="placeholder col-8"></span></td>
+      <td><span class="placeholder col-8"></span></td>
+      <td class="text-center"><span class="placeholder col-7"></span></td>
+      <td class="text-center"><span class="placeholder col-6"></span></td>
+      <td class="text-end"><span class="placeholder col-12"></span></td>
+    </tr>
+    <tr class="placeholder-glow">
       <td><span class="placeholder col-7"></span></td>
       <td class="text-center"><span class="placeholder col-3"></span></td>
       <td><span class="placeholder col-6"></span></td>
@@ -166,6 +252,7 @@ async function fetchData() {
         const stockNumber = item.getElementsByTagName("stocknumber")[0]?.textContent || "N/A";
         const vin = item.getElementsByTagName("vin")[0]?.textContent || "N/A";
         const price = item.getElementsByTagName("price")[0]?.textContent || "N/A";
+        const webPrice = numeral(price).format("$0,0.00");
         const manufacturer = item.getElementsByTagName("manufacturer")[0]?.textContent || "N/A";
         const year = item.getElementsByTagName("year")[0]?.textContent || "N/A";
         const modelName = item.getElementsByTagName("model_name")[0]?.textContent || "N/A";
@@ -192,34 +279,35 @@ async function fetchData() {
         row.innerHTML = `
           <td class="text-center">
           <a href="${webURL}" target="_blank" title="View on Website" data-bs-toggle="tooltip" data-bs-placement="top">
-            ${imageUrl !== "N/A" ? `<img src="${imageUrl}" alt="${title}" />` : `<i class="fa fa-picture-o fa-3x" aria-hidden="true"></i>`}
+            ${imageUrl !== "N/A" ? `<img src="${imageUrl}" alt="${title}" />` : `<i class="bi bi-card-image"></i>`}
             </a>
           </td>
           <td class="text-center">
             <span class="badge text-bg-secondary">${year}</span>
           </td>
-          <td class="w-5">${manufacturer}</td>
+          <td>${manufacturer}</td>
           <td>
             <div class="text-truncate">${modelName}</div>
               <span class="visually-hidden">${stockNumber} ${vin} ${usage} ${year} ${manufacturer} ${modelName} ${modelType} ${modelTypeStyle} ${color} ${photos}</span>
           </td>
+          <td>${webPrice}</td>
           <td>${modelType}</td>
           <td>
           <div class="row text-nowrap">
-            <div class="w-50" style="min-width: 200px; max-width: 300px;">
-            <div class="input-group input-group-sm">
+            <div style="min-width: 200px; width: 250px;">
+            <div class="input-group input-group-sm me-5">
             <input type="text" class="form-control" value="${stockNumber}" placeholder="Stock Number" title="${stockNumber}" aria-label="stock number" aria-describedby="btnGroupAddon">
               <div class="input-group-text" id="btnGroupAddon">
-                <button type="button" class="btn btn-default btn-sm float-end" title="Copy Stock Number" onclick="navigator.clipboard.writeText('${stockNumber}')">
-                <i class="bi bi-clipboard" style="font-size: 11px;"></i>
+                <button type="button" class="btn btn-default btn-sm m-0 p-0" title="Copy Stock Number" onclick="navigator.clipboard.writeText('${stockNumber}')">
+                <i class="bi bi-clipboard" style="font-size: 14px;"></i>
               </button>
               </div>
             </div>
             </div>
           </td>
-          <td class="w-5 text-start">${color}</td>
-          <td class="w-5 text-center"><span class="badge ${usageColor}">${usage}</span></td>
-          <td class="w-5 text-center">${photos}</td>
+          <td class="text-start">${color}</td>
+          <td class="text-center"><span class="badge ${usageColor}">${usage}</span></td>
+          <td class="text-center">${photos}</td>
           <td class="text-end text-nowrap">
             <div class="action-button-group" role="group" aria-label="Vehicles">
               <a
@@ -234,8 +322,8 @@ async function fetchData() {
               <i class="bi bi-card-heading"></i>
               </a>
               <a href="./hang-tags/?search=${stockNumber}" type="button" class="btn btn-danger action-button mx-1" title="Hang Tags"><i class="bi bi-tags"></i></a>
-              <a href="./key-tags/?vehicle=${stockNumber}" type="button" class="btn btn-danger action-button mx-1" title="Key Tag"><i class="bi bi-tag"></i></a>
               <button type="button" id="keytagModalButton" class="btn btn-danger action-button mx-1" data-bs-toggle="modal" data-bs-target="#keytagModal" data-bs-stocknumber="${stockNumber}"><i class="bi bi-tag"></i></button>
+              <button type="button" id="hangTagsModalButton" class="btn btn-warning action-button mx-1" data-bs-toggle="modal" data-bs-target="#hangTagsModal" data-bs-details="${stockNumber}"><i class="bi bi-tags"></i></button>
             </div>  
           </td>
         `;
@@ -388,7 +476,7 @@ function filterTable() {
   const resetIcon = `<i class="bi bi-lightning-charge-fill me-2 float-end"></i>`;
   const rowCountElement = document.getElementById("rowCount");
   if (rowCountElement) {
-    rowCountElement.innerHTML = `Results: ` + visibleRows + ` of ${tr.length - 1}` + resetIcon;
+    rowCountElement.innerHTML = visibleRows;
   }
 }
 
@@ -418,47 +506,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
-
-// document.getElementById("printTag").addEventListener("click", function () {
-//   // Get the keytagContainer content
-//   const keytagContent = document.getElementById("keytagContainer").innerHTML;
-
-//   // Create a new window or document for printing
-//   const printWindow = window.open("", "", "width=800,height=600");
-
-//   // Write the content to the new window
-//   printWindow.document.write(`
-//     <html>
-//       <head>
-//         <title>Print Key Tag</title>
-//         <style>
-//           body {
-//             font-family: Arial, sans-serif;
-//           }
-//           .key-tag-container {
-//             background-color: lightgray;
-//             padding: 10px;
-//             margin: 20px;
-//           }
-//         </style>
-//       </head>
-//       <body>
-//         ${keytagContent}
-//       </body>
-//     </html>
-//   `);
-
-//   // Close the document to ensure the content is rendered before print
-//   printWindow.document.close();
-
-//   // Trigger the print dialog
-//   printWindow.print();
-
-//   // Optional: Close the print window after printing
-//   printWindow.onafterprint = function () {
-//     printWindow.close();
-//   };
-// });
 
 // Function to fetch the data
 async function keyTag(stockNumber) {

@@ -7,7 +7,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="./img/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="./img/favicon-16x16.png" />
     <link rel="manifest" href="./img/site.webmanifest" />
-    <title>Print Tags</title>
+    <title>FOM</title>
     <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="./node_modules/bootstrap-icons/font/bootstrap-icons.css" />
     <link href="./css/font-awesome.css" rel="stylesheet" />
@@ -20,6 +20,37 @@
           <a class="navbar-brand" href="./">
             <img id="logo" src="./img/fom-app-logo-01.svg" alt="Logo" width="180" height="30.6" />
           </a>
+          <form class="d-flex d-block" style="width: 400px" role="search">
+            <label for="searchFilter" class="visually-hidden">Search</label>
+            <input
+              type="text"
+              class="form-control w-100"
+              placeholder="Search"
+              aria-label="Search"
+              id="searchFilter"
+              list="datalistOptions"
+              title="Filter vehicles by year, name, stock number, or VIN"
+              autocomplete="off"
+            />
+            <datalist id="datalistOptions">
+              <!-- Options -->
+              <option value="3 Wheel Motorcycle"></option>
+              <option value="ATV"></option>
+              <option value="Boat Trailers"></option>
+              <option value="Boats"></option>
+              <option value="Cruiser/V-Twin"></option>
+              <option value="Dirt Bikes"></option>
+              <option value="Outboard Motors"></option>
+              <option value="PWC"></option>
+              <option value="Pontoons"></option>
+            </datalist>
+
+            <button id="rowCount" class="btn btn-outline-secondary mx-1" onclick="filterTable()">
+              <div class="spinner-border spinner-border-sm" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </button>
+          </form>
           <div class="toggles-group">
             <button id="toggleThemeButton" class="btn btn-outline-secondary px-3 mx-1" type="button">
               <i id="theme-icon" class="bi bi-moon-stars"></i>
@@ -125,55 +156,26 @@
     </nav>
 
     <main class="container-fluid d-print-none">
-      <div class="spacer-100"></div>
+      <div class="spacer-75"></div>
       <div class="card">
-        <div class="card-header">
-          <div class="sticky-top">
-            <form role="search">
-              <div class="row g-2">
-                <div class="col-md-10">
-                  <label for="searchFilter" class="visually-hidden">Search</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    placeholder="Search"
-                    aria-label="Search"
-                    id="searchFilter"
-                    list="datalistOptions"
-                    title="Filter vehicles by year, name, stock number, or VIN"
-                    autocomplete="off"
-                  />
-                  <datalist id="datalistOptions">
-                    <!-- Options -->
-                  </datalist>
-                </div>
-                <div class="col-md-2">
-                  <button id="rowCount" class="btn btn-outline-secondary w-100" onclick="filterTable()">
-                    <div class="spinner-border spinner-border-sm" role="status">
-                      <span class="visually-hidden">Loading...</span>
-                    </div>
-                  </button>
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
+        <div class="card-header">Inventory</div>
 
         <div class="card-body">
           <div class="table-responsive">
             <table id="vehiclesTable" class="table table-hover align-middle">
               <thead>
                 <tr>
-                  <th class="w-5 text-center">Image</th>
-                  <th class="w-5 text-center">Year</th>
-                  <th class="w-10">Make</th>
-                  <th class="w-10">Model</th>
-                  <th class="w-10">Type</th>
+                  <th class="text-center">Image</th>
+                  <th class="text-center">Year</th>
+                  <th class="">Make</th>
+                  <th class="">Model</th>
+                  <th class="">Price</th>
+                  <th class="">Type</th>
                   <th class="text-nowrap">Stock Number</th>
-                  <th class="w-10 text-start">Color</th>
-                  <th class="w-5 text-center">Usage</th>
-                  <th class="w-5 text-center">Photos</th>
-                  <th class="w-5 text-end text-nowrap">Details, Print Tags</th>
+                  <th class="text-start">Color</th>
+                  <th class="text-center">Usage</th>
+                  <th class="text-center">Photos</th>
+                  <th class="text-end text-nowrap">Details, Print Tags</th>
                 </tr>
               </thead>
               <tbody>
@@ -216,8 +218,48 @@
       </div>
     </div>
 
+    <div class="modal fade" id="hangTagsModal" tabindex="-1" aria-labelledby="hangTagsModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-fullscreen">
+        <div class="modal-content">
+          <div class="modal-header d-print-none">
+            <h1 class="modal-title fs-5" id="hangTagsModalLabel">StockNumber</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body d-flex justify-content-center dots">
+            <!-- Elements to display the fetched data -->
+            <div id="detailsContainer" class="tags-container"></div>
+          </div>
+          <div class="modal-footer d-print-none">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" id="printTag" class="btn btn-danger">Print Hang Tags</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="agGridModal" tabindex="-1" aria-labelledby="agGridModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-fullscreen">
+        <div class="modal-content">
+          <div class="modal-header d-print-none">
+            <h1 class="modal-title fs-5" id="agGridModalLabel">StockNumber</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div id="myGridTest" class="ag-theme-quartz"></div>
+          </div>
+          <div class="modal-footer d-print-none">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" id="printTag" class="btn btn-danger">Print Key Tag</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <script src="./node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
+    <script src="./node_modules/moment/dist/moment.js"></script>
+    <script src="./node_modules/numeral/min/numeral.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.11/clipboard.min.js"></script>
     <script src="./js/app.js"></script>
+    <script src="./js/hangTags.js"></script>
   </body>
 </html>
