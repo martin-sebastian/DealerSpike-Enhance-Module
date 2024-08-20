@@ -1,8 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // const queryString = window.location.search;
-  // const urlParams = new URLSearchParams(queryString);
-  // const urlstocknumber = urlParams.get("search");
-  // const stockNum = urlstocknumber;
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  const urlstocknumber = urlParams.get("search");
+  const stockNumber = urlstocknumber;
 
   // console.log("stock Number:", urlstocknumber, stockNum);
 
@@ -159,7 +159,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <h4 style="margin: 0; padding: 0;">${metricType}: ${metricValue}</h4>
             <h4 class="vehicle-subtitle">
               <small>Model: </small>${data.ModelCode} 
-              <small>VIN: </small><span>${vinNumber} </span><br />
+              <small>VIN: </small><span>${vinNumber} </span>
               <small>Stock# </small>${data.StockNumber}
             </h4>
           </div>
@@ -172,7 +172,7 @@ document.addEventListener("DOMContentLoaded", () => {
           
         <div class="print-tag">
           <div class="text-center">
-            <i class="fa fa-circle" style="font-size: 20px; margin: 30px auto;"></i>
+            <i class="fa fa-circle" style="font-size: 20px; margin: 10px auto;"></i>
           </div>
           <div class="logo-container">${logo}</div>
               ${vehicleHeaderTemplate}
@@ -212,6 +212,10 @@ document.addEventListener("DOMContentLoaded", () => {
                   <h4>SCAN FOR MORE INFO</h4>
                 </div>
             </div>
+            <div class="tag-footer fixed-bottom text-center" style="width: 100%; border-radius: 5px; background: #EE0000 !important;">
+              <div class="footer-our-price">${yellowTag} ${ourPrice}</div>
+              <div class="footer-price-expires text-center">Sale Program Ends: ${salePriceExpireDate}</div>
+            </div>
         </div>
         `;
 
@@ -219,11 +223,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
         <div class="print-tag">
           <div class="text-center">
-            <i class="fa fa-circle" style="font-size: 20px; margin: 30px auto;"></i>
+            <i class="fa fa-circle" style="font-size: 20px; margin: 10px auto;"></i>
           </div> <!-- End Circle Text Center -->
-            <div class="logo-container">
-              ${logo}
-            </div> <!-- End Logo Container -->
+          <div class="logo-container">
+            ${logo}
+          </div> <!-- End Logo Container -->
               ${vehicleHeaderTemplate}
             <div class="print-tag-body">
                 <div class="vehicle-image-container">
@@ -237,9 +241,9 @@ document.addEventListener("DOMContentLoaded", () => {
                    ${standardFeaturesTemplate}
                 </div>
             </div> <!-- End Print Tag Body -->
-            <div class="fixed-bottom text-center" style="border-radius: 5px; background: #EE0000 !important;">
-              <div class="our-price" style="color: #fff !important;">${yellowTag} ${ourPrice}</div>
-              <div class="price-expires text-center" style="color: #eee !important;">Sale Program Ends: ${salePriceExpireDate}</div>
+            <div class="tag-footer fixed-bottom text-center" style="width: 100%; border-radius: 5px; background: #EE0000 !important;">
+              <div class="footer-our-price">${yellowTag} ${ourPrice}</div>
+              <div class="footer-price-expires text-center">Sale Program Ends: ${salePriceExpireDate}</div>
             </div>
         </div> <!-- End Print Tag -->
         `;
@@ -273,24 +277,36 @@ document.addEventListener("DOMContentLoaded", () => {
             align-items: stretch;
             padding: 0 10px;
           }
+          .tags-container {
+            width: 8.5in;
+            height: 11in;
+            overflow: hidden;
+            background: #fff !important;
+            }
+          .tag-left, .tag-right {
+            width: 4.5in;
+            height: 11in;
+            border: dashed 1px #eee;
+            }
           .print-tag {
             width: 4.0in;
             height: 10.75in;
-            border: solid 0px #ccc;
-            border-radius: 5px;
-            margin: 0px auto;
-            padding: 0 10px;
+            border: solid 0px #ddd;
+            border-radius: 0px;
+            margin: 10px;
+            padding: 0px;
             background: #fff;
-            overflow-y: hidden;
+            overflow: hidden;
             transform: rotate(0deg);
             zoom: 1; /* Adjust the value to zoom in or out */
           }
           .fixed-bottom {
             position: fixed;
             bottom: 0;
+            margin: 0;
           }
           #text { font-size: 22px; }
-          #qrcode img { margin: 0 auto; width: 172px; height: 172px; }
+          #qrcode img { margin: 0 auto; width: 148px; height: 148px; }
           .list-group-item { font-size: 12px; }
           .logo-container { text-align: center; padding: 0px 10px; }
           .vehicle-image-container { text-align: center; padding: 0; }
@@ -302,12 +318,16 @@ document.addEventListener("DOMContentLoaded", () => {
           .our-price-container { text-align: center; margin: 0 auto; }
           .our-price-msrp { text-align: center; margin: 0 0 -5px 0px; font-size: 18px; letter-spacing: 0px; font-weight: 800; color: #999 !important; }
           .our-price { font-size: 48px; line-height: 48px; margin: 0; padding: 5px; font-weight: 900; letter-spacing: -1px; color: #dd1f26 !important; }
+          
           .total-savings { font-size: 24px; font-weight: 800; }
           .total-savings i.fa.fa-arrow-circle-right {
             position: relative; font-size: 19px; font-weight: normal;
             margin: 0px -10px -5px -4px; padding: 5px; background-color: #fff !important;
             border-radius: 50%; z-index: 2;
           }
+          .tag-footer { padding: 10px 0; margin: 0; }
+          .footer-our-price { font-size: 48px; line-height: 40px; margin: 0; padding: 1px; font-weight: 900; letter-spacing: 0px; color: #fff !important; }
+          .footer-price-expires { font-size: 12px; padding: 0; margin: 0; color: #fff !important; }
           .panel { margin: 10px 0; }
           .price-expires { font-size: 13px; padding: 5px 0; }
           .our-payment-container { text-align: center; margin: 0 auto; }

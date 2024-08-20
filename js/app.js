@@ -181,7 +181,9 @@ async function fetchData() {
         const row = document.createElement("tr");
         row.innerHTML = `
           <td class="text-center">
+          <a href="${webURL}" target="_blank" title="View on Website" data-bs-toggle="tooltip" data-bs-placement="top">
             ${imageUrl !== "N/A" ? `<img src="${imageUrl}" alt="${title}" />` : `<i class="fa fa-picture-o fa-3x" aria-hidden="true"></i>`}
+            </a>
           </td>
           <td class="text-center">
             <span class="badge text-bg-secondary">${year}</span>
