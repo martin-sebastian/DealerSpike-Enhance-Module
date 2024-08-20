@@ -1,7 +1,7 @@
 // Function to fetch the data
-async function keyTag(stockNumber) {
+async function keyTag(stocknumber) {
   try {
-    const response = await fetch("https://newportal.flatoutmotorcycles.com/portal/public/api/majorunit/stocknumber/" + stockNumber);
+    const response = await fetch("https://newportal.flatoutmotorcycles.com/portal/public/api/majorunit/stocknumber/" + stocknumber);
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -36,10 +36,11 @@ async function keyTag(stockNumber) {
   }
 }
 
-// // Add event listeners to all buttons
-// document.querySelectorAll("button[data-bs-whatever]").forEach((button) => {
-//   button.addEventListener("click", function (event) {
-//     const stockNumber = event.target.getAttribute("data-bs-whatever");
-//     keyTag(stockNumber);
-//   });
-// });
+// Add event listeners to all buttons
+document.querySelectorAll("button[data-bs-whatever]").forEach((button) => {
+  button.addEventListener("click", function (event) {
+    const stocknumber = event.target.getAttribute("data-bs-whatever");
+    const keyTagTitle = document.getElementById("keytagModalLabel");
+    keyTag(stocknumber);
+  });
+});

@@ -148,7 +148,7 @@
                   </datalist>
                 </div>
                 <div class="col-md-2">
-                  <button id="rowCount" class="btn btn-outline-secondary w-100" type="button" onclick="filterTable()">
+                  <button id="rowCount" class="btn btn-outline-secondary w-100" onclick="filterTable()">
                     <div class="spinner-border spinner-border-sm" role="status">
                       <span class="visually-hidden">Loading...</span>
                     </div>
@@ -164,16 +164,16 @@
             <table id="vehiclesTable" class="table table-sm table-hover align-middle">
               <thead>
                 <tr>
-                  <th>Image</th>
-                  <th class="text-center">Year</th>
-                  <th>Make</th>
-                  <th>Model</th>
-                  <th>Type</th>
-                  <th>Stock Number</th>
-                  <th>Color</th>
-                  <th class="text-center">Usage</th>
-                  <th class="text-center">Photos</th>
-                  <th class="text-end text-nowrap">Details, Print Tags</th>
+                  <th class="w-10">Image</th>
+                  <th class="w-10 text-center">Year</th>
+                  <th class="w-10">Make</th>
+                  <th class="w-10">Model</th>
+                  <th class="w-10">Type</th>
+                  <th class="w-25">Stock Number</th>
+                  <th class="w-10">Color</th>
+                  <th class="w-10 text-center">Usage</th>
+                  <th class="w-10 text-center">Photos</th>
+                  <th class="w-25 text-end text-nowrap">Details, Print Tags</th>
                 </tr>
               </thead>
               <tbody>
@@ -184,23 +184,32 @@
         </div>
       </div>
 
-      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal fade" id="keytagModal" tabindex="-1" aria-labelledby="keytagModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-fullscreen">
           <div class="modal-content">
             <div class="modal-header">
-              <h1 class="modal-title fs-5" id="exampleModalLabel">Vehicle Details for ${stockNumber}</h1>
+              <h1 class="modal-title fs-5" id="keytagModalLabel">Key Tag</h1>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body dots">
               <div class="main-content">
-                <div class="container-fluid">
-                  <!-- Key Tag Data Here -->
+                <!-- Elements to display the fetched data -->
+                <div id="keytagContainer" class="key-tag-container text-truncate">
+                  <div id="modelUsage" class="model-usage text-truncate">New or Used</div>
+                  <div id="stockNumber" class="stock-number text-truncate">Stock Number</div>
+                  <div id="modelYear" class="model-year text-truncate">Year</div>
+                  <div id="manufacturer" class="manufacturer text-truncate">Manufacturer</div>
+                  <div id="modelName" class="model-name text-truncate">Model Name</div>
+                  <div id="modelCode" class="model-code text-truncate">Model Code</div>
+                  <div id="modelColor" class="model-color text-truncate">Model Color</div>
+                  <div id="modelVin" class="model-vin text-truncate">VIN NUMBER</div>
                 </div>
+                <div id="message"></div>
               </div>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Send message</button>
+              <button type="button" class="btn btn-danger">Print Key Tag</button>
             </div>
           </div>
         </div>
@@ -209,8 +218,7 @@
 
     <script src="./node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.11/clipboard.min.js"></script>
-    <script src="./js/numeral.js"></script>
-    <script src="./js/moment.js"></script>
     <script src="./js/app.js"></script>
+    <script src="./js/keyTag.js"></script>
   </body>
 </html>

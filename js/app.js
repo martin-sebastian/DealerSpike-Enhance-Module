@@ -24,9 +24,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   fetchData();
 });
 
-const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
-const tooltipList = [...tooltipTriggerList].map((tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl));
-
 function showPlaceholder() {
   const tableBody = document.getElementById("vehiclesTable").getElementsByTagName("tbody")[0];
   if (tableBody) {
@@ -220,7 +217,7 @@ async function fetchData() {
               </a>
               <a href="./hang-tags/?search=${stockNumber}" type="button" class="btn btn-danger action-button mx-1" title="Hang Tags"><i class="bi bi-tags"></i></a>
               <a href="./key-tags/?vehicle=${stockNumber}" type="button" class="btn btn-danger action-button mx-1" title="Key Tag"><i class="bi bi-tag"></i></a>
-              <button type="button" id="keytagModalButton" class="btn btn-danger action-button mx-1" data-bs-toggle="modal" data-bs-target="#keytagModal" data-bs-whatever="${stockNumber}">${stockNumber}</button>
+              <button type="button" id="keytagModalButton" class="btn btn-danger action-button mx-1" data-bs-toggle="modal" data-bs-target="#keytagModal" data-bs-stocknumber="${stockNumber}">tag</button>
             </div>  
           </td>
         `;
@@ -239,13 +236,11 @@ async function fetchData() {
       document.getElementById("photosFilter").addEventListener("change", filterTable);
 
       // Add event listeners to all buttons that should trigger the modal
-      document.querySelectorAll("button[data-bs-whatever]").forEach((button) => {
+      document.querySelectorAll("button[data-bs-stocknumber]").forEach((button) => {
         button.addEventListener("click", function (event) {
-          const stockNumber = event.target.getAttribute("data-bs-whatever");
-          if (stockNumber) {
-            createOrUpdateModal(stockNumber);
-            keyTag(stockNumber);
-          }
+          const stocknumber = event.target.getAttribute("data-bs-stocknumber");
+          const keytagModalLabel = document.getElementById("keytagModalLabel").innerHTML;
+          keyTag(stocknumber, keytagModalLabel);
         });
       });
 
@@ -381,40 +376,9 @@ function filterTable() {
   }
 
   // Update row count
-  const resetIcon = `<i class="bi bi-lightning-charge-fill me-2 float-start"></i>`;
+  const resetIcon = `<i class="bi bi-lightning-charge-fill me-2 float-end"></i>`;
   const rowCountElement = document.getElementById("rowCount");
   if (rowCountElement) {
-    rowCountElement.innerHTML = resetIcon + visibleRows + ` of ${tr.length - 1} Vehicles`;
-  }
-}
-
-async function keyTag(stockNumber) {
-  try {
-    const response = await fetch(`https://newportal.flatoutmotorcycles.com/portal/public/api/majorunit/stocknumber/${stockNumber}`);
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const data = await response.json();
-
-    if (data.StockNumber) {
-      document.getElementById("modelUsage").innerHTML = data.Usage;
-      document.getElementById("stockNumber").innerHTML = data.StockNumber;
-      document.getElementById("modelYear").innerHTML = data.ModelYear;
-      document.getElementById("manufacturer").innerHTML = data.Manufacturer;
-      document.getElementById("modelName").innerHTML = data.ModelName;
-      document.getElementById("modelCode").innerHTML = data.ModelCode;
-      document.getElementById("modelColor").innerHTML = data.Color;
-      document.getElementById("modelVin").innerHTML = data.VIN;
-    } else {
-      document.getElementById("keytagContainer").classList.add("d-none");
-      document.getElementById("message").innerHTML = `
-        <div class="text-center">
-          <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-        </div>
-        <p class="error-message">No data available. Please try again later.</p>`;
-    }
-  } catch (error) {
-    console.error("Error fetching key tag data:", error);
+    rowCountElement.innerHTML = `Results: ` + visibleRows + ` of ${tr.length - 1}` + resetIcon;
   }
 }
