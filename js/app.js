@@ -375,3 +375,11 @@ async function keyTag(stockNumber) {
     console.error("Error fetching key tag data:", error);
   }
 }
+
+// Event listeners for input and dropdown changes
+document.getElementById("searchFilter").addEventListener("keyup", filterTable);
+document.getElementById("manufacturerFilter").addEventListener("change", filterTable);
+document.getElementById("typeFilter").addEventListener("change", filterTable);
+document.getElementById("usageFilter").addEventListener("change", filterTable);
+document.getElementById("photosFilter").addEventListener("change", filterTable);
+document.getElementById("yearFilter").addEventListener("change", filterTable);
