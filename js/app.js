@@ -22,17 +22,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // Fetch and process XML data
   fetchData();
-
-  // Add event listeners to all buttons that should trigger the modal
-  document.querySelectorAll("button[data-bs-whatever]").forEach((button) => {
-    button.addEventListener("click", function (event) {
-      const stockNumber = event.target.getAttribute("data-bs-whatever");
-      if (stockNumber) {
-        createOrUpdateModal(stockNumber);
-        keyTag(stockNumber);
-      }
-    });
-  });
 });
 
 const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
@@ -43,18 +32,101 @@ function showPlaceholder() {
   if (tableBody) {
     tableBody.innerHTML = `
       <tr class="placeholder-glow">
-        <td><span class="placeholder col-7"></span></td>
-        <td class="text-center"><span class="placeholder col-3"></span></td>
-        <td><span class="placeholder col-6"></span></td>
-        <td style="width: 30%;"><span class="placeholder col-7"></span></td>
-        <td><span class="placeholder col-7"></span></td>
-        <td><span class="placeholder col-3"></span></td>
-        <td><span class="placeholder col-3"></span></td>
-        <td class="text-center"><span class="placeholder col-7"></span></td>
-        <td class="text-center"><span class="placeholder col-6"></span></td>
-        <td class="text-end"><span class="placeholder col-12"></span></td>
-      </tr>
-      <!-- More placeholder rows here -->
+      <td><span class="placeholder col-7"></span></td>
+      <td class="text-center"><span class="placeholder col-3"></span></td>
+      <td><span class="placeholder col-6"></span></td>
+      <td style="width: 30%;"><span class="placeholder col-7"></span></td>
+      <td><span class="placeholder col-7"></span></td>
+      <td><span class="placeholder col-3"></span></td>
+      <td><span class="placeholder col-3"></span></td>
+      <td class="text-center"><span class="placeholder col-7"></span></td>
+      <td class="text-center"><span class="placeholder col-6"></span></td>
+      <td class="text-end"><span class="placeholder col-12"></span></td>
+    </tr>
+    <tr class="placeholder-glow">
+      <td><span class="placeholder col-7"></span></td>
+      <td class="text-center"><span class="placeholder col-3"></span></td>
+      <td><span class="placeholder col-4"></span></td>
+      <td><span class="placeholder col-12"></span></td>
+      <td><span class="placeholder col-5"></span></td>
+      <td><span class="placeholder col-8"></span></td>
+      <td><span class="placeholder col-8"></span></td>
+      <td class="text-center"><span class="placeholder col-7"></span></td>
+      <td class="text-center"><span class="placeholder col-6"></span></td>
+      <td class="text-end"><span class="placeholder col-12"></span></td>
+    </tr>
+    <tr class="placeholder-glow">
+      <td><span class="placeholder col-7"></span></td>
+      <td class="text-center"><span class="placeholder col-3"></span></td>
+      <td><span class="placeholder col-6"></span></td>
+      <td style="width: 30%;"><span class="placeholder col-7"></span></td>
+      <td><span class="placeholder col-7"></span></td>
+      <td><span class="placeholder col-3"></span></td>
+      <td><span class="placeholder col-3"></span></td>
+      <td class="text-center"><span class="placeholder col-7"></span></td>
+      <td class="text-center"><span class="placeholder col-6"></span></td>
+      <td class="text-end"><span class="placeholder col-12"></span></td>
+    </tr>
+    <tr class="placeholder-glow">
+      <td><span class="placeholder col-7"></span></td>
+      <td class="text-center"><span class="placeholder col-3"></span></td>
+      <td><span class="placeholder col-4"></span></td>
+      <td><span class="placeholder col-12"></span></td>
+      <td><span class="placeholder col-5"></span></td>
+      <td><span class="placeholder col-8"></span></td>
+      <td><span class="placeholder col-8"></span></td>
+      <td class="text-center"><span class="placeholder col-7"></span></td>
+      <td class="text-center"><span class="placeholder col-6"></span></td>
+      <td class="text-end"><span class="placeholder col-12"></span></td>
+    </tr>
+    <tr class="placeholder-glow">
+      <td><span class="placeholder col-7"></span></td>
+      <td class="text-center"><span class="placeholder col-3"></span></td>
+      <td><span class="placeholder col-6"></span></td>
+      <td style="width: 30%;"><span class="placeholder col-7"></span></td>
+      <td><span class="placeholder col-7"></span></td>
+      <td><span class="placeholder col-3"></span></td>
+      <td><span class="placeholder col-3"></span></td>
+      <td class="text-center"><span class="placeholder col-7"></span></td>
+      <td class="text-center"><span class="placeholder col-6"></span></td>
+      <td class="text-end"><span class="placeholder col-12"></span></td>
+    </tr>
+    <tr class="placeholder-glow">
+      <td><span class="placeholder col-7"></span></td>
+      <td class="text-center"><span class="placeholder col-3"></span></td>
+      <td><span class="placeholder col-4"></span></td>
+      <td><span class="placeholder col-12"></span></td>
+      <td><span class="placeholder col-5"></span></td>
+      <td><span class="placeholder col-8"></span></td>
+      <td><span class="placeholder col-8"></span></td>
+      <td class="text-center"><span class="placeholder col-7"></span></td>
+      <td class="text-center"><span class="placeholder col-6"></span></td>
+      <td class="text-end"><span class="placeholder col-12"></span></td>
+    </tr>
+    <tr class="placeholder-glow">
+      <td><span class="placeholder col-7"></span></td>
+      <td class="text-center"><span class="placeholder col-3"></span></td>
+      <td><span class="placeholder col-6"></span></td>
+      <td style="width: 30%;"><span class="placeholder col-7"></span></td>
+      <td><span class="placeholder col-7"></span></td>
+      <td><span class="placeholder col-3"></span></td>
+      <td><span class="placeholder col-3"></span></td>
+      <td class="text-center"><span class="placeholder col-7"></span></td>
+      <td class="text-center"><span class="placeholder col-6"></span></td>
+      <td class="text-end"><span class="placeholder col-12"></span></td>
+    </tr>
+    <tr class="placeholder-glow">
+      <td><span class="placeholder col-7"></span></td>
+      <td class="text-center"><span class="placeholder col-3"></span></td>
+      <td><span class="placeholder col-4"></span></td>
+      <td><span class="placeholder col-12"></span></td>
+      <td><span class="placeholder col-5"></span></td>
+      <td><span class="placeholder col-8"></span></td>
+      <td><span class="placeholder col-8"></span></td>
+      <td class="text-center"><span class="placeholder col-7"></span></td>
+      <td class="text-center"><span class="placeholder col-6"></span></td>
+      <td class="text-end"><span class="placeholder col-12"></span></td>
+    </tr>
     `;
   }
 }
@@ -148,7 +220,7 @@ async function fetchData() {
               </a>
               <a href="./hang-tags/?search=${stockNumber}" type="button" class="btn btn-danger action-button mx-1" title="Hang Tags"><i class="bi bi-tags"></i></a>
               <a href="./key-tags/?vehicle=${stockNumber}" type="button" class="btn btn-danger action-button mx-1" title="Key Tag"><i class="bi bi-tag"></i></a>
-              <button type="button" class="btn btn-danger action-button mx-1" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="${stockNumber}">${stockNumber}</button>
+              <button type="button" id="keytagModalButton" class="btn btn-danger action-button mx-1" data-bs-toggle="modal" data-bs-target="#keytagModal" data-bs-whatever="${stockNumber}">${stockNumber}</button>
             </div>  
           </td>
         `;
@@ -157,6 +229,25 @@ async function fetchData() {
       }
 
       console.log("Data successfully inserted into table");
+
+      // Event listeners for input and dropdown changes
+      document.getElementById("searchFilter").addEventListener("keyup", filterTable);
+      document.getElementById("yearFilter").addEventListener("change", filterTable);
+      document.getElementById("manufacturerFilter").addEventListener("change", filterTable);
+      document.getElementById("typeFilter").addEventListener("change", filterTable);
+      document.getElementById("usageFilter").addEventListener("change", filterTable);
+      document.getElementById("photosFilter").addEventListener("change", filterTable);
+
+      // Add event listeners to all buttons that should trigger the modal
+      document.querySelectorAll("button[data-bs-whatever]").forEach((button) => {
+        button.addEventListener("click", function (event) {
+          const stockNumber = event.target.getAttribute("data-bs-whatever");
+          if (stockNumber) {
+            createOrUpdateModal(stockNumber);
+            keyTag(stockNumber);
+          }
+        });
+      });
 
       // Add event listeners for sorting
       const headers = document.querySelectorAll("#vehiclesTable th");
@@ -297,54 +388,6 @@ function filterTable() {
   }
 }
 
-// KEY TAGS
-document.addEventListener("DOMContentLoaded", async () => {
-  // Your existing setup logic
-  document.querySelectorAll("button[data-bs-whatever]").forEach((button) => {
-    button.addEventListener("click", function (event) {
-      const stockNumber = event.target.getAttribute("data-bs-whatever");
-      if (stockNumber) {
-        createOrUpdateModal(stockNumber);
-        keyTag(stockNumber);
-      }
-    });
-  });
-});
-
-// Function to create or update the modal with dynamic content
-function createOrUpdateModal(stockNumber) {
-  let modalElement = document.getElementById("exampleModal");
-
-  if (!modalElement) {
-    const modalHTML = `
-                  <div id="keytagContainer">
-                    <div id="modelUsage"></div>
-                    <div id="stockNumber"></div>
-                    <div id="modelYear"></div>
-                    <div id="manufacturer"></div>
-                    <div id="modelName"></div>
-                    <div id="modelCode"></div>
-                    <div id="modelColor"></div>
-                    <div id="modelVin"></div>
-                  </div>
-                  <div id="message"></div>
-    `;
-    document.body.insertAdjacentHTML("beforeend", modalHTML);
-    modalElement = document.getElementById("exampleModal");
-
-    // Add event listener for when the modal is shown
-    modalElement.addEventListener("shown.bs.modal", () => {
-      const firstElement = document.querySelector("#modelUsage");
-      if (firstElement) {
-        firstElement.focus();
-      }
-    });
-  }
-
-  const modalInstance = new bootstrap.Modal(modalElement);
-  modalInstance.show();
-}
-
 async function keyTag(stockNumber) {
   try {
     const response = await fetch(`https://newportal.flatoutmotorcycles.com/portal/public/api/majorunit/stocknumber/${stockNumber}`);
@@ -375,11 +418,3 @@ async function keyTag(stockNumber) {
     console.error("Error fetching key tag data:", error);
   }
 }
-
-// Event listeners for input and dropdown changes
-document.getElementById("searchFilter").addEventListener("keyup", filterTable);
-document.getElementById("manufacturerFilter").addEventListener("change", filterTable);
-document.getElementById("typeFilter").addEventListener("change", filterTable);
-document.getElementById("usageFilter").addEventListener("change", filterTable);
-document.getElementById("photosFilter").addEventListener("change", filterTable);
-document.getElementById("yearFilter").addEventListener("change", filterTable);

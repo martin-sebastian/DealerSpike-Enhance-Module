@@ -36,10 +36,10 @@ async function keyTag(stockNumber) {
   }
 }
 
-// Add event listeners to all buttons
-document.querySelectorAll("button[data-bs-whatever]").forEach((button) => {
-  button.addEventListener("click", function (event) {
-    const stockNumber = event.target.getAttribute("data-bs-whatever");
-    keyTag(stockNumber);
-  });
-});
+// // Add event listeners to all buttons
+// document.querySelectorAll("button[data-bs-whatever]").forEach((button) => {
+//   button.addEventListener("click", function (event) {
+//     const stockNumber = event.target.getAttribute("data-bs-whatever");
+//     keyTag(stockNumber);
+//   });
+// });
