@@ -22,6 +22,16 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // Fetch and process XML data
   fetchData();
+
+  // // Add event listeners to all buttons that should trigger the modal
+  // document.querySelectorAll("button[data-bs-stocknumber]").forEach((button) => {
+  //   button.addEventListener("click", function (event) {
+  //     const stockNumber = event.target.getAttribute("data-bs-stocknumber");
+  //     console.log(`Stock Number: ${stockNumber}`);
+  //     //const keytagModalLabel = document.getElementById("keytagModalLabel").innerHTML;
+  //     keyTag(stockNumber);
+  //   });
+  // });
 });
 
 function showPlaceholder() {
@@ -181,7 +191,9 @@ async function fetchData() {
         const row = document.createElement("tr");
         row.innerHTML = `
           <td class="text-center">
+          <a href="${webURL}" target="_blank" title="View on Website" data-bs-toggle="tooltip" data-bs-placement="top">
             ${imageUrl !== "N/A" ? `<img src="${imageUrl}" alt="${title}" />` : `<i class="fa fa-picture-o fa-3x" aria-hidden="true"></i>`}
+            </a>
           </td>
           <td class="text-center">
             <span class="badge text-bg-secondary">${year}</span>
@@ -190,19 +202,22 @@ async function fetchData() {
           <td>
             <div class="text-truncate">${modelName}</div>
               <span class="visually-hidden">${stockNumber} ${vin} ${usage} ${year} ${manufacturer} ${modelName} ${modelType} ${modelTypeStyle} ${color} ${photos}</span>
-            <small class="">${title}</small>
           </td>
           <td>${modelType}</td>
           <td>
           <div class="row text-nowrap">
- 
-            <div class="w-10">
-              <button type="button" class="btn btn-outline-secondary" title="Copy Stock Number" onclick="navigator.clipboard.writeText('${stockNumber}')">
-                ${stockNumber} <i class="bi bi-clipboard ms-2"></i>
+            <div class="w-50" style="min-width: 200px; max-width: 300px;">
+            <div class="input-group input-group-sm">
+            <input type="text" class="form-control" value="${stockNumber}" placeholder="Stock Number" title="${stockNumber}" aria-label="stock number" aria-describedby="btnGroupAddon">
+              <div class="input-group-text" id="btnGroupAddon">
+                <button type="button" class="btn btn-default btn-sm float-end" title="Copy Stock Number" onclick="navigator.clipboard.writeText('${stockNumber}')">
+                <i class="bi bi-clipboard" style="font-size: 11px;"></i>
               </button>
               </div>
+            </div>
+            </div>
           </td>
-          <td class="w-5 text-end">${color}</td>
+          <td class="w-5 text-start">${color}</td>
           <td class="w-5 text-center"><span class="badge ${usageColor}">${usage}</span></td>
           <td class="w-5 text-center">${photos}</td>
           <td class="text-end text-nowrap">
@@ -220,7 +235,7 @@ async function fetchData() {
               </a>
               <a href="./hang-tags/?search=${stockNumber}" type="button" class="btn btn-danger action-button mx-1" title="Hang Tags"><i class="bi bi-tags"></i></a>
               <a href="./key-tags/?vehicle=${stockNumber}" type="button" class="btn btn-danger action-button mx-1" title="Key Tag"><i class="bi bi-tag"></i></a>
-              <button type="button" id="keytagModalButton" class="btn btn-danger action-button mx-1" data-bs-toggle="modal" data-bs-target="#keytagModal" data-bs-stocknumber="${stockNumber}">tag</button>
+              <button type="button" id="keytagModalButton" class="btn btn-danger action-button mx-1" data-bs-toggle="modal" data-bs-target="#keytagModal" data-bs-stocknumber="${stockNumber}"><i class="bi bi-tag"></i></button>
             </div>  
           </td>
         `;
@@ -237,15 +252,6 @@ async function fetchData() {
       document.getElementById("typeFilter").addEventListener("change", filterTable);
       document.getElementById("usageFilter").addEventListener("change", filterTable);
       document.getElementById("photosFilter").addEventListener("change", filterTable);
-
-      // Add event listeners to all buttons that should trigger the modal
-      document.querySelectorAll("button[data-bs-stocknumber]").forEach((button) => {
-        button.addEventListener("click", function (event) {
-          const stocknumber = event.target.getAttribute("data-bs-stocknumber");
-          const keytagModalLabel = document.getElementById("keytagModalLabel").innerHTML;
-          keyTag(stocknumber, keytagModalLabel);
-        });
-      });
 
       // Add event listeners for sorting
       const headers = document.querySelectorAll("#vehiclesTable th");
@@ -383,5 +389,111 @@ function filterTable() {
   const rowCountElement = document.getElementById("rowCount");
   if (rowCountElement) {
     rowCountElement.innerHTML = `Results: ` + visibleRows + ` of ${tr.length - 1}` + resetIcon;
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  // Listen for clicks on elements that might trigger the modal
+  document.addEventListener("click", function (event) {
+    // Handle keytagModalButton click
+    if (event.target.closest("#keytagModalButton")) {
+      const keytagButton = event.target.closest("#keytagModalButton");
+      const stockNumber = keytagButton.getAttribute("data-bs-stocknumber");
+
+      if (stockNumber) {
+        // Update the modal title with the stock number
+        const modalTitle = document.getElementById("keytagModalLabel");
+        modalTitle.innerHTML = `Stock Number: ${stockNumber}`;
+
+        // Call the keyTag function and pass the stock number
+        keyTag(stockNumber);
+      } else {
+        console.error("Stock number not found!");
+      }
+    }
+
+    // Handle printTag button click
+    if (event.target.closest("#printTag")) {
+      window.print(); // Trigger print dialog
+    }
+  });
+});
+
+// document.getElementById("printTag").addEventListener("click", function () {
+//   // Get the keytagContainer content
+//   const keytagContent = document.getElementById("keytagContainer").innerHTML;
+
+//   // Create a new window or document for printing
+//   const printWindow = window.open("", "", "width=800,height=600");
+
+//   // Write the content to the new window
+//   printWindow.document.write(`
+//     <html>
+//       <head>
+//         <title>Print Key Tag</title>
+//         <style>
+//           body {
+//             font-family: Arial, sans-serif;
+//           }
+//           .key-tag-container {
+//             background-color: lightgray;
+//             padding: 10px;
+//             margin: 20px;
+//           }
+//         </style>
+//       </head>
+//       <body>
+//         ${keytagContent}
+//       </body>
+//     </html>
+//   `);
+
+//   // Close the document to ensure the content is rendered before print
+//   printWindow.document.close();
+
+//   // Trigger the print dialog
+//   printWindow.print();
+
+//   // Optional: Close the print window after printing
+//   printWindow.onafterprint = function () {
+//     printWindow.close();
+//   };
+// });
+
+// Function to fetch the data
+async function keyTag(stockNumber) {
+  try {
+    const response = await fetch("https://newportal.flatoutmotorcycles.com/portal/public/api/majorunit/stocknumber/" + stockNumber);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    if (typeof data.StockNumber !== "undefined") {
+      document.getElementById("modelUsage").innerHTML = data.Usage;
+      document.getElementById("stockNumber").innerHTML = data.StockNumber;
+      document.getElementById("modelYear").innerHTML = data.ModelYear;
+      document.getElementById("manufacturer").innerHTML = data.Manufacturer;
+      document.getElementById("modelName").innerHTML = data.ModelName;
+      document.getElementById("modelCode").innerHTML = data.ModelCode;
+      document.getElementById("modelColor").innerHTML = data.Color;
+      document.getElementById("modelVin").innerHTML = data.VIN;
+    } else {
+      const keyTagElement = document.getElementById("keytagContainer");
+      keyTagElement.classList.add("hidden");
+
+      document.getElementById("message").innerHTML = `
+        <div class="warning-icon-container text-center">
+          <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+        </div>
+        <p class="error-message">
+          No data available, click 
+          <i class="fa fa-info-circle" aria-hidden="true"></i> icon next to print button for instructions.
+        </p>`;
+    }
+  } catch (error) {
+    console.log(error.message);
   }
 }

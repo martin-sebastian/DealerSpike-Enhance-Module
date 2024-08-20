@@ -35,12 +35,3 @@ async function keyTag(stocknumber) {
     console.log(error.message);
   }
 }
-
-// Add event listeners to all buttons
-document.querySelectorAll("button[data-bs-whatever]").forEach((button) => {
-  button.addEventListener("click", function (event) {
-    const stocknumber = event.target.getAttribute("data-bs-whatever");
-    const keyTagTitle = document.getElementById("keytagModalLabel");
-    keyTag(stocknumber);
-  });
-});
