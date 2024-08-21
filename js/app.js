@@ -30,12 +30,12 @@ function showPlaceholder() {
     tableBody.innerHTML = `
     <tr class="placeholder-glow">
       <td><span class="placeholder col-7"></span></td>
-      <td class="text-center"><span class="placeholder col-3"></span></td>
-      <td><span class="placeholder col-6"></span></td>
-      <td><span class="placeholder col-7"></span></td>
-      <td><span class="placeholder col-7"></span></td>
-      <td><span class="placeholder col-3"></span></td>
-      <td><span class="placeholder col-3"></span></td>
+      <td ><span class="placeholder col-3"></span></td>
+      <td><span class="placeholder col-4"></span></td>
+      <td><span class="placeholder col-12"></span></td>
+      <td><span class="placeholder col-5"></span></td>
+      <td><span class="placeholder col-8"></span></td>
+      <td><span class="placeholder col-8"></span></td>
       <td ><span class="placeholder col-7"></span></td>
       <td ><span class="placeholder col-7"></span></td>
       <td ><span class="placeholder col-6"></span></td>
