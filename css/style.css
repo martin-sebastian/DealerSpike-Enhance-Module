@@ -64,6 +64,11 @@ body {
   color: #222;
   font-size: 3em;
 }
+.bg-blur {
+  background: transparent;
+  backdrop-filter: blur(10px);
+  opacity: 0.9;
+}
 .navbar-header .container-fluid {
   display: flex;
   flex-direction: row;

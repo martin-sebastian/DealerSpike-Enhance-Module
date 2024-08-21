@@ -32,192 +32,195 @@ function showPlaceholder() {
       <td><span class="placeholder col-7"></span></td>
       <td class="text-center"><span class="placeholder col-3"></span></td>
       <td><span class="placeholder col-6"></span></td>
-      <td style="width: 30%;"><span class="placeholder col-7"></span></td>
+      <td><span class="placeholder col-7"></span></td>
       <td><span class="placeholder col-7"></span></td>
       <td><span class="placeholder col-3"></span></td>
       <td><span class="placeholder col-3"></span></td>
-      <td class="text-center"><span class="placeholder col-7"></span></td>
-      <td class="text-center"><span class="placeholder col-6"></span></td>
+      <td ><span class="placeholder col-7"></span></td>
+      <td ><span class="placeholder col-7"></span></td>
+      <td ><span class="placeholder col-6"></span></td>
       <td class="text-end"><span class="placeholder col-12"></span></td>
     </tr>
     <tr class="placeholder-glow">
       <td><span class="placeholder col-7"></span></td>
-      <td class="text-center"><span class="placeholder col-3"></span></td>
+      <td ><span class="placeholder col-3"></span></td>
       <td><span class="placeholder col-4"></span></td>
       <td><span class="placeholder col-12"></span></td>
       <td><span class="placeholder col-5"></span></td>
       <td><span class="placeholder col-8"></span></td>
       <td><span class="placeholder col-8"></span></td>
-      <td class="text-center"><span class="placeholder col-7"></span></td>
-      <td class="text-center"><span class="placeholder col-6"></span></td>
+      <td ><span class="placeholder col-7"></span></td>
+      <td ><span class="placeholder col-7"></span></td>
+      <td ><span class="placeholder col-6"></span></td>
       <td class="text-end"><span class="placeholder col-12"></span></td>
     </tr>
     <tr class="placeholder-glow">
       <td><span class="placeholder col-7"></span></td>
-      <td class="text-center"><span class="placeholder col-3"></span></td>
+      <td ><span class="placeholder col-3"></span></td>
       <td><span class="placeholder col-6"></span></td>
-      <td style="width: 30%;"><span class="placeholder col-7"></span></td>
+      <td><span class="placeholder col-7"></span></td>
       <td><span class="placeholder col-7"></span></td>
       <td><span class="placeholder col-3"></span></td>
       <td><span class="placeholder col-3"></span></td>
-      <td class="text-center"><span class="placeholder col-7"></span></td>
-      <td class="text-center"><span class="placeholder col-6"></span></td>
+      <td ><span class="placeholder col-7"></span></td>
+      <td ><span class="placeholder col-7"></span></td>
+      <td ><span class="placeholder col-6"></span></td>
       <td class="text-end"><span class="placeholder col-12"></span></td>
     </tr>
     <tr class="placeholder-glow">
       <td><span class="placeholder col-7"></span></td>
-      <td class="text-center"><span class="placeholder col-3"></span></td>
+      <td ><span class="placeholder col-3"></span></td>
       <td><span class="placeholder col-4"></span></td>
       <td><span class="placeholder col-12"></span></td>
       <td><span class="placeholder col-5"></span></td>
       <td><span class="placeholder col-8"></span></td>
       <td><span class="placeholder col-8"></span></td>
-      <td class="text-center"><span class="placeholder col-7"></span></td>
-      <td class="text-center"><span class="placeholder col-6"></span></td>
+      <td ><span class="placeholder col-7"></span></td>
+      <td ><span class="placeholder col-6"></span></td>
+      <td ><span class="placeholder col-6"></span></td>
       <td class="text-end"><span class="placeholder col-12"></span></td>
     </tr>
     <tr class="placeholder-glow">
       <td><span class="placeholder col-7"></span></td>
-      <td class="text-center"><span class="placeholder col-3"></span></td>
+      <td ><span class="placeholder col-3"></span></td>
+      <td><span class="placeholder col-4"></span></td>
+      <td><span class="placeholder col-12"></span></td>
+      <td><span class="placeholder col-5"></span></td>
+      <td><span class="placeholder col-8"></span></td>
+      <td><span class="placeholder col-8"></span></td>
+      <td ><span class="placeholder col-7"></span></td>
+      <td ><span class="placeholder col-7"></span></td>
+      <td ><span class="placeholder col-6"></span></td>
+      <td class="text-end"><span class="placeholder col-12"></span></td>
+    </tr>
+    <tr class="placeholder-wave">
+      <td><span class="placeholder col-7"></span></td>
+      <td ><span class="placeholder col-3"></span></td>
       <td><span class="placeholder col-6"></span></td>
-      <td style="width: 30%;"><span class="placeholder col-7"></span></td>
+      <td><span class="placeholder col-7"></span></td>
       <td><span class="placeholder col-7"></span></td>
       <td><span class="placeholder col-3"></span></td>
       <td><span class="placeholder col-3"></span></td>
-      <td class="text-center"><span class="placeholder col-7"></span></td>
-      <td class="text-center"><span class="placeholder col-6"></span></td>
+      <td ><span class="placeholder col-7"></span></td>
+      <td ><span class="placeholder col-7"></span></td>
+      <td ><span class="placeholder col-6"></span></td>
       <td class="text-end"><span class="placeholder col-12"></span></td>
     </tr>
     <tr class="placeholder-glow">
       <td><span class="placeholder col-7"></span></td>
-      <td class="text-center"><span class="placeholder col-3"></span></td>
+      <td ><span class="placeholder col-3"></span></td>
       <td><span class="placeholder col-4"></span></td>
       <td><span class="placeholder col-12"></span></td>
       <td><span class="placeholder col-5"></span></td>
       <td><span class="placeholder col-8"></span></td>
       <td><span class="placeholder col-8"></span></td>
-      <td class="text-center"><span class="placeholder col-7"></span></td>
-      <td class="text-center"><span class="placeholder col-6"></span></td>
+      <td ><span class="placeholder col-7"></span></td>
+      <td ><span class="placeholder col-6"></span></td>
+      <td ><span class="placeholder col-6"></span></td>
       <td class="text-end"><span class="placeholder col-12"></span></td>
     </tr>
     <tr class="placeholder-glow">
       <td><span class="placeholder col-7"></span></td>
-      <td class="text-center"><span class="placeholder col-3"></span></td>
+      <td ><span class="placeholder col-3"></span></td>
       <td><span class="placeholder col-6"></span></td>
-      <td style="width: 30%;"><span class="placeholder col-7"></span></td>
+      <td><span class="placeholder col-7"></span></td>
       <td><span class="placeholder col-7"></span></td>
       <td><span class="placeholder col-3"></span></td>
       <td><span class="placeholder col-3"></span></td>
-      <td class="text-center"><span class="placeholder col-7"></span></td>
-      <td class="text-center"><span class="placeholder col-6"></span></td>
+      <td ><span class="placeholder col-7"></span></td>
+      <td ><span class="placeholder col-6"></span></td>
+      <td ><span class="placeholder col-6"></span></td>
       <td class="text-end"><span class="placeholder col-12"></span></td>
     </tr>
     <tr class="placeholder-glow">
       <td><span class="placeholder col-7"></span></td>
-      <td class="text-center"><span class="placeholder col-3"></span></td>
+      <td ><span class="placeholder col-3"></span></td>
       <td><span class="placeholder col-4"></span></td>
       <td><span class="placeholder col-12"></span></td>
       <td><span class="placeholder col-5"></span></td>
       <td><span class="placeholder col-8"></span></td>
       <td><span class="placeholder col-8"></span></td>
-      <td class="text-center"><span class="placeholder col-7"></span></td>
-      <td class="text-center"><span class="placeholder col-6"></span></td>
+      <td ><span class="placeholder col-7"></span></td>
+      <td ><span class="placeholder col-6"></span></td>
+      <td ><span class="placeholder col-6"></span></td>
       <td class="text-end"><span class="placeholder col-12"></span></td>
     </tr>
     <tr class="placeholder-glow">
       <td><span class="placeholder col-7"></span></td>
-      <td class="text-center"><span class="placeholder col-3"></span></td>
+      <td ><span class="placeholder col-3"></span></td>
       <td><span class="placeholder col-6"></span></td>
-      <td style="width: 30%;"><span class="placeholder col-7"></span></td>
+      <td><span class="placeholder col-7"></span></td>
       <td><span class="placeholder col-7"></span></td>
       <td><span class="placeholder col-3"></span></td>
       <td><span class="placeholder col-3"></span></td>
-      <td class="text-center"><span class="placeholder col-7"></span></td>
-      <td class="text-center"><span class="placeholder col-6"></span></td>
+      <td ><span class="placeholder col-7"></span></td>
+      <td ><span class="placeholder col-6"></span></td>
+      <td ><span class="placeholder col-6"></span></td>
       <td class="text-end"><span class="placeholder col-12"></span></td>
     </tr>
     <tr class="placeholder-glow">
       <td><span class="placeholder col-7"></span></td>
-      <td class="text-center"><span class="placeholder col-3"></span></td>
+      <td ><span class="placeholder col-3"></span></td>
       <td><span class="placeholder col-4"></span></td>
       <td><span class="placeholder col-12"></span></td>
       <td><span class="placeholder col-5"></span></td>
       <td><span class="placeholder col-8"></span></td>
       <td><span class="placeholder col-8"></span></td>
-      <td class="text-center"><span class="placeholder col-7"></span></td>
-      <td class="text-center"><span class="placeholder col-6"></span></td>
+      <td ><span class="placeholder col-7"></span></td>
+      <td ><span class="placeholder col-6"></span></td>
+      <td ><span class="placeholder col-6"></span></td>
       <td class="text-end"><span class="placeholder col-12"></span></td>
     </tr>
     <tr class="placeholder-glow">
       <td><span class="placeholder col-7"></span></td>
-      <td class="text-center"><span class="placeholder col-3"></span></td>
+      <td ><span class="placeholder col-3"></span></td>
       <td><span class="placeholder col-6"></span></td>
-      <td style="width: 30%;"><span class="placeholder col-7"></span></td>
+      <td><span class="placeholder col-7"></span></td>
       <td><span class="placeholder col-7"></span></td>
       <td><span class="placeholder col-3"></span></td>
       <td><span class="placeholder col-3"></span></td>
-      <td class="text-center"><span class="placeholder col-7"></span></td>
-      <td class="text-center"><span class="placeholder col-6"></span></td>
+      <td ><span class="placeholder col-7"></span></td>
+      <td ><span class="placeholder col-6"></span></td>
+      <td ><span class="placeholder col-6"></span></td>
       <td class="text-end"><span class="placeholder col-12"></span></td>
     </tr>
     <tr class="placeholder-glow">
       <td><span class="placeholder col-7"></span></td>
-      <td class="text-center"><span class="placeholder col-3"></span></td>
+      <td ><span class="placeholder col-3"></span></td>
       <td><span class="placeholder col-4"></span></td>
       <td><span class="placeholder col-12"></span></td>
       <td><span class="placeholder col-5"></span></td>
       <td><span class="placeholder col-8"></span></td>
       <td><span class="placeholder col-8"></span></td>
-      <td class="text-center"><span class="placeholder col-7"></span></td>
-      <td class="text-center"><span class="placeholder col-6"></span></td>
+      <td ><span class="placeholder col-7"></span></td>
+      <td ><span class="placeholder col-6"></span></td>
+      <td ><span class="placeholder col-6"></span></td>
       <td class="text-end"><span class="placeholder col-12"></span></td>
     </tr>
     <tr class="placeholder-glow">
       <td><span class="placeholder col-7"></span></td>
-      <td class="text-center"><span class="placeholder col-3"></span></td>
+      <td ><span class="placeholder col-3"></span></td>
       <td><span class="placeholder col-6"></span></td>
-      <td style="width: 30%;"><span class="placeholder col-7"></span></td>
+      <td><span class="placeholder col-7"></span></td>
       <td><span class="placeholder col-7"></span></td>
       <td><span class="placeholder col-3"></span></td>
       <td><span class="placeholder col-3"></span></td>
-      <td class="text-center"><span class="placeholder col-7"></span></td>
-      <td class="text-center"><span class="placeholder col-6"></span></td>
+      <td ><span class="placeholder col-7"></span></td>
+      <td ><span class="placeholder col-6"></span></td>
+      <td ><span class="placeholder col-6"></span></td>
       <td class="text-end"><span class="placeholder col-12"></span></td>
     </tr>
     <tr class="placeholder-glow">
       <td><span class="placeholder col-7"></span></td>
-      <td class="text-center"><span class="placeholder col-3"></span></td>
+      <td ><span class="placeholder col-3"></span></td>
       <td><span class="placeholder col-4"></span></td>
       <td><span class="placeholder col-12"></span></td>
       <td><span class="placeholder col-5"></span></td>
       <td><span class="placeholder col-8"></span></td>
       <td><span class="placeholder col-8"></span></td>
-      <td class="text-center"><span class="placeholder col-7"></span></td>
-      <td class="text-center"><span class="placeholder col-6"></span></td>
-      <td class="text-end"><span class="placeholder col-12"></span></td>
-    </tr>
-    <tr class="placeholder-glow">
-      <td><span class="placeholder col-7"></span></td>
-      <td class="text-center"><span class="placeholder col-3"></span></td>
-      <td><span class="placeholder col-6"></span></td>
-      <td style="width: 30%;"><span class="placeholder col-7"></span></td>
-      <td><span class="placeholder col-7"></span></td>
-      <td><span class="placeholder col-3"></span></td>
-      <td><span class="placeholder col-3"></span></td>
-      <td class="text-center"><span class="placeholder col-7"></span></td>
-      <td class="text-center"><span class="placeholder col-6"></span></td>
-      <td class="text-end"><span class="placeholder col-12"></span></td>
-    </tr>
-    <tr class="placeholder-glow">
-      <td><span class="placeholder col-7"></span></td>
-      <td class="text-center"><span class="placeholder col-3"></span></td>
-      <td><span class="placeholder col-4"></span></td>
-      <td><span class="placeholder col-12"></span></td>
-      <td><span class="placeholder col-5"></span></td>
-      <td><span class="placeholder col-8"></span></td>
-      <td><span class="placeholder col-8"></span></td>
-      <td class="text-center"><span class="placeholder col-7"></span></td>
-      <td class="text-center"><span class="placeholder col-6"></span></td>
+      <td ><span class="placeholder col-7"></span></td>
+      <td ><span class="placeholder col-6"></span></td>
+      <td ><span class="placeholder col-6"></span></td>
       <td class="text-end"><span class="placeholder col-12"></span></td>
     </tr>
     `;
@@ -292,7 +295,7 @@ async function fetchData() {
           <td>${webPrice}</td>
           <td>${modelType}</td>
           <td>
-            <div class="input-group input-group-sm" style="width: 180px;">
+            <div class="input-group input-group-sm" style="width: 200px;">
               <input type="text" class="form-control" value="${stockNumber}" placeholder="Stock Number" title="${stockNumber}" aria-label="stock number" aria-describedby="btnGroupAddon">
               <div class="input-group-text" id="btnGroupAddon">
                 <button type="button" class="btn btn-default btn-sm" title="Copy Stock Number" onclick="navigator.clipboard.writeText('${stockNumber}')">
