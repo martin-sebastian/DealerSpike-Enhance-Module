@@ -133,21 +133,6 @@ $.ajax({
     }
     console.log(muItemsTemplate);
 
-    // Mat Items - 9 items allowed
-    // var matItemsTemplate = ``;
-
-    // i = 0;
-    // while (i < 9) {
-    //   if (data.MatItems[i]) {
-    //     matItemsTemplate += `<li class="list-group-item"><em>${
-    //       data.MatItems[i].Description
-    //     }</em> <span class="pull-right">${numeral(
-    //       data.MatItems[i].Amount
-    //     ).format("$0,0.00")}</span></li>`;
-    //   }
-    //   i++;
-    // }
-
     var matItemsTemplate = ``;
 
     for (var i = 0; i < 9; i++) {
@@ -166,21 +151,6 @@ $.ajax({
 
     // OTD Items - 5 items allowed
     var OTDItemsTemplate = ``;
-
-    // i = 0;
-    // while (i < 9) {
-    //   if (data.OTDItems[i]) {
-    //     OTDItemsTemplate += `<li class="list-group-item"><em>${
-    //       data.OTDItems[i].Description
-    //     }</em> <span class="pull-right">${numeral(
-    //       data.OTDItems[i].Amount
-    //     ).format("$0,0.00")}</span></li>`;
-    //   }
-    //   //			if (data.OTDItems[i + 1]) {
-    //   //				OTDItemsTemplate += ", "
-    //   //			}
-    //   i++;
-    // }
 
     // OTD Items - 9 items allowed
     var OTDItemsTemplate = ``;
@@ -620,9 +590,9 @@ $.ajax({
 
     // Major Unit Header with Year, Make, Model, VIN, Stock Number.
     var muHeaderTemplate = `
-		<div class="vehicle-header-container shadow">
+		<div class="vehicle-header-container">
 			<div class="vehicle-name-container">
-				<h3 class="vehicle-title" style="margin: 5px 0 0 0;">${prodTitle}</h3>
+				<h3 class="vehicle-title" style="margin: 15px 0 0 0;">${prodTitle}</h3>
 				<h4 class="vehicle-subtitle" style="margin: 1px 0 5px 0;">
 				<small>Model: </small>${data.ModelCode} 
 				<small class="hidden-xs">VIN: </small><span class="hidden-xs">${vinNumber} </span>
@@ -784,7 +754,9 @@ $.ajax({
 
     var ourPrice = numeral(data.MSRPUnit + data.AccessoryItemsTotal + data.MatItemsTotal + data.DiscountItemsTotal + data.TradeInItemsTotal).format("$0,0.00");
     var overlay = `
-		${muHeaderTemplate}
+		<div class="mu-header" style="max-width: 1700px; margin:0 auto;">
+			${muHeaderTemplate}
+		</div>
 		<div id="overlayContainer" class="container-fluid" style="background: #efefef; padding-top: 16px; padding-bottom: 35px;">
 			<div class="row" style="max-width: 1700px; margin:0 auto;">
 				<div class="col-xl-8 col-lg-8 col-md-8">
@@ -881,6 +853,7 @@ $.ajax({
 	}
 	body {
 		font-family: Roboto, Arial, Helvetica, sans-serif;
+		background: #efefef;
 	}
 	.mobile-preview {
 		width: 600px;
@@ -925,10 +898,9 @@ $.ajax({
 		justify-content: space-between;
 		align-items: stretch;
 		padding: 0 20px;
-		border-bottom: solid 0px #ddd;
-		background: #fff;
 	}
 	.vehicle-name-container {
+		max-width: 1700px;
 		margin: 0px;
 		padding: 5px 0;
 	}

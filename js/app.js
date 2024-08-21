@@ -260,16 +260,15 @@ async function fetchData() {
         const modelTypeStyle = item.getElementsByTagName("model_typestyle")[0]?.textContent || "N/A";
         const color = item.getElementsByTagName("color")[0]?.textContent || "N/A";
         const usage = item.getElementsByTagName("usage")[0]?.textContent || "N/A";
-
         const imageElements = item.getElementsByTagName("imageurl");
         const photos =
           imageElements.length > 10
             ? `<span class="photos-status" title="In-House Photos Done">
-                <i class="bi bi-camera2 text-warning"></i>
+                  <i class="bi bi-camera2 text-warning"></i>
                 <span class="visually-hidden" style="font-size: 10px;">Done</span>
               </span>`
             : `<span class="photos-status" title="Awaiting Photo Shoot">
-                <i class="bi bi-camera2 text-secondary"></i>
+                  <i class="bi bi-camera2 text-secondary"></i>
                 <span class="visually-hidden" style="font-size: 10px;"> Needs Photos </span>
               </span>`;
 
@@ -278,8 +277,8 @@ async function fetchData() {
         const row = document.createElement("tr");
         row.innerHTML = `
           <td class="text-center">
-          <a href="${webURL}" target="_blank" title="View on Website" data-bs-toggle="tooltip" data-bs-placement="top">
-            ${imageUrl !== "N/A" ? `<img src="${imageUrl}" alt="${title}" />` : `<i class="bi bi-card-image"></i>`}
+            <a href="${webURL}" target="_blank" title="View on Website" data-bs-toggle="tooltip" data-bs-placement="top">
+              ${imageUrl !== "N/A" ? `<img src="${imageUrl}" alt="${title}" />` : `<i class="bi bi-card-image"></i>`}
             </a>
           </td>
           <td class="text-center">
@@ -287,22 +286,19 @@ async function fetchData() {
           </td>
           <td>${manufacturer}</td>
           <td>
-            <div class="text-truncate">${modelName}</div>
-              <span class="visually-hidden">${stockNumber} ${vin} ${usage} ${year} ${manufacturer} ${modelName} ${modelType} ${modelTypeStyle} ${color} ${photos}</span>
+            ${modelName}
+            <span class="visually-hidden">${stockNumber} ${vin} ${usage}<br> ${year} ${manufacturer} ${modelName}<br> ${modelType} ${modelTypeStyle} ${color} ${photos}</span>
           </td>
           <td>${webPrice}</td>
           <td>${modelType}</td>
           <td>
-          <div class="row text-nowrap">
-            <div style="min-width: 200px; width: 250px;">
-            <div class="input-group input-group-sm me-5">
-            <input type="text" class="form-control" value="${stockNumber}" placeholder="Stock Number" title="${stockNumber}" aria-label="stock number" aria-describedby="btnGroupAddon">
+            <div class="input-group input-group-sm" style="width: 180px;">
+              <input type="text" class="form-control" value="${stockNumber}" placeholder="Stock Number" title="${stockNumber}" aria-label="stock number" aria-describedby="btnGroupAddon">
               <div class="input-group-text" id="btnGroupAddon">
-                <button type="button" class="btn btn-default btn-sm m-0 p-0" title="Copy Stock Number" onclick="navigator.clipboard.writeText('${stockNumber}')">
-                <i class="bi bi-clipboard" style="font-size: 14px;"></i>
-              </button>
+                <button type="button" class="btn btn-default btn-sm" title="Copy Stock Number" onclick="navigator.clipboard.writeText('${stockNumber}')">
+                  <i class="bi bi-clipboard"></i>
+                </button>
               </div>
-            </div>
             </div>
           </td>
           <td class="text-start">${color}</td>
@@ -443,10 +439,10 @@ function filterTable() {
   for (let i = 1; i < tr.length; i++) {
     const titleTd = tr[i].getElementsByTagName("td")[3]; // Title column
     const manufacturerTd = tr[i].getElementsByTagName("td")[2]; // Manufacturer column
-    const typeTd = tr[i].getElementsByTagName("td")[4]; // Type column
-    const usageTd = tr[i].getElementsByTagName("td")[7]; // Usage column
+    const typeTd = tr[i].getElementsByTagName("td")[5]; // Type column
+    const usageTd = tr[i].getElementsByTagName("td")[8]; // Usage column
     const yearTd = tr[i].getElementsByTagName("td")[1]; // Year column
-    const photosTd = tr[i].getElementsByTagName("td")[8]; // Photos column
+    const photosTd = tr[i].getElementsByTagName("td")[9]; // Photos column
 
     if (titleTd && manufacturerTd && usageTd && photosTd) {
       const titleTxt = titleTd.textContent || titleTd.innerText;

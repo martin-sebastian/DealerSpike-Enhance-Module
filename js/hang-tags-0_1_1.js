@@ -1,4 +1,11 @@
 document.addEventListener("DOMContentLoaded", () => {
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  const urlstocknumber = urlParams.get("search");
+  const stockNumber = urlstocknumber;
+
+  // console.log("stock Number:", urlstocknumber, stockNum);
+
   // Payment Calculator
   // Get data from API and create variables
   fetch(`https://newportal.flatoutmotorcycles.com/portal/public/api/majorunit/stocknumber/${stockNumber}`)
@@ -102,6 +109,12 @@ document.addEventListener("DOMContentLoaded", () => {
       })();
 
       const yellowTag = data.YellowTag ? `<img src="https://newportal.flatoutmotorcycles.com/Portal/content/icons/ylwtag.png">` : ``;
+
+      // const unitDescriptionTemplate = data.B50Desc
+      //   ? `
+      //     ${data.B50Desc}
+      //   `
+      //   : ``;
 
       // DESCRIPTION TEMPLATE
       let unitDescriptionTemplate = ""; // Declare the variable outside
@@ -250,6 +263,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // QR Code Generator
       new QRCode(document.getElementById("qrcode"), data.DetailUrl);
+
+      //document.getElementById("quoteLevel").innerHTML = qLevel;
+      console.log(qLevel);
 
       const style = document.createElement("style");
 

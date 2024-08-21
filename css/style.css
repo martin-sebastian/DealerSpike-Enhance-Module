@@ -1,11 +1,10 @@
 body {
   margin: 0px;
   padding: 0px;
-  font-family: "Roboto", sans-serif;
   overflow-x: hidden;
 }
 .dots {
-  color: #333;
+  color: #222;
   background-color: #eee;
   background-image: url("../img/dots.png") !important;
   background-repeat: repeat;

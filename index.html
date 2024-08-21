@@ -85,7 +85,7 @@
         </div>
         <div class="offcanvas-body">
           <form class="d-flex flex-column row-gap-3 my-3" role="search">
-            <div class="w-100 d-flex flex-column row-gap-2">
+            <div class="d-flex flex-column row-gap-2">
               <select id="yearFilter" class="form-select me-2">
                 <option value="">Year</option>
                 <option value="2025">2025</option>
@@ -157,33 +157,28 @@
 
     <main class="container-fluid d-print-none">
       <div class="spacer-75"></div>
-      <div class="card">
-        <div class="card-header">Inventory</div>
 
-        <div class="card-body">
-          <div class="table-responsive">
-            <table id="vehiclesTable" class="table table-hover align-middle">
-              <thead>
-                <tr>
-                  <th class="text-center">Image</th>
-                  <th class="text-center">Year</th>
-                  <th class="">Make</th>
-                  <th class="">Model</th>
-                  <th class="">Price</th>
-                  <th class="">Type</th>
-                  <th class="text-nowrap">Stock Number</th>
-                  <th class="text-start">Color</th>
-                  <th class="text-center">Usage</th>
-                  <th class="text-center">Photos</th>
-                  <th class="text-end text-nowrap">Details, Print Tags</th>
-                </tr>
-              </thead>
-              <tbody>
-                <!-- Data will be inserted here dynamically by JavaScript -->
-              </tbody>
-            </table>
-          </div>
-        </div>
+      <div class="table-responsive">
+        <table id="vehiclesTable" class="table table-hover align-middle">
+          <thead>
+            <tr>
+              <th class="text-center">Image</th>
+              <th class="text-center">Year</th>
+              <th class="">Make</th>
+              <th class="">Model</th>
+              <th class="">Price</th>
+              <th class="">Type</th>
+              <th class="text-start">Stock Number</th>
+              <th class="text-start">Color</th>
+              <th class="text-center">Usage</th>
+              <th class="text-center">Photos</th>
+              <th class="text-end">Details, Print Tags</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Data will be inserted here dynamically by JavaScript -->
+          </tbody>
+        </table>
       </div>
     </main>
 
@@ -227,7 +222,7 @@
           </div>
           <div class="modal-body d-flex justify-content-center dots">
             <!-- Elements to display the fetched data -->
-            <div id="detailsContainer" class="tags-container"></div>
+            <div id="detailsContainer"></div>
           </div>
           <div class="modal-footer d-print-none">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
