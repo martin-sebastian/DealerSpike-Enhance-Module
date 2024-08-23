@@ -110,12 +110,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const yellowTag = data.YellowTag ? `<img src="https://newportal.flatoutmotorcycles.com/Portal/content/icons/ylwtag.png">` : ``;
 
-      // const unitDescriptionTemplate = data.B50Desc
-      //   ? `
-      //     ${data.B50Desc}
-      //   `
-      //   : ``;
-
       // DESCRIPTION TEMPLATE
       let unitDescriptionTemplate = ""; // Declare the variable outside
 
@@ -277,15 +271,26 @@ document.addEventListener("DOMContentLoaded", () => {
             align-items: stretch;
             padding: 0 10px;
           }
+          .main-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            }
           .tags-container {
             width: 8.5in;
             height: 11in;
             overflow: hidden;
             background: #fff !important;
+            border: solid 10px #fff;
+            margin: 0;
+            zoom: 1; 
             }
           .tag-left, .tag-right {
             width: 4.5in;
             height: 11in;
+            margin: 0;
+            padding: 0;
             border: dashed 1px #eee;
             }
           .print-tag {
@@ -452,6 +457,7 @@ document.addEventListener("DOMContentLoaded", () => {
             h4 { font-size: 100%; }
             .vehicle-header-container { padding: 0 5px; }
             .price-payment-divider { display: none; }
+            .tags-container { zoom: 0.5; }
           }
           @media print {
             @page { 
@@ -459,11 +465,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 margin: 0%;
                 page-header: none;
                 page-footer: none;
+                zoom: 1;
             }
             body { margin: 0; padding: 0; }
             .label-success { background-color: #5cb85c !important; color: #fff !important; border: 1px solid #5cb85c !important; }
             .label-default { background-color: #777 !important; color: #fff !important; border: 1px solid #777 !important; }
             .navbar { background-color: #EE0000 !important; }
+            .tags-container { zoom: 1; }
           }
         `;
 

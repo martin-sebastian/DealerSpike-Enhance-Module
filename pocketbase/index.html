@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PocketBase Example</title>
+    <!-- Include PocketBase Client -->
+    <script src="https://cdn.jsdelivr.net/npm/pocketbase@0.13.0/dist/pocketbase.min.js"></script>
+  </head>
+  <body>
+    <!-- Your HTML content -->
+
+    <div id="recordsContainer"></div>
+
+    <!-- Include your custom script -->
+    <script>
+      const pb = new PocketBase("http://127.0.0.1:8090/");
+
+      async function fetchRecords() {
+        try {
+          const records = await pb.collection("YOUR_COLLECTION_NAME").getList(1, 50);
+          console.log(records.items);
+        } catch (error) {
+          console.error("Error fetching records:", error);
+        }
+      }
+
+      fetchRecords();
+    </script>
+  </body>
+</html>

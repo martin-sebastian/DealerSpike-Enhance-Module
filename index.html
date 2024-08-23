@@ -23,7 +23,7 @@
           <form class="d-flex d-block" style="width: 400px" role="search">
             <label for="searchFilter" class="visually-hidden">Search</label>
             <input
-              type="text"
+              type="search"
               class="form-control w-100"
               placeholder="Search"
               aria-label="Search"
@@ -44,12 +44,6 @@
               <option value="PWC"></option>
               <option value="Pontoons"></option>
             </datalist>
-
-            <button id="rowCount" class="btn btn-outline-secondary mx-1" onclick="filterTable()">
-              <div class="spinner-border spinner-border-sm" role="status">
-                <span class="visually-hidden">Loading...</span>
-              </div>
-            </button>
           </form>
           <div class="toggles-group">
             <button id="toggleThemeButton" class="btn btn-outline-secondary px-3 mx-1" type="button">
@@ -121,6 +115,7 @@
                 <option value="Polaris Industries">Polaris Industries</option>
                 <option value="Vanderhall">Vanderhall</option>
                 <option value="Victory Motorcycles">Victory Motorcycles</option>
+                <option value="Yamaha">Yamaha</option>
               </select>
               <select id="typeFilter" class="form-select me-2">
                 <option value="">Type</option>
@@ -138,12 +133,12 @@
                 <option value="Street Bikes">Street Bikes</option>
               </select>
               <select id="usageFilter" class="form-select me-2">
-                <option value="">Usage</option>
+                <option value="">New or Used</option>
                 <option value="New">New</option>
                 <option value="Used">Used</option>
               </select>
               <select id="photosFilter" class="form-select me-2">
-                <option value="">Photos</option>
+                <option value="">In-House Photos</option>
                 <option value="Done">Done</option>
                 <option value="Needs Photos">Needs Photos</option>
               </select>
@@ -157,20 +152,24 @@
 
     <main class="container-fluid d-print-none">
       <div class="spacer-75"></div>
-
+      <div class="d-flex pb-2 text-secondary">
+        <!-- element for displaying row count -->
+        Results: <span id="rowCountDisplay"></span>
+      </div>
       <div class="table-responsive vw-98">
         <table id="vehiclesTable" class="table table-hover align-middle">
           <thead>
             <tr>
               <th class="text-center">Image</th>
+              <th class="text-center">Usage</th>
               <th class="text-center">Year</th>
               <th class="">Make</th>
               <th class="">Model</th>
-              <th class="">Price</th>
-              <th class="">Type</th>
+              <th class="visually-hidden">Type</th>
+              <th class="visually-hidden">Color</th>
               <th class="text-start">Stock Number</th>
-              <th class="text-start">Color</th>
-              <th class="text-center">Usage</th>
+              <th class="">DMS Price</th>
+              <th class="">Updated</th>
               <th class="text-center">Photos</th>
               <th class="text-center">Details, Print Tags</th>
             </tr>
@@ -185,14 +184,16 @@
     <div class="modal fade" id="keytagModal" tabindex="-1" aria-labelledby="keytagModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-fullscreen">
         <div class="modal-content">
-          <div class="modal-header d-print-none">
+          <div class="modal-header d-flex flex-row justify-content-between d-print-none">
             <h1 class="modal-title fs-5" id="keytagModalLabel">StockNumber</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <h2 class="modal-title fs-5" id="keytagModalLabel">Label: 2 x 1.5 in</h2>
+
+            <button type="button" id="printTag" class="btn btn-danger">Print</button>
           </div>
           <div class="modal-body dots">
             <div class="main-content">
               <!-- Elements to display the fetched data -->
-              <div id="keytagContainer" class="key-tag-container text-truncate">
+              <div id="keytagContainer" class="key-tag-container zoomElement text-truncate">
                 <div id="modelUsage" class="model-usage text-truncate">New or Used</div>
                 <div id="stockNumber" class="stock-number text-truncate">Stock Number</div>
                 <div id="modelYear" class="model-year text-truncate">Year</div>
@@ -206,8 +207,11 @@
             </div>
           </div>
           <div class="modal-footer d-print-none">
+            <div class="btn-group me-4" role="group" aria-label="Zoom buttons">
+              <button type="button" id="zoomOutBtn" class="btn-icon fs-2 m-1"><i class="bi bi-dash-square"></i></button>
+              <button type="button" id="zoomInBtn" class="btn-icon fs-2 m-1"><i class="bi bi-plus-square"></i></button>
+            </div>
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" id="printTag" class="btn btn-danger">Print Key Tag</button>
           </div>
         </div>
       </div>
@@ -220,9 +224,11 @@
             <h1 class="modal-title fs-5" id="hangTagsModalLabel">StockNumber</h1>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <div class="modal-body d-flex justify-content-center dots">
+          <div class="modal-body dots">
+            <div class="spacer-100"></div>
             <!-- Elements to display the fetched data -->
-            <div id="detailsContainer"></div>
+            <div id="detailsContainer" class="d-flex justify-content-center"></div>
+            <div class="spacer-100"></div>
           </div>
           <div class="modal-footer d-print-none">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -251,7 +257,7 @@
     </div>
 
     <script src="./node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
-    <script src="./node_modules/moment/dist/moment.js"></script>
+    <script src="./js/moment.js"></script>
     <script src="./node_modules/numeral/min/numeral.min.js"></script>
     <script src="./node_modules/print-js/dist/print.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.11/clipboard.min.js"></script>
