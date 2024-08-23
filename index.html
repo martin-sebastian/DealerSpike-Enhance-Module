@@ -24,7 +24,7 @@
             <label for="searchFilter" class="visually-hidden">Search</label>
             <input
               type="search"
-              class="form-control w-100"
+              class="form-control search-width mx-1"
               placeholder="Search"
               aria-label="Search"
               id="searchFilter"
@@ -80,6 +80,17 @@
         <div class="offcanvas-body">
           <form class="d-flex flex-column row-gap-3 my-3" role="search">
             <div class="d-flex flex-column row-gap-2">
+              <label for="searchFilter" class="visually-hidden">Search</label>
+              <input
+                type="search"
+                class="form-control d-block d-sm-none"
+                placeholder="Search"
+                aria-label="Search"
+                id="searchFilter"
+                list="datalistOptions"
+                title="Filter vehicles by year, name, stock number, or VIN"
+                autocomplete="off"
+              />
               <select id="yearFilter" class="form-select me-2">
                 <option value="">Year</option>
                 <option value="2025">2025</option>

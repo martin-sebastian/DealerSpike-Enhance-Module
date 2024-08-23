@@ -3,6 +3,9 @@ body {
   padding: 0px;
   overflow-x: hidden;
 }
+.search-width {
+  width: 440px;
+}
 .dots {
   color: #222;
   background-color: #eee;
@@ -385,5 +388,13 @@ th {
 @media print {
   .key-tag-container {
     zoom: 1;
+  }
+}
+@media screen and (max-width: 768px) {
+  .key-tag-container {
+    zoom: 1;
+  }
+  .search-width {
+    width: 100%;
   }
 }
