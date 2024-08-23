@@ -159,17 +159,16 @@ async function fetchData() {
               href="./overlay/?search=${stockNumber}" 
               type="button" 
               class="btn btn-danger action-button mx-1" 
-              title="Web Preview"
-              data-bs-toggle="tooltip"
+              data-toggle="tooltip"
               data-bs-placement="top"
-              data-bs-title="Major Unit Pricing & More Info."
+              title="Pricing"
               >
               <i class="bi bi-card-heading"></i>
               </a>
-              <button type="button" id="textMessageModalButton" class="btn btn-danger action-button mx-1" data-bs-toggle="modal" data-bs-target="#textMessageModal" data-bs-textdetails="${stockNumber}"><i class="bi bi-phone"></i></button>
-              <a href="./hang-tags/?search=${stockNumber}" type="button" class="btn btn-danger action-button mx-1" title="Hang Tags"><i class="bi bi-tags"></i></a>
-              <button type="button" id="keytagModalButton" class="btn btn-danger action-button mx-1" data-bs-toggle="modal" data-bs-target="#keytagModal" data-bs-stocknumber="${stockNumber}"><i class="bi bi-tag"></i></button>
-              <button type="button" id="hangTagsModalButton" class="btn btn-warning action-button mx-1" data-bs-toggle="modal" data-bs-target="#hangTagsModal" data-bs-details="${stockNumber}"><i class="bi bi-tags"></i></button>
+              <button type="button" id="textMessageModalButton" class="btn btn-danger action-button mx-1" data-toggle="tooltip" title="Send MU quote via text message" data-bs-toggle="modal" data-bs-target="#textMessageModal" data-bs-textdetails="${stockNumber}" disabled><i class="bi bi-phone"></i></button>
+              <a href="./hang-tags/?search=${stockNumber}" class="btn btn-danger action-button mx-1" data-toggle="tooltip" title="Print Hang Tags"><i class="bi bi-tags"></i></a>
+              <button type="button" id="keytagModalButton" class="btn btn-danger action-button mx-1" data-toggle="tooltip" title="Print Key Tag" data-bs-toggle="modal" data-bs-target="#keytagModal" data-bs-stocknumber="${stockNumber}"><i class="bi bi-tag"></i></button>
+              <button type="button" id="hangTagsModalButton" class="btn btn-warning action-button mx-1" data-toggle="tooltip" title="Print Hang Tags" data-bs-toggle="modal" data-bs-target="#hangTagsModal" data-bs-details="${stockNumber}"> <i class="bi bi-tags"></i> </button>
             </div>  
           </td>
         `;
@@ -178,7 +177,8 @@ async function fetchData() {
       }
 
       console.log("Data successfully inserted into table");
-
+      const tooltipTriggerList = document.querySelectorAll('[data-toggle="tooltip"]');
+      const tooltipList = [...tooltipTriggerList].map((tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl));
       // Event listeners for input and dropdown changes
       document.getElementById("searchFilter").addEventListener("keyup", filterTable);
       document.getElementById("yearFilter").addEventListener("change", filterTable);

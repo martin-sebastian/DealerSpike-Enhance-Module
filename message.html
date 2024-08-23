@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Vehicle Details" />
+    <meta property="og:description" content="Check out this awesome vehicle!" />
+    <meta property="og:image" content="default-image.jpg" />
+    <meta property="og:url" content="https://www.yourdomain.com/message.html" />
+    <title>Vehicle Details</title>
+  </head>
+  <body>
+    <h1>Vehicle Details</h1>
+    <div id="vehicle-details">
+      <!-- Vehicle details will be populated here -->
+    </div>
+    <pre id="pre"></pre>
+    <script>
+      // Function to get URL parameters
+      function getQueryParam(param) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(param);
+      }
+
+      // Fetch and populate vehicle details based on the stock number
+      async function fetchVehicleDetails(stockNumber) {
+        try {
+          // Replace with your actual API endpoint to fetch vehicle details
+          const apiUrl = `https://newportal.flatoutmotorcycles.com/portal/public/api/majorunit/stocknumber/${stockNumber}`;
+          const response = await fetch(apiUrl);
+
+          // Check if the response is ok
+          if (!response.ok) {
+            throw new Error(`Failed to fetch data: ${response.statusText}`);
+          }
+
+          // Parse the response data as JSON
+          const data = await response.json();
+          console.log("Vehicle details:", data);
+
+          // Assume the data contains fields: title, description, imageUrl, url, etc.
+          const vehicleTitle = data.ModelName || "Vehicle Title";
+          const vehicleDescription = `Model Year: ${data.ModelYear}, Manufacturer: ${data.Manufacturer}, Color: ${data.Color}`;
+          const vehicleImageUrl = data.B50ImageUrl || "default-image.jpg";
+          const vehiclePageUrl = data.DetailUrl || "https://www.flatoutmotorcycles.com";
+
+          // Update Open Graph meta tags
+          document.querySelector('meta[property="og:title"]').setAttribute("content", vehicleTitle);
+          document.querySelector('meta[property="og:description"]').setAttribute("content", vehicleDescription);
+          document.querySelector('meta[property="og:image"]').setAttribute("content", vehicleImageUrl);
+          document.querySelector('meta[property="og:url"]').setAttribute("content", vehiclePageUrl);
+          document.getElementById("pre").innerHTML = data;
+
+          // Update the page content with vehicle details
+          document.getElementById("vehicle-details").innerHTML = `
+                    <h2>${vehicleTitle}</h2>
+                    <p>${vehicleDescription}</p>
+                    <img src="${vehicleImageUrl}" alt="${vehicleTitle}" style="max-width:100%; height:auto;">
+                `;
+        } catch (error) {
+          console.error("Error fetching vehicle details:", error);
+          document.getElementById("vehicle-details").innerHTML = `<p>Error loading vehicle details. Please try again later.</p>`;
+        }
+      }
+
+      // Get the stock number from the URL
+      const stockNumber = getQueryParam("stockNumber");
+
+      // Fetch and display the vehicle details if a stock number is provided
+      if (stockNumber) {
+        fetchVehicleDetails(stockNumber);
+      } else {
+        document.getElementById("vehicle-details").innerHTML = "<p>No stock number provided.</p>";
+      }
+    </script>
+  </body>
+</html>
