@@ -9,13 +9,21 @@
     <meta property="og:image" content="default-image.jpg" />
     <meta property="og:url" content="https://www.yourdomain.com/message.html" />
     <title>Vehicle Details</title>
+    <style>
+      main {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+    </style>
   </head>
   <body>
-    <h1>Vehicle Details</h1>
-    <div id="vehicle-details">
-      <!-- Vehicle details will be populated here -->
-    </div>
-    <pre id="pre"></pre>
+    <main>
+      <div id="vehicle-details">
+        <!-- Vehicle details will be populated here -->
+      </div>
+      <pre id="pre"></pre>
+    </main>
     <script>
       // Function to get URL parameters
       function getQueryParam(param) {
@@ -54,7 +62,7 @@
 
           // Update the page content with vehicle details
           document.getElementById("vehicle-details").innerHTML = `
-                    <h2>${vehicleTitle}</h2>
+                    <h1>${vehicleTitle}</h1>
                     <p>${vehicleDescription}</p>
                     <img src="${vehicleImageUrl}" alt="${vehicleTitle}" style="max-width:100%; height:auto;">
                 `;
