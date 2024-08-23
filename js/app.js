@@ -120,7 +120,7 @@ async function fetchData() {
               </span>`;
 
         const usageColor = usage === "New" ? "text-bg-success" : "text-bg-secondary";
-        const updateStatus = moment(updated).fromNow();
+        const updatedStatus = moment(updated).fromNow();
 
         const row = document.createElement("tr");
         row.innerHTML = `
@@ -136,7 +136,7 @@ async function fetchData() {
           <td class="text-truncate" style="max-width: 100px;">${manufacturer}</td>
           <td class="text-truncate" style="max-width: 200px;">
             <span>${modelName}</span>
-            <span class="visually-hidden">${stockNumber} ${vin} ${usage} ${year} ${manufacturer} ${modelName} ${modelType} ${modelTypeStyle} ${color} ${photos} ${updateStatus}</span>
+            <span class="visually-hidden">${stockNumber} ${vin} ${usage} ${year} ${manufacturer} ${modelName} ${modelType} ${modelTypeStyle} ${color} ${photos} ${updatedStatus}</span>
           </td>
           <td class="visually-hidden">${modelType}</td>
           <td class="visually-hidden">${color}</td>
@@ -151,7 +151,7 @@ async function fetchData() {
             </div>
           </td>
           <td>${webPrice}</td>
-          <td><span class="badge text-bg-dark text-white-50 border">${updateStatus}</span></td>
+          <td><span class="badge text-bg-dark text-white-50 border">${updatedStatus}</span></td>
           <td class="text-center">${photos}</td>
           <td class="text-center text-nowrap">
             <div class="action-button-group" role="group" aria-label="Vehicles">
@@ -166,6 +166,7 @@ async function fetchData() {
               >
               <i class="bi bi-card-heading"></i>
               </a>
+              <button type="button" id="textMessageModalButton" class="btn btn-danger action-button mx-1" data-bs-toggle="modal" data-bs-target="#textMessageModal" data-bs-textdetails="${stockNumber}"><i class="bi bi-phone"></i></button>
               <a href="./hang-tags/?search=${stockNumber}" type="button" class="btn btn-danger action-button mx-1" title="Hang Tags"><i class="bi bi-tags"></i></a>
               <button type="button" id="keytagModalButton" class="btn btn-danger action-button mx-1" data-bs-toggle="modal" data-bs-target="#keytagModal" data-bs-stocknumber="${stockNumber}"><i class="bi bi-tag"></i></button>
               <button type="button" id="hangTagsModalButton" class="btn btn-warning action-button mx-1" data-bs-toggle="modal" data-bs-target="#hangTagsModal" data-bs-details="${stockNumber}"><i class="bi bi-tags"></i></button>
@@ -185,7 +186,7 @@ async function fetchData() {
       document.getElementById("typeFilter").addEventListener("change", filterTable);
       document.getElementById("usageFilter").addEventListener("change", filterTable);
       document.getElementById("photosFilter").addEventListener("change", filterTable);
-      document.getElementById("updatedFilter").addEventListener("change", filterTable);
+      //document.getElementById("updatedFilter").addEventListener("change", filterTable);
 
       // Add event listeners for sorting
       const headers = document.querySelectorAll("#vehiclesTable th");
@@ -333,7 +334,7 @@ function filterTable() {
     const typeTd = tr[i].getElementsByTagName("td")[5];
     const photosTd = tr[i].getElementsByTagName("td")[10];
 
-    if (titleTd && manufacturerTd && usageTd && photosTd) {
+    if (titleTd && manufacturerTd && yearTd && usageTd && photosTd) {
       const yearTxt = yearTd.textContent || yearTd.innerText;
       const manufacturerTxt = manufacturerTd.textContent || manufacturerTd.innerText;
       const typeTxt = typeTd.textContent || typeTd.innerText;
@@ -443,33 +444,4 @@ zoomOutBtn.addEventListener("click", function () {
   // Remove the zoom-3 class and add the zoom-1 class
   zoomElement.classList.remove("zoom-2");
   zoomElement.classList.add("zoom-1");
-});
-
-// Export Key Tag as PDF
-document.getElementById("exportPDF").addEventListener("click", function () {
-  const { jsPDF } = window.jspdf;
-
-  // Create a new PDF document with size set to 2 inches by 1.5 inches
-  const doc = new jsPDF({
-    unit: "in", // Set unit to inches
-    format: [2, 1.5], // Set PDF size to 2 inches by 1.5 inches
-  });
-
-  // Get the div you want to print as PDF
-  const div = document.getElementById("keytagContainer");
-
-  // Use html2canvas to capture the div as an image
-  html2canvas(div).then(function (canvas) {
-    const imgData = canvas.toDataURL("image/png");
-
-    // Set the image width and height in inches
-    const imgWidth = 1.5; // 2 inches
-    const imgHeight = 2; // 1.5 inches
-
-    // Add the image to the PDF
-    doc.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
-
-    // Save the PDF
-    doc.save("download.pdf");
-  });
 });
