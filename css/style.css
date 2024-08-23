@@ -111,6 +111,10 @@ body {
   min-height: 50vh;
   height: 100%;
   width: 100%;
+  color: #333;
+  background-color: #eee;
+  background-image: url("../img/dots.png") !important;
+  background-repeat: repeat;
 }
 .side-menu-footer {
   display: flex;
