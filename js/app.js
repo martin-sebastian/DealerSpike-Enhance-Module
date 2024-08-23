@@ -168,7 +168,7 @@ async function fetchData() {
               <button type="button" id="textMessageModalButton" class="btn btn-danger action-button mx-1" data-toggle="tooltip" title="Send MU quote via text message" data-bs-toggle="modal" data-bs-target="#textMessageModal" data-bs-textdetails="${stockNumber}" disabled><i class="bi bi-phone"></i></button>
               <a href="./hang-tags/?search=${stockNumber}" class="btn btn-danger action-button mx-1" data-toggle="tooltip" title="Print Hang Tags"><i class="bi bi-tags"></i></a>
               <button type="button" id="keytagModalButton" class="btn btn-danger action-button mx-1" data-toggle="tooltip" title="Print Key Tag" data-bs-toggle="modal" data-bs-target="#keytagModal" data-bs-stocknumber="${stockNumber}"><i class="bi bi-tag"></i></button>
-              <button type="button" id="hangTagsModalButton" class="btn btn-warning action-button mx-1" data-toggle="tooltip" title="Print Hang Tags" data-bs-toggle="modal" data-bs-target="#hangTagsModal" data-bs-details="${stockNumber}"> <i class="bi bi-tags"></i> </button>
+              <button type="button" id="hangTagsModalButton" class="btn btn-warning action-button mx-1 visually-hidden" data-toggle="tooltip" title="Print Hang Tags" data-bs-toggle="modal" data-bs-target="#hangTagsModal" data-bs-details="${stockNumber}"> <i class="bi bi-tags"></i> </button>
             </div>  
           </td>
         `;
