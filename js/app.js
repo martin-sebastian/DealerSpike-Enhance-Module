@@ -141,7 +141,7 @@ async function fetchData() {
           <td class="visually-hidden">${modelType}</td>
           <td class="visually-hidden">${color}</td>
           <td>
-            <div class="input-group input-group-sm" style="width: 230px;">
+            <div class="input-group input-group-sm" style="width: 250px;">
               <input type="text" class="form-control" value="${stockNumber}" placeholder="Stock Number" title="${stockNumber}" aria-label="stock number" aria-describedby="btnGroupAddon">
               <div class="input-group-text" id="btnGroupAddon">
                 <button type="button" class="btn-icon" title="Copy Stock Number" onclick="navigator.clipboard.writeText('${stockNumber}')">
