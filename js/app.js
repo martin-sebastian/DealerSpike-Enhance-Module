@@ -22,119 +22,51 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // Fetch and process XML data
   fetchData();
-
-  // // Add event listeners to all buttons that should trigger the modal
-  // document.querySelectorAll("button[data-bs-stocknumber]").forEach((button) => {
-  //   button.addEventListener("click", function (event) {
-  //     const stockNumber = event.target.getAttribute("data-bs-stocknumber");
-  //     console.log(`Stock Number: ${stockNumber}`);
-  //     //const keytagModalLabel = document.getElementById("keytagModalLabel").innerHTML;
-  //     keyTag(stockNumber);
-  //   });
-  // });
 });
 
-function showPlaceholder() {
+function showPlaceholder(rowCount = 10) {
+  // Adjust the rowCount to how many rows you want to repeat
   const tableBody = document.getElementById("vehiclesTable").getElementsByTagName("tbody")[0];
+
   if (tableBody) {
-    tableBody.innerHTML = `
-      <tr class="placeholder-glow">
-      <td><span class="placeholder col-7"></span></td>
-      <td class="text-center"><span class="placeholder col-3"></span></td>
-      <td><span class="placeholder col-6"></span></td>
-      <td style="width: 30%;"><span class="placeholder col-7"></span></td>
-      <td><span class="placeholder col-7"></span></td>
-      <td><span class="placeholder col-3"></span></td>
-      <td><span class="placeholder col-3"></span></td>
-      <td class="text-center"><span class="placeholder col-7"></span></td>
-      <td class="text-center"><span class="placeholder col-6"></span></td>
-      <td class="text-end"><span class="placeholder col-12"></span></td>
-    </tr>
-    <tr class="placeholder-glow">
-      <td><span class="placeholder col-7"></span></td>
-      <td class="text-center"><span class="placeholder col-3"></span></td>
-      <td><span class="placeholder col-4"></span></td>
-      <td><span class="placeholder col-12"></span></td>
-      <td><span class="placeholder col-5"></span></td>
-      <td><span class="placeholder col-8"></span></td>
-      <td><span class="placeholder col-8"></span></td>
-      <td class="text-center"><span class="placeholder col-7"></span></td>
-      <td class="text-center"><span class="placeholder col-6"></span></td>
-      <td class="text-end"><span class="placeholder col-12"></span></td>
-    </tr>
-    <tr class="placeholder-glow">
-      <td><span class="placeholder col-7"></span></td>
-      <td class="text-center"><span class="placeholder col-3"></span></td>
-      <td><span class="placeholder col-6"></span></td>
-      <td style="width: 30%;"><span class="placeholder col-7"></span></td>
-      <td><span class="placeholder col-7"></span></td>
-      <td><span class="placeholder col-3"></span></td>
-      <td><span class="placeholder col-3"></span></td>
-      <td class="text-center"><span class="placeholder col-7"></span></td>
-      <td class="text-center"><span class="placeholder col-6"></span></td>
-      <td class="text-end"><span class="placeholder col-12"></span></td>
-    </tr>
-    <tr class="placeholder-glow">
-      <td><span class="placeholder col-7"></span></td>
-      <td class="text-center"><span class="placeholder col-3"></span></td>
-      <td><span class="placeholder col-4"></span></td>
-      <td><span class="placeholder col-12"></span></td>
-      <td><span class="placeholder col-5"></span></td>
-      <td><span class="placeholder col-8"></span></td>
-      <td><span class="placeholder col-8"></span></td>
-      <td class="text-center"><span class="placeholder col-7"></span></td>
-      <td class="text-center"><span class="placeholder col-6"></span></td>
-      <td class="text-end"><span class="placeholder col-12"></span></td>
-    </tr>
-    <tr class="placeholder-glow">
-      <td><span class="placeholder col-7"></span></td>
-      <td class="text-center"><span class="placeholder col-3"></span></td>
-      <td><span class="placeholder col-6"></span></td>
-      <td style="width: 30%;"><span class="placeholder col-7"></span></td>
-      <td><span class="placeholder col-7"></span></td>
-      <td><span class="placeholder col-3"></span></td>
-      <td><span class="placeholder col-3"></span></td>
-      <td class="text-center"><span class="placeholder col-7"></span></td>
-      <td class="text-center"><span class="placeholder col-6"></span></td>
-      <td class="text-end"><span class="placeholder col-12"></span></td>
-    </tr>
-    <tr class="placeholder-glow">
-      <td><span class="placeholder col-7"></span></td>
-      <td class="text-center"><span class="placeholder col-3"></span></td>
-      <td><span class="placeholder col-4"></span></td>
-      <td><span class="placeholder col-12"></span></td>
-      <td><span class="placeholder col-5"></span></td>
-      <td><span class="placeholder col-8"></span></td>
-      <td><span class="placeholder col-8"></span></td>
-      <td class="text-center"><span class="placeholder col-7"></span></td>
-      <td class="text-center"><span class="placeholder col-6"></span></td>
-      <td class="text-end"><span class="placeholder col-12"></span></td>
-    </tr>
-    <tr class="placeholder-glow">
-      <td><span class="placeholder col-7"></span></td>
-      <td class="text-center"><span class="placeholder col-3"></span></td>
-      <td><span class="placeholder col-6"></span></td>
-      <td style="width: 30%;"><span class="placeholder col-7"></span></td>
-      <td><span class="placeholder col-7"></span></td>
-      <td><span class="placeholder col-3"></span></td>
-      <td><span class="placeholder col-3"></span></td>
-      <td class="text-center"><span class="placeholder col-7"></span></td>
-      <td class="text-center"><span class="placeholder col-6"></span></td>
-      <td class="text-end"><span class="placeholder col-12"></span></td>
-    </tr>
-    <tr class="placeholder-glow">
-      <td><span class="placeholder col-7"></span></td>
-      <td class="text-center"><span class="placeholder col-3"></span></td>
-      <td><span class="placeholder col-4"></span></td>
-      <td><span class="placeholder col-12"></span></td>
-      <td><span class="placeholder col-5"></span></td>
-      <td><span class="placeholder col-8"></span></td>
-      <td><span class="placeholder col-8"></span></td>
-      <td class="text-center"><span class="placeholder col-7"></span></td>
-      <td class="text-center"><span class="placeholder col-6"></span></td>
-      <td class="text-end"><span class="placeholder col-12"></span></td>
-    </tr>
-    `;
+    let placeholderRows = "";
+
+    // Loop to generate the specified number of rows
+    for (let i = 0; i < rowCount; i++) {
+      placeholderRows += `
+        <tr class="placeholder-glow w-100">
+          <td class="text-center"><span id="img" class="placeholder col-10"></span></td>
+          <td class="text-center"><span id="new-used" class="placeholder col-7"></span></td>
+          <td class="text-center"><span id="year" class="placeholder col-8"></span></td>
+          <td><span id="make" class="placeholder col-10"></span></td>
+          <td><span id="model" class="placeholder col-12"></span></td>
+          <td class="visually-hidden"><span id="type" class="placeholder col-12"></span></td>
+          <td class="visually-hidden"><span id="color" class="placeholder col-12"></span></td>
+          <td><span id="stock" class="placeholder col-11"></span></td>
+          <td><span id="price" class="placeholder col-8"></span></td>
+          <td><span id="price" class="placeholder col-8"></span></td>
+          <td class="text-center"><span id="photos" class="placeholder col-8"></span></td>
+          <td class="text-end"><span id="actions" class="placeholder col-12"></span></td>
+        </tr>
+        <tr class="placeholder-glow w-100">
+          <td class="text-center"><span id="img" class="placeholder col-6"></span></td>
+          <td class="text-center"><span id="new-used" class="placeholder col-9"></span></td>
+          <td class="text-center"><span id="year" class="placeholder col-5"></span></td>
+          <td><span id="make" class="placeholder col-8"></span></td>
+          <td><span id="model" class="placeholder col-10"></span></td>
+          <td class="visually-hidden"><span id="type" class="placeholder col-12"></span></td>
+          <td class="visually-hidden"><span id="color" class="placeholder col-12"></span></td>
+          <td><span id="stock" class="placeholder col-9"></span></td>
+          <td><span id="price" class="placeholder col-7"></span></td>
+          <td><span id="price" class="placeholder col-7"></span></td>
+          <td class="text-center"><span id="photos" class="placeholder col-8"></span></td>
+          <td class="text-end"><span id="actions" class="placeholder col-12"></span></td>
+        </tr>
+      `;
+    }
+
+    // Set the generated rows as the inner HTML of the table body
+    tableBody.innerHTML = placeholderRows;
   }
 }
 
@@ -166,6 +98,7 @@ async function fetchData() {
         const stockNumber = item.getElementsByTagName("stocknumber")[0]?.textContent || "N/A";
         const vin = item.getElementsByTagName("vin")[0]?.textContent || "N/A";
         const price = item.getElementsByTagName("price")[0]?.textContent || "N/A";
+        const webPrice = numeral(price).format("$0,0.00");
         const manufacturer = item.getElementsByTagName("manufacturer")[0]?.textContent || "N/A";
         const year = item.getElementsByTagName("year")[0]?.textContent || "N/A";
         const modelName = item.getElementsByTagName("model_name")[0]?.textContent || "N/A";
@@ -173,54 +106,54 @@ async function fetchData() {
         const modelTypeStyle = item.getElementsByTagName("model_typestyle")[0]?.textContent || "N/A";
         const color = item.getElementsByTagName("color")[0]?.textContent || "N/A";
         const usage = item.getElementsByTagName("usage")[0]?.textContent || "N/A";
-
+        const updated = item.getElementsByTagName("updated")[0]?.textContent || "N/A";
         const imageElements = item.getElementsByTagName("imageurl");
         const photos =
           imageElements.length > 10
             ? `<span class="photos-status" title="In-House Photos Done">
-                <i class="bi bi-camera2 text-warning"></i>
+                  <i class="bi bi-camera2 text-warning"></i>
                 <span class="visually-hidden" style="font-size: 10px;">Done</span>
               </span>`
             : `<span class="photos-status" title="Awaiting Photo Shoot">
-                <i class="bi bi-camera2 text-secondary"></i>
+                  <i class="bi bi-camera2 text-secondary"></i>
                 <span class="visually-hidden" style="font-size: 10px;"> Needs Photos </span>
               </span>`;
 
         const usageColor = usage === "New" ? "text-bg-success" : "text-bg-secondary";
+        const updateStatus = moment(updated).fromNow();
 
         const row = document.createElement("tr");
         row.innerHTML = `
           <td class="text-center">
-          <a href="${webURL}" target="_blank" title="View on Website" data-bs-toggle="tooltip" data-bs-placement="top">
-            ${imageUrl !== "N/A" ? `<img src="${imageUrl}" alt="${title}" />` : `<i class="fa fa-picture-o fa-3x" aria-hidden="true"></i>`}
+            <a href="${webURL}" target="_blank" title="View on Website" data-bs-toggle="tooltip" data-bs-placement="top">
+              ${imageUrl !== "N/A" ? `<img src="${imageUrl}" alt="${title}" />` : `<i class="bi bi-card-image"></i>`}
             </a>
           </td>
+          <td class="text-center"><span class="badge ${usageColor}">${usage}</span></td>
           <td class="text-center">
-            <span class="badge text-bg-secondary">${year}</span>
+            <span class="badge text-bg-dark border">${year}</span>
           </td>
-          <td class="w-5">${manufacturer}</td>
-          <td>
-            <div class="text-truncate">${modelName}</div>
-              <span class="visually-hidden">${stockNumber} ${vin} ${usage} ${year} ${manufacturer} ${modelName} ${modelType} ${modelTypeStyle} ${color} ${photos}</span>
+          <td class="text-truncate" style="max-width: 100px;">${manufacturer}</td>
+          <td class="text-truncate" style="max-width: 200px;">
+            <span>${modelName}</span>
+            <span class="visually-hidden">${stockNumber} ${vin} ${usage} ${year} ${manufacturer} ${modelName} ${modelType} ${modelTypeStyle} ${color} ${photos} ${updateStatus}</span>
           </td>
-          <td>${modelType}</td>
+          <td class="visually-hidden">${modelType}</td>
+          <td class="visually-hidden">${color}</td>
           <td>
-          <div class="row text-nowrap">
-            <div class="w-50" style="min-width: 200px; max-width: 300px;">
-            <div class="input-group input-group-sm">
-            <input type="text" class="form-control" value="${stockNumber}" placeholder="Stock Number" title="${stockNumber}" aria-label="stock number" aria-describedby="btnGroupAddon">
+            <div class="input-group input-group-sm" style="width: 230px;">
+              <input type="text" class="form-control" value="${stockNumber}" placeholder="Stock Number" title="${stockNumber}" aria-label="stock number" aria-describedby="btnGroupAddon">
               <div class="input-group-text" id="btnGroupAddon">
-                <button type="button" class="btn btn-default btn-sm float-end" title="Copy Stock Number" onclick="navigator.clipboard.writeText('${stockNumber}')">
-                <i class="bi bi-clipboard" style="font-size: 11px;"></i>
-              </button>
+                <button type="button" class="btn-icon" title="Copy Stock Number" onclick="navigator.clipboard.writeText('${stockNumber}')">
+                  <i class="bi bi-clipboard"></i>
+                </button>
               </div>
             </div>
-            </div>
           </td>
-          <td class="w-5 text-start">${color}</td>
-          <td class="w-5 text-center"><span class="badge ${usageColor}">${usage}</span></td>
-          <td class="w-5 text-center">${photos}</td>
-          <td class="text-end text-nowrap">
+          <td>${webPrice}</td>
+          <td><span class="badge text-bg-dark text-white-50 border">${updateStatus}</span></td>
+          <td class="text-center">${photos}</td>
+          <td class="text-center text-nowrap">
             <div class="action-button-group" role="group" aria-label="Vehicles">
               <a
               href="./overlay/?search=${stockNumber}" 
@@ -234,8 +167,8 @@ async function fetchData() {
               <i class="bi bi-card-heading"></i>
               </a>
               <a href="./hang-tags/?search=${stockNumber}" type="button" class="btn btn-danger action-button mx-1" title="Hang Tags"><i class="bi bi-tags"></i></a>
-              <a href="./key-tags/?vehicle=${stockNumber}" type="button" class="btn btn-danger action-button mx-1" title="Key Tag"><i class="bi bi-tag"></i></a>
               <button type="button" id="keytagModalButton" class="btn btn-danger action-button mx-1" data-bs-toggle="modal" data-bs-target="#keytagModal" data-bs-stocknumber="${stockNumber}"><i class="bi bi-tag"></i></button>
+              <button type="button" id="hangTagsModalButton" class="btn btn-warning action-button mx-1" data-bs-toggle="modal" data-bs-target="#hangTagsModal" data-bs-details="${stockNumber}"><i class="bi bi-tags"></i></button>
             </div>  
           </td>
         `;
@@ -252,6 +185,7 @@ async function fetchData() {
       document.getElementById("typeFilter").addEventListener("change", filterTable);
       document.getElementById("usageFilter").addEventListener("change", filterTable);
       document.getElementById("photosFilter").addEventListener("change", filterTable);
+      document.getElementById("updatedFilter").addEventListener("change", filterTable);
 
       // Add event listeners for sorting
       const headers = document.querySelectorAll("#vehiclesTable th");
@@ -306,6 +240,22 @@ function sortTableByColumn(header) {
   header.classList.add(order === "asc" ? "sort-asc" : "sort-desc");
 }
 
+// Listen for input events on the search field
+const searchInput = document.getElementById("searchFilter");
+
+searchInput.addEventListener("input", function () {
+  // Run the filterTable() function when the input changes
+  filterTable();
+});
+
+function filterTable() {
+  // Your filtering logic goes here
+  console.log("Filter table based on search input: ", searchInput.value);
+
+  // Example filtering logic
+  // Your existing code...
+}
+
 function toggleTheme() {
   const body = document.body;
   const currentTheme = body.getAttribute("data-bs-theme");
@@ -338,13 +288,36 @@ function updateThemeIcon(theme) {
   }
 }
 
+document.addEventListener("DOMContentLoaded", () => {
+  // Initialize the table with row count on page load
+  updateRowCount();
+});
+
+// Function to update row count (initial and filtered)
+function updateRowCount() {
+  const table = document.getElementById("vehiclesTable");
+  const tr = table?.getElementsByTagName("tr");
+
+  // Skip the first row if it's the header row
+  const totalRows = tr.length - 1; // Assuming first row is the header
+  const visibleRows = [...tr].slice(1).filter((row) => row.style.display !== "none").length;
+
+  // Update rowCountDisplay with both visible rows and total rows
+  const rowCountElement = document.getElementById("rowCountDisplay");
+  if (rowCountElement) {
+    rowCountElement.innerHTML = `${visibleRows} of ${totalRows}`;
+  }
+}
+
 function filterTable() {
+  // Get the filter input values
   const searchInput = document.getElementById("searchFilter")?.value.toUpperCase() || "";
   const manufacturerFilter = document.getElementById("manufacturerFilter")?.value.toUpperCase() || "";
   const typeFilter = document.getElementById("typeFilter")?.value.toUpperCase() || "";
   const usageFilter = document.getElementById("usageFilter")?.value.toUpperCase() || "";
   const yearFilter = document.getElementById("yearFilter")?.value.toUpperCase() || "";
   const photosFilter = document.getElementById("photosFilter")?.value.toUpperCase() || "";
+
   const table = document.getElementById("vehiclesTable");
   const tr = table?.getElementsByTagName("tr");
 
@@ -353,20 +326,20 @@ function filterTable() {
   let visibleRows = 0;
 
   for (let i = 1; i < tr.length; i++) {
-    const titleTd = tr[i].getElementsByTagName("td")[3]; // Title column
-    const manufacturerTd = tr[i].getElementsByTagName("td")[2]; // Manufacturer column
-    const typeTd = tr[i].getElementsByTagName("td")[4]; // Type column
-    const usageTd = tr[i].getElementsByTagName("td")[7]; // Usage column
-    const yearTd = tr[i].getElementsByTagName("td")[1]; // Year column
-    const photosTd = tr[i].getElementsByTagName("td")[8]; // Photos column
+    const usageTd = tr[i].getElementsByTagName("td")[1];
+    const yearTd = tr[i].getElementsByTagName("td")[2];
+    const manufacturerTd = tr[i].getElementsByTagName("td")[3];
+    const titleTd = tr[i].getElementsByTagName("td")[4];
+    const typeTd = tr[i].getElementsByTagName("td")[5];
+    const photosTd = tr[i].getElementsByTagName("td")[10];
 
     if (titleTd && manufacturerTd && usageTd && photosTd) {
-      const titleTxt = titleTd.textContent || titleTd.innerText;
+      const yearTxt = yearTd.textContent || yearTd.innerText;
       const manufacturerTxt = manufacturerTd.textContent || manufacturerTd.innerText;
       const typeTxt = typeTd.textContent || typeTd.innerText;
       const usageTxt = usageTd.textContent || usageTd.innerText;
-      const yearTxt = yearTd.textContent || yearTd.innerText;
       const photosTxt = photosTd.textContent || photosTd.innerText;
+      const titleTxt = titleTd.textContent || titleTd.innerText;
 
       if (
         (titleTxt.toUpperCase().indexOf(searchInput) > -1 || searchInput === "") &&
@@ -384,13 +357,8 @@ function filterTable() {
     }
   }
 
-  // Update row count
-  const resetIcon = `<i class="bi bi-lightning-charge-fill me-2 float-end"></i>`;
-  const rowCountElement = document.getElementById("rowCount");
-  if (rowCountElement) {
-    //rowCountElement.innerHTML = visibleRows + ` of ${tr.length - 1}` + resetIcon;
-    rowCountElement.innerHTML = visibleRows;
-  }
+  // Update row count after filtering
+  updateRowCount();
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -404,7 +372,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (stockNumber) {
         // Update the modal title with the stock number
         const modalTitle = document.getElementById("keytagModalLabel");
-        modalTitle.innerHTML = `Stock Number: ${stockNumber}`;
+        modalTitle.innerHTML = `${stockNumber}`;
 
         // Call the keyTag function and pass the stock number
         keyTag(stockNumber);
@@ -457,3 +425,51 @@ async function keyTag(stockNumber) {
     console.log(error.message);
   }
 }
+
+// Get the elements
+const zoomElement = document.getElementById("keytagContainer");
+const zoomInBtn = document.getElementById("zoomInBtn");
+const zoomOutBtn = document.getElementById("zoomOutBtn");
+
+// Zoom In button event listener
+zoomInBtn.addEventListener("click", function () {
+  // Remove the zoom-1 class and add the zoom-2 class
+  zoomElement.classList.remove("zoom-1");
+  zoomElement.classList.add("zoom-2");
+});
+
+// Zoom Out button event listener
+zoomOutBtn.addEventListener("click", function () {
+  // Remove the zoom-3 class and add the zoom-1 class
+  zoomElement.classList.remove("zoom-2");
+  zoomElement.classList.add("zoom-1");
+});
+
+// Export Key Tag as PDF
+document.getElementById("exportPDF").addEventListener("click", function () {
+  const { jsPDF } = window.jspdf;
+
+  // Create a new PDF document with size set to 2 inches by 1.5 inches
+  const doc = new jsPDF({
+    unit: "in", // Set unit to inches
+    format: [2, 1.5], // Set PDF size to 2 inches by 1.5 inches
+  });
+
+  // Get the div you want to print as PDF
+  const div = document.getElementById("keytagContainer");
+
+  // Use html2canvas to capture the div as an image
+  html2canvas(div).then(function (canvas) {
+    const imgData = canvas.toDataURL("image/png");
+
+    // Set the image width and height in inches
+    const imgWidth = 1.5; // 2 inches
+    const imgHeight = 2; // 1.5 inches
+
+    // Add the image to the PDF
+    doc.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
+
+    // Save the PDF
+    doc.save("download.pdf");
+  });
+});

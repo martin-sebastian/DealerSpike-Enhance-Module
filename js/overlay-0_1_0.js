@@ -38,26 +38,7 @@ function showpay() {
   };
 }
 
-// let pageStockNumber = null;
-
-// Select all div elements with the class 'vdp-key-feature-detail'
-// const featureDetails = document.querySelectorAll(".vdp-key-feature-detail");
-
-// featureDetails.forEach((detail) => {
-//   // Check if the inner HTML contains 'Stock #'
-//   if (detail.innerHTML.includes("Stock #")) {
-//     // Select the span within this div and get its text content
-//     pageStockNumber = detail.querySelector("span").textContent;
-//   }
-// });
-
-// console.log("stock Number:", pageStockNumber); // Output the stock number
-
-//var stockNum = $('div[itemprop="sku"]').text();
-//var stockNum = (document.querySelectorAll('div.vdp-key-feature-detail > span.pull-right')[5]).textContent;
-//var sn = `SBA8169`;
 var stockNum = urlstocknumber;
-//var stockNum = sn;
 
 console.log("stockNum", stockNum);
 
@@ -98,9 +79,6 @@ $.ajax({
       unitDescription += data.B50Desc;
     }
 
-    //var unitSpecs = unitDescription.split(/<b>(.+)/)[1];
-    //var unitSpecs = "<b>" + unitSpecs;
-
     // Discount Item
     var discountTotal = `<li class="list-group-item">Discount <span class="pull-right bold">-${discount}</span></li>`;
 
@@ -133,21 +111,6 @@ $.ajax({
     }
     console.log(muItemsTemplate);
 
-    // Mat Items - 9 items allowed
-    // var matItemsTemplate = ``;
-
-    // i = 0;
-    // while (i < 9) {
-    //   if (data.MatItems[i]) {
-    //     matItemsTemplate += `<li class="list-group-item"><em>${
-    //       data.MatItems[i].Description
-    //     }</em> <span class="pull-right">${numeral(
-    //       data.MatItems[i].Amount
-    //     ).format("$0,0.00")}</span></li>`;
-    //   }
-    //   i++;
-    // }
-
     var matItemsTemplate = ``;
 
     for (var i = 0; i < 9; i++) {
@@ -166,21 +129,6 @@ $.ajax({
 
     // OTD Items - 5 items allowed
     var OTDItemsTemplate = ``;
-
-    // i = 0;
-    // while (i < 9) {
-    //   if (data.OTDItems[i]) {
-    //     OTDItemsTemplate += `<li class="list-group-item"><em>${
-    //       data.OTDItems[i].Description
-    //     }</em> <span class="pull-right">${numeral(
-    //       data.OTDItems[i].Amount
-    //     ).format("$0,0.00")}</span></li>`;
-    //   }
-    //   //			if (data.OTDItems[i + 1]) {
-    //   //				OTDItemsTemplate += ", "
-    //   //			}
-    //   i++;
-    // }
 
     // OTD Items - 9 items allowed
     var OTDItemsTemplate = ``;
@@ -403,7 +351,7 @@ $.ajax({
 
     // Feature Highlights Header
     var featuresHeader = ``;
-    if (data.AccessoryItems != null) {
+    if (data.AccessoryItems.length) {
       featuresHeader += `
 		<div id="scrollFeatures" class="container-fluid" style="padding: 10px 0; border-bottom: solid 1px #ededed; background: #fff;">
 		<h3 class="bold text-center">
@@ -412,6 +360,9 @@ $.ajax({
 				<i class="fa fa-chevron-down collapse-icon" aria-hidden="true"></i>
 			</a>
 		</h3>
+		<div class="container-fluid collapse" id="collapseFeatures">
+			<div class="row" style="max-width: 1700px; margin: 0 auto;" id="muItems"></div>
+		</div>
 		</div>
 		`;
     }
@@ -620,9 +571,9 @@ $.ajax({
 
     // Major Unit Header with Year, Make, Model, VIN, Stock Number.
     var muHeaderTemplate = `
-		<div class="vehicle-header-container shadow">
+		<div class="vehicle-header-container">
 			<div class="vehicle-name-container">
-				<h3 class="vehicle-title" style="margin: 5px 0 0 0;">${prodTitle}</h3>
+				<h3 class="vehicle-title" style="margin: 15px 0 0 0;">${prodTitle}</h3>
 				<h4 class="vehicle-subtitle" style="margin: 1px 0 5px 0;">
 				<small>Model: </small>${data.ModelCode} 
 				<small class="hidden-xs">VIN: </small><span class="hidden-xs">${vinNumber} </span>
@@ -784,17 +735,19 @@ $.ajax({
 
     var ourPrice = numeral(data.MSRPUnit + data.AccessoryItemsTotal + data.MatItemsTotal + data.DiscountItemsTotal + data.TradeInItemsTotal).format("$0,0.00");
     var overlay = `
-		${muHeaderTemplate}
-		<div id="overlayContainer" class="container-fluid" style="background: #efefef; padding-top: 16px; padding-bottom: 35px;">
-			<div class="row" style="max-width: 1700px; margin:0 auto;">
-				<div class="col-xl-8 col-lg-8 col-md-8">
+		<div class="mu-header" style="max-width: 1700px; margin:0 auto;">
+			${muHeaderTemplate}
+		</div>
+		<div id="overlayContainer" class="container-fluid" style="background: #efefef; padding-top: 10px; padding-bottom: 35px;">
+			<div class="row">
+				<div class="col-md-8">
 					${carousel}
 					<div style="padding: 0px; display: block; margin-bottom: 50px;">
 						${thumbnailImages}
 						<hr style="clear: both;">
 					</div>
 				</div>
-				<div class="col-xl-4 col-lg-4 col-md-4">
+				<div class="col-md-4">
 					<ul class="list-group shadow">
 						<li class="list-group-item text-center">
 							<div class="price-payment-container">
@@ -881,7 +834,11 @@ $.ajax({
 	}
 	body {
 		font-family: Roboto, Arial, Helvetica, sans-serif;
+		background: #efefef;
 	}
+	.shadow {
+		box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+		}
 	.mobile-preview {
 		width: 600px;
 	}
@@ -925,10 +882,9 @@ $.ajax({
 		justify-content: space-between;
 		align-items: stretch;
 		padding: 0 20px;
-		border-bottom: solid 0px #ddd;
-		background: #fff;
 	}
 	.vehicle-name-container {
+		max-width: 1700px;
 		margin: 0px;
 		padding: 5px 0;
 	}
@@ -1339,15 +1295,18 @@ $.ajax({
 		cursor: pointer;
 	}
 	.mu-thumbnail {
-		width: 6.9%;
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		justify-content: space-evenly;
+		width: 8.23%;
 		height: auto;
-		margin: 1px;
-		float: left;
-		clear: right;
+		margin: 0 1px 1px 0;
 	}
 	.mu-thumbnail img {
 		border: solid 2px #efefef;
 		border-radius: 5px;
+		overflow: hidden;
 	}
 	.mu-thumbnail img:hover {
 		border: solid 2px #000;
