@@ -4,10 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta property="og:type" content="website" />
+    <meta
+      property="og:image"
+      content="https://cdnmedia.endeavorsuite.com/images/organizations/2f6fb18d-0219-47a3-8ba2-4a5123522365/inventory/11869925/SBI215-A23-GreyBlack-SCSC177-001.JPG"
+    />
     <meta property="og:title" content="Vehicle Details" />
     <meta property="og:description" content="Check out this awesome vehicle!" />
-    <meta property="og:image" content="default-image.jpg" />
-    <meta property="og:url" content="https://www.yourdomain.com/message.html" />
+    <meta property="og:url" content="https://newportal.flatoutmotorcycles.com/printapp/message.html?stockNumber=KW30286" />
     <title>Vehicle Details</title>
     <style>
       main {
@@ -45,26 +48,32 @@
 
           // Parse the response data as JSON
           const data = await response.json();
-          console.log("Vehicle details:", data);
+          //console.log("Vehicle details:", data);
 
           // Assume the data contains fields: title, description, imageUrl, url, etc.
-          const vehicleTitle = data.ModelName || "Vehicle Title";
-          const vehicleDescription = `Model Year: ${data.ModelYear}, Manufacturer: ${data.Manufacturer}, Color: ${data.Color}`;
+          const vehicleYear = data.ModelYear || "Year";
+          const vehicleMake = data.Manufacturer || "Make";
+          const vehicleModel = data.ModelName || "Model";
+          const vehicleDescription = data.B50Desc || "Description";
+          const vehicleTitle = `${vehicleYear} ${vehicleMake} ${vehicleModel}`;
           const vehicleImageUrl = data.B50ImageUrl || "default-image.jpg";
-          const vehiclePageUrl = data.DetailUrl || "https://www.flatoutmotorcycles.com";
+          const vehiclePageUrl = data.Link || "https://www.flatoutmotorcycles.com";
 
           // Update Open Graph meta tags
           document.querySelector('meta[property="og:title"]').setAttribute("content", vehicleTitle);
           document.querySelector('meta[property="og:description"]').setAttribute("content", vehicleDescription);
           document.querySelector('meta[property="og:image"]').setAttribute("content", vehicleImageUrl);
           document.querySelector('meta[property="og:url"]').setAttribute("content", vehiclePageUrl);
-          document.getElementById("pre").innerHTML = data;
+
+          // Update the page URL
+          window.history.replaceState({}, "", `?stockNumber=${stockNumber}`);
 
           // Update the page content with vehicle details
           document.getElementById("vehicle-details").innerHTML = `
+                  <img src="${vehicleImageUrl}" alt="${vehicleTitle}" style="max-width:100%; height:auto;">
                     <h1>${vehicleTitle}</h1>
                     <p>${vehicleDescription}</p>
-                    <img src="${vehicleImageUrl}" alt="${vehicleTitle}" style="max-width:100%; height:auto;">
+                    
                 `;
         } catch (error) {
           console.error("Error fetching vehicle details:", error);
