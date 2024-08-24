@@ -54,7 +54,7 @@
           const vehicleYear = data.ModelYear || "Year";
           const vehicleMake = data.Manufacturer || "Make";
           const vehicleModel = data.ModelName || "Model";
-          const vehicleDescription = data.B50Desc || "Description";
+          const vehicleDescription = `Price: ${data.MSRP} <br> Stock Number: ${stockNumber}`;
           const vehicleTitle = `${vehicleYear} ${vehicleMake} ${vehicleModel}`;
           const vehicleImageUrl = data.B50ImageUrl || "default-image.jpg";
           const vehiclePageUrl = data.Link || "https://www.flatoutmotorcycles.com";
@@ -64,6 +64,7 @@
           document.querySelector('meta[property="og:description"]').setAttribute("content", vehicleDescription);
           document.querySelector('meta[property="og:image"]').setAttribute("content", vehicleImageUrl);
           document.querySelector('meta[property="og:url"]').setAttribute("content", vehiclePageUrl);
+          document.querySelector("title").innerText = `${vehicleTitle}`;
 
           // Update the page URL
           window.history.replaceState({}, "", `?stockNumber=${stockNumber}`);
@@ -73,7 +74,7 @@
                   <img src="${vehicleImageUrl}" alt="${vehicleTitle}" style="max-width:100%; height:auto;">
                     <h1>${vehicleTitle}</h1>
                     <p>${vehicleDescription}</p>
-                    
+
                 `;
         } catch (error) {
           console.error("Error fetching vehicle details:", error);
