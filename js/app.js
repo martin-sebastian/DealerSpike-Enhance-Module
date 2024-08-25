@@ -173,7 +173,7 @@ async function fetchData() {
               <i class="bi bi-card-heading"></i>
               </a>
               
-              <a href="./message.html?stockNumber=${stockNumber}" class="btn btn-danger action-button mx-1" data-toggle="tooltip" title="Text Message Quote"><i class="bi bi-phone"></i></a>
+              <a href="./social-share/stockNumber=${stockNumber}" class="btn btn-danger action-button mx-1" data-toggle="tooltip" title="Text Message Quote"><i class="bi bi-phone"></i></a>
               <a href="./hang-tags/?search=${stockNumber}" class="btn btn-danger action-button mx-1" data-toggle="tooltip" title="Print Hang Tags"><i class="bi bi-tags"></i></a>
               <button type="button" id="keytagModalButton" class="btn btn-danger action-button mx-1" data-toggle="tooltip" title="Print Key Tag" data-bs-toggle="modal" data-bs-target="#keytagModal" data-bs-stocknumber="${stockNumber}"><i class="bi bi-tag"></i></button>
               <button type="button" id="hangTagsModalButton" class="btn btn-warning action-button mx-1 visually-hidden" data-toggle="tooltip" title="Print Hang Tags" data-bs-toggle="modal" data-bs-target="#hangTagsModal" data-bs-details="${stockNumber}"> <i class="bi bi-tags"></i> </button>
