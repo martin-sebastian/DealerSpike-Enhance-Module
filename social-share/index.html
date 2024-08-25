@@ -77,26 +77,33 @@
           console.log("Vehicle details:", data);
 
           // Assume the data contains fields: title, description, imageUrl, url, etc.
-          const yourPrice = data.MsrpTotal + data.MatItemsTotal + data.DiscountItemsTotal;
-          const vehiclePricing = `MSRP: ${data.MsrpTotal} | Rebates: ${data.MatItemsTotal} | Discounts: ${data.DiscountItemsTotal} | Your Price: ${yourPrice}`;
           const vehicleYear = data.ModelYear || "Year";
           const vehicleMake = data.Manufacturer || "Make";
           const vehicleModel = data.ModelName || "Model";
           const vehicleUsage = data.Usage || "Usage";
-          const vehicleTitle = `${vehicleYear} ${vehicleMake} ${vehicleModel}` || "Flat Out Motorsports";
-          const vehicleDescription = `${data.Usage} ${vehicleTitle}, Stock Number: ${stockNumber} <br> ${vehiclePricing}` || "Description";
+          const vehicleTitle = `${vehicleYear} ${vehicleMake} ${vehicleModel}`;
           const vehicleImageUrl = data.B50ImageUrl || "../img/default-image.jpg";
           const vehiclePageUrl = data.Link || "https://www.flatoutmotorcycles.com";
-          // Construct the vehicle pricing string
+
+          // Vehicle pricing formatting
+          const yourPrice = data.MsrpTotal + data.MatItemsTotal + data.DiscountItemsTotal;
+          const msrpFormatted = numeral(data.MsrpTotal).format("$0,0.00");
+          const matItemsFormatted = numeral(data.MatItemsTotal).format("$0,0.00");
+          const discountItemsFormatted = numeral(data.DiscountItemsTotal).format("$0,0.00");
+          const yourPriceFormatted = numeral(yourPrice).format("$0,0.00");
+          const vehiclePricing = `MSRP: ${msrpFormatted}, Rebates: ${matItemsFormatted}, Discounts: ${discountItemsFormatted}, Your Price: ${yourPriceFormatted}`;
+          const vehicleDescription = `${data.Usage} ${vehicleTitle}, Stock Number: ${stockNumber} | ${vehiclePricing}` || "Description";
+          console.log(vehiclePricing);
           // Update Open Graph meta tags
           document.querySelector('meta[property="og:title"]').setAttribute("content", vehicleTitle);
           document.querySelector('meta[property="og:description"]').setAttribute("content", vehicleDescription);
-          document.querySelector('meta[property="og:image"]').setAttribute("content", vehicleImageUrl);
           document.querySelector('meta[property="og:url"]').setAttribute("content", vehiclePageUrl);
-          document.querySelector("title").innerText = `${vehicleTitle}`;
-
+          // Twitter Card meta tags
+          document.querySelector('meta[name="twitter:card"]').setAttribute("content", vehicleImageUrl);
           // Update the page URL
           window.history.replaceState({}, "", `?stockNumber=${stockNumber}`);
+          // Update the page title
+          document.querySelector("title").innerText = `${vehicleTitle}`;
 
           // Update the page content with vehicle details
           document.getElementById("vehicleDetails").innerHTML = `
@@ -108,10 +115,10 @@
               <div class="card-body">
                 <h5 class="card-title fw-bold">${vehicleTitle}</h5>
                 <p>${vehicleDescription}</p>
-                <a href="${vehiclePageUrl}" class="btn btn-danger btn-lg my-1 w-100" style="border-radius: 30px">View Details</a>
+                <a href="${vehiclePageUrl}" class="btn btn-danger btn-lg my-1 w-100" style="border-radius: 30px">YOUR PRICE: ${yourPriceFormatted}</a>
               </div>
             </div>
-          </div>
+            </div>
           `;
         } catch (error) {
           console.error("Error fetching vehicle details:", error);
