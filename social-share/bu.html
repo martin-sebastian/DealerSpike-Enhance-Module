@@ -107,7 +107,8 @@
           document.querySelector('meta[property="og:image"]').setAttribute("content", vehicleImageUrl);
           document.querySelector('meta[property="og:description"]').setAttribute("content", vehicleDescription);
 
-          // Update Twitter Card meta tags
+          // Twitter Card meta tags
+
           document.querySelector('meta[name="twitter:title"]').setAttribute("content", vehicleTitle);
           document.querySelector('meta[name="twitter:description"]').setAttribute("content", vehicleDescription);
           document.querySelector('meta[name="twitter:image"]').setAttribute("content", vehicleImageUrl);
@@ -119,6 +120,7 @@
 
           // Update the page content with vehicle details
           document.getElementById("vehicleDetails").innerHTML = `
+
             <div class="card shadow">
               <a href="${vehiclePageUrl}">
                 <img class="card-img-top" src="${vehicleImageUrl}" alt="${vehicleTitle}" style="border-radius: 30px 30px 0 0">
@@ -129,41 +131,12 @@
                 <a href="${vehiclePageUrl}" class="btn btn-danger btn-lg my-1 w-100" style="border-radius: 30px">YOUR PRICE: ${yourPriceFormatted}</a>
               </div>
             </div>
+  
           `;
-
-          // Call the function to download the static page after rendering is complete
-          downloadStaticPageWithoutJS();
         } catch (error) {
           console.error("Error fetching vehicle details:", error);
           document.getElementById("vehicle-details").innerHTML = `<p>Error loading vehicle details. Please try again later.</p>`;
         }
-      }
-
-      // Function to create and download static page
-      function downloadStaticPageWithoutJS() {
-        // Clone the document to work on it without affecting the live page
-        const docClone = document.cloneNode(true);
-
-        // Remove all <script> tags from the cloned document
-        const scriptTags = docClone.querySelectorAll("script");
-        scriptTags.forEach((script) => script.remove());
-
-        // Get the static HTML of the page without JavaScript
-        const staticHtml = docClone.documentElement.outerHTML;
-
-        // Create a Blob and download the file
-        const blob = new Blob([staticHtml], { type: "text/html" });
-        const link = document.createElement("a");
-        link.href = URL.createObjectURL(blob);
-
-        // Set the filename to the current page's name, ensuring it saves in the same folder
-        const fileName = window.location.pathname.split("/").pop().replace(".html", "") + "-static.html";
-        link.download = fileName;
-
-        // Trigger the download
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
       }
 
       // Get the stock number from the URL
