@@ -2,10 +2,10 @@ html,
 body {
   margin: 0px;
   padding: 0px;
-  overflow-x: hidden;
 }
 .search-width {
   max-width: 440px;
+  width: 100%;
 }
 .dots {
   color: #222;

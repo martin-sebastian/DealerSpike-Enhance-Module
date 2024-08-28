@@ -160,7 +160,8 @@
       </div>
     </nav>
 
-    <main class="container-fluid d-print-none">
+    <main>
+      < class="container-fluid">
       <div class="spacer-75"></div>
       <div class="d-flex pb-2 text-secondary">
         <!-- element for displaying row count -->
@@ -189,42 +190,41 @@
           </tbody>
         </table>
       </div>
-    </main>
-
-    <div class="modal fade" id="keytagModal" tabindex="-1" aria-labelledby="keytagModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-fullscreen">
-        <div class="modal-content">
-          <div class="modal-header d-flex flex-row justify-content-between d-print-none">
-            <h1 class="modal-title fs-5" id="keytagModalLabel">StockNumber</h1>
-            <h2 class="modal-label-size fs-5" id="keytagLabelSize">Label: 2 x 1.5 in</h2>
-            <button type="button" id="printTag" class="btn btn-danger px-3"><i class="bi bi-printer me-2"></i> Print</button>
-          </div>
-          <div class="modal-body dots">
-            <div class="main-content">
-              <!-- Elements to display the fetched data -->
-              <div id="keytagContainer" class="key-tag-container zoomElement text-truncate">
-                <div id="modelUsage" class="model-usage text-truncate">New or Used</div>
-                <div id="stockNumber" class="stock-number text-truncate">Stock Number</div>
-                <div id="modelYear" class="model-year text-truncate">Year</div>
-                <div id="manufacturer" class="manufacturer text-truncate">Manufacturer</div>
-                <div id="modelName" class="model-name text-truncate">Model Name</div>
-                <div id="modelCode" class="model-code text-truncate">Model Code</div>
-                <div id="modelColor" class="model-color text-truncate">Model Color</div>
-                <div id="modelVin" class="model-vin text-truncate">VIN NUMBER</div>
+      <div class="modal fade" id="keytagModal" tabindex="-1" aria-labelledby="keytagModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen">
+          <div class="modal-content">
+            <div class="modal-header d-flex flex-row justify-content-between d-print-none">
+              <h1 class="modal-title fs-5" id="keytagModalLabel">StockNumber</h1>
+              <h2 class="modal-label-size fs-5" id="keytagLabelSize">Label: 2 x 1.5 in</h2>
+              <button type="button" id="printTag" class="btn btn-danger px-3"><i class="bi bi-printer me-2"></i> Print</button>
+            </div>
+            <div class="modal-body dots">
+              <div class="main-content">
+                <!-- Elements to display the fetched data -->
+                <div id="keytagContainer" class="key-tag-container zoomElement text-truncate">
+                  <div id="modelUsage" class="model-usage text-truncate">New or Used</div>
+                  <div id="stockNumber" class="stock-number text-truncate">Stock Number</div>
+                  <div id="modelYear" class="model-year text-truncate">Year</div>
+                  <div id="manufacturer" class="manufacturer text-truncate">Manufacturer</div>
+                  <div id="modelName" class="model-name text-truncate">Model Name</div>
+                  <div id="modelCode" class="model-code text-truncate">Model Code</div>
+                  <div id="modelColor" class="model-color text-truncate">Model Color</div>
+                  <div id="modelVin" class="model-vin text-truncate">VIN NUMBER</div>
+                </div>
+                <div id="message"></div>
               </div>
-              <div id="message"></div>
             </div>
-          </div>
-          <div class="modal-footer d-print-none">
-            <div class="btn-group me-4" role="group" aria-label="Zoom buttons">
-              <button type="button" id="zoomOutBtn" class="btn-icon fs-2 m-1"><i class="bi bi-dash-square"></i></button>
-              <button type="button" id="zoomInBtn" class="btn-icon fs-2 m-1"><i class="bi bi-plus-square"></i></button>
+            <div class="modal-footer d-print-none">
+              <div class="btn-group me-4" role="group" aria-label="Zoom buttons">
+                <button type="button" id="zoomOutBtn" class="btn-icon fs-2 m-1"><i class="bi bi-dash-square"></i></button>
+                <button type="button" id="zoomInBtn" class="btn-icon fs-2 m-1"><i class="bi bi-plus-square"></i></button>
+              </div>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
           </div>
         </div>
       </div>
-    </div>
+    </main>
 
     <div class="modal fade" id="hangTagsModal" tabindex="-1" aria-labelledby="hangTagsModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-fullscreen">
