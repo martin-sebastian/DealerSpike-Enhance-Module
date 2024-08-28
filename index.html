@@ -64,162 +64,161 @@
       </nav>
     </header>
 
-    <nav class="d-print-none">
-      <div
-        class="offcanvas offcanvas-end"
-        data-bs-scroll="true"
-        data-bs-backdrop="false"
-        tabindex="-1"
-        id="offcanvasScrolling"
-        aria-labelledby="offcanvasScrollingLabel"
-      >
-        <div class="offcanvas-header">
-          <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Filters</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-        <div class="offcanvas-body">
-          <form class="d-flex flex-column row-gap-3 my-3" role="search">
-            <div class="d-flex flex-column row-gap-2">
-              <label for="searchFilter" class="visually-hidden">Search</label>
-              <input
-                type="search"
-                class="form-control d-block d-sm-none"
-                placeholder="Search"
-                aria-label="Search"
-                id="searchFilter"
-                title="Filter vehicles by year, name, stock number, or VIN"
-                autocomplete="off"
-              />
-              <select id="yearFilter" class="form-select me-2">
-                <option value="">Year</option>
-                <option value="2025">2025</option>
-                <option value="2024">2024</option>
-                <option value="2023">2023</option>
-                <option value="2022">2022</option>
-                <option value="2021">2021</option>
-                <option value="2020">2020</option>
-                <option value="2019">2019</option>
-                <option value="2018">2018</option>
-                <option value="2017">2017</option>
-                <option value="2016">2016</option>
-                <option value="2015">2015</option>
-                <option value="2015">2014</option>
-                <option value="2015">2013</option>
-                <option value="2015">2012</option>
-                <option value="2015">2011</option>
-                <option value="2015">2010</option>
-              </select>
-              <select id="manufacturerFilter" class="form-select me-2">
-                <option value="">Manufacturer</option>
-                <option value="BMW">BMW</option>
-                <option value="Can-Am">Can-Am</option>
-                <option value="Harley-Davidson">Harley Davidson</option>
-                <option value="Honda">Honda</option>
-                <option value="Indian Motorcycle">Indian Motorcycle</option>
-                <option value="Kawasaki">Kawasaki</option>
-                <option value="Scarab">Scarab</option>
-                <option value="Sea-Doo">Sea-Doo</option>
-                <option value="South Bay">South Bay</option>
-                <option value="Suzuki">Suzuki</option>
-                <option value="Suzuki Marine">Suzuki Marine</option>
-                <option value="Polaris Industries">Polaris Industries</option>
-                <option value="Vanderhall">Vanderhall</option>
-                <option value="Victory Motorcycles">Victory Motorcycles</option>
-                <option value="Yamaha">Yamaha</option>
-              </select>
-              <select id="typeFilter" class="form-select me-2">
-                <option value="">Type</option>
-                <option value="3 Wheel Motorcycle">3 Wheel Motorcycle</option>
-                <option value="ATV">ATV</option>
-                <option value="Boat Trailers">Boat Trailers</option>
-                <option value="Boats">Boats</option>
-                <option value="Cruiser/V-Twin">Cruiser/V-Twin</option>
-                <option value="Dirt Bikes">Dirt Bikes</option>
-                <option value="Outboard Motors">Outboard Motors</option>
-                <option value="PWC">PWC</option>
-                <option value="Pontoons">Pontoons</option>
-                <option value="Scooters">Scooters</option>
-                <option value="Side x Side">Side x Side</option>
-                <option value="Street Bikes">Street Bikes</option>
-              </select>
-              <select id="usageFilter" class="form-select me-2">
-                <option value="">New or Used</option>
-                <option value="New">New</option>
-                <option value="Used">Used</option>
-              </select>
-              <select id="photosFilter" class="form-select me-2">
-                <option value="">In-House Photos</option>
-                <option value="Done">Done</option>
-                <option value="Needs Photos">Needs Photos</option>
-              </select>
-              <button class="btn btn-danger" onclick="filterTable()">Reset all filters</button>
-              <nav class="side-menu-footer">V.0.1.0</nav>
-            </div>
-          </form>
-        </div>
+    <div
+      class="offcanvas offcanvas-end"
+      data-bs-scroll="true"
+      data-bs-backdrop="false"
+      tabindex="-1"
+      id="offcanvasScrolling"
+      aria-labelledby="offcanvasScrollingLabel"
+    >
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Filters</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
       </div>
-    </nav>
+      <div class="offcanvas-body">
+        <form class="d-flex flex-column row-gap-3 my-3" role="search">
+          <div class="d-flex flex-column row-gap-2">
+            <label for="searchFilter" class="visually-hidden">Search</label>
+            <input
+              type="search"
+              class="form-control d-block d-sm-none"
+              placeholder="Search"
+              aria-label="Search"
+              id="searchFilter"
+              title="Filter vehicles by year, name, stock number, or VIN"
+              autocomplete="off"
+            />
+            <select id="yearFilter" class="form-select me-2">
+              <option value="">Year</option>
+              <option value="2025">2025</option>
+              <option value="2024">2024</option>
+              <option value="2023">2023</option>
+              <option value="2022">2022</option>
+              <option value="2021">2021</option>
+              <option value="2020">2020</option>
+              <option value="2019">2019</option>
+              <option value="2018">2018</option>
+              <option value="2017">2017</option>
+              <option value="2016">2016</option>
+              <option value="2015">2015</option>
+              <option value="2015">2014</option>
+              <option value="2015">2013</option>
+              <option value="2015">2012</option>
+              <option value="2015">2011</option>
+              <option value="2015">2010</option>
+            </select>
+            <select id="manufacturerFilter" class="form-select me-2">
+              <option value="">Manufacturer</option>
+              <option value="BMW">BMW</option>
+              <option value="Can-Am">Can-Am</option>
+              <option value="Harley-Davidson">Harley Davidson</option>
+              <option value="Honda">Honda</option>
+              <option value="Indian Motorcycle">Indian Motorcycle</option>
+              <option value="Kawasaki">Kawasaki</option>
+              <option value="Scarab">Scarab</option>
+              <option value="Sea-Doo">Sea-Doo</option>
+              <option value="South Bay">South Bay</option>
+              <option value="Suzuki">Suzuki</option>
+              <option value="Suzuki Marine">Suzuki Marine</option>
+              <option value="Polaris Industries">Polaris Industries</option>
+              <option value="Vanderhall">Vanderhall</option>
+              <option value="Victory Motorcycles">Victory Motorcycles</option>
+              <option value="Yamaha">Yamaha</option>
+            </select>
+            <select id="typeFilter" class="form-select me-2">
+              <option value="">Type</option>
+              <option value="3 Wheel Motorcycle">3 Wheel Motorcycle</option>
+              <option value="ATV">ATV</option>
+              <option value="Boat Trailers">Boat Trailers</option>
+              <option value="Boats">Boats</option>
+              <option value="Cruiser/V-Twin">Cruiser/V-Twin</option>
+              <option value="Dirt Bikes">Dirt Bikes</option>
+              <option value="Outboard Motors">Outboard Motors</option>
+              <option value="PWC">PWC</option>
+              <option value="Pontoons">Pontoons</option>
+              <option value="Scooters">Scooters</option>
+              <option value="Side x Side">Side x Side</option>
+              <option value="Street Bikes">Street Bikes</option>
+            </select>
+            <select id="usageFilter" class="form-select me-2">
+              <option value="">New or Used</option>
+              <option value="New">New</option>
+              <option value="Used">Used</option>
+            </select>
+            <select id="photosFilter" class="form-select me-2">
+              <option value="">In-House Photos</option>
+              <option value="Done">Done</option>
+              <option value="Needs Photos">Needs Photos</option>
+            </select>
+            <button class="btn btn-danger" onclick="filterTable()">Reset all filters</button>
+            <nav class="side-menu-footer">V.0.1.0</nav>
+          </div>
+        </form>
+      </div>
+    </div>
 
     <main>
-      < class="container-fluid">
-      <div class="spacer-75"></div>
-      <div class="d-flex pb-2 text-secondary">
-        <!-- element for displaying row count -->
-        Results: <span id="rowCountDisplay"></span>
-      </div>
-      <div class="table-responsive w-100" style="overflow-x: auto">
-        <table id="vehiclesTable" class="table table-hover table-resposive align-middle">
-          <thead>
-            <tr>
-              <th class="text-center">Image</th>
-              <th class="text-center">Usage</th>
-              <th class="text-center">Year</th>
-              <th class="">Make</th>
-              <th class="">Model</th>
-              <th class="visually-hidden">Type</th>
-              <th class="visually-hidden">Color</th>
-              <th class="text-start">Stock Number</th>
-              <th class="">DMS Price</th>
-              <th class="">Updated</th>
-              <th class="text-center">Photos</th>
-              <th class="text-center">Details, Print Tags</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- Data will be inserted here dynamically by JavaScript -->
-          </tbody>
-        </table>
-      </div>
-      <div class="modal fade" id="keytagModal" tabindex="-1" aria-labelledby="keytagModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-fullscreen">
-          <div class="modal-content">
-            <div class="modal-header d-flex flex-row justify-content-between d-print-none">
-              <h1 class="modal-title fs-5" id="keytagModalLabel">StockNumber</h1>
-              <h2 class="modal-label-size fs-5" id="keytagLabelSize">Label: 2 x 1.5 in</h2>
-              <button type="button" id="printTag" class="btn btn-danger px-3"><i class="bi bi-printer me-2"></i> Print</button>
-            </div>
-            <div class="modal-body dots">
-              <div class="main-content">
-                <!-- Elements to display the fetched data -->
-                <div id="keytagContainer" class="key-tag-container zoomElement text-truncate">
-                  <div id="modelUsage" class="model-usage text-truncate">New or Used</div>
-                  <div id="stockNumber" class="stock-number text-truncate">Stock Number</div>
-                  <div id="modelYear" class="model-year text-truncate">Year</div>
-                  <div id="manufacturer" class="manufacturer text-truncate">Manufacturer</div>
-                  <div id="modelName" class="model-name text-truncate">Model Name</div>
-                  <div id="modelCode" class="model-code text-truncate">Model Code</div>
-                  <div id="modelColor" class="model-color text-truncate">Model Color</div>
-                  <div id="modelVin" class="model-vin text-truncate">VIN NUMBER</div>
+      <div class="container-fluid">
+        <div class="spacer-75"></div>
+        <div class="d-flex pb-2 text-secondary">
+          <!-- element for displaying row count -->
+          Results: <span id="rowCountDisplay"></span>
+        </div>
+        <div class="table-responsive w-100" style="overflow-x: auto">
+          <table id="vehiclesTable" class="table table-hover table-resposive align-middle">
+            <thead>
+              <tr>
+                <th class="text-center">Image</th>
+                <th class="text-center">Usage</th>
+                <th class="text-center">Year</th>
+                <th class="">Make</th>
+                <th class="">Model</th>
+                <th class="visually-hidden">Type</th>
+                <th class="visually-hidden">Color</th>
+                <th class="text-start">Stock Number</th>
+                <th class="">DMS Price</th>
+                <th class="">Updated</th>
+                <th class="text-center">Photos</th>
+                <th class="text-center">Details, Print Tags</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Data will be inserted here dynamically by JavaScript -->
+            </tbody>
+          </table>
+        </div>
+        <div class="modal fade" id="keytagModal" tabindex="-1" aria-labelledby="keytagModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+              <div class="modal-header d-flex flex-row justify-content-between d-print-none">
+                <h1 class="modal-title fs-5" id="keytagModalLabel">StockNumber</h1>
+                <h2 class="modal-label-size fs-5" id="keytagLabelSize">Label: 2 x 1.5 in</h2>
+                <button type="button" id="printTag" class="btn btn-danger px-3"><i class="bi bi-printer me-2"></i> Print</button>
+              </div>
+              <div class="modal-body dots">
+                <div class="main-content">
+                  <!-- Elements to display the fetched data -->
+                  <div id="keytagContainer" class="key-tag-container zoomElement text-truncate">
+                    <div id="modelUsage" class="model-usage text-truncate">New or Used</div>
+                    <div id="stockNumber" class="stock-number text-truncate">Stock Number</div>
+                    <div id="modelYear" class="model-year text-truncate">Year</div>
+                    <div id="manufacturer" class="manufacturer text-truncate">Manufacturer</div>
+                    <div id="modelName" class="model-name text-truncate">Model Name</div>
+                    <div id="modelCode" class="model-code text-truncate">Model Code</div>
+                    <div id="modelColor" class="model-color text-truncate">Model Color</div>
+                    <div id="modelVin" class="model-vin text-truncate">VIN NUMBER</div>
+                  </div>
+                  <div id="message"></div>
                 </div>
-                <div id="message"></div>
               </div>
-            </div>
-            <div class="modal-footer d-print-none">
-              <div class="btn-group me-4" role="group" aria-label="Zoom buttons">
-                <button type="button" id="zoomOutBtn" class="btn-icon fs-2 m-1"><i class="bi bi-dash-square"></i></button>
-                <button type="button" id="zoomInBtn" class="btn-icon fs-2 m-1"><i class="bi bi-plus-square"></i></button>
+              <div class="modal-footer d-print-none">
+                <div class="btn-group me-4" role="group" aria-label="Zoom buttons">
+                  <button type="button" id="zoomOutBtn" class="btn-icon fs-2 m-1"><i class="bi bi-dash-square"></i></button>
+                  <button type="button" id="zoomInBtn" class="btn-icon fs-2 m-1"><i class="bi bi-plus-square"></i></button>
+                </div>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
               </div>
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
           </div>
         </div>
