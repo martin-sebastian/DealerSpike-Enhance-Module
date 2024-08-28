@@ -124,7 +124,7 @@ async function fetchData() {
 
         const row = document.createElement("tr");
         row.innerHTML = `
-          <td class="text-center">
+          <td data-cell="image" class="text-center">
             <a href="${webURL}" target="_blank" title="View on Website" data-bs-toggle="tooltip" data-bs-placement="top">
               ${imageUrl !== "N/A" ? `<img src="${imageUrl}" alt="${title}" />` : `<i class="bi bi-card-image"></i>`}
             </a>
@@ -133,7 +133,7 @@ async function fetchData() {
           <td class="text-center">
             <span class="badge text-bg-dark border">${year}</span>
           </td>
-          <td class="text-truncate" style="max-width: 100px;">${manufacturer}</td>
+          <td class="text-truncate" style="">${manufacturer}</td>
           <td class="text-truncate" style="max-width: 200px;">
             <span>${modelName}</span>
             <span class="visually-hidden">${stockNumber} ${vin} ${usage} ${year} ${manufacturer} ${modelName} ${modelType} ${modelTypeStyle} ${color} ${photos} ${updatedStatus}</span>
@@ -141,7 +141,7 @@ async function fetchData() {
           <td class="visually-hidden">${modelType}</td>
           <td class="visually-hidden">${color}</td>
           <td>
-            <div class="input-group input-group-sm" style="width: 230px;">
+            <div class="input-group input-group-sm">
               <input type="text" class="form-control" value="${stockNumber}" placeholder="Stock Number" title="${stockNumber}" aria-label="stock number" aria-describedby="btnGroupAddon">
               <div class="input-group-text" id="btnGroupAddon">
                 <button type="button" class="btn-icon" data-toggle="tooltip" title="Copy to clipboard" 

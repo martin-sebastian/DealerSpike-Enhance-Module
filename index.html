@@ -15,7 +15,7 @@
   </head>
   <body data-bs-theme="dark">
     <header class="d-print-none">
-      <nav class="navbar bg-body-tertiary fixed-top bg-blur overflow-x-hidden">
+      <nav class="navbar bg-body-tertiary fixed-top bg-blur">
         <div class="container-fluid">
           <a class="navbar-brand" href="./">
             <img id="logo" src="./img/fom-app-logo-01.svg" alt="Logo" width="180" height="30.6" />
@@ -166,8 +166,8 @@
         <!-- element for displaying row count -->
         Results: <span id="rowCountDisplay"></span>
       </div>
-      <div class="table-responsive vw-98">
-        <table id="vehiclesTable" class="table table-hover align-middle">
+      <div class="table-responsive w-100" style="overflow-x: auto">
+        <table id="vehiclesTable" class="table table-hover table-resposive align-middle">
           <thead>
             <tr>
               <th class="text-center">Image</th>
