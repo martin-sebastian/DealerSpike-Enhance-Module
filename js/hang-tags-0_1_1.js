@@ -277,6 +277,13 @@ document.addEventListener("DOMContentLoaded", () => {
             justify-content: center;
             align-items: center;
             }
+            .list-group-item .pull-right {
+              font-size: 15px;
+            }
+            li.list-group-item {
+              font-size: 15px;
+              overflow: hidden;
+            }
           .tags-container {
             width: 8.5in;
             height: 11in;
@@ -316,9 +323,9 @@ document.addEventListener("DOMContentLoaded", () => {
           .logo-container { text-align: center; padding: 0px 10px; }
           .vehicle-image-container { text-align: center; padding: 0; }
           .vehicle-image-container img { border-radius: 10px; }
-          .vehicle-description { margin: 0; font-size: 11px; }
+          .vehicle-description { margin: 0; font-size: 14px; }
           .vehicle-name-container { margin: 0px; padding: 0px; text-align: center; }
-          .vehicle-title { font-size: 24px; justify-content: flex-start; color: #222; font-weight: 900; }
+          .vehicle-title { font-size: 18px; justify-content: flex-start; color: #222; font-weight: 900; }
           .vehicle-subtitle { font-size: 14px; color: #666; margin: 10px 0; }
           .our-price-container { text-align: center; margin: 0 auto; }
           .our-price-msrp { text-align: center; margin: 0 0 -5px 0px; font-size: 18px; letter-spacing: 0px; font-weight: 800; color: #999 !important; }
@@ -332,7 +339,7 @@ document.addEventListener("DOMContentLoaded", () => {
           }
           .tag-footer { padding: 10px 0; margin: 0; }
           .footer-our-price { font-size: 48px; line-height: 40px; margin: 0; padding: 1px; font-weight: 900; letter-spacing: 0px; color: #fff !important; }
-          .footer-price-expires { font-size: 12px; padding: 0; margin: 0; color: #fff !important; }
+          .footer-price-expires { font-size: 12px; font-weight: bold padding: 0; margin: 4px 0; color: #ccc !important; }
           .panel { margin: 10px 0; }
           .price-expires { font-size: 13px; padding: 5px 0; }
           .our-payment-container { text-align: center; margin: 0 auto; }
