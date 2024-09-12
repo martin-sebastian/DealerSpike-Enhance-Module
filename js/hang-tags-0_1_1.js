@@ -11,7 +11,9 @@ document.addEventListener("DOMContentLoaded", () => {
   fetch(`https://newportal.flatoutmotorcycles.com/portal/public/api/majorunit/stocknumber/${stockNumber}`)
     .then((response) => response.json())
     .then((data) => {
-      const prodTitle = `${data.Usage} ${data.ModelYear} ${data.Manufacturer} ${data.B50ModelName}`;
+      const prodTitle = `${data.Manufacturer} ${data.B50ModelName}`;
+      const modelYear = `${data.ModelYear}`;
+      const usage = `${data.Usage} `;
       const vinNumber = data.VIN;
       const stockNumber = data.StockNumber;
       const qLevel = `<span class="badge" style="margin-left: 100px; padding: 10px 15px; font-weight: 900">Quote Level ${data.QuoteLevel}</span>`;
@@ -148,13 +150,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const vehicleHeaderTemplate = `
         <div class="vehicle-header-container">
-          <div class="vehicle-name-container">
-            <h3 class="vehicle-title">${prodTitle}</h3>
-            <h4 style="margin: 0; padding: 0;">${metricType}: ${metricValue}</h4>
-            <h4 class="vehicle-subtitle">
+          <div class="vehicle-name-container" style="margin: 0 auto; padding: 10px 0">
+          <h4>
+            <span class="label label-default m-2">${usage}</span><span class="label label-default m-1">${modelYear}</span><span class="label label-default m-1">${metricValue} ${metricType}</span>
+          </h4>
+            <h1 class="vehicle-title m-3">${prodTitle}</h1>
+            <h2 class="m-3"><span class="label" style="background: #fff; color: #222; padding-top: 10px; border: solid 1px #666 !important;"> ${stockNumber}</span></h2>
+            <h4 class="vehicle-subtitle bold">
               <small>Model: </small>${data.ModelCode} 
-              <small>VIN: </small><span>${vinNumber} </span>
-              <small>Stock# </small>${data.StockNumber}
+              <small>VIN: </small><span>${vinNumber}</span>
             </h4>
           </div>
         </div>
@@ -203,10 +207,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 </ul>
                 <div class="text-center">
                   <div id="qrcode"></div>
-                  <h4>SCAN FOR MORE INFO</h4>
+                  <h6 class="bold">SCAN FOR MORE INFO</h6>
                 </div>
             </div>
-            <div class="tag-footer fixed-bottom text-center" style="width: 100%; border-radius: 5px; background: #EE0000 !important;">
+            <div class="tag-footer fixed-bottom text-center" style="width: 100%; border-radius: 5px; background: #EE0000 !important; box-shadow: 0px -25px 10px rgba(25.25.25.0.9);">
               <div class="footer-our-price">${yellowTag} ${ourPrice}</div>
               <div class="footer-price-expires text-center">Sale Program Ends: ${salePriceExpireDate}</div>
             </div>
@@ -235,7 +239,7 @@ document.addEventListener("DOMContentLoaded", () => {
                    ${standardFeaturesTemplate}
                 </div>
             </div> <!-- End Print Tag Body -->
-            <div class="tag-footer fixed-bottom text-center" style="width: 100%; border-radius: 5px; background: #EE0000 !important;">
+            <div class="tag-footer fixed-bottom text-center" style="width: 100%; border-radius: 5px; background: #EE0000 !important; box-shadow: 0px -50px 10px rgba(25.25.25.0.9);">
               <div class="footer-our-price">${yellowTag} ${ourPrice}</div>
               <div class="footer-price-expires text-center">Sale Program Ends: ${salePriceExpireDate}</div>
             </div>
@@ -281,8 +285,9 @@ document.addEventListener("DOMContentLoaded", () => {
               font-size: 15px;
             }
             li.list-group-item {
-              font-size: 15px;
+              font-size: 16px;
               overflow: hidden;
+              padding: 5px 10px;
             }
           .tags-container {
             width: 8.5in;
@@ -318,17 +323,17 @@ document.addEventListener("DOMContentLoaded", () => {
             margin: 0;
           }
           #text { font-size: 22px; }
-          #qrcode img { margin: 0 auto; width: 148px; height: 148px; }
+          #qrcode img { margin: 0 auto; width: 124px; height: 124px; }
           .list-group-item { font-size: 12px; }
           .logo-container { text-align: center; padding: 0px 10px; }
           .vehicle-image-container { text-align: center; padding: 0; }
           .vehicle-image-container img { border-radius: 10px; }
           .vehicle-description { margin: 0; font-size: 14px; }
           .vehicle-name-container { margin: 0px; padding: 0px; text-align: center; }
-          .vehicle-title { font-size: 18px; justify-content: flex-start; color: #222; font-weight: 900; }
+          .vehicle-title { font-size: 20px; justify-content: flex-start; margin: 4px auto; color: #222; font-weight: 900; }
           .vehicle-subtitle { font-size: 14px; color: #666; margin: 10px 0; }
           .our-price-container { text-align: center; margin: 0 auto; }
-          .our-price-msrp { text-align: center; margin: 0 0 -5px 0px; font-size: 18px; letter-spacing: 0px; font-weight: 800; color: #999 !important; }
+          .our-price-msrp { text-align: center; margin: 0 0 -5px 0px; font-size: 16px; letter-spacing: 0px; font-weight: 600; color: #444 !important; }
           .our-price { font-size: 48px; line-height: 48px; margin: 0; padding: 5px; font-weight: 900; letter-spacing: -1px; color: #dd1f26 !important; }
           
           .total-savings { font-size: 24px; font-weight: 800; }
@@ -337,7 +342,7 @@ document.addEventListener("DOMContentLoaded", () => {
             margin: 0px -10px -5px -4px; padding: 5px; background-color: #fff !important;
             border-radius: 50%; z-index: 2;
           }
-          .tag-footer { padding: 10px 0; margin: 0; }
+          .tag-footer { padding: 10px 0; margin: 0; box-shadow: 0px -20px 10px rgba(255,255,255,1)}
           .footer-our-price { font-size: 48px; line-height: 40px; margin: 0; padding: 1px; font-weight: 900; letter-spacing: 0px; color: #fff !important; }
           .footer-price-expires { font-size: 12px; font-weight: bold padding: 0; margin: 4px 0; color: #ccc !important; }
           .panel { margin: 10px 0; }
@@ -356,7 +361,19 @@ document.addEventListener("DOMContentLoaded", () => {
           .rounded { border-radius: 10px !important; overflow: hidden; }
           .bold { font-weight: 700; }
           .bolder { font-weight: 900; }
-          .m-1 { margin: 1px; }
+          .p-0 { padding: 0; }
+          .p-1 { padding: 0 5px; }
+          .p-2 { padding: 0 10px; }
+          .p-5 { padding: 0 20px; }
+          .pt-1 { padding-top: 2px; }
+          .pt-2 { padding-top: 5px; }
+          .pb-0 { padding-bottom: 0px; }
+          .m-0 { margin: 0; }
+          .m-1 { margin: 2px; }
+          .m-2 { margin: 10px 0; }
+          .m-3 { margin: 15px 0; }
+          .m-4 { margin: 20px 0; }
+          .m-5 { margin: 25px 0; }
           .black { color: #333; }
           .red { color: #dd1f26; }
           .gray { color: #666; }
