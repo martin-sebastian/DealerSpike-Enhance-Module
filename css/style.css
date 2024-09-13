@@ -182,9 +182,8 @@ body {
   flex-direction: column;
   justify-content: start;
   align-items: start;
-  width: 4.25in;
+  width: 4.2in;
   height: 11in;
-  padding: 0.25in;
   color: #333;
   border: solid 1px #ddd;
 }
@@ -193,9 +192,8 @@ body {
   flex-direction: column;
   justify-content: start;
   align-items: start;
-  width: 4.25in;
+  width: 4.2in;
   height: 11in;
-  padding: 0.25in;
   background: #fff;
   color: #333;
   border: solid 1px #ddd;
