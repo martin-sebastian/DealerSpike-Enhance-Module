@@ -152,11 +152,11 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="vehicle-header-container">
           <div class="vehicle-name-container" style="margin: 0 auto; padding: 10px 0">
           <h4>
-            <span class="label label-default m-2">${usage}</span><span class="label label-default m-1">${modelYear}</span><span class="label label-default m-1">${metricValue} ${metricType}</span>
+            <span class="label label-warning m-1">${usage}</span><span class="label label-primary m-1">${modelYear}</span><span class="label label-default m-1">${metricValue} ${metricType}</span>
           </h4>
             <h1 class="vehicle-title m-3">${prodTitle}</h1>
             <h2 class="m-3"><span class="label" style="background: #fff; color: #222; padding-top: 10px; border: solid 1px #666 !important;"> ${stockNumber}</span></h2>
-            <h4 class="vehicle-subtitle bold">
+            <h4 class="vehicle-subtitle bold hidden">
               <small>Model: </small>${data.ModelCode} 
               <small>VIN: </small><span>${vinNumber}</span>
             </h4>
@@ -206,13 +206,17 @@ document.addEventListener("DOMContentLoaded", () => {
                   <div class="" id="feesLine">${OTDItemsTemplate}</div>
                 </ul>
                 <div class="text-center">
-                  <div id="qrcode"></div>
-                  <h6 class="bold">SCAN FOR MORE INFO</h6>
+                <div id="qrcode"></div>
+                <h6 class="bold">SCAN FOR MORE INFO</h6>
+                
                 </div>
             </div>
-            <div class="tag-footer fixed-bottom text-center" style="width: 100%; border-radius: 5px; background: #EE0000 !important; box-shadow: 0px -25px 10px rgba(25.25.25.0.9);">
+            <div class="fixed-bottom text-center" style="width: 100%; box-shadow: 0px -25px 10px rgba(25.25.25.0.9);">
+            <svg id="barcode" class="barcode"></svg>
+            <div class="tag-footer" style="width: 100%; border-radius: 5px; background: #EE0000 !important;">
               <div class="footer-our-price">${yellowTag} ${ourPrice}</div>
               <div class="footer-price-expires text-center">Sale Program Ends: ${salePriceExpireDate}</div>
+            </div>
             </div>
         </div>
         `;
@@ -234,7 +238,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <ul class="list-group">
                   ${accessoryItemsTemplate}
                 </ul>
-                <div class="vehicle-description">
+                <div class="vehicle-description" style="padding: 10px;">
                    ${unitDescriptionTemplate}
                    ${standardFeaturesTemplate}
                 </div>
@@ -261,6 +265,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // QR Code Generator
       new QRCode(document.getElementById("qrcode"), data.DetailUrl);
+
+      // Barcode VIN
+      JsBarcode("#barcode", vinNumber, {
+        height: 40,
+      });
 
       //document.getElementById("quoteLevel").innerHTML = qLevel;
       console.log(qLevel);
@@ -494,6 +503,8 @@ document.addEventListener("DOMContentLoaded", () => {
             body { margin: 0; padding: 0; }
             .label-success { background-color: #5cb85c !important; color: #fff !important; border: 1px solid #5cb85c !important; }
             .label-default { background-color: #777 !important; color: #fff !important; border: 1px solid #777 !important; }
+            .label-primary { background-color: #337AB7 !important; color: #fff !important; border: 1px solid #337AB7 !important; }
+            .label-warning { background-color: #EC971F !important; color: #fff !important; border: 1px solid #EC971F !important; }
             .navbar { background-color: #EE0000 !important; }
             .tags-container { zoom: 1; }
           }
