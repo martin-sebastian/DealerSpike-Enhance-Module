@@ -26,6 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const discount = numeral(data.QuotePrice - data.Price).format("$0,0.00");
       const savings = numeral((data.DiscountItemsTotal + data.MatItemsTotal + data.TradeInItemsTotal) * -1).format("$0,0.00");
       const eDate = moment(data.ExpirationDate).format("MM/DD/YYYY");
+      const floorExpireDate = moment(data.FloorExpireDate).format("MM/DD/YYYY");
       const disclaimer = `<p class="portal-fees">${data.Disclaimer}</p>`;
       const fomDisclaimer = `<p class="text-center"><small>*Price does NOT include, Manufacturer Surcharge, Manufacturer Commodity Surcharge, Freight, Dealer Document Fee $199, Sales Tax, Title Fee $30. Sale Price INCLUDES all factory incentives (If Applicable). See Flat Out Motorsports for full disclosure on current Fees and Surcharges.</small></p>`;
       const salePriceExpireDate = moment(data.SalePriceExpireDate).format("MM/DD/YYYY");
@@ -121,7 +122,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="" id="descriptionLine">
           <h5 class="bold">Description</h5>
           <div class="panel panel-default">
-            <div class="panel-body">
+            <div class="panel-body" style="padding: 10px;">
               ${data.B50Desc}
             </div>
           </div>
@@ -155,7 +156,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <span class="label label-warning m-1">${usage}</span><span class="label label-primary m-1">${modelYear}</span><span class="label label-default m-1">${metricValue} ${metricType}</span>
           </h4>
             <h1 class="vehicle-title m-3">${prodTitle}</h1>
-            <h2 class="m-3"><span class="label" style="background: #fff; color: #222; padding-top: 10px; border: solid 1px #666 !important;"> ${stockNumber}</span></h2>
+            <h3 class="m-3"><span class="label" style="background: #fff; color: #222; padding-top: 10px; border: solid 1px #666 !important;">${stockNumber}</span></h3>
             <h4 class="vehicle-subtitle bold hidden">
               <small>Model: </small>${data.ModelCode} 
               <small>VIN: </small><span>${vinNumber}</span>
@@ -206,17 +207,15 @@ document.addEventListener("DOMContentLoaded", () => {
                   <div class="" id="feesLine">${OTDItemsTemplate}</div>
                 </ul>
                 <div class="text-center">
-                <div id="qrcode"></div>
-                <h6 class="bold">SCAN FOR MORE INFO</h6>
-                
+                  <div id="qrcode"></div>
+                  <h6 class="bold">SCAN FOR MORE INFO</h6>
                 </div>
             </div>
             <div class="fixed-bottom text-center" style="width: 100%; box-shadow: 0px -25px 10px rgba(25.25.25.0.9);">
-            <svg id="barcode" class="barcode"></svg>
-            <div class="tag-footer" style="width: 100%; border-radius: 5px; background: #EE0000 !important;">
-              <div class="footer-our-price">${yellowTag} ${ourPrice}</div>
-              <div class="footer-price-expires text-center">Sale Program Ends: ${salePriceExpireDate}</div>
-            </div>
+              <div class="tag-footer" style="width: 100%; border-radius: 5px; background: #EE0000 !important;">
+                <div class="footer-our-price">${yellowTag} ${ourPrice}</div>
+                <div class="footer-price-expires text-center">Sale Program Ends: ${salePriceExpireDate}</div>
+              </div>
             </div>
         </div>
         `;
@@ -238,12 +237,16 @@ document.addEventListener("DOMContentLoaded", () => {
                 <ul class="list-group">
                   ${accessoryItemsTemplate}
                 </ul>
-                <div class="vehicle-description" style="padding: 10px;">
+                <div class="vehicle-description">
                    ${unitDescriptionTemplate}
                    ${standardFeaturesTemplate}
                 </div>
             </div> <!-- End Print Tag Body -->
-            <div class="tag-footer fixed-bottom text-center" style="width: 100%; border-radius: 5px; background: #EE0000 !important; box-shadow: 0px -50px 10px rgba(25.25.25.0.9);">
+            <div class="floor-expire-date-container text-center">
+                <small class="floor-expire-date">Flooring Expiration Date: ${floorExpireDate}</small>
+                <svg id="barcode" class="barcode"></svg>
+              </div>
+            <div class="tag-footer fixed-bottom text-center" style="width: 100%; border-radius: 5px; background: #EE0000 !important; box-shadow: 0px -25px 10px rgba(25.25.25.0.9);">
               <div class="footer-our-price">${yellowTag} ${ourPrice}</div>
               <div class="footer-price-expires text-center">Sale Program Ends: ${salePriceExpireDate}</div>
             </div>
@@ -333,6 +336,8 @@ document.addEventListener("DOMContentLoaded", () => {
           }
           #text { font-size: 22px; }
           #qrcode img { margin: 0 auto; width: 124px; height: 124px; }
+          .floor-expire-date-container { padding: 5px 0; }
+          .floor-expire-date { padding: 0; margin:0; }
           .list-group-item { font-size: 12px; }
           .logo-container { text-align: center; padding: 0px 10px; }
           .vehicle-image-container { text-align: center; padding: 0; }
