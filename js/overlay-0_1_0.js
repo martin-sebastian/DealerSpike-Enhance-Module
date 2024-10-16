@@ -574,7 +574,7 @@ $.ajax({
 		<div class="vehicle-header-container">
 			<div class="vehicle-name-container">
 				<h3 class="vehicle-title" style="margin: 15px 0 0 0;">${prodTitle}</h3>
-				<h4 class="vehicle-subtitle" style="margin: 1px 0 5px 0;">
+				<h4 class="vehicle-subtitle" style="margin: 1px 0 5px 0; padding:0;">
 				<small>Model: </small>${data.ModelCode} 
 				<small class="hidden-xs">VIN: </small><span class="hidden-xs">${vinNumber} </span>
 				<small>Stock Number: </small>${stockNum}
@@ -735,7 +735,7 @@ $.ajax({
 
     var ourPrice = numeral(data.MSRPUnit + data.AccessoryItemsTotal + data.MatItemsTotal + data.DiscountItemsTotal + data.TradeInItemsTotal).format("$0,0.00");
     var overlay = `
-		<div class="mu-header" style="max-width: 1700px; margin:0 auto;">
+		<div class="mu-header" style="margin:0 auto;">
 			${muHeaderTemplate}
 		</div>
 		<div id="overlayContainer" class="container-fluid" style="background: #efefef; padding-top: 10px; padding-bottom: 35px;">

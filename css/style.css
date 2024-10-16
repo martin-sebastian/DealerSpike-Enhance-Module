@@ -50,6 +50,10 @@ body {
 .w-20 {
   width: 20% !important;
 }
+th {
+  min-width: 100px;
+  max-width: 500px;
+}
 .overlay-header {
   position: fixed;
   top: 10px;
