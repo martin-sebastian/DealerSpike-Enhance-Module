@@ -381,7 +381,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (stockNumber) {
         // Update the modal title with the stock number
         const modalTitle = document.getElementById("keytagModalLabel");
-        modalTitle.innerHTML = `${stockNumber}`;
+        modalTitle.innerHTML = stockNumber;
 
         // Call the keyTag function and pass the stock number
         keyTag(stockNumber);
@@ -400,6 +400,10 @@ document.addEventListener("DOMContentLoaded", () => {
 // Function to fetch the data
 async function keyTag(stockNumber) {
   try {
+    // Optionally hide any previous error messages
+    document.getElementById("message").innerHTML = "";
+
+    // Fetch data from the API
     const response = await fetch("https://newportal.flatoutmotorcycles.com/portal/public/api/majorunit/stocknumber/" + stockNumber);
 
     if (!response.ok) {
@@ -409,17 +413,23 @@ async function keyTag(stockNumber) {
     const data = await response.json();
 
     if (typeof data.StockNumber !== "undefined") {
-      document.getElementById("modelUsage").innerHTML = data.Usage;
-      document.getElementById("stockNumber").innerHTML = data.StockNumber;
-      document.getElementById("modelYear").innerHTML = data.ModelYear;
-      document.getElementById("manufacturer").innerHTML = data.Manufacturer;
-      document.getElementById("modelName").innerHTML = data.ModelName;
-      document.getElementById("modelCode").innerHTML = data.ModelCode;
-      document.getElementById("modelColor").innerHTML = data.Color;
-      document.getElementById("modelVin").innerHTML = data.VIN;
+      // Populate the modal with new data
+      document.getElementById("modelUsage").innerHTML = data.Usage || "N/A";
+      document.getElementById("stockNumber").innerHTML = data.StockNumber || "N/A";
+      document.getElementById("modelYear").innerHTML = data.ModelYear || "N/A";
+      document.getElementById("manufacturer").innerHTML = data.Manufacturer || "N/A";
+      document.getElementById("modelName").innerHTML = data.ModelName || "N/A";
+      document.getElementById("modelCode").innerHTML = data.ModelCode || "N/A";
+      document.getElementById("modelColor").innerHTML = data.Color || "N/A";
+      document.getElementById("modelVin").innerHTML = data.VIN || "N/A";
+
+      // Make sure keytagContainer is visible if previously hidden
+      const keytagContainer = document.getElementById("keytagContainer");
+      keytagContainer.classList.remove("hidden");
     } else {
-      const keyTagElement = document.getElementById("keytagContainer");
-      keyTagElement.classList.add("hidden");
+      // Hide key tag container and show error message if no data available
+      const keytagContainer = document.getElementById("keytagContainer");
+      keytagContainer.classList.add("hidden");
 
       document.getElementById("message").innerHTML = `
         <div class="warning-icon-container text-center">
@@ -427,7 +437,7 @@ async function keyTag(stockNumber) {
         </div>
         <p class="error-message">
           No data available, click 
-          <i class="fa fa-info-circle" aria-hidden="true"></i> icon next to print button for instructions.
+          <i class="fa fa-info-circle" aria-hidden="true"></i> icon next to the print button for instructions.
         </p>`;
     }
   } catch (error) {
@@ -452,4 +462,119 @@ zoomOutBtn.addEventListener("click", function () {
   // Remove the zoom-3 class and add the zoom-1 class
   zoomElement.classList.remove("zoom-2");
   zoomElement.classList.add("zoom-1");
+});
+
+function printKeyTag(event) {
+  if (event) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
+
+  const keytagContainer = document.getElementById("keytagContainer");
+  if (!keytagContainer) {
+    console.error("Key tag container not found");
+    return;
+  }
+
+  console.log("Key tag container content:", keytagContainer.innerHTML);
+
+  const printFrame = document.getElementById("printFrame");
+  const printDocument = printFrame.contentDocument || printFrame.contentWindow.document;
+
+  const printContent = `
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <title>Print Key Tag</title>
+        <style>
+          @page {
+            size: 1.5in 2in;
+            margin: 0;
+          }
+          body {
+            font-family: Arial, sans-serif;
+            font-size: 8pt;
+            line-height: 1.1;
+            margin: 0;
+            padding: 0;
+            width: 1.5in;
+            height: 2in;
+            overflow: hidden;
+          }
+          #keytagContainer {
+            text-align: center;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 0.1in;
+            padding: 0.05in;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+          }
+          #keytagContainer div {
+            margin: 0;
+            padding: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+          #stockNumber {
+            font-weight: bold;
+            font-size: 9pt;
+          }
+          #modelUsage {
+            font-style: italic;
+          }
+        </style>
+      </head>
+      <body>
+        <div id="keytagContainer">
+          <div id="modelUsage">${keytagContainer.querySelector("#modelUsage").textContent}</div>
+          <div id="stockNumber">${keytagContainer.querySelector("#stockNumber").textContent}</div>
+          <div>${keytagContainer.querySelector("#modelYear").textContent}</div>
+          <div>${keytagContainer.querySelector("#manufacturer").textContent}</div>
+          <div>${keytagContainer.querySelector("#modelName").textContent}</div>
+          <div>${keytagContainer.querySelector("#modelCode").textContent}</div>
+          <div>${keytagContainer.querySelector("#modelColor").textContent}</div>
+          <div>${keytagContainer.querySelector("#modelVin").textContent}</div>
+        </div>
+      </body>
+    </html>
+  `;
+
+  console.log("Print content:", printContent);
+
+  printDocument.open();
+  printDocument.write(printContent);
+  printDocument.close();
+
+  // Use a Promise to ensure content is loaded before printing
+  const printPromise = new Promise((resolve) => {
+    printFrame.onload = resolve;
+  });
+
+  printPromise.then(() => {
+    console.log("iframe loaded, attempting to print");
+    setTimeout(() => {
+      printFrame.contentWindow.focus();
+      printFrame.contentWindow.print();
+    }, 1000);
+  });
+}
+
+// Wait for the DOM to be fully loaded before adding event listeners
+document.addEventListener("DOMContentLoaded", () => {
+  const printKeyTagButton = document.getElementById("printKeyTag");
+  if (printKeyTagButton) {
+    // Remove any existing event listeners
+    printKeyTagButton.removeEventListener("click", printKeyTag);
+    printKeyTagButton.removeEventListener("click", window.print);
+
+    // Add the new event listener
+    printKeyTagButton.addEventListener("click", printKeyTag);
+  } else {
+    console.error("Print Key Tag button not found");
+  }
 });

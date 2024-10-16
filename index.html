@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="./node_modules/bootstrap-icons/font/bootstrap-icons.css" />
     <link href="./css/font-awesome.css" rel="stylesheet" />
     <link href="./css/style.css" rel="stylesheet" />
+    <link rel="stylesheet" href="./css/print.css" media="print" />
   </head>
   <body data-bs-theme="dark">
     <header class="d-print-none">
@@ -194,7 +195,7 @@
               <div class="modal-header d-flex flex-row justify-content-between d-print-none">
                 <h1 class="modal-title fs-5" id="keytagModalLabel">StockNumber</h1>
                 <h2 class="modal-label-size fs-5" id="keytagLabelSize">Label: 2 x 1.5 in</h2>
-                <button type="button" id="printTag" class="btn btn-danger px-3"><i class="bi bi-printer me-2"></i> Print</button>
+                <button type="button" id="printKeyTag" class="btn btn-danger px-3"><i class="bi bi-printer me-2"></i> Print Key Tag</button>
               </div>
               <div class="modal-body dots">
                 <div class="main-content">
@@ -240,7 +241,7 @@
           </div>
           <div class="modal-footer d-print-none">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" id="printTag" class="btn btn-danger">Print Hang Tags</button>
+            <button type="button" id="printHangTag" class="btn btn-danger">Print Hang Tags</button>
           </div>
         </div>
       </div>
@@ -277,29 +278,11 @@
       </div>
     </div>
 
-    <div class="modal fade" id="agGridModal" tabindex="-1" aria-labelledby="agGridModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-fullscreen">
-        <div class="modal-content">
-          <div class="modal-header d-print-none">
-            <h1 class="modal-title fs-5" id="agGridModalLabel">StockNumber</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <div id="myGridTest" class="ag-theme-quartz"></div>
-          </div>
-          <div class="modal-footer d-print-none">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" id="" class="btn btn-danger">Print Key Tag</button>
-          </div>
-        </div>
-      </div>
-    </div>
     <script src="./js/popper.js"></script>
     <script src="./node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
     <script src="./node_modules/numeral/min/numeral.min.js"></script>
     <script src="./js/moment.js"></script>
     <script src="./js/app.js"></script>
-    <script src="./js/hangTags.js"></script>
-    <script src="./js/textMessage.js"></script>
+    <iframe id="printFrame" style="display: none"></iframe>
   </body>
 </html>
