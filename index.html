@@ -229,19 +229,12 @@
     <div class="modal fade" id="hangTagsModal" tabindex="-1" aria-labelledby="hangTagsModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-fullscreen">
         <div class="modal-content">
-          <div class="modal-header d-print-none">
-            <h1 class="modal-title fs-5" id="hangTagsModalLabel">StockNumber</h1>
+          <div class="modal-header">
+            <h5 class="modal-title" id="hangTagsModalLabel">Hang Tags</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <div class="modal-body dots">
-            <div class="spacer-100"></div>
-            <!-- Elements to display the fetched data -->
-            <div id="detailsContainer" class="d-flex justify-content-center"></div>
-            <div class="spacer-100"></div>
-          </div>
-          <div class="modal-footer d-print-none">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" id="printHangTag" class="btn btn-danger">Print Hang Tags</button>
+          <div class="modal-body m-0 p-0">
+            <iframe id="hangTagsIframe" src="" style="width: 100%; height: 99%; border: none"></iframe>
           </div>
         </div>
       </div>

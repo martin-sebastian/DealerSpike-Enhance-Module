@@ -124,7 +124,7 @@ async function fetchData() {
 
         const row = document.createElement("tr");
         row.innerHTML = `
-          <td data-cell="image" class="text-center">
+          <td data-cell="image" class="text-center" style="width: 150px;">
             <a href="${webURL}" target="_blank" title="View on Website" data-bs-toggle="tooltip" data-bs-placement="top">
               ${imageUrl !== "N/A" ? `<img src="${imageUrl}" alt="${title}" />` : `<i class="bi bi-card-image"></i>`}
             </a>
@@ -174,6 +174,9 @@ async function fetchData() {
               </a>
               
               <a href="./social-share/?stockNumber=${stockNumber}" class="btn btn-danger action-button mx-1" data-toggle="tooltip" title="Text Message Quote"><i class="bi bi-phone"></i></a>
+              <a href="javascript:void(0);" class="btn btn-danger action-button mx-1" data-toggle="tooltip" title="Print Hang Tags" onclick="openHangTagsModal('${stockNumber}')">
+                <i class="bi bi-tags"></i>
+              </a>
               <a href="./hang-tags/?search=${stockNumber}" class="btn btn-danger action-button mx-1" data-toggle="tooltip" title="Print Hang Tags"><i class="bi bi-tags"></i></a>
               <button type="button" id="keytagModalButton" class="btn btn-danger action-button mx-1" data-toggle="tooltip" title="Print Key Tag" data-bs-toggle="modal" data-bs-target="#keytagModal" data-bs-stocknumber="${stockNumber}"><i class="bi bi-tag"></i></button>
               <button type="button" id="hangTagsModalButton" class="btn btn-warning action-button mx-1 visually-hidden" data-toggle="tooltip" title="Print Hang Tags" data-bs-toggle="modal" data-bs-target="#hangTagsModal" data-bs-details="${stockNumber}"> <i class="bi bi-tags"></i> </button>
@@ -612,3 +615,10 @@ document.addEventListener("DOMContentLoaded", () => {
     console.error("Print Key Tag button not found");
   }
 });
+
+function openHangTagsModal(stockNumber) {
+  const modalIframe = document.getElementById("hangTagsIframe"); // Get the iframe element
+  modalIframe.src = `./hang-tags/?search=${stockNumber}`; // Set the src to the desired URL
+  const hangTagsModal = new bootstrap.Modal(document.getElementById("hangTagsModal")); // Initialize the modal
+  hangTagsModal.show(); // Show the modal
+}
