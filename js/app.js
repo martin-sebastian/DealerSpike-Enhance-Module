@@ -490,11 +490,18 @@ function printKeyTag(event) {
           @page {
             size: 1.5in 2in;
             margin: 0;
+            @top {
+              content: ""; /* No content for header */
+              }
+            @bottom {
+              content: ""; /* No content for footer */
+            }
           }
           body {
             font-family: Arial, sans-serif;
             font-size: 8pt;
-            line-height: 1.1;
+            font-weight: 600;
+            line-height: 1.5;
             margin: 0;
             padding: 0;
             width: 1.5in;
@@ -520,12 +527,39 @@ function printKeyTag(event) {
             overflow: hidden;
             text-overflow: ellipsis;
           }
+          #modelUsage {
+            font-weight: bold;
+            font-size: 10pt;
+            text-transform: uppercase;
+            border-bottom: 1px dashed #eee;
+          }
           #stockNumber {
             font-weight: bold;
-            font-size: 9pt;
+            font-size: 12pt;
+            border-bottom: 1px dashed #eee;
           }
-          #modelUsage {
-            font-style: italic;
+          #modelYear {
+            font-size: 8pt;
+            border-bottom: 1px dashed #eee;
+          }
+          #manufacturer {
+            font-size: 8pt;
+            border-bottom: 1px dashed #eee;
+          }
+          #modelName {
+            font-size: 8pt;
+            border-bottom: 1px dashed #eee;
+          }
+          #modelCode {
+            font-size: 8pt;
+            border-bottom: 1px dashed #eee;
+          }
+          #modelColor {
+            font-size: 8pt;
+            border-bottom: 1px dashed #eee;
+          }
+          #modelVin {
+            font-size: 8pt;
           }
         </style>
       </head>
@@ -533,12 +567,12 @@ function printKeyTag(event) {
         <div id="keytagContainer">
           <div id="modelUsage">${keytagContainer.querySelector("#modelUsage").textContent}</div>
           <div id="stockNumber">${keytagContainer.querySelector("#stockNumber").textContent}</div>
-          <div>${keytagContainer.querySelector("#modelYear").textContent}</div>
-          <div>${keytagContainer.querySelector("#manufacturer").textContent}</div>
-          <div>${keytagContainer.querySelector("#modelName").textContent}</div>
-          <div>${keytagContainer.querySelector("#modelCode").textContent}</div>
-          <div>${keytagContainer.querySelector("#modelColor").textContent}</div>
-          <div>${keytagContainer.querySelector("#modelVin").textContent}</div>
+          <div id="modelYear">${keytagContainer.querySelector("#modelYear").textContent}</div>
+          <div id="manufacturer">${keytagContainer.querySelector("#manufacturer").textContent}</div>
+          <div id="modelName">${keytagContainer.querySelector("#modelName").textContent}</div>
+          <div id="modelCode">${keytagContainer.querySelector("#modelCode").textContent}</div>
+          <div id="modelColor">${keytagContainer.querySelector("#modelColor").textContent}</div>
+          <div id="modelVin">${keytagContainer.querySelector("#modelVin").textContent}</div>
         </div>
       </body>
     </html>
