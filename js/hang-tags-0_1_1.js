@@ -123,7 +123,7 @@ document.addEventListener("DOMContentLoaded", () => {
           <h5 class="bold">Description</h5>
           <div class="panel panel-default">
             <div class="panel-body" style="padding: 10px;">
-              ${data.B50Desc}
+              ${data.B50Desc} <!-- Directly insert the HTML content -->
             </div>
           </div>
         </div>
@@ -180,7 +180,8 @@ document.addEventListener("DOMContentLoaded", () => {
                   <li class="list-group-item text-center">
                     <div class="price-payment-container">
                       <div class="our-price-container">
-                        <div id="msrpLine" class="our-price-msrp gray">MSRP: <s>${msrpPlusAccessories}</s></div>
+                        <div id="msrpLine" class="our-price-msrp gray">MSRP:  ${msrpPlusAccessories}
+                        </div>
                         <div class="our-price">${yellowTag} ${ourPrice}</div>
                         <div id="savingsLine" class="total-savings">
                           <span class="label label-default">
