@@ -10,11 +10,14 @@
       crossorigin="anonymous"
     />
 
-    <!-- Open Graph Meta Tags with Fallback Values -->
+    <!-- Open Graph Meta Tags -->
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Default Vehicle Title" />
-    <meta property="og:description" content="Default description of the vehicle." />
-    <meta property="og:image" content="https://example.com/default-image.jpg" />
+    <meta property="og:title" content="Vehicle Details" />
+    <meta property="og:description" content="Check out this awesome vehicle!" />
+    <meta property="og:image" content="${vehicleImageUrl}" />
+    <meta property="og:image:alt" content="A description of the image" />
+    <meta property="og:video" content="" />
+    <meta property="og:audio" content="" />
     <meta property="og:url" content="https://www.flatoutmotorcycles.com/" />
     <meta property="og:site_name" content="Flat Out Motorsports - Indianapolis, Indiana" />
     <meta property="og:locale" content="en_US" />
@@ -102,11 +105,12 @@
           const vehiclePricing = `MSRP: ${msrpFormatted}, Rebates: ${matItemsFormatted}, Discounts: ${discountItemsFormatted}, Your Price: ${yourPriceFormatted}`;
           const vehicleDescription = `${data.Usage} ${vehicleTitle}, Stock Number: ${stockNumber} | ${vehiclePricing}` || "Description";
 
-          // Update Open Graph meta tags dynamically
+          // Update Open Graph meta tags
           document.querySelector('meta[property="og:title"]').setAttribute("content", vehicleTitle);
-          document.querySelector('meta[property="og:description"]').setAttribute("content", vehicleDescription);
-          document.querySelector('meta[property="og:image"]').setAttribute("content", vehicleImageUrl);
           document.querySelector('meta[property="og:url"]').setAttribute("content", vehiclePageUrl);
+          document.querySelector('meta[property="og:image"]').setAttribute("content", vehicleImageUrl);
+          document.querySelector('meta[property="og:image:alt"]').setAttribute("content", vehicleTitle);
+          document.querySelector('meta[property="og:description"]').setAttribute("content", vehicleDescription);
 
           // Update Twitter Card meta tags
           document.querySelector('meta[name="twitter:card"]').setAttribute("content", vehicleImageUrl);
@@ -137,7 +141,7 @@
           downloadStaticPageWithoutJS();
         } catch (error) {
           console.error("Error fetching vehicle details:", error);
-          document.getElementById("vehicleDetails").innerHTML = `<p>Error loading vehicle details. Please try again later.</p>`;
+          document.getElementById("vehicle-details").innerHTML = `<p>Error loading vehicle details. Please try again later.</p>`;
         }
       }
 
@@ -175,7 +179,7 @@
       if (stockNumber) {
         fetchVehicleDetails(stockNumber);
       } else {
-        document.getElementById("vehicleDetails").innerHTML = "<p>No stock number provided.</p>";
+        document.getElementById("vehicle-details").innerHTML = "<p>No stock number provided.</p>";
       }
     </script>
   </body>

@@ -22,6 +22,9 @@
     border: none;
     overflow: hidden;
   }
+  .key-tag-container {
+    zoom: 1;
+  }
 
   /* Adjust font sizes if needed */
   #keytagContainer div {

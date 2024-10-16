@@ -50,8 +50,9 @@ body {
 .w-20 {
   width: 20% !important;
 }
-.print-header h2 {
-  font-weight: 900;
+th {
+  min-width: 100px;
+  max-width: 500px;
 }
 .overlay-header {
   position: fixed;
@@ -61,13 +62,11 @@ body {
 .print-header {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   width: 100%;
-  height: 60px;
-  padding: 0 20px;
-  background: #fff;
-  border: solid 1px #ddd;
+  height: 50px;
+  padding: 0 10px;
   color: #333;
 }
 .print-header h2 {
@@ -78,10 +77,11 @@ body {
   font-weight: 900;
 }
 .hide-elements {
-  padding: 5px 10px;
+  padding: 5px 30px;
   background: #fff;
-  border: solid 1px #ddd;
-  border-radius: 5px;
+  border: solid 0px #ddd;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 }
 .hide-elements label {
   margin: 0 5px;
@@ -388,11 +388,7 @@ th {
   line-height: 20px;
   border-bottom: solid 1px #eee;
 }
-@media print {
-  .key-tag-container {
-    zoom: 1;
-  }
-}
+
 @media screen and (max-width: 678px) {
   .key-tag-container {
     zoom: 1;

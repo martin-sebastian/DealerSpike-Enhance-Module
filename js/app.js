@@ -163,21 +163,21 @@ async function fetchData() {
           <td class="text-center text-nowrap">
             <div class="action-button-group" role="group" aria-label="Vehicles">
               <a
-              href="./overlay/?search=${stockNumber}" 
+              href="javascript:void(0);" 
               type="button" 
               class="btn btn-danger action-button mx-1" 
               data-toggle="tooltip"
               data-bs-placement="top"
               title="Pricing"
-              >
+              onclick="openOverlayModal('${stockNumber}')"> <!-- Call the function -->
               <i class="bi bi-card-heading"></i>
               </a>
               
               <a href="./social-share/?stockNumber=${stockNumber}" class="btn btn-danger action-button mx-1" data-toggle="tooltip" title="Text Message Quote"><i class="bi bi-phone"></i></a>
-              <a href="javascript:void(0);" class="btn btn-danger action-button mx-1" data-toggle="tooltip" title="Print Hang Tags" onclick="openHangTagsModal('${stockNumber}')">
+              <button class="btn btn-danger action-button mx-1" data-toggle="tooltip" title="Print Hang Tags" onclick="openHangTagsModal('${stockNumber}')">
                 <i class="bi bi-tags"></i>
-              </a>
-              <a href="./hang-tags/?search=${stockNumber}" class="btn btn-danger action-button mx-1" data-toggle="tooltip" title="Print Hang Tags"><i class="bi bi-tags"></i></a>
+              </button>
+              <!--<a href="./hang-tags/?search=${stockNumber}" class="btn btn-danger action-button mx-1" data-toggle="tooltip" title="Print Hang Tags"><i class="bi bi-tags"></i></a>-->
               <button type="button" id="keytagModalButton" class="btn btn-danger action-button mx-1" data-toggle="tooltip" title="Print Key Tag" data-bs-toggle="modal" data-bs-target="#keytagModal" data-bs-stocknumber="${stockNumber}"><i class="bi bi-tag"></i></button>
               <button type="button" id="hangTagsModalButton" class="btn btn-warning action-button mx-1 visually-hidden" data-toggle="tooltip" title="Print Hang Tags" data-bs-toggle="modal" data-bs-target="#hangTagsModal" data-bs-details="${stockNumber}"> <i class="bi bi-tags"></i> </button>
             </div>  
@@ -617,8 +617,39 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function openHangTagsModal(stockNumber) {
-  const modalIframe = document.getElementById("hangTagsIframe"); // Get the iframe element
-  modalIframe.src = `./hang-tags/?search=${stockNumber}`; // Set the src to the desired URL
-  const hangTagsModal = new bootstrap.Modal(document.getElementById("hangTagsModal")); // Initialize the modal
-  hangTagsModal.show(); // Show the modal
+  const modalIframe = document.getElementById("hangTagsIframe");
+  modalIframe.src = `./hang-tags/?search=${stockNumber}`;
+  const hangTagsModal = new bootstrap.Modal(document.getElementById("hangTagsModal"));
+  hangTagsModal.show();
+}
+
+function printIframeContent() {
+  const iframe = document.getElementById("hangTagsIframe"); // Get the iframe element
+  const iframeWindow = iframe.contentWindow || iframe; // Get the iframe's window object
+
+  if (iframeWindow) {
+    iframeWindow.focus(); // Focus on the iframe
+    try {
+      iframeWindow.print(); // Call the print method
+    } catch (error) {
+      console.error("Error printing iframe content:", error);
+    }
+  } else {
+    console.error("Iframe window not accessible.");
+  }
+}
+
+document.getElementById("hangTagsIframe").addEventListener("load", function () {
+  // Content is loaded, you can enable the print button or perform other actions
+});
+
+document.getElementById("hangTagsIframe").addEventListener("load", function () {
+  console.log("Iframe content loaded:", this.contentDocument.body.innerHTML);
+});
+
+function openOverlayModal(stockNumber) {
+  const modalIframe = document.getElementById("overlayIframe"); // Get the iframe element
+  modalIframe.src = `./overlay/?search=${stockNumber}`; // Set the src to the desired URL
+  const overlayModal = new bootstrap.Modal(document.getElementById("overlayModal")); // Initialize the modal
+  overlayModal.show(); // Show the modal
 }
