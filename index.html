@@ -189,13 +189,32 @@
             </tbody>
           </table>
         </div>
+
+        <div class="modal fade" id="overlayModal" tabindex="-1" aria-labelledby="overlayModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="overlayModalLabel">Overlay Preview</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body m-0 p-0">
+                <iframe id="overlayIframe" src="" style="width: 100%; height: 99%; border: none; margin: 0; padding: 0"></iframe>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger" onclick="printIframeContent()">Print</button>
+                <!-- Print Button -->
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div class="modal fade" id="keytagModal" tabindex="-1" aria-labelledby="keytagModalLabel" aria-hidden="true">
           <div class="modal-dialog modal-fullscreen">
             <div class="modal-content">
               <div class="modal-header d-flex flex-row justify-content-between d-print-none">
                 <h1 class="modal-title fs-5" id="keytagModalLabel">StockNumber</h1>
-                <h2 class="modal-label-size fs-5" id="keytagLabelSize">Label: 2 x 1.5 in</h2>
-                <button type="button" id="printKeyTag" class="btn btn-danger px-3"><i class="bi bi-printer me-2"></i> Print Key Tag</button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body dots">
                 <div class="main-content">
@@ -219,6 +238,7 @@
                   <button type="button" id="zoomInBtn" class="btn-icon fs-2 m-1"><i class="bi bi-plus-square"></i></button>
                 </div>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" id="printKeyTag" class="btn btn-danger pe-3"><i class="bi bi-printer me-2"></i> Print Key Tag</button>
               </div>
             </div>
           </div>
@@ -234,7 +254,12 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body m-0 p-0">
-            <iframe id="hangTagsIframe" src="" style="width: 100%; height: 99%; border: none"></iframe>
+            <iframe id="hangTagsIframe" src="" style="width: 100%; height: 99%; border: none; margin: 0; padding: 0"></iframe>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-danger pe-3" onclick="printIframeContent()"><i class="bi bi-printer me-2"></i> Print Hang Tag</button>
+            <!-- Print Button -->
           </div>
         </div>
       </div>
