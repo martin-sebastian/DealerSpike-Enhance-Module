@@ -147,11 +147,9 @@
               <option value="New">New</option>
               <option value="Used">Used</option>
             </select>
-            <select id="photosFilter" class="form-select me-2">
-              <option value="">In-House Photos</option>
-              <option value="Done">Done</option>
-              <option value="Needs Photos">Needs Photos</option>
-            </select>
+
+            <label for="updatedFilterLabel" class="visually-hidden">Date Updated:</label>
+            <input type="date" id="updatedFilter" class="form-control me-2" />
             <button class="btn btn-danger" onclick="filterTable()">Reset all filters</button>
             <nav class="side-menu-footer">V.0.1.0</nav>
           </div>
