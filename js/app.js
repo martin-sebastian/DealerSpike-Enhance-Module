@@ -485,7 +485,7 @@ function printKeyTag(event) {
         <style>
           @page {
             size: 1.5in 2in;
-            margin: 0;
+            margin: default;
             @top {
               content: ""; /* No content for header */
               }
