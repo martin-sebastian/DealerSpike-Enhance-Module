@@ -122,6 +122,7 @@ async function fetchData() {
         const usageColor = usage === "New" ? "text-bg-success" : "text-bg-secondary";
         const updatedStatus = moment(updated).fromNow();
         const updatedDate = moment(updated).format("MM/DD/YYYY");
+        const updatedDashDate = moment(updated).format("MM-DD-YYYY");
 
         const row = document.createElement("tr");
         row.innerHTML = `
@@ -135,9 +136,9 @@ async function fetchData() {
             <span class="badge text-bg-dark border">${year}</span>
           </td>
           <td class="text-truncate" style="">${manufacturer}</td>
-          <td class="text-truncatexxx" style="max-width: 200px;">
+          <td class="" style="max-width: 200px;">
             <span>${modelName}</span>
-            <span class="visually-hidden">${stockNumber} ${vin} ${usage} ${year} ${manufacturer} ${modelName} ${modelType} ${color} ${updatedDate}</span>
+            <span class="visually-hidden">${stockNumber} ${vin} ${usage} ${year} ${manufacturer} ${modelName} ${modelType} ${color} ${updatedDate} ${updatedDashDate}</span>
           </td>
           <td class="visually-hidden">${modelType}</td>
           <td class="visually-hidden">${color}</td>
@@ -160,7 +161,7 @@ async function fetchData() {
           </td>
           <td>${webPrice}</td>
           <td><span class="badge text-bg-dark text-white-50 border">${updatedStatus}</span>
-          <span class="visually-hidden">${updatedDate}</span>
+          <span class="visually-hidden">${updatedDashDate}</span>
           </td>
           <td class="text-center">${photos}</td>
           <td class="text-center text-nowrap">
@@ -171,7 +172,7 @@ async function fetchData() {
               </button>
               <button type="button" class="btn btn-danger action-button mx-1" data-toggle="tooltip" title="Print Hang Tags" onclick="openHangTagsModal('${stockNumber}')">
                 <i class="bi bi-tags"></i>
-                <span style="font-size:10px; text-transform:uppercase;">Hang Tag</span>
+                <span style="font-size:10px; margin-top:-10px; padding:0; text-transform:uppercase;">Hang Tag</span>
               </button>
               <button type="button" id="hangTagsModalButton" class="btn btn-warning action-button mx-1 visually-hidden" data-toggle="tooltip" title="Print Hang Tags" data-bs-toggle="modal" data-bs-target="#hangTagsModal" data-bs-details="${stockNumber}"> <i class="bi bi-tags"></i></button>
               <a
@@ -289,7 +290,7 @@ function filterTable() {
     if (titleTd && hiddenSpan) {
       const hiddenText = hiddenSpan.textContent || hiddenSpan.innerText;
 
-      const [stockNumber, vin, usage, year, manufacturer, modelName, modelType, modelColor, photos, updatedDate] = hiddenText.split(" ");
+      const [stockNumber, vin, usage, year, manufacturer, modelName, modelType, modelColor, photos, updatedDate, updatedDashDate] = hiddenText.split(" ");
       //${stockNumber} ${vin} ${usage} ${year} ${manufacturer} ${modelName} ${modelType} ${color} ${photos} ${updatedDate}
 
       if (
