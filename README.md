@@ -4,6 +4,9 @@
 
 ![Dealer Spike Enhance App and Plugin](https://martinsebastian.co/wp-content/uploads/2024/10/Screenshot-2024-10-26-at-1.33.57 PM.png)
 
+![Dealer Spike Enhance App and Plugin](https://martinsebastian.co/wp-content/uploads/2024/10/Screenshot-2024-10-26-at-1.34.34 PM.png)
+
+![Dealer Spike Enhance App and Plugin](https://martinsebastian.co/wp-content/uploads/2024/10/Screenshot-2024-10-26-at-1.34.21 PM.png)
 
 ## Screenshots:
 
