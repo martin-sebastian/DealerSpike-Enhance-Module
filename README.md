@@ -1,5 +1,10 @@
 # Dealer-Spike-Enhance-Module
 
+## App and Plugin for Dealer Spike
+
+![Dealer Spike Enhance App and Plugin](https://martinsebastian.co/wp-content/uploads/2024/10/Screenshot-2024-10-26-at-1.33.57 PM.png)
+
+
 ## Screenshots:
 
 - https://martinsebastian.co/wp-content/uploads/2024/10/Screenshot-2024-10-26-at-1.33.57 PM.png
