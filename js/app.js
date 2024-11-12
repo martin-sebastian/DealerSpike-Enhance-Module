@@ -122,7 +122,7 @@ async function fetchData() {
         const usageColor = usage === "New" ? "text-bg-success" : "text-bg-secondary";
         const updatedStatus = moment(updated).fromNow();
         const updatedDate = moment(updated).format("MM/DD/YYYY");
-        const updatedDashDate = moment(updated).format("MM-DD-YYYY");
+        const updatedDashDate = moment(updated).format("YYYY-MM-DD");
 
         const row = document.createElement("tr");
         row.innerHTML = `
@@ -138,7 +138,8 @@ async function fetchData() {
           <td class="text-truncate" style="">${manufacturer}</td>
           <td class="" style="max-width: 200px;">
             <span>${modelName}</span>
-            <span class="visually-hidden">${stockNumber} ${vin} ${usage} ${year} ${manufacturer} ${modelName} ${modelType} ${color} ${updatedDate} ${updatedDashDate}</span>
+            <span class="visually-hidden">${stockNumber} ${vin} ${usage} ${year} ${manufacturer} ${modelName} ${modelType} ${modelCode} ${color} ${updatedDashDate}</span>
+            <small class="text-muted w-100 vin-number">${vin}</small>
           </td>
           <td class="visually-hidden">${modelType}</td>
           <td class="visually-hidden">${color}</td>
@@ -160,8 +161,10 @@ async function fetchData() {
             </div>
           </td>
           <td>${webPrice}</td>
-          <td><span class="badge text-bg-dark text-white-50 border">${updatedStatus}</span>
-          <span class="visually-hidden">${updatedDashDate}</span>
+          <td>
+            <span class="badge text-bg-dark w-100 text-white-50 border">${updatedStatus}
+            <span class="updated-dash-date">${updatedDate}</span>
+            </span>
           </td>
           <td class="text-center">${photos}</td>
           <td class="text-center text-nowrap">
@@ -219,7 +222,7 @@ async function fetchData() {
     console.error("Error fetching XML:", error);
   }
 }
-
+// Sort Table by Column
 function sortTableByColumn(header) {
   const table = document.getElementById("vehiclesTable");
   if (!table) return;
@@ -266,16 +269,28 @@ searchInput.addEventListener("input", function () {
   filterTable();
 });
 
+// Search Filters for Inventory Table
 function filterTable() {
-  // Get the filter input values
+  // Get all filter values
   const searchInput = document.getElementById("searchFilter")?.value.toUpperCase() || "";
   const yearFilter = document.getElementById("yearFilter")?.value.toUpperCase() || "";
   const manufacturerFilter = document.getElementById("manufacturerFilter")?.value.toUpperCase() || "";
   const typeFilter = document.getElementById("typeFilter")?.value.toUpperCase() || "";
   const usageFilter = document.getElementById("usageFilter")?.value.toUpperCase() || "";
-  const photosFilter = document.getElementById("photosFilter")?.value.toUpperCase() || "";
-  const updatedFilter = document.getElementById("updatedFilter")?.value.toUpperCase() || "";
+  const updatedFilterInput = document.getElementById("updatedFilter");
+  let updatedFilter = updatedFilterInput?.value.toUpperCase() || "";
 
+  // Debug log
+  console.log("Current filter values:", {
+    search: searchInput,
+    year: yearFilter,
+    manufacturer: manufacturerFilter,
+    type: typeFilter,
+    usage: usageFilter,
+    updated: updatedFilter,
+  });
+
+  const isDatePickerInput = updatedFilterInput?.type === "date" && updatedFilter !== "";
   const table = document.getElementById("vehiclesTable");
   const tr = table?.getElementsByTagName("tr");
 
@@ -290,17 +305,33 @@ function filterTable() {
     if (titleTd && hiddenSpan) {
       const hiddenText = hiddenSpan.textContent || hiddenSpan.innerText;
 
-      const [stockNumber, vin, usage, year, manufacturer, modelName, modelType, modelColor, photos, updatedDate, updatedDashDate] = hiddenText.split(" ");
-      //${stockNumber} ${vin} ${usage} ${year} ${manufacturer} ${modelName} ${modelType} ${color} ${photos} ${updatedDate}
+      // Get the date from the end of the string
+      const updatedDashDate = hiddenText.split(" ").pop();
+
+      // Get other values from the string
+      const [stockNumber, vin, usage, year, manufacturer, ...rest] = hiddenText.split(" ");
+
+      // Debug first few rows
+      if (i < 3) {
+        console.log(`Row ${i} data:`, {
+          hiddenText,
+          updatedDashDate,
+          usage,
+          year,
+          manufacturer,
+          dateMatches: isDatePickerInput ? updatedDashDate === updatedFilter : updatedDashDate.toUpperCase().indexOf(updatedFilter) > -1,
+        });
+      }
+
+      const dateMatches = isDatePickerInput ? updatedDashDate === updatedFilter : updatedDashDate.toUpperCase().indexOf(updatedFilter) > -1;
 
       if (
         (hiddenText.toUpperCase().indexOf(searchInput) > -1 || searchInput === "") &&
         (manufacturer.toUpperCase().indexOf(manufacturerFilter) > -1 || manufacturerFilter === "") &&
-        (modelType.toUpperCase().indexOf(typeFilter) > -1 || typeFilter === "") &&
+        (hiddenText.toUpperCase().indexOf(typeFilter) > -1 || typeFilter === "") &&
         (usage.toUpperCase().indexOf(usageFilter) > -1 || usageFilter === "") &&
         (year.toUpperCase().indexOf(yearFilter) > -1 || yearFilter === "") &&
-        (photos.toUpperCase().indexOf(photosFilter) > -1 || photosFilter === "") &&
-        (updatedDate.toUpperCase().indexOf(updatedFilter) > -1 || updatedFilter === "")
+        (dateMatches || updatedFilter === "")
       ) {
         tr[i].style.display = "";
         visibleRows++;
@@ -310,10 +341,11 @@ function filterTable() {
     }
   }
 
-  // Update row count after filtering
+  console.log(`Visible rows after filtering: ${visibleRows}`);
   updateRowCount();
 }
 
+// Theme Switcher Toggle
 function toggleTheme() {
   const body = document.body;
   const currentTheme = body.getAttribute("data-bs-theme");
@@ -646,4 +678,17 @@ function openOverlayModal(stockNumber) {
   modalIframe.src = `./overlay/?search=${stockNumber}`; // Set the src to the desired URL
   const overlayModal = new bootstrap.Modal(document.getElementById("overlayModal")); // Initialize the modal
   overlayModal.show(); // Show the modal
+}
+
+function resetFilters() {
+  // Clear all filter inputs
+  document.getElementById("searchFilter").value = "";
+  document.getElementById("yearFilter").value = "";
+  document.getElementById("manufacturerFilter").value = "";
+  document.getElementById("typeFilter").value = "";
+  document.getElementById("usageFilter").value = "";
+  document.getElementById("updatedFilter").value = "";
+
+  // Run the filter function with cleared values
+  filterTable();
 }

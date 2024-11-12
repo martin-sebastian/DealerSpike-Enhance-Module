@@ -7,7 +7,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="./img/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="./img/favicon-16x16.png" />
     <link rel="manifest" href="./img/site.webmanifest" />
-    <title>FOM Inventory</title>
+    <title>FOM Live Inventory</title>
     <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="./node_modules/bootstrap-icons/font/bootstrap-icons.css" />
     <link href="./css/font-awesome.css" rel="stylesheet" />
@@ -21,29 +21,7 @@
           <a class="navbar-brand" href="./">
             <img id="logo" src="./img/fom-app-logo-01.svg" alt="Logo" width="180" height="30.6" />
           </a>
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="/">Home</a>
-            </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"> Sales </a>
-              <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Inventory Tags</a></li>
-                <li><a class="dropdown-item" href="#">Another action</a></li>
-                <li><hr class="dropdown-divider" /></li>
-                <li><a class="dropdown-item" href="#">Something else here</a></li>
-              </ul>
-            </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"> Service </a>
-              <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">RO Labels</a></li>
-                <li><a class="dropdown-item" href="#">Another action</a></li>
-                <li><hr class="dropdown-divider" /></li>
-                <li><a class="dropdown-item" href="#">Something else here</a></li>
-              </ul>
-            </li>
-          </ul>
+
           <form class="d-flex flex-row d-none d-sm-block" role="search">
             <label for="searchFilter" class="visually-hidden">Search</label>
             <input
@@ -58,7 +36,7 @@
               style="width: 200px"
             />
             <datalist id="datalistOptions">
-              <!-- Options -->
+              <!-- Header Search Options -->
               <option value="3 Wheel Motorcycle"></option>
               <option value="ATV"></option>
               <option value="Boat Trailers"></option>
@@ -69,6 +47,7 @@
               <option value="PWC"></option>
               <option value="Pontoons"></option>
             </datalist>
+            <!-- Header Year Filter -->
             <select id="yearFilter" class="form-select d-inline-flex me-1" style="width: 90px">
               <option value="">Year</option>
               <option value="2025">2025</option>
@@ -88,7 +67,7 @@
               <option value="2015">2011</option>
               <option value="2015">2010</option>
             </select>
-
+            <!-- Header Manufacturer Filter -->
             <select id="manufacturerFilter" class="form-select d-inline-flex me-1" style="width: 150px">
               <option value="">Manufacturer</option>
               <option value="BMW">BMW</option>
@@ -107,9 +86,10 @@
               <option value="Victory Motorcycles">Victory Motorcycles</option>
               <option value="Yamaha">Yamaha</option>
             </select>
-
+            <!-- Header Date Filter -->
             <label for="updatedFilterLabel" class="visually-hidden">Date Updated:</label>
             <input type="date" id="updatedFilter" class="form-control d-inline-flex me-1" style="width: 160px" />
+            <button type="button" class="btn btn-danger" onclick="resetFilters()" style="margin-top: -4px">Reset</button>
           </form>
           <div class="toggles-group">
             <button id="toggleThemeButton" class="btn btn-outline-secondary px-3 mx-1" type="button">
@@ -213,8 +193,8 @@
               <option value="Used">Used</option>
             </select>
             <label for="updatedFilterLabel" class="visually-hidden">Date Updated:</label>
-            <input type="date" id="updatedFilter" class="form-control me-2" />
-            <button class="btn btn-danger" onclick="filterTable()">Reset all filters</button>
+            <input type="date" id="updatedFilter" class="form-control me-2" title="Filter vehicles by date updated" />
+            <button type="button" class="btn btn-danger" onclick="resetFilters()">Reset all filters</button>
             <nav class="side-menu-footer">V.0.1.0</nav>
           </div>
         </form>
@@ -229,6 +209,7 @@
           Results: <span id="rowCountDisplay"></span>
         </div>
         <div class="table-responsive w-100" style="overflow-x: auto">
+          <!-- Table for vehicles list -->
           <table id="vehiclesTable" class="table table-hover table-resposive align-middle">
             <thead>
               <tr>
@@ -236,12 +217,12 @@
                 <th class="text-center">Usage</th>
                 <th class="text-center">Year</th>
                 <th class="">Make</th>
-                <th class="">Model</th>
+                <th class="">Model Name</th>
                 <th class="visually-hidden">Type</th>
                 <th class="visually-hidden">Color</th>
                 <th class="text-start">Stock Number</th>
                 <th class="">DMS Price</th>
-                <th class="">Updated</th>
+                <th class="">Added / Changed</th>
                 <th class="text-center">Photos</th>
                 <th class="text-center">Details, Print Tags</th>
               </tr>

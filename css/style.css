@@ -3,6 +3,31 @@ body {
   margin: 0px;
   padding: 0;
 }
+
+/* Scrollbar Styles */
+
+/* width */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #333;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #444;
+  border-radius: 10px;
+  height: 50vh;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
 .search-width {
   max-width: 440px;
   width: 100%;
@@ -69,6 +94,12 @@ th {
   padding: 0 10px;
   color: #333;
 }
+.updated-dash-date {
+  font-size: 8px;
+  display: block;
+  margin: 4px 0;
+  color: #fff;
+}
 .print-header h2 {
   margin: 0;
   padding: 0;
@@ -116,7 +147,7 @@ th {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 50vh;
+  min-height: 100vh;
   height: 100%;
   width: 100%;
   color: #333;
@@ -217,6 +248,8 @@ th {
 .shadow {
   box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
 }
+
+ ${modelType}
 
 /* data table styles */
 .nowrap {
@@ -402,6 +435,12 @@ th {
   font-weight: bold;
   line-height: 20px;
   border-bottom: solid 1px #eee;
+}
+.vin-number {
+  display: block;
+  font-size: 10px !important;
+  font-weight: 400;
+  color: #666 !important;
 }
 
 @media screen and (max-width: 678px) {
