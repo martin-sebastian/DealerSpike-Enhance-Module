@@ -420,13 +420,24 @@ async function keyTag(stockNumber) {
       document.getElementById("modelColor").innerHTML = data.Color || "N/A";
       document.getElementById("modelVin").innerHTML = data.VIN || "N/A";
 
+      document.getElementById("modelYearVertical").innerHTML = data.ModelYear || "N/A";
+      document.getElementById("manufacturerVertical").innerHTML = data.Manufacturer || "N/A";
+      document.getElementById("modelNameVertical").innerHTML = data.ModelName || "N/A";
+      document.getElementById("modelVinVertical").innerHTML = data.VIN || "N/A";
+
       // Make sure keytagContainer is visible if previously hidden
       const keytagContainer = document.getElementById("keytagContainer");
       keytagContainer.classList.remove("hidden");
+
+      const keytagVerticalContainer = document.getElementById("keytagVerticalContainer");
+      keytagVerticalContainer.classList.remove("hidden");
     } else {
       // Hide key tag container and show error message if no data available
       const keytagContainer = document.getElementById("keytagContainer");
       keytagContainer.classList.add("hidden");
+
+      const keytagVerticalContainer = document.getElementById("keytagVerticalContainer");
+      keytagVerticalContainer.classList.add("hidden");
 
       document.getElementById("message").innerHTML = `
         <div class="warning-icon-container text-center">
@@ -489,7 +500,7 @@ function printKeyTag(event) {
             margin: default;
             @top {
               content: ""; /* No content for header */
-              }
+            }
             @bottom {
               content: ""; /* No content for footer */
             }
@@ -527,24 +538,25 @@ function printKeyTag(event) {
           #modelUsage {
             font-weight: bold;
             font-size: 10pt;
+            line-height: 12px;
             text-transform: uppercase;
-            border-bottom: 1px dashed #eee;
+            border-bottom: 1px solid #ddd;
           }
           #stockNumber {
             font-weight: bold;
-            font-size: 12pt;
-            border-bottom: 1px dashed #eee;
+            font-size: 16pt;
+            border-bottom: 1px solid #ddd;
           }
           #modelYear {
             font-size: 8pt;
-            border-bottom: 1px dashed #eee;
+            border-bottom: 1px solid #ddd;
           }
           #manufacturer {
-            font-size: 8pt;
-            border-bottom: 1px dashed #eee;
+            font-size: 10pt;
+            border-bottom: 1px solid #ddd;
           }
           #modelName {
-            font-size: 8pt;
+            font-size: 10pt;
             border-bottom: 1px dashed #eee;
           }
           #modelCode {
@@ -558,6 +570,91 @@ function printKeyTag(event) {
           #modelVin {
             font-size: 8pt;
           }
+          #modelUsage::after {
+            display: block;
+            text-align: left;
+            margin-bottom: -1px;
+            margin-top: -4px;
+            content: "USAGE";
+            font-size: 6px !important;
+            line-height: 8px;
+            color: #ddd;
+          }
+          #stockNumber::after {
+            display: block;
+            text-align: left;
+            margin-bottom: -1px;
+            margin-top: -4px;
+            content: "STOCK NUMBER";
+            font-size: 6px !important;
+            line-height: 8px;
+            color: #ddd;
+          }
+          #modelYear::after {
+            display: block;
+            text-align: left;
+            margin-bottom: -1px;
+            margin-top: -4px;
+            content: "YEAR";
+            font-size: 6px !important;
+            line-height: 8px;
+            color: #ddd;
+          }
+          #manufacturer::after {
+            display: block;
+            text-align: left;
+            margin-bottom: -1px;
+            margin-top: -4px;
+            content: "MANUFACTURER";
+            font-size: 6px !important;
+            line-height: 8px;
+            color: #ddd;
+          }
+          #modelName::after {
+            display: block;
+            text-align: left;
+            margin-bottom: -1px;
+            margin-top: -4px;
+            content: "MODEL";
+            font-size: 6px !important;
+            line-height: 8px;
+            color: #ddd;
+          }
+          #modelCode::after {
+            display: block;
+            text-align: left;
+            margin-bottom: -1px;
+            margin-top: -4px;
+            content: "CODE";
+            font-size: 6px !important;
+            line-height: 8px;
+            color: #ddd;
+          }
+          #modelColor::after {
+            display: block;
+            text-align: left;
+            margin-bottom: -1px;
+            margin-top: -4px;
+            content: "COLOR";
+            font-size: 6px !important;
+            line-height: 8px;
+            color: #ddd;
+          }
+          #modelVin::after {
+            display: block;
+            text-align: left;
+            margin-bottom: -1px;
+            margin-top: -4px;
+            content: "VIN";
+            font-size: 6px !important;
+            line-height: 8px;
+            color: #ddd;
+          }
+          /* New styles for the rotated label */
+          .rotated-label-text {
+            writing-mode: vertical-rl;
+            font-size: 10pt;
+          }
         </style>
       </head>
       <body>
@@ -570,6 +667,13 @@ function printKeyTag(event) {
           <div id="modelCode">${keytagContainer.querySelector("#modelCode").textContent}</div>
           <div id="modelColor">${keytagContainer.querySelector("#modelColor").textContent}</div>
           <div id="modelVin">${keytagContainer.querySelector("#modelVin").textContent}</div>
+        </div>
+        <div id="keytagContainer" class="text-start">
+          <span class="rotated-label-text text-start">
+            ${keytagContainer.querySelector("#modelYear").textContent}
+            ${keytagContainer.querySelector("#manufacturer").textContent}
+            ${keytagContainer.querySelector("#modelName").textContent}
+          </span>
         </div>
       </body>
     </html>

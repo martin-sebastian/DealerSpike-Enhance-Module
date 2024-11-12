@@ -281,15 +281,24 @@
               <div class="modal-body dots">
                 <div class="main-content">
                   <!-- Elements to display the fetched data -->
-                  <div id="keytagContainer" class="key-tag-container zoomElement text-truncate">
+                  <div id="keytagContainer" class="key-tag-container zoomElement text-truncate mx-1">
                     <div id="modelUsage" class="model-usage text-truncate">New or Used</div>
-                    <div id="stockNumber" class="stock-number text-truncate">Stock Number</div>
+                    <div id="stockNumber" class="stock-number">Stock Number</div>
                     <div id="modelYear" class="model-year text-truncate">Year</div>
                     <div id="manufacturer" class="manufacturer text-truncate">Manufacturer</div>
                     <div id="modelName" class="model-name text-truncate">Model Name</div>
                     <div id="modelCode" class="model-code text-truncate">Model Code</div>
                     <div id="modelColor" class="model-color text-truncate">Model Color</div>
                     <div id="modelVin" class="model-vin text-truncate">VIN NUMBER</div>
+                  </div>
+                  <!-- New rotated label -->
+                  <div id="keytagVerticalContainer" class="key-tag-container zoomElement text-truncate mx-1">
+                    <div class="rotated-label-text">
+                      <span id="modelYearVertical" class="model-year-vertical text-truncate">Year</span>
+
+                      <span id="modelNameVertical" class="model-name-vertical text-truncate">Model Name</span><br />
+                      <span id="modelVinVertical" class="model-vin-vertical text-truncate">VIN NUMBER</span>
+                    </div>
                   </div>
                   <div id="message"></div>
                 </div>
