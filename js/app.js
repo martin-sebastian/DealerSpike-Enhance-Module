@@ -198,6 +198,7 @@ async function fetchData() {
       console.log("Data successfully inserted into table");
       const tooltipTriggerList = document.querySelectorAll('[data-toggle="tooltip"]');
       //const tooltipList = [...tooltipTriggerList].map((tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl));
+
       // Event listeners for input and dropdown changes
       document.getElementById("searchFilter").addEventListener("keyup", filterTable);
       document.getElementById("yearFilter").addEventListener("change", filterTable);
@@ -408,6 +409,7 @@ async function keyTag(stockNumber) {
     }
 
     const data = await response.json();
+    console.log("Data fetched from portal successfully:", data);
 
     if (typeof data.StockNumber !== "undefined") {
       // Populate the modal with new data
@@ -420,10 +422,39 @@ async function keyTag(stockNumber) {
       document.getElementById("modelColor").innerHTML = data.Color || "N/A";
       document.getElementById("modelVin").innerHTML = data.VIN || "N/A";
 
-      document.getElementById("modelYearVertical").innerHTML = data.ModelYear || "N/A";
-      document.getElementById("manufacturerVertical").innerHTML = data.Manufacturer || "N/A";
-      document.getElementById("modelNameVertical").innerHTML = data.ModelName || "N/A";
-      document.getElementById("modelVinVertical").innerHTML = data.VIN || "N/A";
+      // Check if elements exist before setting innerHTML
+      const modelYearVertical = document.getElementById("modelYearVertical");
+      const manufacturerVertical = document.getElementById("manufacturerVertical");
+      const modelNameVertical = document.getElementById("modelNameVertical");
+      const modelVinVertical = document.getElementById("modelVinVertical");
+
+      if (modelYearVertical) {
+        modelYearVertical.innerHTML = data.ModelYear || "N/A";
+        console.log("modelYearVertical updated:", modelYearVertical.innerHTML);
+      } else {
+        console.error("Element with ID 'modelYearVertical' not found.");
+      }
+
+      if (manufacturerVertical) {
+        manufacturerVertical.innerHTML = data.Manufacturer || "N/A";
+        console.log("manufacturerVertical updated:", manufacturerVertical.innerHTML);
+      } else {
+        console.error("Element with ID 'manufacturerVertical' not found.");
+      }
+
+      if (modelNameVertical) {
+        modelNameVertical.innerHTML = data.ModelName || "N/A";
+        console.log("modelNameVertical updated:", modelNameVertical.innerHTML);
+      } else {
+        console.error("Element with ID 'modelNameVertical' not found.");
+      }
+
+      if (modelVinVertical) {
+        modelVinVertical.innerHTML = data.VIN || "N/A";
+        console.log("modelVinVertical updated:", modelVinVertical.innerHTML);
+      } else {
+        console.error("Element with ID 'modelVinVertical' not found.");
+      }
 
       // Make sure keytagContainer is visible if previously hidden
       const keytagContainer = document.getElementById("keytagContainer");
@@ -671,8 +702,8 @@ function printKeyTag(event) {
         <div id="keytagContainer" class="text-start">
           <span class="rotated-label-text text-start">
             ${keytagContainer.querySelector("#modelYear").textContent}
-            ${keytagContainer.querySelector("#manufacturer").textContent}
             ${keytagContainer.querySelector("#modelName").textContent}
+            ${keytagContainer.querySelector("#modelVin").textContent}
           </span>
         </div>
       </body>

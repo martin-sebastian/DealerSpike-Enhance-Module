@@ -492,42 +492,38 @@ th {
 /* Vertical Label */
 .rotated-label-text {
   writing-mode: vertical-rl;
-  position: relative;
-  top: 0.05in;
-  left: 0.9in;
-  text-align: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+  padding: 2px 0;
+  height: 2in;
 }
 .model-year-vertical {
-  text-align: left;
   font-size: 16px;
-  font-weight: bold;
-  line-height: 18px;
+  font-weight: 600;
+  line-height: 16px;
 }
 .manufacturer-vertical {
-  text-align: left;
+  display: none;
   font-size: 16px;
-  font-weight: bold;
+  font-weight: 600;
   line-height: 18px;
 }
 .model-name-vertical {
-  text-align: center;
   font-size: 16px;
-  line-height: 18px;
-  font-weight: bold;
-  white-space: nowrap;
+  font-weight: 800;
+  line-height: 16px;
+  height: 1.3in;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 .model-vin-vertical {
-  padding-right: 1px;
-  text-align: left;
-  font-size: 14px;
-  line-height: 10px;
+  width: 100%;
+  font-size: 16px;
   font-weight: 400;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  border-right: solid 1px #eee;
+  line-height: 18px;
 }
 
 @media screen and (max-width: 678px) {
