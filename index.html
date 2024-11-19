@@ -49,6 +49,7 @@
             </datalist>
             <select id="yearFilter" class="form-select d-inline-flex me-1" style="width: 90px">
               <option value="">Year</option>
+              <option value="2026">2026</option>
               <option value="2025">2025</option>
               <option value="2024">2024</option>
               <option value="2023">2023</option>
@@ -92,7 +93,7 @@
               <i id="theme-icon" class="bi bi-moon-stars"></i>
             </button>
             <button
-              class="btn btn-danger py-0 px-2 mx-1"
+              class="btn btn-danger py-0 px-2 mx-1 d-block d-sm-none"
               type="button"
               data-bs-toggle="offcanvas"
               data-bs-target="#offcanvasScrolling"
@@ -107,7 +108,7 @@
     </header>
 
     <div
-      class="offcanvas offcanvas-end"
+      class="offcanvas offcanvas-end d-block d-sm-none"
       data-bs-scroll="true"
       data-bs-backdrop="false"
       tabindex="-1"
@@ -124,7 +125,7 @@
             <label for="searchFilter" class="visually-hidden">Search</label>
             <input
               type="search"
-              class="form-control d-block d-sm-none"
+              class="form-control"
               placeholder="Search"
               aria-label="Search"
               id="searchFilter"
@@ -133,6 +134,7 @@
             />
             <select id="yearFilter" class="form-select me-2">
               <option value="">Year</option>
+              <option value="2026">2026</option>
               <option value="2025">2025</option>
               <option value="2024">2024</option>
               <option value="2023">2023</option>
@@ -152,6 +154,7 @@
             </select>
             <select id="manufacturerFilter" class="form-select me-2">
               <option value="">Manufacturer</option>
+              <option value="">All</option>
               <option value="BMW">BMW</option>
               <option value="Can-Am">Can-Am</option>
               <option value="Harley-Davidson">Harley Davidson</option>
