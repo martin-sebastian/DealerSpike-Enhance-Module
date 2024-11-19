@@ -107,9 +107,6 @@
               <option value="Victory Motorcycles">Victory Motorcycles</option>
               <option value="Yamaha">Yamaha</option>
             </select>
-
-            <label for="updatedFilterLabel" class="visually-hidden">Date Updated:</label>
-            <input type="date" id="updatedFilter" class="form-control d-inline-flex me-1" style="width: 160px" />
           </form>
           <div class="toggles-group">
             <button id="toggleThemeButton" class="btn btn-outline-secondary px-3 mx-1" type="button">
@@ -226,7 +223,7 @@
         <div class="spacer-75"></div>
         <div class="d-flex pb-2 text-secondary">
           <!-- element for displaying row count -->
-          Results: <span id="rowCountDisplay"></span>
+          Results: <span class="text-white mx-1" id="rowCountDisplay"></span>
         </div>
         <div class="table-responsive w-100" style="overflow-x: auto">
           <table id="vehiclesTable" class="table table-hover table-resposive align-middle">
@@ -272,13 +269,13 @@
         </div>
 
         <div class="modal fade" id="keytagModal" tabindex="-1" aria-labelledby="keytagModalLabel" aria-hidden="true">
-          <div class="modal-dialog modal-fullscreen">
+          <div class="modal-dialog modal-xl">
             <div class="modal-content">
               <div class="modal-header d-flex flex-row justify-content-between d-print-none">
                 <h1 class="modal-title fs-5" id="keytagModalLabel">StockNumber</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
-              <div class="modal-body dots">
+              <div class="modal-body bg-white dots">
                 <div class="main-content">
                   <!-- Elements to display the fetched data -->
                   <div id="keytagContainer" class="key-tag-container zoomElement text-truncate mx-1">
@@ -292,12 +289,13 @@
                     <div id="modelVin" class="model-vin text-truncate">VIN NUMBER</div>
                   </div>
                   <!-- New rotated label -->
-                  <div id="keytagVerticalContainer" class="key-tag-container zoomElement mx-1">
-                    <div class="rotated-label-text text-truncate">
-                      <div id="modelYearVertical" class="model-year-vertical my-1">Year</div>
-                      <div id="manufacturerVertical" class="manufacturer-vertical my-1">Manufacturer</div>
-                      <div id="modelNameVertical" class="model-name-vertical">Model Name</div>
-                      <div id="modelVinVertical" class="model-vin-vertical my-1">VIN</div>
+                  <div id="keytagVerticalContainer" class="key-tag-container mx-1">
+                    <div class="rotated-label-text text-truncate d-flex flex-column gap-1">
+                      <div class="year-make-container d-flex justify-content-center" style="height: 1.9in">
+                        <span id="modelYearVertical" class="model-year-vertical">Year</span>
+                        <span id="modelNameVertical" class="model-name-vertical">Model Name</span>
+                      </div>
+                      <div id="modelVinVertical" class="model-vin-vertical">VIN</div>
                     </div>
                   </div>
                   <div id="message"></div>

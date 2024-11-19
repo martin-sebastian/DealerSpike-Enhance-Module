@@ -588,15 +588,15 @@ function printKeyTag(event) {
           }
           #modelName {
             font-size: 10pt;
-            border-bottom: 1px dashed #eee;
+            border-bottom: 1px solid #eee;
           }
           #modelCode {
             font-size: 8pt;
-            border-bottom: 1px dashed #eee;
+            border-bottom: 1px solid #eee;
           }
           #modelColor {
             font-size: 8pt;
-            border-bottom: 1px dashed #eee;
+            border-bottom: 1px solid #eee;
           }
           #modelVin {
             font-size: 8pt;
@@ -700,7 +700,7 @@ function printKeyTag(event) {
           <div id="modelVin">${keytagContainer.querySelector("#modelVin").textContent}</div>
         </div>
         <div id="keytagContainer" class="text-start">
-          <span class="rotated-label-text text-start">
+          <span class="rotated-label-text">
             ${keytagContainer.querySelector("#modelYear").textContent}
             ${keytagContainer.querySelector("#modelName").textContent}
             ${keytagContainer.querySelector("#modelVin").textContent}
