@@ -697,23 +697,25 @@ function printKeyTag(event) {
           .rotated-label-text {
             writing-mode: vertical-rl;
             font-size: 18pt;
-            line-height: 20pt;
+            line-height: 18pt;
             font-weight: 700;
             color: black;
           }
           .label-text-lower-vin {
             font-size: 12pt;
-            line-height: 14pt;
+            line-height: 12pt;
             font-weight: 500;
+            margin-right: -10px;
+            padding: 0;
             color: black;
           }
           .label-text-lower-model {
-            font-size: 8pt;
-            line-height: 8pt;
-            font-weight: 400;
+            font-size: 9pt;
+            line-height: 9pt;
+            font-weight: 700;
             color: black;
             padding: 0;
-            margin: 0;
+            margin-right: -10px;
           }
         </style>
       </head>
@@ -734,7 +736,7 @@ function printKeyTag(event) {
             ${keytagContainer.querySelector("#manufacturer").textContent}<br>
             <span class="label-text-lower-vin">
             ${keytagContainer.querySelector("#modelVin").textContent}
-            </span>
+            </span><br>
             <span class="label-text-lower-model">
             ${keytagContainer.querySelector("#modelName").textContent}
             </span>
@@ -778,6 +780,13 @@ document.addEventListener("DOMContentLoaded", () => {
     console.error("Print Key Tag button not found");
   }
 });
+
+function openKeyTagsByStockNumberModal(stockNumber) {
+  const modalIframe = document.getElementById("keyTagsByStockNumberModal");
+  modalIframe.src = `https://newportal.flatoutmotorcycles.com/apps/keytags/keytag.html?vehicle=`;
+  const keyTagsByStockNumberModal = new bootstrap.Modal(document.getElementById("keyTagsByStockNumberModal"));
+  keyTagsByStockNumberModal.show();
+}
 
 function openHangTagsModal(stockNumber) {
   const modalIframe = document.getElementById("hangTagsIframe");

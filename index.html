@@ -18,9 +18,16 @@
     <header class="fixed-top d-print-none">
       <nav class="navbar navbar-expand-xl bg-body-tertiary bg-blur">
         <div class="container-fluid">
-          <a class="navbar-brand" href="./">
-            <img id="logo" class="me-5" src="./img/fom-app-logo-01.svg" alt="Logo" width="180" height="30.6" />
-          </a>
+          <div class="navbar-left">
+            <a class="navbar-brand" href="./">
+              <img id="logo" class="me-2" src="./img/fom-app-logo-01.svg" alt="Logo" width="180" height="30.6" />
+            </a>
+
+            <button type="button" class="btn btn-danger btn-sm action-button mx-1 my-0 text-end" data-toggle="tooltip" title="Print Key Tags by Stock Number" onclick="openKeyTagsByStockNumberModal('${stockNumber}')">
+              <i class="bi bi-tag"></i> KEY TAG<br>
+            </button>
+          </div>
+
 
           <form class="d-flex flex-row d-none d-sm-block" role="search">
             <label for="searchFilter" class="visually-hidden">Search</label>
@@ -230,6 +237,7 @@
             </tbody>
           </table>
         </div>
+    </main>
 
         <div class="modal fade" id="overlayModal" tabindex="-1" aria-labelledby="overlayModalLabel" aria-hidden="true">
           <div class="modal-dialog modal-fullscreen">
@@ -298,7 +306,26 @@
           </div>
         </div>
       </div>
-    </main>
+
+      <div class="modal fade" id="keyTagsByStockNumberModal" tabindex="-1" aria-labelledby="keyTagsByStockNumberModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="keyTagsByStockNumberModalLabel">Search Stock Number to Generate Tag</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body m-0 p-0">
+              <iframe id="keyTagsByStockNumberModal" src="https://newportal.flatoutmotorcycles.com/apps/keytags/keytag.html?vehicle=" style="width: 100%; height: 99%; border: none; margin: 0; padding: 0"></iframe>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              
+              <!-- Print Button -->
+            </div>
+          </div>
+        </div>
+      </div>
+    
 
     <div class="modal fade" id="hangTagsModal" tabindex="-1" aria-labelledby="hangTagsModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-fullscreen">
@@ -307,12 +334,12 @@
             <h5 class="modal-title" id="hangTagsModalLabel">Hang Tags</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <div class="modal-body m-0 p-0">
-            <iframe id="hangTagsIframe" src="" style="width: 100%; height: 99%; border: none; margin: 0; padding: 0"></iframe>
+          <div class="h-100">
+            <iframe id="hangTagsIframe" src="" style="width: 100%; height: 100%; border: none; margin: 0; padding: 0"></iframe>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-danger pe-3" onclick="printIframeContent()"><i class="bi bi-printer me-2"></i> Print Hang Tag</button>
+            <button type="button" class="btn btn-danger me-3" onclick="printIframeContent()"><i class="bi bi-printer me-2"></i> Print Hang Tag</button>
             <!-- Print Button -->
           </div>
         </div>
