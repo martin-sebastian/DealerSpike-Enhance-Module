@@ -541,7 +541,6 @@ function printKeyTag(event) {
             font-family: Arial, sans-serif;
             font-size: 8pt;
             font-weight: 600;
-            line-height: 1.5;
             margin: 0 auto;
             padding: 0;
             width: 1.5in;
@@ -709,7 +708,7 @@ function printKeyTag(event) {
             color: black;
           }
           .label-text-lower-model {
-            font-size: 7pt;
+            font-size: 8pt;
             line-height: 8pt;
             font-weight: 400;
             color: black;
