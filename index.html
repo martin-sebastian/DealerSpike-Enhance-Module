@@ -19,31 +19,9 @@
       <nav class="navbar navbar-expand-xl bg-body-tertiary bg-blur">
         <div class="container-fluid">
           <a class="navbar-brand" href="./">
-            <img id="logo" src="./img/fom-app-logo-01.svg" alt="Logo" width="180" height="30.6" />
+            <img id="logo" class="me-5" src="./img/fom-app-logo-01.svg" alt="Logo" width="180" height="30.6" />
           </a>
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="/">Home</a>
-            </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"> Sales </a>
-              <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Inventory Tags</a></li>
-                <li><a class="dropdown-item" href="#">Another action</a></li>
-                <li><hr class="dropdown-divider" /></li>
-                <li><a class="dropdown-item" href="#">Something else here</a></li>
-              </ul>
-            </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"> Service </a>
-              <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">RO Labels</a></li>
-                <li><a class="dropdown-item" href="#">Another action</a></li>
-                <li><hr class="dropdown-divider" /></li>
-                <li><a class="dropdown-item" href="#">Something else here</a></li>
-              </ul>
-            </li>
-          </ul>
+
           <form class="d-flex flex-row d-none d-sm-block" role="search">
             <label for="searchFilter" class="visually-hidden">Search</label>
             <input
@@ -53,7 +31,7 @@
               aria-label="Search"
               id="searchFilter"
               list="datalistOptions"
-              title="Filter vehicles by year, name, stock number, or VIN"
+              title="Filter vehicles by year, make, model, stock number or VIN"
               autocomplete="off"
               style="width: 200px"
             />
@@ -91,6 +69,7 @@
 
             <select id="manufacturerFilter" class="form-select d-inline-flex me-1" style="width: 150px">
               <option value="">Manufacturer</option>
+              <option value=""">All</option>
               <option value="BMW">BMW</option>
               <option value="Can-Am">Can-Am</option>
               <option value="Harley-Davidson">Harley Davidson</option>
