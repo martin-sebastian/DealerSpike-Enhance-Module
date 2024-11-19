@@ -697,16 +697,24 @@ function printKeyTag(event) {
           /* New styles for the rotated label */
           .rotated-label-text {
             writing-mode: vertical-rl;
-            font-size: 16pt;
-            line-height: 18px;
+            font-size: 18pt;
+            line-height: 20pt;
             font-weight: 700;
             color: black;
           }
-          .label-text-lower {
-            font-size: 10pt;
-            line-height: 12px;
+          .label-text-lower-vin {
+            font-size: 12pt;
+            line-height: 14pt;
             font-weight: 500;
             color: black;
+          }
+          .label-text-lower-model {
+            font-size: 7pt;
+            line-height: 8pt;
+            font-weight: 400;
+            color: black;
+            padding: 0;
+            margin: 0;
           }
         </style>
       </head>
@@ -725,8 +733,10 @@ function printKeyTag(event) {
           <span class="rotated-label-text">
             ${keytagContainer.querySelector("#modelYear").textContent}
             ${keytagContainer.querySelector("#manufacturer").textContent}<br>
-            <span class="label-text-lower"><br>
+            <span class="label-text-lower-vin">
             ${keytagContainer.querySelector("#modelVin").textContent}
+            </span>
+            <span class="label-text-lower-model">
             ${keytagContainer.querySelector("#modelName").textContent}
             </span>
           </span>
