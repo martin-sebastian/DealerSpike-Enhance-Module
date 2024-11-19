@@ -15,23 +15,47 @@
     <link rel="stylesheet" href="./css/print.css" media="print" />
   </head>
   <body data-bs-theme="dark">
-    <header class="d-print-none">
-      <nav class="navbar bg-body-tertiary fixed-top bg-blur">
+    <header class="fixed-top d-print-none">
+      <nav class="navbar navbar-expand-xl bg-body-tertiary bg-blur">
         <div class="container-fluid">
           <a class="navbar-brand" href="./">
             <img id="logo" src="./img/fom-app-logo-01.svg" alt="Logo" width="180" height="30.6" />
           </a>
-          <form class="d-flex d-none d-sm-block" role="search">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="/">Home</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"> Sales </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Inventory Tags</a></li>
+                <li><a class="dropdown-item" href="#">Another action</a></li>
+                <li><hr class="dropdown-divider" /></li>
+                <li><a class="dropdown-item" href="#">Something else here</a></li>
+              </ul>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"> Service </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">RO Labels</a></li>
+                <li><a class="dropdown-item" href="#">Another action</a></li>
+                <li><hr class="dropdown-divider" /></li>
+                <li><a class="dropdown-item" href="#">Something else here</a></li>
+              </ul>
+            </li>
+          </ul>
+          <form class="d-flex flex-row d-none d-sm-block" role="search">
             <label for="searchFilter" class="visually-hidden">Search</label>
             <input
               type="search"
-              class="form-control search-width mx-1"
+              class="form-control d-inline-flex search-width mx-1"
               placeholder="Search"
               aria-label="Search"
               id="searchFilter"
               list="datalistOptions"
               title="Filter vehicles by year, name, stock number, or VIN"
               autocomplete="off"
+              style="width: 200px"
             />
             <datalist id="datalistOptions">
               <!-- Options -->
@@ -45,6 +69,44 @@
               <option value="PWC"></option>
               <option value="Pontoons"></option>
             </datalist>
+            <select id="yearFilter" class="form-select d-inline-flex me-1" style="width: 90px">
+              <option value="">Year</option>
+              <option value="2025">2025</option>
+              <option value="2024">2024</option>
+              <option value="2023">2023</option>
+              <option value="2022">2022</option>
+              <option value="2021">2021</option>
+              <option value="2020">2020</option>
+              <option value="2019">2019</option>
+              <option value="2018">2018</option>
+              <option value="2017">2017</option>
+              <option value="2016">2016</option>
+              <option value="2015">2015</option>
+              <option value="2015">2014</option>
+              <option value="2015">2013</option>
+              <option value="2015">2012</option>
+              <option value="2015">2011</option>
+              <option value="2015">2010</option>
+            </select>
+
+            <select id="manufacturerFilter" class="form-select d-inline-flex me-1" style="width: 150px">
+              <option value="">Manufacturer</option>
+              <option value="BMW">BMW</option>
+              <option value="Can-Am">Can-Am</option>
+              <option value="Harley-Davidson">Harley Davidson</option>
+              <option value="Honda">Honda</option>
+              <option value="Indian Motorcycle">Indian Motorcycle</option>
+              <option value="Kawasaki">Kawasaki</option>
+              <option value="Scarab">Scarab</option>
+              <option value="Sea-Doo">Sea-Doo</option>
+              <option value="South Bay">South Bay</option>
+              <option value="Suzuki">Suzuki</option>
+              <option value="Suzuki Marine">Suzuki Marine</option>
+              <option value="Polaris Industries">Polaris Industries</option>
+              <option value="Vanderhall">Vanderhall</option>
+              <option value="Victory Motorcycles">Victory Motorcycles</option>
+              <option value="Yamaha">Yamaha</option>
+            </select>
           </form>
           <div class="toggles-group">
             <button id="toggleThemeButton" class="btn btn-outline-secondary px-3 mx-1" type="button">
@@ -74,7 +136,7 @@
       aria-labelledby="offcanvasScrollingLabel"
     >
       <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Filters</h5>
+        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">More Filters</h5>
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
       </div>
       <div class="offcanvas-body">
@@ -147,11 +209,8 @@
               <option value="New">New</option>
               <option value="Used">Used</option>
             </select>
-            <select id="photosFilter" class="form-select me-2">
-              <option value="">In-House Photos</option>
-              <option value="Done">Done</option>
-              <option value="Needs Photos">Needs Photos</option>
-            </select>
+            <label for="updatedFilterLabel" class="visually-hidden">Date Updated:</label>
+            <input type="date" id="updatedFilter" class="form-control me-2" />
             <button class="btn btn-danger" onclick="filterTable()">Reset all filters</button>
             <nav class="side-menu-footer">V.0.1.0</nav>
           </div>
@@ -164,7 +223,7 @@
         <div class="spacer-75"></div>
         <div class="d-flex pb-2 text-secondary">
           <!-- element for displaying row count -->
-          Results: <span id="rowCountDisplay"></span>
+          Results: <span class="text-white mx-1" id="rowCountDisplay"></span>
         </div>
         <div class="table-responsive w-100" style="overflow-x: auto">
           <table id="vehiclesTable" class="table table-hover table-resposive align-middle">
@@ -210,24 +269,34 @@
         </div>
 
         <div class="modal fade" id="keytagModal" tabindex="-1" aria-labelledby="keytagModalLabel" aria-hidden="true">
-          <div class="modal-dialog modal-fullscreen">
+          <div class="modal-dialog modal-xl">
             <div class="modal-content">
               <div class="modal-header d-flex flex-row justify-content-between d-print-none">
                 <h1 class="modal-title fs-5" id="keytagModalLabel">StockNumber</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
-              <div class="modal-body dots">
+              <div class="modal-body bg-white dots">
                 <div class="main-content">
                   <!-- Elements to display the fetched data -->
-                  <div id="keytagContainer" class="key-tag-container zoomElement text-truncate">
+                  <div id="keytagContainer" class="key-tag-container zoomElement text-truncate mx-1">
                     <div id="modelUsage" class="model-usage text-truncate">New or Used</div>
-                    <div id="stockNumber" class="stock-number text-truncate">Stock Number</div>
+                    <div id="stockNumber" class="stock-number">Stock Number</div>
                     <div id="modelYear" class="model-year text-truncate">Year</div>
                     <div id="manufacturer" class="manufacturer text-truncate">Manufacturer</div>
                     <div id="modelName" class="model-name text-truncate">Model Name</div>
                     <div id="modelCode" class="model-code text-truncate">Model Code</div>
                     <div id="modelColor" class="model-color text-truncate">Model Color</div>
                     <div id="modelVin" class="model-vin text-truncate">VIN NUMBER</div>
+                  </div>
+                  <!-- New rotated label -->
+                  <div id="keytagVerticalContainer" class="key-tag-container mx-1">
+                    <div class="rotated-label-text text-truncate d-flex flex-column gap-1">
+                      <div class="year-make-container d-flex justify-content-center" style="height: 1.9in">
+                        <span id="modelYearVertical" class="model-year-vertical">Year</span>
+                        <span id="modelNameVertical" class="model-name-vertical">Model Name</span>
+                      </div>
+                      <div id="modelVinVertical" class="model-vin-vertical">VIN</div>
+                    </div>
                   </div>
                   <div id="message"></div>
                 </div>
@@ -255,6 +324,25 @@
           </div>
           <div class="modal-body m-0 p-0">
             <iframe id="hangTagsIframe" src="" style="width: 100%; height: 99%; border: none; margin: 0; padding: 0"></iframe>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-danger pe-3" onclick="printIframeContent()"><i class="bi bi-printer me-2"></i> Print Hang Tag</button>
+            <!-- Print Button -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="roTagModal" tabindex="-1" aria-labelledby="roTagModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-fullscreen">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="roTagModalLabel">Hang Tags</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body m-0 p-0">
+            <iframe id="roTagIframe" src="" style="width: 100%; height: 99%; border: none; margin: 0; padding: 0"></iframe>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

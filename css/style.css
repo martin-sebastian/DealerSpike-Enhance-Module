@@ -1,17 +1,18 @@
 html,
 body {
   margin: 0px;
-  padding: 0px;
+  padding: 0;
 }
 .search-width {
   max-width: 440px;
   width: 100%;
 }
 .dots {
-  color: #222;
-  background-color: #eee;
   background-image: url("../img/dots.png") !important;
   background-repeat: repeat;
+}
+.bg-white {
+  background: #fff;
 }
 .btn-icon {
   background: none;
@@ -119,10 +120,6 @@ th {
   min-height: 50vh;
   height: 100%;
   width: 100%;
-  color: #333;
-  background-color: #eee;
-  background-image: url("../img/dots.png") !important;
-  background-repeat: repeat;
 }
 .side-menu-footer {
   display: flex;
@@ -140,6 +137,11 @@ th {
   display: block;
   width: 100%;
   height: 100px;
+}
+.spacer-25 {
+  display: block;
+  width: 100%;
+  height: 25px;
 }
 .spacer-50 {
   display: block;
@@ -160,6 +162,16 @@ th {
   display: block;
   width: 100%;
   height: 100px;
+}
+.spacer-125 {
+  display: block;
+  width: 100%;
+  height: 125px;
+}
+.spacer-150 {
+  display: block;
+  width: 100%;
+  height: 150px;
 }
 .spacer-300 {
   display: block;
@@ -306,7 +318,10 @@ th {
   text-align: center;
   font-size: large;
 }
-
+.rotated-label {
+  transform: rotate(90deg);
+  transform-origin: right;
+}
 .blank-line {
   background: #ccc;
   border-radius: 4px;
@@ -321,6 +336,7 @@ th {
   width: 1.5in;
   height: 2in;
   background: #fff;
+  color: #000;
   zoom: 2;
 }
 .keytag-label {
@@ -332,20 +348,22 @@ th {
 .model-usage {
   text-align: center;
   font-size: 12px;
-  line-height: 18px;
+  line-height: 14px;
   font-weight: bold;
   border-bottom: solid 1px #eee;
 }
 .stock-number {
   text-align: center;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: bold;
+  line-height: 26px;
   border-bottom: solid 1px #eee;
 }
 .model-year {
   text-align: center;
-  font-size: 12px;
+  font-size: 18px;
   font-weight: bold;
+  line-height: 20px;
   border-bottom: solid 1px #eee;
 }
 .manufacturer {
@@ -356,8 +374,8 @@ th {
 }
 .model-name {
   text-align: center;
-  font-size: 12px;
-  line-height: 24px;
+  font-size: 14px;
+  line-height: 20px;
   font-weight: bold;
   white-space: nowrap;
   overflow: hidden;
@@ -366,15 +384,15 @@ th {
 }
 .model-code {
   text-align: center;
-  font-size: 11px;
-  line-height: 24px;
+  font-size: 14px;
+  line-height: 18px;
   font-weight: bold;
   border-bottom: solid 1px #eee;
 }
 .model-color {
   text-align: center;
   font-size: 12px;
-  line-height: 20px;
+  line-height: 18px;
   font-weight: bold;
   white-space: nowrap;
   overflow: hidden;
@@ -383,10 +401,128 @@ th {
 }
 .model-vin {
   text-align: center;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: bold;
-  line-height: 20px;
-  border-bottom: solid 1px #eee;
+  line-height: 18px;
+}
+.model-usage::after {
+  display: block;
+  text-align: left;
+  margin-bottom: -1px;
+  margin-top: -4px;
+  content: "USAGE";
+  font-size: 6px !important;
+  line-height: 8px;
+  color: #ccc;
+}
+.stock-number::after {
+  display: block;
+  text-align: left;
+  margin-bottom: -1px;
+  margin-top: -4px;
+  content: "STOCK NUMBER";
+  font-size: 6px !important;
+  line-height: 8px;
+  color: #ccc;
+}
+.model-year::after {
+  display: block;
+  text-align: left;
+  margin-bottom: -1px;
+  margin-top: -4px;
+  content: "YEAR";
+  font-size: 6px !important;
+  line-height: 8px;
+  color: #ccc;
+}
+.manufacturer::after {
+  display: block;
+  text-align: left;
+  margin-bottom: -1px;
+  margin-top: -4px;
+  content: "MANUFACTURER";
+  font-size: 6px !important;
+  line-height: 8px;
+  color: #ccc;
+}
+.model-name::after {
+  display: block;
+  text-align: left;
+  margin-bottom: -1px;
+  margin-top: -4px;
+  content: "MODEL";
+  font-size: 6px !important;
+  line-height: 8px;
+  color: #ccc;
+}
+.model-code::after {
+  display: block;
+  text-align: left;
+  margin-bottom: -1px;
+  margin-top: -4px;
+  content: "CODE";
+  font-size: 6px !important;
+  line-height: 8px;
+  color: #ccc;
+}
+.model-color::after {
+  display: block;
+  text-align: left;
+  margin-bottom: -1px;
+  margin-top: -4px;
+  content: "COLOR";
+  font-size: 6px !important;
+  line-height: 8px;
+  color: #ccc;
+}
+.model-vin::after {
+  display: block;
+  text-align: left;
+  margin-bottom: -1px;
+  margin-top: -4px;
+  content: "VIN";
+  font-size: 6px !important;
+  line-height: 8px;
+  color: #ccc;
+}
+
+/* Vertical Label */
+.rotated-label-text {
+  writing-mode: vertical-rl;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  text-align: center;
+  width: 1.4in;
+}
+.year-make-container {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.model-year-vertical {
+  font-size: 16px;
+  height: 0.6in;
+  text-align: right;
+  font-weight: 700;
+  line-height: 16px;
+  padding-bottom: 4px;
+}
+.model-name-vertical {
+  height: 1.4in;
+  text-align: left;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 16px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.model-vin-vertical {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 18px;
 }
 
 @media screen and (max-width: 678px) {

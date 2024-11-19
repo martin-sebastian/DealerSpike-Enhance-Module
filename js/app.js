@@ -121,6 +121,8 @@ async function fetchData() {
 
         const usageColor = usage === "New" ? "text-bg-success" : "text-bg-secondary";
         const updatedStatus = moment(updated).fromNow();
+        const updatedDate = moment(updated).format("MM/DD/YYYY");
+        const updatedDashDate = moment(updated).format("MM-DD-YYYY");
 
         const row = document.createElement("tr");
         row.innerHTML = `
@@ -134,9 +136,9 @@ async function fetchData() {
             <span class="badge text-bg-dark border">${year}</span>
           </td>
           <td class="text-truncate" style="">${manufacturer}</td>
-          <td class="text-truncate" style="max-width: 200px;">
+          <td class="" style="max-width: 200px;">
             <span>${modelName}</span>
-            <span class="visually-hidden">${stockNumber} ${vin} ${usage} ${year} ${manufacturer} ${modelName} ${modelType} ${modelTypeStyle} ${color} ${photos} ${updatedStatus}</span>
+            <span class="visually-hidden">${stockNumber} ${vin} ${usage} ${year} ${manufacturer} ${modelName} ${modelType} ${color} ${updatedDate} ${updatedDashDate}</span>
           </td>
           <td class="visually-hidden">${modelType}</td>
           <td class="visually-hidden">${color}</td>
@@ -158,7 +160,9 @@ async function fetchData() {
             </div>
           </td>
           <td>${webPrice}</td>
-          <td><span class="badge text-bg-dark text-white-50 border">${updatedStatus}</span></td>
+          <td><span class="badge text-bg-dark text-white-50 border">${updatedStatus}</span>
+          <span class="visually-hidden">${updatedDashDate}</span>
+          </td>
           <td class="text-center">${photos}</td>
           <td class="text-center text-nowrap">
             <div class="action-button-group" role="group" aria-label="Vehicles">
@@ -168,7 +172,7 @@ async function fetchData() {
               </button>
               <button type="button" class="btn btn-danger action-button mx-1" data-toggle="tooltip" title="Print Hang Tags" onclick="openHangTagsModal('${stockNumber}')">
                 <i class="bi bi-tags"></i>
-                <span style="font-size:10px; text-transform:uppercase;">Hang Tag</span>
+                <span style="font-size:10px; margin-top:-10px; padding:0; text-transform:uppercase;">Hang Tag</span>
               </button>
               <button type="button" id="hangTagsModalButton" class="btn btn-warning action-button mx-1 visually-hidden" data-toggle="tooltip" title="Print Hang Tags" data-bs-toggle="modal" data-bs-target="#hangTagsModal" data-bs-details="${stockNumber}"> <i class="bi bi-tags"></i></button>
               <a
@@ -193,15 +197,15 @@ async function fetchData() {
 
       console.log("Data successfully inserted into table");
       const tooltipTriggerList = document.querySelectorAll('[data-toggle="tooltip"]');
-      const tooltipList = [...tooltipTriggerList].map((tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl));
+      //const tooltipList = [...tooltipTriggerList].map((tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl));
+
       // Event listeners for input and dropdown changes
       document.getElementById("searchFilter").addEventListener("keyup", filterTable);
       document.getElementById("yearFilter").addEventListener("change", filterTable);
       document.getElementById("manufacturerFilter").addEventListener("change", filterTable);
       document.getElementById("typeFilter").addEventListener("change", filterTable);
       document.getElementById("usageFilter").addEventListener("change", filterTable);
-      document.getElementById("photosFilter").addEventListener("change", filterTable);
-      //document.getElementById("updatedFilter").addEventListener("change", filterTable);
+      document.getElementById("updatedFilter").addEventListener("change", filterTable);
 
       // Add event listeners for sorting
       const headers = document.querySelectorAll("#vehiclesTable th");
@@ -258,18 +262,57 @@ function sortTableByColumn(header) {
 
 // Listen for input events on the search field
 const searchInput = document.getElementById("searchFilter");
-
 searchInput.addEventListener("input", function () {
   // Run the filterTable() function when the input changes
   filterTable();
 });
 
 function filterTable() {
-  // Your filtering logic goes here
-  console.log("Filter table based on search input: ", searchInput.value);
+  // Get the filter input values
+  const searchInput = document.getElementById("searchFilter")?.value.toUpperCase() || "";
+  const yearFilter = document.getElementById("yearFilter")?.value.toUpperCase() || "";
+  const manufacturerFilter = document.getElementById("manufacturerFilter")?.value.toUpperCase() || "";
+  const typeFilter = document.getElementById("typeFilter")?.value.toUpperCase() || "";
+  const usageFilter = document.getElementById("usageFilter")?.value.toUpperCase() || "";
+  const photosFilter = document.getElementById("photosFilter")?.value.toUpperCase() || "";
+  const updatedFilter = document.getElementById("updatedFilter")?.value.toUpperCase() || "";
 
-  // Example filtering logic
-  // Your existing code...
+  const table = document.getElementById("vehiclesTable");
+  const tr = table?.getElementsByTagName("tr");
+
+  if (!tr) return;
+
+  let visibleRows = 0;
+
+  for (let i = 1; i < tr.length; i++) {
+    const titleTd = tr[i].getElementsByTagName("td")[4];
+    const hiddenSpan = titleTd?.querySelector(".visually-hidden");
+
+    if (titleTd && hiddenSpan) {
+      const hiddenText = hiddenSpan.textContent || hiddenSpan.innerText;
+
+      const [stockNumber, vin, usage, year, manufacturer, modelName, modelType, modelColor, photos, updatedDate, updatedDashDate] = hiddenText.split(" ");
+      //${stockNumber} ${vin} ${usage} ${year} ${manufacturer} ${modelName} ${modelType} ${color} ${photos} ${updatedDate}
+
+      if (
+        (hiddenText.toUpperCase().indexOf(searchInput) > -1 || searchInput === "") &&
+        (manufacturer.toUpperCase().indexOf(manufacturerFilter) > -1 || manufacturerFilter === "") &&
+        (modelType.toUpperCase().indexOf(typeFilter) > -1 || typeFilter === "") &&
+        (usage.toUpperCase().indexOf(usageFilter) > -1 || usageFilter === "") &&
+        (year.toUpperCase().indexOf(yearFilter) > -1 || yearFilter === "") &&
+        (photos.toUpperCase().indexOf(photosFilter) > -1 || photosFilter === "") &&
+        (updatedDate.toUpperCase().indexOf(updatedFilter) > -1 || updatedFilter === "")
+      ) {
+        tr[i].style.display = "";
+        visibleRows++;
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+
+  // Update row count after filtering
+  updateRowCount();
 }
 
 function toggleTheme() {
@@ -325,58 +368,6 @@ function updateRowCount() {
   }
 }
 
-function filterTable() {
-  // Get the filter input values
-  const searchInput = document.getElementById("searchFilter")?.value.toUpperCase() || "";
-  const manufacturerFilter = document.getElementById("manufacturerFilter")?.value.toUpperCase() || "";
-  const typeFilter = document.getElementById("typeFilter")?.value.toUpperCase() || "";
-  const usageFilter = document.getElementById("usageFilter")?.value.toUpperCase() || "";
-  const yearFilter = document.getElementById("yearFilter")?.value.toUpperCase() || "";
-  const photosFilter = document.getElementById("photosFilter")?.value.toUpperCase() || "";
-
-  const table = document.getElementById("vehiclesTable");
-  const tr = table?.getElementsByTagName("tr");
-
-  if (!tr) return;
-
-  let visibleRows = 0;
-
-  for (let i = 1; i < tr.length; i++) {
-    const usageTd = tr[i].getElementsByTagName("td")[1];
-    const yearTd = tr[i].getElementsByTagName("td")[2];
-    const manufacturerTd = tr[i].getElementsByTagName("td")[3];
-    const titleTd = tr[i].getElementsByTagName("td")[4];
-    const typeTd = tr[i].getElementsByTagName("td")[5];
-    const photosTd = tr[i].getElementsByTagName("td")[10];
-
-    if (titleTd && manufacturerTd && yearTd && usageTd && photosTd) {
-      const yearTxt = yearTd.textContent || yearTd.innerText;
-      const manufacturerTxt = manufacturerTd.textContent || manufacturerTd.innerText;
-      const typeTxt = typeTd.textContent || typeTd.innerText;
-      const usageTxt = usageTd.textContent || usageTd.innerText;
-      const photosTxt = photosTd.textContent || photosTd.innerText;
-      const titleTxt = titleTd.textContent || titleTd.innerText;
-
-      if (
-        (titleTxt.toUpperCase().indexOf(searchInput) > -1 || searchInput === "") &&
-        (manufacturerTxt.toUpperCase().indexOf(manufacturerFilter) > -1 || manufacturerFilter === "") &&
-        (typeTxt.toUpperCase().indexOf(typeFilter) > -1 || typeFilter === "") &&
-        (usageTxt.toUpperCase().indexOf(usageFilter) > -1 || usageFilter === "") &&
-        (yearTxt.toUpperCase().indexOf(yearFilter) > -1 || yearFilter === "") &&
-        (photosTxt.toUpperCase().indexOf(photosFilter) > -1 || photosFilter === "")
-      ) {
-        tr[i].style.display = "";
-        visibleRows++;
-      } else {
-        tr[i].style.display = "none";
-      }
-    }
-  }
-
-  // Update row count after filtering
-  updateRowCount();
-}
-
 document.addEventListener("DOMContentLoaded", () => {
   // Listen for clicks on elements that might trigger the modal
   document.addEventListener("click", function (event) {
@@ -418,6 +409,7 @@ async function keyTag(stockNumber) {
     }
 
     const data = await response.json();
+    console.log("Data fetched from portal successfully:", data);
 
     if (typeof data.StockNumber !== "undefined") {
       // Populate the modal with new data
@@ -430,13 +422,53 @@ async function keyTag(stockNumber) {
       document.getElementById("modelColor").innerHTML = data.Color || "N/A";
       document.getElementById("modelVin").innerHTML = data.VIN || "N/A";
 
+      // Check if elements exist before setting innerHTML
+      const modelYearVertical = document.getElementById("modelYearVertical");
+      const manufacturerVertical = document.getElementById("manufacturerVertical");
+      const modelNameVertical = document.getElementById("modelNameVertical");
+      const modelVinVertical = document.getElementById("modelVinVertical");
+
+      if (modelYearVertical) {
+        modelYearVertical.innerHTML = data.ModelYear || "N/A";
+        console.log("modelYearVertical updated:", modelYearVertical.innerHTML);
+      } else {
+        console.error("Element with ID 'modelYearVertical' not found.");
+      }
+
+      if (manufacturerVertical) {
+        manufacturerVertical.innerHTML = data.Manufacturer || "N/A";
+        console.log("manufacturerVertical updated:", manufacturerVertical.innerHTML);
+      } else {
+        console.error("Element with ID 'manufacturerVertical' not found.");
+      }
+
+      if (modelNameVertical) {
+        modelNameVertical.innerHTML = data.ModelName || "N/A";
+        console.log("modelNameVertical updated:", modelNameVertical.innerHTML);
+      } else {
+        console.error("Element with ID 'modelNameVertical' not found.");
+      }
+
+      if (modelVinVertical) {
+        modelVinVertical.innerHTML = data.VIN || "N/A";
+        console.log("modelVinVertical updated:", modelVinVertical.innerHTML);
+      } else {
+        console.error("Element with ID 'modelVinVertical' not found.");
+      }
+
       // Make sure keytagContainer is visible if previously hidden
       const keytagContainer = document.getElementById("keytagContainer");
       keytagContainer.classList.remove("hidden");
+
+      const keytagVerticalContainer = document.getElementById("keytagVerticalContainer");
+      keytagVerticalContainer.classList.remove("hidden");
     } else {
       // Hide key tag container and show error message if no data available
       const keytagContainer = document.getElementById("keytagContainer");
       keytagContainer.classList.add("hidden");
+
+      const keytagVerticalContainer = document.getElementById("keytagVerticalContainer");
+      keytagVerticalContainer.classList.add("hidden");
 
       document.getElementById("message").innerHTML = `
         <div class="warning-icon-container text-center">
@@ -496,10 +528,10 @@ function printKeyTag(event) {
         <style>
           @page {
             size: 1.5in 2in;
-            margin: 0;
+            margin: default;
             @top {
               content: ""; /* No content for header */
-              }
+            }
             @bottom {
               content: ""; /* No content for footer */
             }
@@ -537,36 +569,122 @@ function printKeyTag(event) {
           #modelUsage {
             font-weight: bold;
             font-size: 10pt;
+            line-height: 12px;
             text-transform: uppercase;
-            border-bottom: 1px dashed #eee;
+            border-bottom: 1px solid #ddd;
           }
           #stockNumber {
             font-weight: bold;
-            font-size: 12pt;
-            border-bottom: 1px dashed #eee;
+            font-size: 16pt;
+            border-bottom: 1px solid #ddd;
           }
           #modelYear {
             font-size: 8pt;
-            border-bottom: 1px dashed #eee;
+            border-bottom: 1px solid #ddd;
           }
           #manufacturer {
-            font-size: 8pt;
-            border-bottom: 1px dashed #eee;
+            font-size: 10pt;
+            border-bottom: 1px solid #ddd;
           }
           #modelName {
-            font-size: 8pt;
-            border-bottom: 1px dashed #eee;
+            font-size: 10pt;
+            border-bottom: 1px solid #eee;
           }
           #modelCode {
             font-size: 8pt;
-            border-bottom: 1px dashed #eee;
+            border-bottom: 1px solid #eee;
           }
           #modelColor {
             font-size: 8pt;
-            border-bottom: 1px dashed #eee;
+            border-bottom: 1px solid #eee;
           }
           #modelVin {
             font-size: 8pt;
+          }
+          #modelUsage::after {
+            display: block;
+            text-align: left;
+            margin-bottom: -1px;
+            margin-top: -4px;
+            content: "USAGE";
+            font-size: 6px !important;
+            line-height: 8px;
+            color: #ddd;
+          }
+          #stockNumber::after {
+            display: block;
+            text-align: left;
+            margin-bottom: -1px;
+            margin-top: -4px;
+            content: "STOCK NUMBER";
+            font-size: 6px !important;
+            line-height: 8px;
+            color: #ddd;
+          }
+          #modelYear::after {
+            display: block;
+            text-align: left;
+            margin-bottom: -1px;
+            margin-top: -4px;
+            content: "YEAR";
+            font-size: 6px !important;
+            line-height: 8px;
+            color: #ddd;
+          }
+          #manufacturer::after {
+            display: block;
+            text-align: left;
+            margin-bottom: -1px;
+            margin-top: -4px;
+            content: "MANUFACTURER";
+            font-size: 6px !important;
+            line-height: 8px;
+            color: #ddd;
+          }
+          #modelName::after {
+            display: block;
+            text-align: left;
+            margin-bottom: -1px;
+            margin-top: -4px;
+            content: "MODEL";
+            font-size: 6px !important;
+            line-height: 8px;
+            color: #ddd;
+          }
+          #modelCode::after {
+            display: block;
+            text-align: left;
+            margin-bottom: -1px;
+            margin-top: -4px;
+            content: "CODE";
+            font-size: 6px !important;
+            line-height: 8px;
+            color: #ddd;
+          }
+          #modelColor::after {
+            display: block;
+            text-align: left;
+            margin-bottom: -1px;
+            margin-top: -4px;
+            content: "COLOR";
+            font-size: 6px !important;
+            line-height: 8px;
+            color: #ddd;
+          }
+          #modelVin::after {
+            display: block;
+            text-align: left;
+            margin-bottom: -1px;
+            margin-top: -4px;
+            content: "VIN";
+            font-size: 6px !important;
+            line-height: 8px;
+            color: #ddd;
+          }
+          /* New styles for the rotated label */
+          .rotated-label-text {
+            writing-mode: vertical-rl;
+            font-size: 10pt;
           }
         </style>
       </head>
@@ -580,6 +698,13 @@ function printKeyTag(event) {
           <div id="modelCode">${keytagContainer.querySelector("#modelCode").textContent}</div>
           <div id="modelColor">${keytagContainer.querySelector("#modelColor").textContent}</div>
           <div id="modelVin">${keytagContainer.querySelector("#modelVin").textContent}</div>
+        </div>
+        <div id="keytagContainer" class="text-start">
+          <span class="rotated-label-text">
+            ${keytagContainer.querySelector("#modelYear").textContent}
+            ${keytagContainer.querySelector("#modelName").textContent}
+            ${keytagContainer.querySelector("#modelVin").textContent}
+          </span>
         </div>
       </body>
     </html>
