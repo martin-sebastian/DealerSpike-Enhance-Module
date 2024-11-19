@@ -542,7 +542,7 @@ function printKeyTag(event) {
             font-size: 8pt;
             font-weight: 600;
             line-height: 1.5;
-            margin: 0;
+            margin: 0 auto;
             padding: 0;
             width: 1.5in;
             height: 2in;
@@ -728,7 +728,6 @@ function printKeyTag(event) {
             <span class="label-text-lower"><br>
             ${keytagContainer.querySelector("#modelVin").textContent}
             ${keytagContainer.querySelector("#modelName").textContent}
-           
             </span>
           </span>
         </div>
