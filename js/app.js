@@ -528,7 +528,8 @@ function printKeyTag(event) {
         <style>
           @page {
             size: 1.5in 2in;
-            margin: default;
+            margin: 0;
+            scale: 1;
             @top {
               content: ""; /* No content for header */
             }
@@ -548,6 +549,18 @@ function printKeyTag(event) {
             overflow: hidden;
           }
           #keytagContainer {
+            text-align: center;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 0.1in;
+            padding: 0.05in;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+          }
+          #keytagContainerTwo {
             text-align: center;
             box-sizing: border-box;
             border: 1px solid #ccc;
@@ -579,7 +592,7 @@ function printKeyTag(event) {
             border-bottom: 1px solid #ddd;
           }
           #modelYear {
-            font-size: 8pt;
+            font-size: 12pt;
             border-bottom: 1px solid #ddd;
           }
           #manufacturer {
@@ -684,7 +697,16 @@ function printKeyTag(event) {
           /* New styles for the rotated label */
           .rotated-label-text {
             writing-mode: vertical-rl;
-            font-size: 10pt;
+            font-size: 16pt;
+            line-height: 18px;
+            font-weight: 700;
+            color: black;
+          }
+          .label-text-lower {
+            font-size: 11pt;
+            line-height: 14px;
+            font-weight: 500;
+            color: black;
           }
         </style>
       </head>
@@ -699,11 +721,16 @@ function printKeyTag(event) {
           <div id="modelColor">${keytagContainer.querySelector("#modelColor").textContent}</div>
           <div id="modelVin">${keytagContainer.querySelector("#modelVin").textContent}</div>
         </div>
-        <div id="keytagContainer" class="text-start">
+        <div id="keytagContainerTwo" class="text-center">
           <span class="rotated-label-text">
             ${keytagContainer.querySelector("#modelYear").textContent}
+            ${keytagContainer.querySelector("#manufacturer").textContent}<br>
+            <span class="label-text-lower">
+            <small style="font-size: 7pt; line-height: 9px; font-weight: 700;">
             ${keytagContainer.querySelector("#modelName").textContent}
+            </small><br>
             ${keytagContainer.querySelector("#modelVin").textContent}
+            </span>
           </span>
         </div>
       </body>

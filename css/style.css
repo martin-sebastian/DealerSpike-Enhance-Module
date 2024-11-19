@@ -8,6 +8,7 @@ body {
   width: 100%;
 }
 .dots {
+  background-color: #efefef !important;
   background-image: url("../img/dots.png") !important;
   background-repeat: repeat;
 }
@@ -308,6 +309,10 @@ th {
 }
 
 /* Key Tags */
+.modal {
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+}
 .warning-icon-container {
   text-align: center;
   font-size: 300%;
@@ -497,32 +502,37 @@ th {
   width: 1.4in;
 }
 .year-make-container {
+  padding: 0;
+  margin: 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 .model-year-vertical {
-  font-size: 16px;
-  height: 0.6in;
-  text-align: right;
+  font-size: 22px;
   font-weight: 700;
   line-height: 16px;
-  padding-bottom: 4px;
+  padding-bottom: 1px;
+}
+.manufacturer-vertical {
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 16px;
+  padding-bottom: 1px;
 }
 .model-name-vertical {
-  height: 1.4in;
-  text-align: left;
-  font-size: 16px;
+  font-size: 10px;
   font-weight: 700;
-  line-height: 16px;
+  line-height: 10px;
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;
 }
 .model-vin-vertical {
   font-size: 16px;
   font-weight: 400;
-  line-height: 18px;
+  line-height: 20px;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 @media screen and (max-width: 678px) {
