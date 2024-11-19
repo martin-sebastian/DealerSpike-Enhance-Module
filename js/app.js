@@ -703,8 +703,8 @@ function printKeyTag(event) {
             color: black;
           }
           .label-text-lower {
-            font-size: 11pt;
-            line-height: 14px;
+            font-size: 10pt;
+            line-height: 12px;
             font-weight: 500;
             color: black;
           }
@@ -725,11 +725,10 @@ function printKeyTag(event) {
           <span class="rotated-label-text">
             ${keytagContainer.querySelector("#modelYear").textContent}
             ${keytagContainer.querySelector("#manufacturer").textContent}<br>
-            <span class="label-text-lower">
-            <small style="font-size: 7pt; line-height: 9px; font-weight: 700;">
-            ${keytagContainer.querySelector("#modelName").textContent}
-            </small><br>
+            <span class="label-text-lower"><br>
             ${keytagContainer.querySelector("#modelVin").textContent}
+            ${keytagContainer.querySelector("#modelName").textContent}
+           
             </span>
           </span>
         </div>
