@@ -215,6 +215,18 @@ th {
 .shadow {
   box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
 }
+.icon-circle::before {
+  display: inline-block;
+  position: relative;
+  top: 0px;
+  left: 0px;
+  padding: 8px;
+  width: 36px;
+  height: 36px;
+  background: #ac2c39;
+  border: solid 1px #fff;
+  border-radius: 50%;
+}
 
 /* data table styles */
 .nowrap {
