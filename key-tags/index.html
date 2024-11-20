@@ -6,16 +6,23 @@
     <title>Key Tag</title>
     <link rel="icon" type="image/x-icon" href="../img/favicon.png" />
     <!-- Latest compiled and minified CSS -->
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css"
-      integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu"
-      crossorigin="anonymous"
-    />
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="../node_modules/bootstrap-icons/font/bootstrap-icons.css" />
 
-    <link rel="stylesheet" href="../css/font-awesome.css" />
-    <link rel="stylesheet" href="../css/style.css" />
     <style>
+      .dots {
+        background-image: radial-gradient(circle, #ccc 1px, transparent 1px);
+        background-size: 15px 15px;
+      }
+      .left-panel {
+        border-right: solid 1px #ccc;
+        max-width: 350px;
+        padding: 20px 20px;
+        margin-left: -20px;
+        height: 100vh;
+        overflow-y: auto;
+        background-color: #f8f8f8;
+      }
       .warning-icon-container {
         text-align: center;
         font-size: 300%;
@@ -116,58 +123,92 @@
     </style>
   </head>
   <body class="dots">
-    <header class="hidden-print">
-      <div class="print-header navbar-fixed-top">
-        <h2>PREVIEW KEY TAG</h2>
-        <div class="print-buttons">
-          <button class="btn btn-success" type="button" value="Print this page" onClick="window.print()">
-            <i class="fa fa-print" aria-hidden="true"></i>
-          </button>
-          <button class="btn btn-danger" type="button" value="Close this page" onclick="history.back()">
-            <i class="fa fa-times" aria-hidden="true"></i>
-          </button>
-        </div>
-      </div>
-    </header>
-    <main>
-      <div class="tags-spacer dots hidden-print"></div>
-      <div class="main-content">
-        <div class="container-fluid">
-          <div id="keytagContainer" class="key-tag-container">
-            <div id="modelUsage" class="model-usage">
-              <div class="blank-line" style="margin-top: 6px"></div>
+    <main class="container-fluid">
+      <div class="row">
+        <div class="col">
+          <div class="left-panel">
+            <div class="mb-3">
+              <label for="search" class="form-label visually-hidden">Search Stock Number</label>
+              <input type="text" class="form-control" id="search" placeholder="Search Stock Number" />
             </div>
-            <div class="keytag-label">NEW/USED</div>
-            <div id="stockNumber" class="stock-number">
-              <div class="blank-line"></div>
+            <div class="mb-3">
+              <label for="newUsed" class="form-label visually-hidden">New/Used</label>
+              <select class="form-select" id="newUsed">
+                <option value="new">New</option>
+                <option value="used">Used</option>
+              </select>
             </div>
-            <div class="keytag-label">STOCK#</div>
-            <div id="modelYear" class="model-year">
-              <div class="blank-line"></div>
+            <div class="mb-3"></div>
+            <div class="mb-3">
+              <label for="stockNumber" class="form-label visually-hidden">Stock Number</label>
+              <input type="text" class="form-control" id="stockNumber" placeholder="Stock Number" />
             </div>
-            <div class="keytag-label">YEAR</div>
-            <div id="manufacturer" class="manufacturer">
-              <div class="blank-line"></div>
+            <div class="mb-3">
+              <label for="year" class="form-label visually-hidden">Year</label>
+              <input type="text" class="form-control" id="year" placeholder="Year" />
             </div>
-            <div class="keytag-label">MAKE</div>
-            <div id="modelName" class="model-name">
-              <div class="blank-line"></div>
+            <div class="mb-3">
+              <label for="manufacturer" class="form-label visually-hidden">Manufacturer</label>
+              <input type="text" class="form-control" id="manufacturer" placeholder="Manufacturer" />
             </div>
-            <div class="keytag-label">NAME</div>
-            <div id="modelCode" class="model-code">
-              <div class="blank-line"></div>
+            <div class="mb-3">
+              <label for="modelName" class="form-label visually-hidden">Model Name</label>
+              <input type="text" class="form-control" id="modelName" placeholder="Model Name" />
             </div>
-            <div class="keytag-label">MODEL</div>
-            <div id="modelColor" class="model-color">
-              <div class="blank-line"></div>
+            <div class="mb-3">
+              <label for="modelCode" class="form-label visually-hidden">Model Code</label>
+              <input type="text" class="form-control" id="modelCode" placeholder="Model Code" />
             </div>
-            <div class="keytag-label">COLOR</div>
-            <div id="modelVin" class="model-vin">
-              <div class="blank-line"></div>
+            <div class="mb-3">
+              <label for="modelColor" class="form-label visually-hidden">Model Color</label>
+              <input type="text" class="form-control" id="modelColor" placeholder="Model Color" />
             </div>
-            <div class="keytag-label">VIN</div>
+            <div class="mb-3">
+              <label for="vin" class="form-label visually-hidden">VIN</label>
+              <input type="text" class="form-control" id="vin" placeholder="VIN" />
+            </div>
           </div>
-          <div id="message" class="message-container"></div>
+        </div>
+        <div class="col">
+          <div class="main-content">
+            <div class="d-flex flex-column justify-content-center align-items-center w-100 h-100 py-5">
+              <div id="keytagContainer" class="key-tag-container">
+                <div id="modelUsage" class="model-usage">
+                  <div class="blank-line" style="margin-top: 6px"></div>
+                </div>
+                <div class="keytag-label">NEW/USED</div>
+                <div id="stockNumber" class="stock-number">
+                  <div class="blank-line"></div>
+                </div>
+                <div class="keytag-label">STOCK#</div>
+                <div id="modelYear" class="model-year">
+                  <div class="blank-line"></div>
+                </div>
+                <div class="keytag-label">YEAR</div>
+                <div id="manufacturer" class="manufacturer">
+                  <div class="blank-line"></div>
+                </div>
+                <div class="keytag-label">MAKE</div>
+                <div id="modelName" class="model-name">
+                  <div class="blank-line"></div>
+                </div>
+                <div class="keytag-label">NAME</div>
+                <div id="modelCode" class="model-code">
+                  <div class="blank-line"></div>
+                </div>
+                <div class="keytag-label">MODEL</div>
+                <div id="modelColor" class="model-color">
+                  <div class="blank-line"></div>
+                </div>
+                <div class="keytag-label">COLOR</div>
+                <div id="modelVin" class="model-vin">
+                  <div class="blank-line"></div>
+                </div>
+                <div class="keytag-label">VIN</div>
+              </div>
+              <div id="message" class="message-container"></div>
+            </div>
+          </div>
         </div>
       </div>
     </main>

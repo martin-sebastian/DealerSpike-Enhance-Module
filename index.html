@@ -10,9 +10,8 @@
     <title>FOM Inventory</title>
     <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="./node_modules/bootstrap-icons/font/bootstrap-icons.css" />
-    <link href="./css/font-awesome.css" rel="stylesheet" />
     <link href="./css/style.css" rel="stylesheet" />
-    <link rel="stylesheet" href="./css/print.css" media="print" />
+    <link rel="stylesheet" href="../css/printxxx.css" media="print" />
   </head>
   <body data-bs-theme="dark">
     <header class="fixed-top d-print-none">
@@ -23,8 +22,8 @@
               <img id="logo" class="me-2" src="./img/fom-app-logo-01.svg" alt="Logo" width="180" height="30.6" />
             </a>
 
-            <button type="button" class="btn btn-danger btn-sm action-button mx-1 my-0 text-end" data-toggle="tooltip" title="Print Key Tags by Stock Number" onclick="openKeyTagsByStockNumberModal('${stockNumber}')">
-              <i class="bi bi-tag"></i> KEY TAG<br>
+            <button type="button" class="btn btn-danger btn-sm mx-1 text-center px-3" data-toggle="tooltip" title="Print Key Tags by Stock Number" onclick="openKeyTagsByStockNumberModal('${stockNumber}')">
+              <i class="bi bi-plus-circle me-1"></i> CREATE KEY TAG
             </button>
           </div>
 
@@ -212,7 +211,7 @@
         <div class="spacer-75"></div>
         <div class="d-flex pb-2 text-secondary">
           <!-- element for displaying row count -->
-          Results: <span class="text-white mx-1" id="rowCountDisplay"></span>
+          Results: <span class="mx-1" id="rowCountDisplay"></span>
         </div>
         <div class="table-responsive w-100" style="overflow-x: auto">
           <table id="vehiclesTable" class="table table-hover table-resposive align-middle">
@@ -251,7 +250,7 @@
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-danger" onclick="printIframeContent()">Print</button>
+                
                 <!-- Print Button -->
               </div>
             </div>
@@ -314,12 +313,11 @@
               <h5 class="modal-title" id="keyTagsByStockNumberModalLabel">Search Stock Number to Generate Tag</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body m-0 p-0">
-              <iframe id="keyTagsByStockNumberModal" src="https://newportal.flatoutmotorcycles.com/apps/keytags/keytag.html?vehicle=" style="width: 100%; height: 99%; border: none; margin: 0; padding: 0"></iframe>
+            <div class="h-100">
+              <iframe id="keyTagsByStockNumberModal" src="../key-tags/index.html?vehicle=SD06993" style="width: 100%; height: 100%; border: 0; margin: 0; padding: 0"></iframe>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              
               <!-- Print Button -->
             </div>
           </div>

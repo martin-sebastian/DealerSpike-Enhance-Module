@@ -168,26 +168,36 @@ async function fetchData() {
             <div class="action-button-group" role="group" aria-label="Vehicles">
               <button type="button" id="keytagModalButton" class="btn btn-danger action-button mx-1" data-toggle="tooltip" title="Print Key Tag" data-bs-toggle="modal" data-bs-target="#keytagModal" data-bs-stocknumber="${stockNumber}">
                 <i class="bi bi-tag"></i>
-                <span style="font-size:10px; text-transform:uppercase;">Key Tag</span>
+                <span style="font-size:10px; text-transform:uppercase;">Key Tags</span>
               </button>
+
               <button type="button" class="btn btn-danger action-button mx-1" data-toggle="tooltip" title="Print Hang Tags" onclick="openHangTagsModal('${stockNumber}')">
                 <i class="bi bi-tags"></i>
-                <span style="font-size:10px; margin-top:-10px; padding:0; text-transform:uppercase;">Hang Tag</span>
+                <span style="font-size:10px; margin-top:-10px; padding:0; text-transform:uppercase;">Hang Tags</span>
               </button>
-              <button type="button" id="hangTagsModalButton" class="btn btn-warning action-button mx-1 visually-hidden" data-toggle="tooltip" title="Print Hang Tags" data-bs-toggle="modal" data-bs-target="#hangTagsModal" data-bs-details="${stockNumber}"> <i class="bi bi-tags"></i></button>
+              
               <a
-              href="javascript:void(0);" 
-              type="button" 
-              class="btn btn-danger action-button mx-1" 
-              data-toggle="tooltip"
-              data-bs-placement="top"
-              title="Pricing"
-              onclick="openOverlayModal('${stockNumber}')">
-              <i class="bi bi-card-heading"></i>
-              <span style="font-size:10px; text-transform:uppercase;">Pricing</span>
+                href="javascript:void(0);" 
+                type="button" 
+                class="btn btn-danger action-button mx-1" 
+                data-toggle="tooltip"
+                data-bs-placement="top"
+                title="Pricing"
+                onclick="openOverlayModal('${stockNumber}')"
+              >
+                <i class="bi bi-card-heading"></i>
+                <span style="font-size:10px; text-transform:uppercase;">Pricing</span>
               </a>
-              <!--<a href="./social-share/?stockNumber=${stockNumber}" class="btn btn-danger action-button mx-1" data-toggle="tooltip" title="Text Message Quote"><i class="bi bi-phone"></i></a>-->
-              <!--<a href="./hang-tags/?search=${stockNumber}" class="btn btn-danger action-button mx-1" data-toggle="tooltip" title="Print Hang Tags"><i class="bi bi-tags"></i></a>-->
+              <button type="button" onclick="window.location.href='./social-share/?stockNumber=${stockNumber}';" class="btn btn-danger action-button mx-1" data-toggle="tooltip" title="Text Message Quote">
+                <i class="bi bi-phone"></i>
+                <span style="font-size:10px; text-transform:uppercase;">Text Unit</span>
+              </button>
+              <!--
+              <a href="./social-share/?stockNumber=${stockNumber}" class="btn btn-danger action-button mx-1" data-toggle="tooltip" title="Text Unit Details">
+                <i class="bi bi-phone"></i>
+              </a>
+              <a href="./hang-tags/?search=${stockNumber}" class="btn btn-danger action-button mx-1" data-toggle="tooltip" title="Print Hang Tags"><i class="bi bi-tags"></i></a>
+              -->
             </div>  
           </td>
         `;
@@ -541,7 +551,7 @@ function printKeyTag(event) {
             font-family: Arial, sans-serif;
             font-size: 8pt;
             font-weight: 600;
-            margin: 0 auto;
+            margin: 0;
             padding: 0;
             width: 1.5in;
             height: 2in;
@@ -696,7 +706,7 @@ function printKeyTag(event) {
           /* New styles for the rotated label */
           .rotated-label-text {
             writing-mode: vertical-rl;
-            font-size: 18pt;
+            font-size: 17pt;
             line-height: 18pt;
             font-weight: 700;
             color: black;
