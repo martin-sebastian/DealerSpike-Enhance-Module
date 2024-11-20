@@ -718,6 +718,8 @@ function printKeyTag(event) {
             margin-right: -10px;
             padding: 0;
             color: black;
+            white-space: nowrap;
+            overflow: hidden;
           }
           .label-text-lower-model {
             font-size: 9pt;
