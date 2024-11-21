@@ -281,6 +281,9 @@
         color: #999 !important;
       }
       @media print {
+        .d-print-block {
+          display: block !important;
+        }
         .key-tag-container {
           zoom: 1;
         }
@@ -385,7 +388,7 @@
           <button class="btn btn-primary" onclick="clearKeyTag()">Clear</button>
         </div>
       </div>
-      <div class="right-panel d-flex flex-column justify-content-center align-items-center">
+      <div class="right-panel d-flex flex-column justify-content-center align-items-center d-print-none">
         <div id="message" class="message-container"></div>
         <div class="main-content">
           <div class="d-flex flex-row vh-100 justify-content-center align-items-center">
@@ -400,7 +403,7 @@
               <div id="modelVin" class="model-vin"><span class="placeholder rounded col-10"></span></div>
             </div>
             <!-- New rotated label -->
-            <div id="keytagVerticalContainer" class="key-tag-container shadow-sm zoomElement mx-1">
+            <div id="keytagVerticalContainer" class="key-tag-container shadow-sm zoomElement mx-1 d-print-block">
               <div class="rotated-label-text">
                 <div class="year-make-container">
                   <span id="modelYearVertical" class="model-year-vertical"
@@ -424,7 +427,7 @@
         </div>
       </div>
     </main>
-
+    <script src="../js/print.js"></script>
     <script src="../js/numeral.js"></script>
     <script src="../js/moment.js"></script>
     <script>
