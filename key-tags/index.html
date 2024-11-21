@@ -21,6 +21,7 @@
         color: currentColor;
       }
       .right-panel {
+        text-transform: uppercase;
         margin-left: 350px;
         height: 100vh;
         width: auto;
@@ -36,6 +37,19 @@
       .dots {
         background-image: radial-gradient(circle, #ccc 1px, transparent 1px);
         background-size: 15px 15px;
+      }
+      .warning-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        background-color: rgba(255, 255, 255, 1);
       }
       .rotated-label-text {
         writing-mode: vertical-rl;
@@ -81,11 +95,13 @@
         height: 11px;
         margin-bottom: 10px;
       }
+
       .key-tag-container {
+        padding: 15px 4px 0px 4px;
         border: solid 1px #ccc;
         border-radius: 10px;
-        padding: 0px 5px;
-        margin-top: 3px;
+        padding: 0px;
+        margin-top: 0px;
         width: 1.5in;
         height: 2in;
         background: #fff !important;
@@ -100,7 +116,7 @@
       .model-usage {
         text-align: center;
         font-size: 12px;
-        line-height: 12px;
+        line-height: 16px;
         font-weight: bold;
         border-bottom: solid 1px #eee;
       }
@@ -350,35 +366,42 @@
                 document.getElementById('modelVinVertical').innerHTML = this.value;"
             />
           </div>
+          <button class="btn btn-primary" onclick="clearKeyTag()">Clear</button>
         </div>
       </div>
       <div class="right-panel d-flex flex-column justify-content-center align-items-center">
+        <div id="message" class="message-container"></div>
         <div class="main-content">
           <div class="d-flex flex-row vh-100 justify-content-center align-items-center">
-            <div id="keytagContainer" class="key-tag-container shadow-sm zoomElement text-truncate placeholder-glow mx-1">
+            <div id="keytagContainer" class="key-tag-container shadow-sm zoomElement text-truncate mx-1">
               <div id="modelUsageHorizontal" class="model-usage"><span class="placeholder rounded-5 col-4"></span></div>
-              <div id="stockNumberHorizontal" class="stock-number"><span class="placeholder rounded-5 col-8"></span></div>
-              <div id="modelYearHorizontal" class="model-year"><span class="placeholder rounded-5 col-4"></span></div>
-              <div id="manufacturerHorizontal" class="manufacturer"><span class="placeholder rounded-5 col-7"></span></div>
-              <div id="modelNameHorizontal" class="model-name"><span class="placeholder rounded-5 col-8"></span></div>
-              <div id="modelCodeHorizontal" class="model-code"><span class="placeholder rounded-5 col-5"></span></div>
+              <div id="stockNumberHorizontal" class="stock-number"><span class="placeholder rounded-5 col-8 h-12"></span></div>
+              <div id="modelYearHorizontal" class="model-year"><span class="placeholder rounded-5 col-4 h-12"></span></div>
+              <div id="manufacturerHorizontal" class="manufacturer"><span class="placeholder rounded-5 col-7 h-12"></span></div>
+              <div id="modelNameHorizontal" class="model-name"><span class="placeholder rounded-5 col-8 h-12"></span></div>
+              <div id="modelCodeHorizontal" class="model-code"><span class="placeholder rounded-5 col-5 h-12"></span></div>
               <div id="modelColorHorizontal" class="model-color"><span class="placeholder rounded-5 col-8"></span></div>
               <div id="modelVin" class="model-vin"><span class="placeholder rounded col-10"></span></div>
             </div>
             <!-- New rotated label -->
             <div id="keytagVerticalContainer" class="key-tag-container shadow-sm zoomElement mx-1">
               <div class="rotated-label-text">
-                <div class="year-make-container placeholder-glow">
-                  <span id="modelYearVertical" class="model-year-vertical placeholder rounded-5 col-5"></span>
-                  <span id="manufacturerVertical" class="manufacturer-vertical placeholder rounded-5 col-5"></span>
+                <div class="year-make-container">
+                  <span id="modelYearVertical" class="model-year-vertical"><span class="placeholder rounded-5" style="width: 12px; height: 48px"></span></span>
+                  <span id="manufacturerVertical" class="manufacturer-vertical"
+                    ><span class="placeholder rounded-5" style="width: 12px; height: 96px"></span
+                  ></span>
                 </div>
-                <div class="name-vin-container placeholder-glow">
-                  <div id="modelVinVertical" class="model-vin-vertical placeholder rounded col-5"></div>
-                  <div id="modelNameVertical" class="model-name-vertical placeholder rounded col-5"></div>
+                <div class="name-vin-container">
+                  <div id="modelVinVertical" class="model-vin-vertical">
+                    <span class="placeholder rounded-5" style="width: 12px; height: 156px"></span>
+                  </div>
+                  <div id="modelNameVertical" class="model-name-vertical">
+                    <span class="placeholder rounded-5" style="width: 12px; height: 96px"></span>
+                  </div>
                 </div>
               </div>
             </div>
-            <div id="message" class="message-container"></div>
           </div>
         </div>
       </div>
@@ -416,6 +439,8 @@
 
             document.getElementById("modelYearVertical").innerHTML = data.ModelYear || "N/A";
             document.getElementById("manufacturerVertical").innerHTML = data.Manufacturer || "N/A";
+            document.getElementById("modelNameVertical").innerHTML = data.ModelName || "N/A";
+            document.getElementById("modelVinVertical").innerHTML = data.VIN || "N/A";
 
             // Check if elements exist before setting innerHTML
             const modelYearVertical = document.getElementById("modelYearVertical");
@@ -466,17 +491,49 @@
             keytagVerticalContainer.classList.add("hidden");
 
             document.getElementById("message").innerHTML = `
-            <div class="warning-icon-container text-center">
-              <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-            </div>
-            <p class="error-message">
-              No data available.
-              <i class="fa fa-info-circle" aria-hidden="true"></i> make sure your data is synced between the portal and Dealer Spike.
-            </p>`;
+                <div class="warning-container text-center" id="warning">
+                  <i class="bi bi-exclamation-diamond"></i>
+                <p class="error-message">
+                  No data available. Check your stock number.
+                </p>
+                </div>`;
+            setTimeout(function () {
+              const element = document.getElementById("warning");
+              element.remove();
+            }, 30000);
           }
         } catch (error) {
           console.log(error.message);
         }
+      }
+
+      function clearKeyTag() {
+        // Clear horizontal labels
+        document.getElementById("modelUsageHorizontal").innerHTML = `<span class="placeholder rounded-5 col-4 h-12"></span>`;
+        document.getElementById("stockNumberHorizontal").innerHTML = `<span class="placeholder rounded-5 col-8 h-12"></span>`;
+        document.getElementById("modelYearHorizontal").innerHTML = `<span class="placeholder rounded-5 col-4 h-12"></span>`;
+        document.getElementById("manufacturerHorizontal").innerHTML = `<span class="placeholder rounded-5 col-7 h-12"></span>`;
+        document.getElementById("modelNameHorizontal").innerHTML = `<span class="placeholder rounded-5 col-8 h-12"></span>`;
+        document.getElementById("modelCodeHorizontal").innerHTML = `<span class="placeholder rounded-5 col-5 h-12"></span>`;
+        document.getElementById("modelColorHorizontal").innerHTML = `<span class="placeholder rounded-5 col-8 h-12"></span>`;
+        document.getElementById("modelVin").innerHTML = `<span class="placeholder rounded col-10"></span>`;
+
+        // Clear vertical labels
+        document.getElementById("modelYearVertical").innerHTML = `<span class="placeholder rounded-5" style="width: 12px; height: 48px"></span>`;
+        document.getElementById("manufacturerVertical").innerHTML = `<span class="placeholder rounded-5" style="width: 12px; height: 96px"></span>`;
+        document.getElementById("modelNameVertical").innerHTML = `<span class="placeholder rounded-5" style="width: 12px; height: 96px"></span>`;
+        document.getElementById("modelVinVertical").innerHTML = `<span class="placeholder rounded-5" style="width: 12px; height: 156px"></span>`;
+
+        // Optionally clear input fields
+        document.getElementById("search").value = "";
+        document.getElementById("newUsed").value = "";
+        document.getElementById("stockNumber").value = "";
+        document.getElementById("year").value = "";
+        document.getElementById("manufacturerInput").value = "";
+        document.getElementById("modelNameInput").value = "";
+        document.getElementById("modelCodeInput").value = "";
+        document.getElementById("modelColorInput").value = "";
+        document.getElementById("vinInput").value = "";
       }
     </script>
   </body>
