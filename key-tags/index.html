@@ -95,7 +95,12 @@
         height: 11px;
         margin-bottom: 10px;
       }
-
+      .placeholder {
+        font-size: 12px !important;
+        line-height: 12px !important;
+        height: 12px !important;
+        opacity: 0.5 !important;
+      }
       .key-tag-container {
         padding: 15px 4px 0px 4px;
         border: solid 1px #ccc;
@@ -124,7 +129,7 @@
         text-align: center;
         font-size: 18px;
         font-weight: bold;
-        line-height: 26px;
+        line-height: 22px;
         border-bottom: solid 1px #eee;
       }
       .model-year {
@@ -174,7 +179,8 @@
       .model-usage::after {
         display: block;
         text-align: left;
-        margin-bottom: -1px;
+        padding-left: 2px;
+        margin-bottom: 0px;
         margin-top: -4px;
         content: "USAGE";
         font-size: 6px !important;
@@ -184,6 +190,8 @@
       .stock-number::after {
         display: block;
         text-align: left;
+        padding-top: 2px;
+        padding-left: 2px;
         margin-bottom: 0px;
         margin-top: -4px;
         content: "STOCK#";
@@ -194,6 +202,7 @@
       .model-year::after {
         display: block;
         text-align: left;
+        padding-left: 2px;
         margin-bottom: 0px;
         margin-top: -4px;
         content: "YEAR";
@@ -204,6 +213,7 @@
       .manufacturer::after {
         display: block;
         text-align: left;
+        padding-left: 2px;
         margin-bottom: 0px;
         margin-top: -4px;
         content: "MANUF.";
@@ -214,6 +224,7 @@
       .model-name::after {
         display: block;
         text-align: left;
+        padding-left: 2px;
         margin-bottom: 0px;
         margin-top: -4px;
         content: "MODEL";
@@ -224,7 +235,8 @@
       .model-code::after {
         display: block;
         text-align: left;
-        margin-bottom: -1px;
+        padding-left: 2px;
+        margin-bottom: 0px;
         margin-top: -4px;
         content: "CODE";
         font-size: 6px !important;
@@ -234,7 +246,9 @@
       .model-color::after {
         display: block;
         text-align: left;
-        margin-bottom: -1px;
+        padding-top: 2px;
+        padding-left: 2px;
+        margin-bottom: 0px;
         margin-top: -4px;
         content: "COLOR";
         font-size: 6px !important;
@@ -244,7 +258,9 @@
       .model-vin::after {
         display: block;
         text-align: left;
-        margin-bottom: -1px;
+        padding-top: 2px;
+        padding-left: 2px;
+        margin-bottom: 0px;
         margin-top: -4px;
         content: "VIN";
         font-size: 6px !important;
@@ -273,7 +289,7 @@
   </head>
   <body class="dots">
     <main>
-      <div class="left-panel shadow">
+      <div class="left-panel shadow d-print-none">
         <div class="left-panel-content mx-4 my-3">
           <div class="mb-3">
             <label for="search" class="form-label fs-4 fw-bold">Search</label>
@@ -373,7 +389,7 @@
         <div id="message" class="message-container"></div>
         <div class="main-content">
           <div class="d-flex flex-row vh-100 justify-content-center align-items-center">
-            <div id="keytagContainer" class="key-tag-container shadow-sm zoomElement text-truncate mx-1">
+            <div id="keytagContainer" class="key-tag-container shadow-sm zoomElement text-truncate mx-1 d-print-block">
               <div id="modelUsageHorizontal" class="model-usage"><span class="placeholder rounded-5 col-4"></span></div>
               <div id="stockNumberHorizontal" class="stock-number"><span class="placeholder rounded-5 col-8 h-12"></span></div>
               <div id="modelYearHorizontal" class="model-year"><span class="placeholder rounded-5 col-4 h-12"></span></div>
@@ -387,17 +403,19 @@
             <div id="keytagVerticalContainer" class="key-tag-container shadow-sm zoomElement mx-1">
               <div class="rotated-label-text">
                 <div class="year-make-container">
-                  <span id="modelYearVertical" class="model-year-vertical"><span class="placeholder rounded-5" style="width: 12px; height: 48px"></span></span>
+                  <span id="modelYearVertical" class="model-year-vertical"
+                    ><span class="placeholder rounded-5" style="width: 12px; height: 48px !important"></span
+                  ></span>
                   <span id="manufacturerVertical" class="manufacturer-vertical"
-                    ><span class="placeholder rounded-5" style="width: 12px; height: 96px"></span
+                    ><span class="placeholder rounded-5" style="width: 12px; height: 96px !important"></span
                   ></span>
                 </div>
                 <div class="name-vin-container">
                   <div id="modelVinVertical" class="model-vin-vertical">
-                    <span class="placeholder rounded-5" style="width: 12px; height: 156px"></span>
+                    <span class="placeholder rounded-5" style="width: 12px; height: 156px !important"></span>
                   </div>
                   <div id="modelNameVertical" class="model-name-vertical">
-                    <span class="placeholder rounded-5" style="width: 12px; height: 96px"></span>
+                    <span class="placeholder rounded-5" style="width: 12px; height: 96px !important"></span>
                   </div>
                 </div>
               </div>
@@ -500,11 +518,29 @@
             setTimeout(function () {
               const element = document.getElementById("warning");
               element.remove();
-            }, 30000);
+            }, 3000);
           }
         } catch (error) {
           console.log(error.message);
         }
+      }
+
+      function clearSearch() {
+        // Clear horizontal labels
+        document.getElementById("modelUsageHorizontal").innerHTML = `<span class="placeholder rounded-5 col-4 h-12"></span>`;
+        document.getElementById("stockNumberHorizontal").innerHTML = `<span class="placeholder rounded-5 col-8 h-12"></span>`;
+        document.getElementById("modelYearHorizontal").innerHTML = `<span class="placeholder rounded-5 col-4 h-12"></span>`;
+        document.getElementById("manufacturerHorizontal").innerHTML = `<span class="placeholder rounded-5 col-7 h-12"></span>`;
+        document.getElementById("modelNameHorizontal").innerHTML = `<span class="placeholder rounded-5 col-8 h-12"></span>`;
+        document.getElementById("modelCodeHorizontal").innerHTML = `<span class="placeholder rounded-5 col-5 h-12"></span>`;
+        document.getElementById("modelColorHorizontal").innerHTML = `<span class="placeholder rounded-5 col-8 h-12"></span>`;
+        document.getElementById("modelVin").innerHTML = `<span class="placeholder rounded col-10"></span>`;
+
+        // Clear vertical labels
+        document.getElementById("modelYearVertical").innerHTML = `<span class="placeholder rounded-5" style="width: 12px; height: 48px !important;"></span>`;
+        document.getElementById("manufacturerVertical").innerHTML = `<span class="placeholder rounded-5" style="width: 12px; height: 96px !important;"></span>`;
+        document.getElementById("modelNameVertical").innerHTML = `<span class="placeholder rounded-5" style="width: 12px; height: 96px !important;"></span>`;
+        document.getElementById("modelVinVertical").innerHTML = `<span class="placeholder rounded-5" style="width: 12px; height: 156px !important;"></span>`;
       }
 
       function clearKeyTag() {
@@ -519,10 +555,10 @@
         document.getElementById("modelVin").innerHTML = `<span class="placeholder rounded col-10"></span>`;
 
         // Clear vertical labels
-        document.getElementById("modelYearVertical").innerHTML = `<span class="placeholder rounded-5" style="width: 12px; height: 48px"></span>`;
-        document.getElementById("manufacturerVertical").innerHTML = `<span class="placeholder rounded-5" style="width: 12px; height: 96px"></span>`;
-        document.getElementById("modelNameVertical").innerHTML = `<span class="placeholder rounded-5" style="width: 12px; height: 96px"></span>`;
-        document.getElementById("modelVinVertical").innerHTML = `<span class="placeholder rounded-5" style="width: 12px; height: 156px"></span>`;
+        document.getElementById("modelYearVertical").innerHTML = `<span class="placeholder rounded-5" style="width: 12px; height: 48px !important;"></span>`;
+        document.getElementById("manufacturerVertical").innerHTML = `<span class="placeholder rounded-5" style="width: 12px; height: 96px !important;"></span>`;
+        document.getElementById("modelNameVertical").innerHTML = `<span class="placeholder rounded-5" style="width: 12px; height: 96px !important;"></span>`;
+        document.getElementById("modelVinVertical").innerHTML = `<span class="placeholder rounded-5" style="width: 12px; height: 156px !important;"></span>`;
 
         // Optionally clear input fields
         document.getElementById("search").value = "";

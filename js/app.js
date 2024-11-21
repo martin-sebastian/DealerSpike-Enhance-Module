@@ -483,11 +483,11 @@ async function keyTag(stockNumber) {
 
       document.getElementById("message").innerHTML = `
         <div class="warning-icon-container text-center">
-          <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+          <i class="bi bi-exclamation-diamond"></i>
         </div>
         <p class="error-message">
           No data available, click 
-          <i class="fa fa-info-circle" aria-hidden="true"></i> icon next to the print button for instructions.
+          <i class="bi bi-exclamation-diamond"></i> icon next to the print button for instructions.
         </p>`;
     }
   } catch (error) {
