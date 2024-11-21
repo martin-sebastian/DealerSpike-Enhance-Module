@@ -171,7 +171,7 @@ async function fetchData() {
                 <span style="font-size:10px; text-transform:uppercase;">Key Tags</span>
               </button>
 
-              <button type="button" class="btn btn-danger action-button mx-1" data-toggle="tooltip" title="Print Hang Tags" onclick="openHangTagsModal('${stockNumber}')">
+              <button type="button" class="btn btn-danger action-button mx-1" data-toggle="tooltip" title="Print Hang Tags" data-bs-toggle="modal" data-bs-target="#HangTagModal" data-bs-stocknumber="${stockNumber}" onclick="openHangTagsModal('${stockNumber}')">
                 <i class="bi bi-tags"></i>
                 <span style="font-size:10px; margin-top:-10px; padding:0; text-transform:uppercase;">Hang Tags</span>
               </button>
@@ -192,6 +192,7 @@ async function fetchData() {
                 <i class="bi bi-phone"></i>
                 <span style="font-size:10px; text-transform:uppercase;">Text Unit</span>
               </button>
+
               <!--
               <a href="./social-share/?stockNumber=${stockNumber}" class="btn btn-danger action-button mx-1" data-toggle="tooltip" title="Text Unit Details">
                 <i class="bi bi-phone"></i>

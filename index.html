@@ -22,7 +22,7 @@
               <img id="logo" class="me-2" src="./img/fom-app-logo-01.svg" alt="Logo" width="180" height="30.6" />
             </a>
 
-            <button type="button" class="btn btn-danger btn-sm mx-1 text-center px-3" data-toggle="tooltip" title="Print Key Tags by Stock Number" onclick="openKeyTagsByStockNumberModal('${stockNumber}')">
+            <button type="button" class="btn btn-danger btn-sm mx-1 border border-secondary text-center px-3" data-toggle="tooltip" title="Print Key Tags by Stock Number" onclick="openKeyTagsByStockNumberModal('${stockNumber}')">
               <i class="bi bi-plus-circle me-1"></i> CREATE KEY TAG
             </button>
           </div>
@@ -261,10 +261,11 @@
           <div class="modal-dialog modal-xl">
             <div class="modal-content">
               <div class="modal-header d-flex flex-row justify-content-between d-print-none">
-                <h1 class="modal-title fs-5" id="keytagModalLabel">StockNumber</h1>
+                <h5 class="modal-title text-capitalize" id="keyTagsByStockNumberModalLabel"><i class="bi bi-tag me-2 icon-circle"></i> Key Tag + Deal Jacket Label</h5>
+                <h1 class="modal-title ms-2 fs-5" id="keytagModalLabel">StockNumber</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
-              <div class="modal-body bg-white dots">
+              <div class="modal-body bg-white dots" style="height: 100%; width: 100%; margin: 0; padding: 0;">
                 <div class="main-content">
                   <!-- Elements to display the fetched data -->
                   <div id="keytagContainer" class="key-tag-container zoomElement text-truncate mx-1">
@@ -310,7 +311,7 @@
         <div class="modal-dialog modal-fullscreen">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="keyTagsByStockNumberModalLabel"><i class="bi bi-tag me-2 icon-circle"></i> Generate Key Tag</h5>
+              <h5 class="modal-title" id="keyTagsByStockNumberModalLabel"><i class="bi bi-tag me-2 icon-circle"></i>Generate Key Tags</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body m-0 p-0">
@@ -329,7 +330,8 @@
       <div class="modal-dialog modal-fullscreen">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="hangTagsModalLabel">Hang Tags</h5>
+            <h5 class="modal-title text-capitalize" id="hangTagsModalLabel"><i class="bi bi-tags me-2 icon-circle"></i>Hang Tags</h5>
+            <h1 class="modal-title ms-2 fs-5 ms-2" id="hangTagsModalLabel">Stock Number</h1>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="h-100">

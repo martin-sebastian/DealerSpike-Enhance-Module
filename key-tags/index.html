@@ -16,8 +16,8 @@
         max-width: 350px;
         height: 100vh;
         overflow: hidden;
-        border-right: solid 1px #ccc;
-        background-color: white;
+        border-right: solid 0px rgba(55, 55, 55, 0.1);
+        background-color: rgba(255, 255, 255, 0.9);
         color: currentColor;
       }
       .right-panel {
@@ -235,6 +235,19 @@
         line-height: 8px;
         color: #ccc;
       }
+      input[type="search"] {
+        font-weight: 800;
+      }
+      ::placeholder {
+        color: #999 !important;
+        opacity: 1; /* Firefox */
+        font-weight: 400;
+      }
+
+      ::-ms-input-placeholder {
+        /* Edge 12-18 */
+        color: #999 !important;
+      }
       @media print {
         .key-tag-container {
           zoom: 1;
@@ -244,17 +257,17 @@
   </head>
   <body class="dots">
     <main>
-      <div class="left-panel">
+      <div class="left-panel shadow">
         <div class="left-panel-content mx-4 my-3">
           <div class="mb-3">
             <label for="search" class="form-label fs-4 fw-bold">Search</label>
-            <input type="search" class="form-control" id="search" placeholder="Stock Number" onkeyup="keyTag(this.value)" />
+            <input type="search" class="form-control" id="search" placeholder="Enter current Stock #" onkeyup="keyTag(this.value)" />
           </div>
-          <div class="mb-3 fw-bold">Or create a custom key tag</div>
+          <div class="mb-1 pt-3 fw-bold text-muted">or create a new key tag</div>
           <div class="mb-3">
             <label for="newUsed" class="form-label visually-hidden">New/Used</label>
             <select class="form-select" id="newUsed" onchange="document.getElementById('modelUsageHorizontal').innerHTML = this.value">
-              <option value="">New or Used</option>
+              <option placeholder="New or Used" value=""></option>
               <option value="New">New</option>
               <option value="Used">Used</option>
             </select>
@@ -263,9 +276,9 @@
             <label for="stockNumber" class="form-label visually-hidden">Stock Number</label>
             <input
               type="text"
-              class="form-control"
+              class="form-control uppercase"
               id="stockNumber"
-              placeholder="Stock Number"
+              placeholder="Stock #"
               onkeyup="document.getElementById('stockNumberHorizontal').innerHTML = this.value"
             />
           </div>
@@ -276,7 +289,9 @@
               class="form-control"
               id="year"
               placeholder="Year"
-              onkeyup="document.getElementById('modelYearHorizontal').innerHTML = this.value"
+              onkeyup="
+                document.getElementById('modelYearHorizontal').innerHTML = this.value;
+                document.getElementById('modelYearVertical').innerHTML = this.value;"
             />
           </div>
           <div class="mb-3">
@@ -285,8 +300,10 @@
               type="text"
               class="form-control"
               id="manufacturerInput"
-              placeholder="Manufacturer"
-              onkeyup="document.getElementById('manufacturerHorizontal').innerHTML = this.value"
+              placeholder="Make"
+              onkeyup="
+                document.getElementById('manufacturerHorizontal').innerHTML = this.value;
+                document.getElementById('manufacturerVertical').innerHTML = this.value;"
             />
           </div>
           <div class="mb-3">
@@ -295,8 +312,10 @@
               type="text"
               class="form-control"
               id="modelNameInput"
-              placeholder="Model Name"
-              onkeyup="document.getElementById('modelNameHorizontal').innerHTML = this.value"
+              placeholder="Model"
+              onkeyup="
+                document.getElementById('modelNameHorizontal').innerHTML = this.value;
+                document.getElementById('modelNameVertical').innerHTML = this.value;"
             />
           </div>
           <div class="mb-3">
@@ -305,7 +324,7 @@
               type="text"
               class="form-control"
               id="modelCodeInput"
-              placeholder="Model Code"
+              placeholder="Code"
               onkeyup="document.getElementById('modelCodeHorizontal').innerHTML = this.value"
             />
           </div>
@@ -315,20 +334,28 @@
               type="text"
               class="form-control"
               id="modelColorInput"
-              placeholder="Model Color"
+              placeholder="Color"
               onkeyup="document.getElementById('modelColorHorizontal').innerHTML = this.value"
             />
           </div>
           <div class="mb-3">
             <label for="vin" class="form-label visually-hidden">VIN</label>
-            <input type="text" class="form-control" id="vinInput" placeholder="VIN" onkeyup="document.getElementById('modelVin').innerHTML = this.value" />
+            <input
+              type="text"
+              class="form-control"
+              id="vinInput"
+              placeholder="VIN"
+              onkeyup="
+                document.getElementById('modelVin').innerHTML = this.value;
+                document.getElementById('modelVinVertical').innerHTML = this.value;"
+            />
           </div>
         </div>
       </div>
-      <div class="right-panel">
+      <div class="right-panel d-flex flex-column justify-content-center align-items-center">
         <div class="main-content">
-          <div class="d-flex flex-row justify-content-center align-items-center">
-            <div id="keytagContainer" class="key-tag-container shadow zoomElement text-truncate placeholder-glow mx-1">
+          <div class="d-flex flex-row vh-100 justify-content-center align-items-center">
+            <div id="keytagContainer" class="key-tag-container shadow-sm zoomElement text-truncate placeholder-glow mx-1">
               <div id="modelUsageHorizontal" class="model-usage"><span class="placeholder rounded-5 col-4"></span></div>
               <div id="stockNumberHorizontal" class="stock-number"><span class="placeholder rounded-5 col-8"></span></div>
               <div id="modelYearHorizontal" class="model-year"><span class="placeholder rounded-5 col-4"></span></div>
@@ -339,7 +366,7 @@
               <div id="modelVin" class="model-vin"><span class="placeholder rounded col-10"></span></div>
             </div>
             <!-- New rotated label -->
-            <div id="keytagVerticalContainer" class="key-tag-container shadow zoomElement mx-1">
+            <div id="keytagVerticalContainer" class="key-tag-container shadow-sm zoomElement mx-1">
               <div class="rotated-label-text">
                 <div class="year-make-container">
                   <span id="modelYearVertical" class="model-year-vertical">Year</span>
@@ -386,6 +413,9 @@
             document.getElementById("modelCodeHorizontal").innerHTML = data.ModelCode || "N/A";
             document.getElementById("modelColorHorizontal").innerHTML = data.Color || "N/A";
             document.getElementById("modelVin").innerHTML = data.VIN || "N/A";
+
+            document.getElementById("modelYearVertical").innerHTML = data.ModelYear || "N/A";
+            document.getElementById("manufacturerVertical").innerHTML = data.Manufacturer || "N/A";
 
             // Check if elements exist before setting innerHTML
             const modelYearVertical = document.getElementById("modelYearVertical");
@@ -440,8 +470,8 @@
               <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
             </div>
             <p class="error-message">
-              No data available, click 
-              <i class="fa fa-info-circle" aria-hidden="true"></i> icon next to the print button for instructions.
+              No data available.
+              <i class="fa fa-info-circle" aria-hidden="true"></i> make sure your data is synced between the portal and Dealer Spike.
             </p>`;
           }
         } catch (error) {
