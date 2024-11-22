@@ -8,7 +8,8 @@
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="../node_modules/bootstrap-icons/font/bootstrap-icons.css" />
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/print-js/1.6.0/print.min.js"></script>
+    <link rel="stylesheet" href="../css/key-tags.css" />
     <style>
       .left-panel {
         position: fixed;
@@ -621,9 +622,9 @@
             />
           </div>
           <button class="btn btn-danger btn-sm text-uppercase text-light fw-bold" onclick="clearKeyTag()">Clear Key Tags</button>
-          <button type="button" onclick="printKeyTag()">
-            Print Label
-         </button>
+          <button type="button" onclick="printJS({ printable: 'keyTagContainer', type: 'html', css: ['/css/keytags.css'] })">
+            Print Form
+          </button>
         
         </div>
       </div>
@@ -631,7 +632,7 @@
         <div id="message" class="message-container"></div>
         <div class="main-content">
           <div id="keytagContainer" class="d-flex flex-row vh-100 justify-content-center align-items-center">
-            <div id="keytagContainerLeft" class="key-tag-container-left shadow-sm zoomElement text-truncate mx-1">
+            <div id="keytagContainerLeft" class="key-tag-container-left">
               <div id="modelUsageHorizontal" class="model-usage"><span class="placeholder rounded-5 col-4"></span></div>
               <div id="stockNumberHorizontal" class="stock-number"><span class="placeholder rounded-5 col-8 h-12"></span></div>
               <div id="modelYearHorizontal" class="model-year"><span class="placeholder rounded-5 col-4 h-12"></span></div>
@@ -642,7 +643,7 @@
               <div id="modelVin" class="model-vin"><span class="placeholder rounded col-10"></span></div>
             </div>
             <!-- New rotated label -->
-            <div id="keytagVerticalContainer" class="key-tag-container-right shadow-sm zoomElement mx-1">
+            <div id="keytagVerticalContainer" class="key-tag-container-right">
               <div class="rotated-label-text">
                 <div class="year-make-container">
                   <span id="modelYearVertical" class="model-year-vertical"
@@ -820,15 +821,7 @@
         }
       });
     </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/print-js/1.6.0/print.min.js"></script>
-    <script>
-        function printKeyTag() {
-            printJS({
-                printable: 'keytagContainer',
-                type: 'html',
-                style: '[*]',
-            });
-        }
-    </script>
+    
+
   </body>
 </html>
