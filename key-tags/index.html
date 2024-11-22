@@ -51,33 +51,21 @@
         z-index: 1000;
         background-color: rgba(255, 255, 255, 1);
       }
-      .rotated-label-text {
-        writing-mode: vertical-rl;
-        text-orientation: mixed;
-        text-align: center;
-        display: flex;
-        flex-direction: column;
-        justify-content: start;
-        align-items: center;
-        text-align: center;
-        width: 1.4in;
-        height: 2in;
-        overflow: hidden;
-      }
       .year-make-container {
-        font-size: 17pt;
-        line-height: 20px;
+        font-size: 18pt;
+        line-height: 18pt;
         font-weight: 700;
+        letter-spacing: -1px;
       }
       .model-vin-vertical {
         font-size: 13pt;
         line-height: 20px;
-        font-weight: 400;
+        font-weight: 700;
       }
       .model-name-vertical {
         font-size: 8pt !important;
         line-height: 12px;
-        font-weight: 500;
+        font-weight: 800;
       }
       .warning-icon-container {
         text-align: center;
@@ -99,16 +87,26 @@
         font-size: 12px !important;
         line-height: 12px !important;
         height: 12px !important;
-        opacity: 0.5 !important;
+        background: #ddd !important;
       }
-      .key-tag-container {
-        padding: 15px 4px 0px 4px;
-        border: solid 1px #ccc;
-        border-radius: 10px;
-        padding: 0px;
-        margin-top: 0px;
+      .key-tag-container-left {
+        border: solid 1px #ddd;
+        border-radius: 6pt;
+        padding: 0;
+        margin: 0;
         width: 1.5in;
         height: 2in;
+        background: #fff !important;
+        zoom: 2;
+      }
+      .key-tag-container-right {
+        transform: rotate(90deg);
+        border: solid 1px #ddd;
+        border-radius: 6px;
+        padding: 0px;
+        margin-top: 0px;
+        width: 2in;
+        height: 1.5in;
         background: #fff !important;
         zoom: 2;
       }
@@ -122,34 +120,35 @@
         text-align: center;
         font-size: 12px;
         line-height: 16px;
-        font-weight: bold;
+        font-weight: 800;
         border-bottom: solid 1px #eee;
       }
       .stock-number {
         text-align: center;
         font-size: 18px;
-        font-weight: bold;
         line-height: 22px;
+        font-weight: 900;
         border-bottom: solid 1px #eee;
       }
       .model-year {
         text-align: center;
         font-size: 18px;
-        font-weight: bold;
-        line-height: 20px;
+        line-height: 22px;
+        font-weight: 800;
         border-bottom: solid 1px #eee;
       }
       .manufacturer {
         text-align: center;
         font-size: 14px;
-        font-weight: bold;
+        line-height: 18px;
+        font-weight: 800;
         border-bottom: solid 1px #eee;
       }
       .model-name {
         text-align: center;
         font-size: 14px;
         line-height: 20px;
-        font-weight: bold;
+        font-weight: 800;
         white-space: nowrap;
         overflow: hidden;
         border-bottom: solid 1px #eee;
@@ -158,14 +157,14 @@
         text-align: center;
         font-size: 14px;
         line-height: 18px;
-        font-weight: bold;
+        font-weight: 800;
         border-bottom: solid 1px #eee;
       }
       .model-color {
         text-align: center;
         font-size: 12px;
-        line-height: 18px;
-        font-weight: bold;
+        line-height: 16px;
+        font-weight: 800;
         white-space: nowrap;
         overflow: hidden;
         border-bottom: solid 1px #eee;
@@ -173,7 +172,7 @@
       .model-vin {
         text-align: center;
         font-size: 12px;
-        font-weight: bold;
+        font-weight: 800;
         line-height: 18px;
       }
       .model-usage::after {
@@ -185,7 +184,7 @@
         content: "USAGE";
         font-size: 6px !important;
         line-height: 8px;
-        color: #ccc;
+        color: #ddd;
       }
       .stock-number::after {
         display: block;
@@ -197,7 +196,7 @@
         content: "STOCK#";
         font-size: 6px !important;
         line-height: 6px;
-        color: #ccc;
+        color: #ddd;
       }
       .model-year::after {
         display: block;
@@ -208,7 +207,7 @@
         content: "YEAR";
         font-size: 6px !important;
         line-height: 6px;
-        color: #ccc;
+        color: #ddd;
       }
       .manufacturer::after {
         display: block;
@@ -219,7 +218,7 @@
         content: "MANUF.";
         font-size: 6px !important;
         line-height: 8px;
-        color: #ccc;
+        color: #ddd;
       }
       .model-name::after {
         display: block;
@@ -230,7 +229,7 @@
         content: "MODEL";
         font-size: 6px !important;
         line-height: 8px;
-        color: #ccc;
+        color: #ddd;
       }
       .model-code::after {
         display: block;
@@ -241,7 +240,7 @@
         content: "CODE";
         font-size: 6px !important;
         line-height: 8px;
-        color: #ccc;
+        color: #ddd;
       }
       .model-color::after {
         display: block;
@@ -253,7 +252,7 @@
         content: "COLOR";
         font-size: 6px !important;
         line-height: 8px;
-        color: #ccc;
+        color: #ddd;
       }
       .model-vin::after {
         display: block;
@@ -264,8 +263,8 @@
         margin-top: -4px;
         content: "VIN";
         font-size: 6px !important;
-        line-height: 8px;
-        color: #ccc;
+        line-height: 6px;
+        color: #ddd;
       }
       input[type="search"] {
         font-weight: 800;
@@ -281,11 +280,243 @@
         color: #999 !important;
       }
       @media print {
-        .d-print-block {
-          display: block !important;
+        @page {
+            size: 1.5in 2in;
+            margin: 0;
+            scale: 1;
+            @top {
+              content: ""; /* No content for header */
+            }
+            @bottom {
+              content: ""; /* No content for footer */
+            }
+          }
+        .key-tag-container-left {
+          padding: 15px 4px 0px 4px;
+          border: solid 1px #ddd;
+          border-radius: 6px;
+          padding: 0px;
+          margin-top: 0px;
+          width: 1.5in;
+          height: 2in;
+          background: #fff !important;
+          zoom: 1;
+        }
+        .key-tag-container-right {
+          padding: 15px 4px 0px 4px;
+          border: solid 1px #ddd;
+          border-radius: 6px;
+          padding: 0px;
+          margin-top: 0px;
+          width: 2in;
+          height: 1.5in;
+          background: #fff !important;
+          zoom: 2;
+        }
+        .year-make-container {
+          font-size: 18pt;
+          line-height: 18pt;
+          font-weight: 700;
+          letter-spacing: -1px;
+        }
+        .model-vin-vertical {
+          font-size: 13pt;
+          line-height: 20px;
+          font-weight: 700;
+        }
+        .model-name-vertical {
+          font-size: 8pt !important;
+          line-height: 12px;
+          font-weight: 800;
+        }
+        .warning-icon-container {
+          text-align: center;
+          font-size: 300%;
+          color: red;
+          padding-top: 80px;
+        }
+        .error-message {
+          text-align: center;
+          font-size: large;
+        }
+        .blank-line {
+          background: #ccc;
+          border-radius: 4px;
+          height: 11px;
+          margin-bottom: 10px;
+        }
+        .placeholder {
+          font-size: 12px !important;
+          line-height: 12px !important;
+          height: 12px !important;
+          background: #ddd !important;
         }
         .key-tag-container {
-          zoom: 1;
+          padding: 15px 4px 0px 4px;
+          border: solid 1px #ddd;
+          border-radius: 6px;
+          padding: 0px;
+          margin-top: 0px;
+          width: 1.5in;
+          height: 2in;
+          background: #fff !important;
+          zoom: 2;
+        }
+        .keytag-label {
+          font-size: 6px;
+          color: #999;
+          margin: -8px 0 0px 0;
+          padding-left: 0px;
+        }
+        .model-usage {
+          text-align: center;
+          font-size: 12px;
+          line-height: 16px;
+          font-weight: 800;
+          border-bottom: solid 1px #eee;
+        }
+        .stock-number {
+          text-align: center;
+          font-size: 18px;
+          line-height: 22px;
+          font-weight: 900;
+          border-bottom: solid 1px #eee;
+        }
+        .model-year {
+          text-align: center;
+          font-size: 18px;
+          line-height: 22px;
+          font-weight: 800;
+          border-bottom: solid 1px #eee;
+        }
+        .manufacturer {
+          text-align: center;
+          font-size: 14px;
+          line-height: 18px;
+          font-weight: 800;
+          border-bottom: solid 1px #eee;
+        }
+        .model-name {
+          text-align: center;
+          font-size: 14px;
+          line-height: 20px;
+          font-weight: 800;
+          white-space: nowrap;
+          overflow: hidden;
+          border-bottom: solid 1px #eee;
+        }
+        .model-code {
+          text-align: center;
+          font-size: 14px;
+          line-height: 18px;
+          font-weight: 800;
+          border-bottom: solid 1px #eee;
+        }
+        .model-color {
+          text-align: center;
+          font-size: 12px;
+          line-height: 16px;
+          font-weight: 800;
+          white-space: nowrap;
+          overflow: hidden;
+          border-bottom: solid 1px #eee;
+        }
+        .model-vin {
+          text-align: center;
+          font-size: 12px;
+          font-weight: 800;
+          line-height: 18px;
+        }
+        .model-usage::after {
+          display: block;
+          text-align: left;
+          padding-left: 2px;
+          margin-bottom: 0px;
+          margin-top: -4px;
+          content: "USAGE";
+          font-size: 6px !important;
+          line-height: 8px;
+          color: #ddd;
+        }
+        .stock-number::after {
+          display: block;
+          text-align: left;
+          padding-top: 2px;
+          padding-left: 2px;
+          margin-bottom: 0px;
+          margin-top: -4px;
+          content: "STOCK#";
+          font-size: 6px !important;
+          line-height: 6px;
+          color: #ddd;
+        }
+        .model-year::after {
+          display: block;
+          text-align: left;
+          padding-left: 2px;
+          margin-bottom: 0px;
+          margin-top: -4px;
+          content: "YEAR";
+          font-size: 6px !important;
+          line-height: 6px;
+          color: #ddd;
+        }
+        .manufacturer::after {
+          display: block;
+          text-align: left;
+          padding-left: 2px;
+          margin-bottom: 0px;
+          margin-top: -4px;
+          content: "MANUF.";
+          font-size: 6px !important;
+          line-height: 8px;
+          color: #ddd;
+        }
+        .model-name::after {
+          display: block;
+          text-align: left;
+          padding-left: 2px;
+          margin-bottom: 0px;
+          margin-top: -4px;
+          content: "MODEL";
+          font-size: 6px !important;
+          line-height: 8px;
+          color: #ddd;
+        }
+        .model-code::after {
+          display: block;
+          text-align: left;
+          padding-left: 2px;
+          margin-bottom: 0px;
+          margin-top: -4px;
+          content: "CODE";
+          font-size: 6px !important;
+          line-height: 8px;
+          color: #ddd;
+        }
+        .model-color::after {
+          display: block;
+          text-align: left;
+          padding-top: 2px;
+          padding-left: 2px;
+          margin-bottom: 0px;
+          margin-top: -4px;
+          content: "COLOR";
+          font-size: 6px !important;
+          line-height: 8px;
+          color: #ddd;
+        }
+        .model-vin::after {
+          display: block;
+          text-align: left;
+          padding-top: 2px;
+          padding-left: 2px;
+          margin-bottom: 0px;
+          margin-top: -4px;
+          content: "VIN";
+          font-size: 6px !important;
+          line-height: 6px;
+          color: #ddd;
         }
       }
     </style>
@@ -295,16 +526,20 @@
       <div class="left-panel shadow d-print-none">
         <div class="left-panel-content mx-4 my-3">
           <div class="mb-3">
-            <label for="search" class="form-label fs-4 fw-bold">Search</label>
+            <label for="search" class="form-label fs-2 fw-bold">Search</label>
             <input type="search" class="form-control" id="search" placeholder="Enter current Stock #" onkeyup="keyTag(this.value)" />
           </div>
-          <div class="mb-1 pt-3 fw-bold text-muted">or create a new key tag</div>
+          <div class="w-100 text-center py-2">
+            <div style="border: 1px solid #eee; margin-bottom: -15px" /></div>
+            <span class="badge rounded-pill bg-white text-dark">OR</span>
+          </div>
+          <h6 class="fw-bold text-uppercase text-muted mt-2">Create custom key tag</h6>
           <div class="mb-3">
             <label for="newUsed" class="form-label visually-hidden">New/Used</label>
             <select class="form-select" id="newUsed" onchange="document.getElementById('modelUsageHorizontal').innerHTML = this.value">
               <option placeholder="New or Used" value=""></option>
-              <option value="New">New</option>
-              <option value="Used">Used</option>
+              <option value="New">NEW</option>
+              <option value="Used">USED</option>
             </select>
           </div>
           <div class="mb-3">
@@ -335,7 +570,7 @@
               type="text"
               class="form-control"
               id="manufacturerInput"
-              placeholder="Make"
+              placeholder="Manuf."
               onkeyup="
                 document.getElementById('manufacturerHorizontal').innerHTML = this.value;
                 document.getElementById('manufacturerVertical').innerHTML = this.value;"
@@ -385,14 +620,18 @@
                 document.getElementById('modelVinVertical').innerHTML = this.value;"
             />
           </div>
-          <button class="btn btn-primary" onclick="clearKeyTag()">Clear</button>
+          <button class="btn btn-danger btn-sm text-uppercase text-light fw-bold" onclick="clearKeyTag()">Clear Key Tags</button>
+          <button type="button" onclick="printKeyTag()">
+            Print Label
+         </button>
+        
         </div>
       </div>
-      <div class="right-panel d-flex flex-column justify-content-center align-items-center d-print-none">
+      <div class="right-panel d-flex flex-column justify-content-center align-items-center">
         <div id="message" class="message-container"></div>
         <div class="main-content">
-          <div class="d-flex flex-row vh-100 justify-content-center align-items-center">
-            <div id="keytagContainer" class="key-tag-container shadow-sm zoomElement text-truncate mx-1 d-print-block">
+          <div id="keytagContainer" class="d-flex flex-row vh-100 justify-content-center align-items-center">
+            <div id="keytagContainerLeft" class="key-tag-container-left shadow-sm zoomElement text-truncate mx-1">
               <div id="modelUsageHorizontal" class="model-usage"><span class="placeholder rounded-5 col-4"></span></div>
               <div id="stockNumberHorizontal" class="stock-number"><span class="placeholder rounded-5 col-8 h-12"></span></div>
               <div id="modelYearHorizontal" class="model-year"><span class="placeholder rounded-5 col-4 h-12"></span></div>
@@ -403,7 +642,7 @@
               <div id="modelVin" class="model-vin"><span class="placeholder rounded col-10"></span></div>
             </div>
             <!-- New rotated label -->
-            <div id="keytagVerticalContainer" class="key-tag-container shadow-sm zoomElement mx-1 d-print-block">
+            <div id="keytagVerticalContainer" class="key-tag-container-right shadow-sm zoomElement mx-1">
               <div class="rotated-label-text">
                 <div class="year-make-container">
                   <span id="modelYearVertical" class="model-year-vertical"
@@ -427,9 +666,7 @@
         </div>
       </div>
     </main>
-    <script src="../js/print.js"></script>
-    <script src="../js/numeral.js"></script>
-    <script src="../js/moment.js"></script>
+    
     <script>
       // Function to fetch the data
       async function keyTag(stockNumber) {
@@ -446,6 +683,8 @@
 
           const data = await response.json();
           console.log("Data fetched from portal successfully:", data);
+
+ 
 
           if (typeof data.StockNumber !== "undefined") {
             // Populate the modal with new data
@@ -574,6 +813,22 @@
         document.getElementById("modelColorInput").value = "";
         document.getElementById("vinInput").value = "";
       }
+
+      document.getElementById('search').addEventListener('input', function() {
+        if (this.value === '') {
+          clearSearch();
+        }
+      });
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/print-js/1.6.0/print.min.js"></script>
+    <script>
+        function printKeyTag() {
+            printJS({
+                printable: 'keytagContainer',
+                type: 'html',
+                style: '[*]',
+            });
+        }
     </script>
   </body>
 </html>
