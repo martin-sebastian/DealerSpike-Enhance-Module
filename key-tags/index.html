@@ -9,7 +9,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/print-js/1.6.0/print.min.js"></script>
     <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="../node_modules/bootstrap-icons/font/bootstrap-icons.css" />
-    <link rel="stylesheet" href="../css/keytags.css" />
+    <link rel="stylesheet" href="../css/key-tags.css" />
+    <link rel="stylesheet" href="../css/print.css" />
   </head>
   <body class="dots">
     <main>
@@ -111,8 +112,9 @@
             />
           </div>
           <button class="btn btn-danger btn-sm text-uppercase text-light fw-bold" onclick="clearKeyTag()">Clear Key Tags</button>
-          <button type="button" class="btn btn-primary btn-sm text-uppercase text-light fw-bold" onclick="printJS({ printable: 'keytagContainer', type: 'html', css: ['../css/keytags.css'] })">
-            Print Form
+          <button type="button" class="btn btn-primary btn-sm text-uppercase text-light fw-bold" 
+            onclick="printKeyTags()">
+            Print Tags
           </button>
         </div>
       </div>
@@ -133,21 +135,20 @@
             <hr />
             <!-- New rotated label -->
             <div id="keytagContainerRight" class="key-tag-container-right">
-              <div class="year-make-container">
-                <span id="modelYearVertical" class="model-year-vertical">
-                    <span class="placeholder rounded-5" style="width: 12px; height: 48px !important"></span>
-                  </span>
-                <span id="manufacturerVertical" class="manufacturer-vertical">
-                  <span class="placeholder rounded-5" style="width: 12px; height: 96px !important"></span>
-                </span>
-              </div>
-              <div class="name-vin-container">
-                <span id="modelVinVertical" class="model-vin-vertical">
-                  <span class="placeholder rounded-5" style="width: 12px; height: 156px !important"></span>
-                </span>
-                <span id="modelNameVertical" class="model-name-vertical">
-                  <span class="placeholder rounded-5" style="width: 12px; height: 96px !important"></span>
-                </span>
+              <div class="vertical-content">
+                <!-- First column (rightmost) -->
+                <div class="year-make-column">
+                  <span id="modelYearVertical"></span>
+                  <span id="manufacturerVertical"></span>
+                </div>
+                <!-- Second column -->
+                <div class="vin-column">
+                  <span id="modelVinVertical"></span>
+                </div>
+                <!-- Third column -->
+                <div class="model-column">
+                  <span id="modelNameVertical"></span>
+                </div>
               </div>
             </div>
           </div>
@@ -255,58 +256,97 @@
         }
       }
 
-      function clearSearch() {
-        // Clear horizontal labels
-        document.getElementById("modelUsageHorizontal").innerHTML = `<span class="placeholder rounded-5 col-4 h-12"></span>`;
-        document.getElementById("stockNumberHorizontal").innerHTML = `<span class="placeholder rounded-5 col-8 h-12"></span>`;
-        document.getElementById("modelYearHorizontal").innerHTML = `<span class="placeholder rounded-5 col-4 h-12"></span>`;
-        document.getElementById("manufacturerHorizontal").innerHTML = `<span class="placeholder rounded-5 col-7 h-12"></span>`;
-        document.getElementById("modelNameHorizontal").innerHTML = `<span class="placeholder rounded-5 col-8 h-12"></span>`;
-        document.getElementById("modelCodeHorizontal").innerHTML = `<span class="placeholder rounded-5 col-5 h-12"></span>`;
-        document.getElementById("modelColorHorizontal").innerHTML = `<span class="placeholder rounded-5 col-8 h-12"></span>`;
-        document.getElementById("modelVin").innerHTML = `<span class="placeholder rounded col-10"></span>`;
-
-        // Clear vertical labels
-        document.getElementById("modelYearVertical").innerHTML = `<span class="placeholder rounded-5" style="width: 12px; height: 48px !important;"></span>`;
-        document.getElementById("manufacturerVertical").innerHTML = `<span class="placeholder rounded-5" style="width: 12px; height: 96px !important;"></span>`;
-        document.getElementById("modelNameVertical").innerHTML = `<span class="placeholder rounded-5" style="width: 12px; height: 96px !important;"></span>`;
-        document.getElementById("modelVinVertical").innerHTML = `<span class="placeholder rounded-5" style="width: 12px; height: 156px !important;"></span>`;
-      }
-
       function clearKeyTag() {
+        const elements = {
+          horizontal: {
+            modelUsage: '<span class="placeholder rounded-5 col-4 h-12"></span>',
+            stockNumber: '<span class="placeholder rounded-5 col-8 h-12"></span>',
+            modelYear: '<span class="placeholder rounded-5 col-4 h-12"></span>',
+            manufacturer: '<span class="placeholder rounded-5 col-7 h-12"></span>',
+            modelName: '<span class="placeholder rounded-5 col-8 h-12"></span>',
+            modelCode: '<span class="placeholder rounded-5 col-5 h-12"></span>',
+            modelColor: '<span class="placeholder rounded-5 col-8 h-12"></span>',
+            modelVin: '<span class="placeholder rounded col-10"></span>'
+          },
+          vertical: {
+            modelYear: '<span class="placeholder rounded-5" style="width: 12px; height: 48px !important;"></span>',
+            manufacturer: '<span class="placeholder rounded-5" style="width: 12px; height: 96px !important;"></span>',
+            modelName: '<span class="placeholder rounded-5" style="width: 12px; height: 96px !important;"></span>',
+            modelVin: '<span class="placeholder rounded-5" style="width: 12px; height: 156px !important;"></span>'
+          },
+          inputs: ['search', 'newUsed', 'stockNumber', 'year', 'manufacturerInput', 
+                   'modelNameInput', 'modelCodeInput', 'modelColorInput', 'vinInput']
+        };
+
         // Clear horizontal labels
-        document.getElementById("modelUsageHorizontal").innerHTML = `<span class="placeholder rounded-5 col-4 h-12"></span>`;
-        document.getElementById("stockNumberHorizontal").innerHTML = `<span class="placeholder rounded-5 col-8 h-12"></span>`;
-        document.getElementById("modelYearHorizontal").innerHTML = `<span class="placeholder rounded-5 col-4 h-12"></span>`;
-        document.getElementById("manufacturerHorizontal").innerHTML = `<span class="placeholder rounded-5 col-7 h-12"></span>`;
-        document.getElementById("modelNameHorizontal").innerHTML = `<span class="placeholder rounded-5 col-8 h-12"></span>`;
-        document.getElementById("modelCodeHorizontal").innerHTML = `<span class="placeholder rounded-5 col-5 h-12"></span>`;
-        document.getElementById("modelColorHorizontal").innerHTML = `<span class="placeholder rounded-5 col-8 h-12"></span>`;
-        document.getElementById("modelVin").innerHTML = `<span class="placeholder rounded col-10"></span>`;
+        Object.entries(elements.horizontal).forEach(([key, value]) => {
+          document.getElementById(`${key}Horizontal`).innerHTML = value;
+        });
 
         // Clear vertical labels
-        document.getElementById("modelYearVertical").innerHTML = `<span class="placeholder rounded-5" style="width: 12px; height: 48px !important;"></span>`;
-        document.getElementById("manufacturerVertical").innerHTML = `<span class="placeholder rounded-5" style="width: 12px; height: 96px !important;"></span>`;
-        document.getElementById("modelNameVertical").innerHTML = `<span class="placeholder rounded-5" style="width: 12px; height: 96px !important;"></span>`;
-        document.getElementById("modelVinVertical").innerHTML = `<span class="placeholder rounded-5" style="width: 12px; height: 156px !important;"></span>`;
+        Object.entries(elements.vertical).forEach(([key, value]) => {
+          document.getElementById(`${key}Vertical`).innerHTML = value;
+        });
 
-        // Optionally clear input fields
-        document.getElementById("search").value = "";
-        document.getElementById("newUsed").value = "";
-        document.getElementById("stockNumber").value = "";
-        document.getElementById("year").value = "";
-        document.getElementById("manufacturerInput").value = "";
-        document.getElementById("modelNameInput").value = "";
-        document.getElementById("modelCodeInput").value = "";
-        document.getElementById("modelColorInput").value = "";
-        document.getElementById("vinInput").value = "";
+        // Clear input fields
+        elements.inputs.forEach(id => {
+          document.getElementById(id).value = '';
+        });
       }
 
       document.getElementById('search').addEventListener('input', function() {
         if (this.value === '') {
-          clearSearch();
+          clearKeyTag();
         }
       });
+
+      function printKeyTags() {
+        printJS({
+          printable: 'keytagContainer',
+          type: 'html',
+          css: [
+            '../node_modules/bootstrap/dist/css/bootstrap.css',
+            '../node_modules/bootstrap-icons/font/bootstrap-icons.css',
+            '../css/key-tags.css'
+          ],
+          style: `
+            @page {
+              size: 1.5in 2in;
+              margin: 0;
+              padding: 0;
+            }
+            @media print {
+              html, body {
+                margin: 0;
+                padding: 0;
+                width: 1.5in;
+              }
+              #keytagContainer {
+                display: flex;
+                flex-direction: column;
+              }
+              .key-tag-container-left,
+              .key-tag-container-right {
+                width: 1.5in !important;
+                height: 2in !important;
+                page-break-after: always;
+                zoom: 1;
+              }
+              .key-tag-container-right {
+                transform: rotate(0deg) !important;
+              }
+              .key-tag-container-right .year-make-container,
+              .key-tag-container-right .name-vin-container {
+                writing-mode: vertical-rl;
+                text-orientation: mixed;
+                /* transform: rotate(180deg); */
+                height: 100%;
+              }
+            }
+          `,
+          documentTitle: 'Key Tags'
+        });
+      }
     </script>
     
 

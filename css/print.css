@@ -1,32 +1,61 @@
 @media print {
+  /* Page Setup */
   @page {
     size: 2in 1.5in;
     margin: 0;
   }
 
+  * {
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
   body {
     margin: 0;
     padding: 0;
-    width: 2in;
-    height: 1.5in;
+    background-color: #fff;
   }
 
+  /* Print Container Setup */
   #keytagContainer {
     position: absolute;
     left: 0;
     top: 0;
-    width: 2in;
-    height: 1.5in;
+    width: 1.5in;
+    height: 2in;
     padding: 0;
     margin: 0;
     border: none;
     overflow: hidden;
   }
+
+  /* Print Visibility Controls */
+  body * {
+    visibility: hidden;
+  }
+
+  #printFrame,
+  #printFrame * {
+    visibility: visible;
+  }
+
+  #printFrame {
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: block !important;
+    width: 100%;
+    height: 100%;
+  }
+
+  body > *:not(#printFrame) {
+    display: none !important;
+  }
+
+  /* Key Tag Print Adjustments */
   .key-tag-container {
     zoom: 1;
   }
 
-  /* Adjust font sizes if needed */
   #keytagContainer div {
     font-size: 7pt;
     line-height: 1.1;
@@ -37,19 +66,14 @@
     font-weight: bold;
   }
 
-  /* Preserve your existing color styles */
-  * {
-    color: inherit !important;
-    background: inherit !important;
-    background-color: inherit !important;
+  /* Page Break Controls */
+  #keytagContainerLeft,
+  .key-tag-container-left {
+    page-break-after: always;
   }
 
-  .label-success {
-    background-color: #5cb85c !important;
-    color: #fff !important;
-    border: 1px solid #5cb85c !important;
-  }
-
+  /* Label Status Colors */
+  .label-success,
   .label-warning {
     background-color: #5cb85c !important;
     color: #fff !important;
@@ -68,29 +92,48 @@
     border: 1px solid #777 !important;
   }
 
-  .navbar {
-    background-color: #ee0000 !important;
+  /* Right tag vertical text layout */
+  .key-tag-container-right {
+    width: 1.5in !important;
+    height: 2in !important;
+    display: flex;
+    justify-content: flex-end; /* Align content to right side */
+    padding: 0.1in;
+    page-break-after: always;
   }
 
-  body * {
-    visibility: hidden;
-  }
-  #printFrame,
-  #printFrame * {
-    visibility: visible;
-  }
-  #printFrame {
-    position: absolute;
-    left: 0;
-    top: 0;
-  }
-
-  body > *:not(#printFrame) {
-    display: none !important;
-  }
-  #printFrame {
-    display: block !important;
-    width: 100%;
+  /* Container for vertical columns */
+  .key-tag-container-right .vertical-content {
+    display: flex;
+    flex-direction: row-reverse; /* Columns start from right */
     height: 100%;
+    gap: 0.1in;
+  }
+
+  /* Individual vertical columns */
+  .year-make-column,
+  .vin-column,
+  .model-column {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    transform: rotate(180deg);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  /* Specific text sizes and spacing */
+  .year-make-column {
+    font-size: 14pt;
+    font-weight: bold;
+  }
+
+  .vin-column {
+    font-size: 12pt;
+  }
+
+  .model-column {
+    font-size: 12pt;
   }
 }
