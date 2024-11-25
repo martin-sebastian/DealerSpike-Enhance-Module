@@ -97,17 +97,19 @@
     width: 1.5in !important;
     height: 2in !important;
     display: flex;
-    justify-content: flex-end; /* Align content to right side */
+    justify-content: center;
+    align-items: center;
     padding: 0.1in;
     page-break-after: always;
   }
 
   /* Container for vertical columns */
-  .key-tag-container-right .vertical-content {
+  .vertical-content {
     display: flex;
-    flex-direction: row-reverse; /* Columns start from right */
-    height: 100%;
-    gap: 0.1in;
+    flex-direction: row-reverse;
+    height: 80%;
+    gap: 0.15in;
+    align-items: center;
   }
 
   /* Individual vertical columns */
@@ -120,7 +122,9 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
   }
 
   /* Specific text sizes and spacing */
@@ -134,6 +138,11 @@
   }
 
   .model-column {
-    font-size: 12pt;
+    font-size: 8pt;
+  }
+
+  /* Add spacing between items in year-make column */
+  .year-make-column span {
+    margin: 0.1in 0;
   }
 }
