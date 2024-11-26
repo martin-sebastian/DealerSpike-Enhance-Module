@@ -121,7 +121,7 @@
       <div class="right-panel d-flex flex-column justify-content-center align-items-center">
         <div id="message" class="message-container"></div>
         <div class="main-content">
-          <div id="keytagContainer">
+          <div id="keytagContainer" class="d-flex flex-row justify-content-center align-items-center">
             <div id="keytagContainerLeft" class="key-tag-container-left">
               <div id="modelUsageHorizontal" class="model-usage"><span class="placeholder rounded-5 col-4"></span></div>
               <div id="stockNumberHorizontal" class="stock-number"><span class="placeholder rounded-5 col-8 h-12"></span></div>
@@ -265,14 +265,15 @@
             manufacturer: '<span class="placeholder rounded-5 col-7 h-12"></span>',
             modelName: '<span class="placeholder rounded-5 col-8 h-12"></span>',
             modelCode: '<span class="placeholder rounded-5 col-5 h-12"></span>',
-            modelColor: '<span class="placeholder rounded-5 col-8 h-12"></span>',
-            modelVin: '<span class="placeholder rounded col-10"></span>'
+            modelColor: '<span class="placeholder rounded-5 col-8 h-12"></span>'
           },
-          vertical: {
-            modelYear: '<span class="placeholder rounded-5" style="width: 12px; height: 48px !important;"></span>',
-            manufacturer: '<span class="placeholder rounded-5" style="width: 12px; height: 96px !important;"></span>',
-            modelName: '<span class="placeholder rounded-5" style="width: 12px; height: 96px !important;"></span>',
-            modelVin: '<span class="placeholder rounded-5" style="width: 12px; height: 156px !important;"></span>'
+          // Special cases that don't follow the Horizontal/Vertical pattern
+          special: {
+            modelVin: '<span class="placeholder rounded col-10"></span>',
+            modelVinVertical: '<span class="placeholder rounded-5" style="width: 12px; height: 156px !important;"></span>',
+            modelYearVertical: '<span class="placeholder rounded-5" style="width: 12px; height: 48px !important;"></span>',
+            manufacturerVertical: '<span class="placeholder rounded-5" style="width: 12px; height: 96px !important;"></span>',
+            modelNameVertical: '<span class="placeholder rounded-5" style="width: 12px; height: 96px !important;"></span>'
           },
           inputs: ['search', 'newUsed', 'stockNumber', 'year', 'manufacturerInput', 
                    'modelNameInput', 'modelCodeInput', 'modelColorInput', 'vinInput']
@@ -283,9 +284,9 @@
           document.getElementById(`${key}Horizontal`).innerHTML = value;
         });
 
-        // Clear vertical labels
-        Object.entries(elements.vertical).forEach(([key, value]) => {
-          document.getElementById(`${key}Vertical`).innerHTML = value;
+        // Clear special cases
+        Object.entries(elements.special).forEach(([key, value]) => {
+          document.getElementById(key).innerHTML = value;
         });
 
         // Clear input fields
@@ -304,11 +305,7 @@
         printJS({
           printable: 'keytagContainer',
           type: 'html',
-          css: [
-            '../node_modules/bootstrap/dist/css/bootstrap.css',
-            '../node_modules/bootstrap-icons/font/bootstrap-icons.css',
-            '../css/key-tags.css'
-          ],
+          css: ['../css/print.css'],
           style: `
             @page {
               size: 1.5in 2in;
@@ -322,24 +319,20 @@
                 width: 1.5in;
               }
               #keytagContainer {
-                display: flex;
-                flex-direction: column;
+                display: flex !important;
+                flex-direction: column !important;
+                width: 1.5in !important;
               }
               .key-tag-container-left,
               .key-tag-container-right {
                 width: 1.5in !important;
                 height: 2in !important;
                 page-break-after: always;
-                zoom: 1;
+                transform: none !important;
               }
-              .key-tag-container-right {
-                transform: rotate(0deg) !important;
-              }
-              .key-tag-container-right .year-make-container,
-              .key-tag-container-right .name-vin-container {
+              .vertical-content {
                 writing-mode: vertical-rl;
                 text-orientation: mixed;
-                /* transform: rotate(180deg); */
                 height: 100%;
               }
             }
