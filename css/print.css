@@ -295,6 +295,7 @@
 
   /* Right tag vertical text layout */
   .key-tag-container-right {
+    display: none;
     width: 1.5in !important;
     height: 2in !important;
     display: flex;

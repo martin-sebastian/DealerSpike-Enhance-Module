@@ -111,10 +111,10 @@
                 document.getElementById('modelVinVertical').innerHTML = this.value;"
             />
           </div>
-          <button class="btn btn-danger btn-sm text-uppercase text-light fw-bold" onclick="clearKeyTag()">Clear Key Tags</button>
+          <button class="btn btn-danger btn-sm text-uppercase text-light fw-bold" onclick="clearKeyTag()">Clear</button>
           <button type="button" class="btn btn-primary btn-sm text-uppercase text-light fw-bold" 
             onclick="printKeyTags()">
-            Print Tags
+            Print Key Tags
           </button>
         </div>
       </div>
@@ -132,9 +132,9 @@
               <div id="modelColorHorizontal" class="model-color"><span class="placeholder rounded-5 col-8"></span></div>
               <div id="modelVin" class="model-vin"><span class="placeholder rounded col-10"></span></div>
             </div>
-            <hr />
+
             <!-- New rotated label -->
-            <div id="keytagContainerRight" class="key-tag-container-right">
+            <div style="display: none;" id="keytagContainerRight" class="key-tag-container-right">
               <div class="vertical-content">
                 <!-- First column (rightmost) -->
                 <div class="year-make-column">

@@ -188,17 +188,10 @@ async function fetchData() {
                 <i class="bi bi-card-heading"></i>
                 <span style="font-size:10px; text-transform:uppercase;">Pricing</span>
               </a>
-              <button type="button" onclick="window.location.href='./social-share/?stockNumber=${stockNumber}';" class="btn btn-danger action-button mx-1" data-toggle="tooltip" title="Text Message Quote" disabled>
+              <button type="button" onclick="window.location.href='./social-share/?stockNumber=${stockNumber}';" class="btn btn-danger action-button mx-1 visually-hidden" data-toggle="tooltip" title="Text Message Quote" disabled>
                 <i class="bi bi-phone"></i>
                 <span style="font-size:10px; text-transform:uppercase;">Text Unit</span>
               </button>
-
-              <!--
-              <a href="./social-share/?stockNumber=${stockNumber}" class="btn btn-danger action-button mx-1" data-toggle="tooltip" title="Text Unit Details">
-                <i class="bi bi-phone"></i>
-              </a>
-              <a href="./hang-tags/?search=${stockNumber}" class="btn btn-danger action-button mx-1" data-toggle="tooltip" title="Print Hang Tags"><i class="bi bi-tags"></i></a>
-              -->
             </div>  
           </td>
         `;

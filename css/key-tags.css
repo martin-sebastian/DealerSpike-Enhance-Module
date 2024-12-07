@@ -303,7 +303,7 @@ input[type="search"] {
     page-break-after: always;
     zoom: 1;
   }
-  .year-make-container {
+  .year-make-column {
     font-size: 18pt;
     line-height: 18pt;
     font-weight: 700;

@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="./node_modules/bootstrap-icons/font/bootstrap-icons.css" />
     <link href="./css/style.css" rel="stylesheet" />
-    <link rel="stylesheet" href="../css/printxxx.css" media="print" />
+    
   </head>
   <body data-bs-theme="dark">
     <header class="fixed-top d-print-none">
@@ -214,7 +214,7 @@
           Results: <span class="mx-1" id="rowCountDisplay"></span>
         </div>
         <div class="table-responsive w-100" style="overflow-x: auto">
-          <table id="vehiclesTable" class="table table-hover table-resposive align-middle">
+          <table id="vehiclesTable" class="table table-hover align-middle">
             <thead>
               <tr>
                 <th class="text-center">Image</th>
@@ -278,7 +278,7 @@
                   <div id="modelVin" class="model-vin text-truncate">VIN NUMBER</div>
                 </div>
                 <!-- New rotated label -->
-                <div id="keytagVerticalContainer" class="key-tag-container mx-1">
+                <div style="display: none;" id="keytagVerticalContainer" class="key-tag-container mx-1 visually-hidden">
                   <div class="rotated-label-text text-truncate d-flex flex-column gap-1">
                     <div class="year-make-container" style="height: 2in; margin: 0">
                       <span id="modelYearVertical" class="model-year-vertical">Year</span>
@@ -310,7 +310,7 @@
       <div class="modal-dialog modal-fullscreen">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="keyTagsByStockNumberModalLabel"><i class="bi bi-tag me-2 icon-circle"></i>Create Key Tag</h5>
+            <h5 class="modal-title text-capitalize" id="keyTagsByStockNumberModalLabel"><i class="bi bi-tag me-2 icon-circle"></i>CREATE KEY TAGS</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body m-0 p-0 overflow-hidden">
@@ -394,9 +394,9 @@
       </div>
     </div>
 
-    <script src="./js/popper.js"></script>
     <script src="./node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
     <script src="./node_modules/numeral/min/numeral.min.js"></script>
+    <script src="./js/popper.js"></script>
     <script src="./js/moment.js"></script>
     <script src="./js/app.js"></script>
     <iframe id="printFrame" style="display: none"></iframe>
