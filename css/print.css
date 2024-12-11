@@ -1,7 +1,7 @@
 @media print {
   /* Page Setup */
   @page {
-    size: 2in 1.5in;
+    size: 2.125in 1.625in;
     scale: 1;
   }
 
@@ -21,8 +21,8 @@
   /* Print Container Setup */
   #keytagContainer {
     position: absolute;
-    left: 0.5in;
-    top: 0.5in;
+    left: 0;
+    top: 0;
     width: 1.5in;
     height: 2in;
     padding: 5px;

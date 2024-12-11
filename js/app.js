@@ -573,7 +573,7 @@ function printKeyTag(event) {
             font-size: 8pt;
             font-weight: 600;
             margin: 0;
-            padding: 0;
+            padding: 0.125in;
             width: 1.5in;
             height: 2in;
             overflow: hidden;
