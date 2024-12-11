@@ -213,8 +213,8 @@
           <!-- element for displaying row count -->
           Results: <span class="mx-1" id="rowCountDisplay"></span>
         </div>
-        <div class="table-responsive w-100" style="overflow-x: auto">
-          <table id="vehiclesTable" class="table table-hover align-middle">
+        <div class="">
+          <table id="vehiclesTable" class="table table-responsive table-hover align-middle">
             <thead>
               <tr>
                 <th class="text-center">Image</th>
@@ -241,14 +241,15 @@
       <div class="modal fade" id="overlayModal" tabindex="-1" aria-labelledby="overlayModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-fullscreen">
           <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="overlayModalLabel">Overlay Preview</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-header bg-light text-dark border-0 visually-hidden">
+              <h5 class="modal-title" id="overlayModalLabel">OVERLAY PREVIEW</h5>
+              <button type="button" class="btn-close btn-primary bg-light text-dark me-2" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body m-0 p-0">
+              <button type="button" class="btn btn-outline-secondary position-absolute top-0 end-0 mt-2 me-4" title="Esc" data-bs-dismiss="modal" aria-label="Close"><i class="bi bi-x-lg"></i></button>
               <iframe id="overlayIframe" src="" style="width: 100%; height: 99%; border: none; margin: 0; padding: 0"></iframe>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer visually-hidden">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
               <!-- Print Button -->
             </div>
@@ -259,15 +260,19 @@
       <div class="modal fade" id="keytagModal" tabindex="-1" aria-labelledby="keytagModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
           <div class="modal-content">
-            <div class="modal-header d-flex flex-row justify-content-between d-print-none">
-              <h5 class="modal-title text-capitalize" id="keyTagsByStockNumberModalLabel"><i class="bi bi-tag me-2 icon-circle"></i> Key Tag + Deal Jacket Label</h5>
+            <div class="modal-header d-flex flex-row justify-content-between align-items-center d-print-none">
+              <h5 class="modal-title text-capitalize" id="keyTagsByStockNumberModalLabel"><i class="bi bi-tag me-2 icon-circle"></i></h5>
               <h1 class="modal-title ms-2 fs-5" id="keytagModalLabel">StockNumber</h1>
+              <div class="form-check form-switch w-50 d-flex justify-content-end">
+                <input class="form-check-input mx-2" type="checkbox" role="switch" id="verticalKeyTagSwitch" onchange="toggleVerticalKeyTag(event)">
+                <label class="form-check-label" for="verticalKeyTagSwitch">Deal Jacket Key Tag</label>
+              </div>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body bg-white dots" style="height: 100%; width: 100%; margin: 0; padding: 0;">
+            <div class="modal-body bg-light dots" style="height:100%; width:100%; margin: 0; padding: 0;">
               <div class="main-content">
                 <!-- Elements to display the fetched data -->
-                <div id="keytagContainer" class="key-tag-container zoomElement text-truncate mx-1">
+                <div id="keytagContainer" class="key-tag-container zoom-1 zoomElement text-truncate mx-1">
                   <div id="modelUsage" class="model-usage text-truncate">New or Used</div>
                   <div id="stockNumber" class="stock-number">Stock Number</div>
                   <div id="modelYear" class="model-year text-truncate">Year</div>
@@ -278,7 +283,7 @@
                   <div id="modelVin" class="model-vin text-truncate">VIN NUMBER</div>
                 </div>
                 <!-- New rotated label -->
-                <div style="display: none;" id="keytagVerticalContainer" class="key-tag-container mx-1 visually-hidden">
+                <div id="keytagVerticalContainer" class="key-tag-container zoomElementVertical mx-1 visually-hidden">
                   <div class="rotated-label-text text-truncate d-flex flex-column gap-1">
                     <div class="year-make-container" style="height: 2in; margin: 0">
                       <span id="modelYearVertical" class="model-year-vertical">Year</span>

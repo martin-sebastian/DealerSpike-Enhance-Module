@@ -126,7 +126,7 @@ async function fetchData() {
 
         const row = document.createElement("tr");
         row.innerHTML = `
-          <td data-cell="image" class="text-center" style="width: 150px;">
+          <td data-cell="image" class="text-center">
             <a href="${webURL}" target="_blank" title="View on Website" data-bs-toggle="tooltip" data-bs-placement="top">
               ${imageUrl !== "N/A" ? `<img src="${imageUrl}" alt="${title}" />` : `<i class="bi bi-card-image"></i>`}
             </a>
@@ -136,8 +136,8 @@ async function fetchData() {
             <span class="badge text-bg-dark border">${year}</span>
           </td>
           <td class="text-truncate" style="">${manufacturer}</td>
-          <td class="" style="max-width: 200px;">
-            <span>${modelName}</span>
+          <td class="text-wrap" style="max-width: 300px;">
+            <span class="text-wrap">${modelName}</span>
             <span class="visually-hidden">${stockNumber} ${vin} ${usage} ${year} ${manufacturer} ${modelName} ${modelType} ${color} ${updatedDate} ${updatedDashDate}</span>
           </td>
           <td class="visually-hidden">${modelType}</td>
@@ -188,10 +188,7 @@ async function fetchData() {
                 <i class="bi bi-card-heading"></i>
                 <span style="font-size:10px; text-transform:uppercase;">Pricing</span>
               </a>
-              <button type="button" onclick="window.location.href='./social-share/?stockNumber=${stockNumber}';" class="btn btn-danger action-button mx-1 visually-hidden" data-toggle="tooltip" title="Text Message Quote" disabled>
-                <i class="bi bi-phone"></i>
-                <span style="font-size:10px; text-transform:uppercase;">Text Unit</span>
-              </button>
+            
             </div>  
           </td>
         `;
@@ -488,23 +485,53 @@ async function keyTag(stockNumber) {
   }
 }
 
+function toggleVerticalKeyTag(event) {
+  const keytagContainer = document.getElementById("keytagContainer");
+  const keytagVerticalContainer = document.getElementById("keytagVerticalContainer");
+  const keytagContainerTwo = document.getElementById("keytagContainerTwo");
+
+  if (event.target.checked) {
+    // Show vertical, hide horizontal
+    keytagVerticalContainer.classList.remove("visually-hidden");
+    keytagContainer.classList.add("visually-hidden");
+    if (keytagContainerTwo) {
+      keytagContainerTwo.classList.remove("visually-hidden");
+    }
+  } else {
+    // Show horizontal, hide vertical
+    keytagVerticalContainer.classList.add("visually-hidden");
+    keytagContainer.classList.remove("visually-hidden");
+    if (keytagContainerTwo) {
+      keytagContainerTwo.classList.add("visually-hidden");
+    }
+  }
+}
+
 // Get the elements
 const zoomElement = document.getElementById("keytagContainer");
+const zoomElementVertical = document.getElementById("keytagVerticalContainer");
 const zoomInBtn = document.getElementById("zoomInBtn");
 const zoomOutBtn = document.getElementById("zoomOutBtn");
 
 // Zoom In button event listener
 zoomInBtn.addEventListener("click", function () {
   // Remove the zoom-1 class and add the zoom-2 class
-  zoomElement.classList.remove("zoom-1");
-  zoomElement.classList.add("zoom-2");
+  zoomElement.classList.remove("zoom-0");
+  zoomElement.classList.remove("zoom-2");
+  zoomElementVertical.classList.remove("zoom-1");
+  zoomElement.classList.add("zoom-1");
+  zoomElementVertical.classList.add("zoom-1");
 });
 
 // Zoom Out button event listener
 zoomOutBtn.addEventListener("click", function () {
   // Remove the zoom-3 class and add the zoom-1 class
+  zoomElement.classList.remove("zoom-1");
   zoomElement.classList.remove("zoom-2");
-  zoomElement.classList.add("zoom-1");
+  zoomElement.classList.add("zoom-0");
+  zoomElementVertical.classList.remove("zoom-1");
+  zoomElementVertical.classList.remove("zoom-2");
+  zoomElementVertical.classList.add("zoom-0");
 });
 
 function printKeyTag(event) {
@@ -699,6 +726,8 @@ function printKeyTag(event) {
           }
           /* New styles for the rotated label */
           .rotated-label-text {
+            display: block;
+            height: 100%;
             writing-mode: vertical-rl;
             font-size: 17pt;
             line-height: 18pt;
@@ -723,10 +752,14 @@ function printKeyTag(event) {
             padding: 0;
             margin-right: -10px;
           }
+          /* Add display none for visually-hidden class */
+          .visually-hidden {
+            display: none !important;
+          }
         </style>
       </head>
       <body>
-        <div id="keytagContainer">
+        <div id="keytagContainer" class="${keytagContainer.classList.contains("visually-hidden") ? "visually-hidden" : ""}">
           <div id="modelUsage">${keytagContainer.querySelector("#modelUsage").textContent}</div>
           <div id="stockNumber">${keytagContainer.querySelector("#stockNumber").textContent}</div>
           <div id="modelYear">${keytagContainer.querySelector("#modelYear").textContent}</div>
@@ -736,7 +769,7 @@ function printKeyTag(event) {
           <div id="modelColor">${keytagContainer.querySelector("#modelColor").textContent}</div>
           <div id="modelVin">${keytagContainer.querySelector("#modelVin").textContent}</div>
         </div>
-        <div id="keytagContainerTwo" class="text-center">
+        <div id="keytagContainerTwo" class="${keytagContainer.classList.contains("visually-hidden") ? "" : "visually-hidden"}">
           <span class="rotated-label-text">
             ${keytagContainer.querySelector("#modelYear").textContent}
             ${keytagContainer.querySelector("#manufacturer").textContent}<br>

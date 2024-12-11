@@ -1,6 +1,6 @@
 html,
 body {
-  margin: 0px;
+  margin: 0;
   padding: 0;
 }
 .search-width {
@@ -8,9 +8,8 @@ body {
   width: 100%;
 }
 .dots {
-  background-color: #efefef !important;
-  background-image: url("../img/dots.png") !important;
-  background-repeat: repeat;
+  background-image: radial-gradient(circle, #ccc 1px, transparent 1px);
+  background-size: 15px 15px;
 }
 .bg-white {
   background: #fff;
@@ -31,14 +30,14 @@ body {
 .hidden {
   display: none;
 }
+.zoom-0 {
+  transform: scale(0.5);
+}
 .zoom-1 {
   transform: scale(1);
 }
 .zoom-2 {
-  transform: scale(2);
-}
-.zoom-3 {
-  transform: scale(3);
+  transform: scale(1.5);
 }
 .w-5 {
   width: 5% !important;

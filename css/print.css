@@ -2,27 +2,30 @@
   /* Page Setup */
   @page {
     size: 2in 1.5in;
-    margin: 0;
+    scale: 1;
   }
 
   * {
     font-family: Arial, Helvetica, sans-serif;
+    print-color-adjust: exact;
   }
 
   body {
     margin: 0;
     padding: 0;
+    scale: 1;
     background-color: #fff;
+    print-color-adjust: exact;
   }
 
   /* Print Container Setup */
   #keytagContainer {
     position: absolute;
-    left: 0;
-    top: 0;
+    left: 0.5in;
+    top: 0.5in;
     width: 1.5in;
     height: 2in;
-    padding: 0;
+    padding: 5px;
     margin: 0;
     border: none;
     overflow: hidden;
@@ -295,7 +298,7 @@
 
   /* Right tag vertical text layout */
   .key-tag-container-right {
-    display: none;
+    display: block;
     width: 1.5in !important;
     height: 2in !important;
     display: flex;
