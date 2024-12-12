@@ -558,7 +558,7 @@ function printKeyTag(event) {
         <title>Print Key Tag</title>
         <style>
           @page {
-            size: 1.5in 2in;
+            size: 2.125in 1.625in;
             margin: 0;
             scale: 1;
             @top {
