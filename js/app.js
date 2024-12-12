@@ -213,7 +213,7 @@ async function processXMLData(xmlDoc) {
       const row = document.createElement("tr");
       row.innerHTML = `
         <td data-cell="image" class="text-center">
-          <a href="${webURL}" target="_blank" title="View on Website" data-bs-toggle="tooltip" data-bs-placement="top">
+          <a href="${webURL}" target="_blank">
             ${imageUrl !== "N/A" ? `<img src="${imageUrl}" alt="${title}" loading="lazy" />` : `<i class="bi bi-card-image"></i>`}
           </a>
         </td>
@@ -234,7 +234,7 @@ async function processXMLData(xmlDoc) {
           <div class="input-group input-group-sm">
             <input type="text" class="form-control" value="${stockNumber}" placeholder="Stock Number" title="${stockNumber}" aria-label="stock number" aria-describedby="btnGroupAddon">
             <div class="input-group-text" id="btnGroupAddon">
-              <button type="button" class="btn-icon" data-toggle="tooltip" title="Copy to clipboard" 
+              <button type="button" class="btn-icon"  title="Copy to clipboard" 
                       onclick="navigator.clipboard.writeText('${stockNumber}')" 
                       onmouseup="
                           this.setAttribute('data-bs-original-title', 'Copied!');
@@ -258,12 +258,12 @@ async function processXMLData(xmlDoc) {
         }</td>
         <td class="text-center text-nowrap">
           <div class="action-button-group" role="group" aria-label="Vehicles">
-            <button type="button" id="keytagModalButton" class="btn btn-danger action-button mx-1" data-toggle="tooltip" title="Print Key Tag" data-bs-toggle="modal" data-bs-target="#keytagModal" data-bs-stocknumber="${stockNumber}">
+            <button type="button" id="keytagModalButton" class="btn btn-danger action-button mx-1"  title="Print Key Tag" data-bs-toggle="modal" data-bs-target="#keytagModal" data-bs-stocknumber="${stockNumber}">
               <i class="bi bi-tag"></i>
               <span style="font-size:10px; text-transform:uppercase;">Key Tags</span>
             </button>
 
-            <button type="button" class="btn btn-danger action-button mx-1" data-toggle="tooltip" title="Print Hang Tags" data-bs-toggle="modal" data-bs-target="#HangTagModal" data-bs-stocknumber="${stockNumber}" onclick="openHangTagsModal('${stockNumber}')">
+            <button type="button" class="btn btn-danger action-button mx-1"  title="Print Hang Tags" data-bs-toggle="modal" data-bs-target="#HangTagModal" data-bs-stocknumber="${stockNumber}" onclick="openHangTagsModal('${stockNumber}')">
               <i class="bi bi-tags"></i>
               <span style="font-size:10px; margin-top:-10px; padding:0; text-transform:uppercase;">Hang Tags</span>
             </button>
@@ -272,7 +272,7 @@ async function processXMLData(xmlDoc) {
               href="javascript:void(0);" 
               type="button" 
               class="btn btn-danger action-button mx-1" 
-              data-toggle="tooltip"
+              
               data-bs-placement="top"
               title="Pricing"
               onclick="openOverlayModal('${stockNumber}')"
@@ -309,7 +309,6 @@ async function processXMLData(xmlDoc) {
 
 // Helper function to initialize table features
 function initializeTableFeatures() {
-  const tooltipTriggerList = document.querySelectorAll('[data-toggle="tooltip"]');
   // Add event listeners for sorting
   const headers = document.querySelectorAll("#vehiclesTable th");
   headers.forEach((header) => {
