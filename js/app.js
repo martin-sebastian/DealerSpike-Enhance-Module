@@ -45,6 +45,21 @@ document.addEventListener("DOMContentLoaded", async () => {
   showPlaceholder();
   await fetchData();
   updateRowCount();
+
+  let hoverTimeout;
+  document.querySelectorAll(".action-button").forEach((button) => {
+    button.addEventListener("mouseenter", () => {
+      clearTimeout(hoverTimeout);
+      hoverTimeout = setTimeout(() => {
+        button.classList.add("hover");
+      }, 50);
+    });
+
+    button.addEventListener("mouseleave", () => {
+      clearTimeout(hoverTimeout);
+      button.classList.remove("hover");
+    });
+  });
 });
 
 function handleGlobalClicks(event) {
@@ -76,50 +91,34 @@ function handleSearchInput(value) {
 }
 
 function showPlaceholder(rowCount = 10) {
-  // Adjust the rowCount to how many rows you want to repeat
-  const tableBody = document.getElementById("vehiclesTable").getElementsByTagName("tbody")[0];
+  if (!DOM.tableBody) return;
 
-  if (tableBody) {
-    let placeholderRows = "";
-
-    // Loop to generate the specified number of rows
-    for (let i = 0; i < rowCount; i++) {
-      placeholderRows += `
-        <tr class="placeholder-glow w-100">
-          <td class="text-center"><span id="img" class="placeholder col-10"></span></td>
-          <td class="text-center"><span id="new-used" class="placeholder col-7"></span></td>
-          <td class="text-center"><span id="year" class="placeholder col-8"></span></td>
-          <td><span id="make" class="placeholder col-10"></span></td>
-          <td><span id="model" class="placeholder col-12"></span></td>
-          <td class="visually-hidden"><span id="type" class="placeholder col-12"></span></td>
-          <td class="visually-hidden"><span id="color" class="placeholder col-12"></span></td>
-          <td><span id="stock" class="placeholder col-11"></span></td>
-          <td><span id="price" class="placeholder col-8"></span></td>
-          <td><span id="price" class="placeholder col-8"></span></td>
-          <td class="text-center"><span id="photos" class="placeholder col-8"></span></td>
-          <td class="text-end"><span id="actions" class="placeholder col-12"></span></td>
-        </tr>
-        <tr class="placeholder-glow w-100">
-          <td class="text-center"><span id="img" class="placeholder col-6"></span></td>
-          <td class="text-center"><span id="new-used" class="placeholder col-9"></span></td>
-          <td class="text-center"><span id="year" class="placeholder col-5"></span></td>
-          <td><span id="make" class="placeholder col-8"></span></td>
-          <td><span id="model" class="placeholder col-10"></span></td>
-          <td class="visually-hidden"><span id="type" class="placeholder col-12"></span></td>
-          <td class="visually-hidden"><span id="color" class="placeholder col-12"></span></td>
-          <td><span id="stock" class="placeholder col-9"></span></td>
-          <td><span id="price" class="placeholder col-7"></span></td>
-          <td><span id="price" class="placeholder col-7"></span></td>
-          <td class="text-center"><span id="photos" class="placeholder col-8"></span></td>
-          <td class="text-end"><span id="actions" class="placeholder col-12"></span></td>
-        </tr>
-      `;
-    }
-
-    // Set the generated rows as the inner HTML of the table body
-    tableBody.innerHTML = placeholderRows;
+  // Clear existing content first
+  while (DOM.tableBody.firstChild) {
+    DOM.tableBody.removeChild(DOM.tableBody.firstChild);
   }
+
+  // Create a document fragment for better performance
+  const fragment = document.createDocumentFragment();
+
+  for (let i = 0; i < rowCount; i++) {
+    const row1 = document.createElement("tr");
+    const row2 = document.createElement("tr");
+
+    row1.className = "placeholder-glow w-100";
+    row2.className = "placeholder-glow w-100";
+
+    // Set innerHTML once per row
+    row1.innerHTML = `<td>...</td>`; // Your placeholder cells
+    row2.innerHTML = `<td>...</td>`; // Your placeholder cells
+
+    fragment.appendChild(row1);
+    fragment.appendChild(row2);
+  }
+
+  DOM.tableBody.appendChild(fragment);
 }
+
 function debounce(func, wait) {
   let timeout;
   return function executedFunction(...args) {
@@ -131,6 +130,7 @@ function debounce(func, wait) {
     timeout = setTimeout(later, wait);
   };
 }
+
 async function fetchData() {
   try {
     // Check cache first
@@ -179,6 +179,11 @@ async function fetchData() {
 
 // Separate function to process the XML data
 async function processXMLData(xmlDoc) {
+  // Clear existing content including placeholders
+  while (DOM.tableBody.firstChild) {
+    DOM.tableBody.removeChild(DOM.tableBody.firstChild);
+  }
+
   const items = xmlDoc.getElementsByTagName("item");
   if (!DOM.tableBody) return;
 
@@ -305,6 +310,11 @@ async function processXMLData(xmlDoc) {
 
   // Start processing first chunk
   await processChunk(0);
+
+  // After data is loaded
+  document.querySelectorAll(".placeholder-glow").forEach((el) => {
+    el.classList.remove("placeholder-glow");
+  });
 }
 
 // Helper function to initialize table features
@@ -807,6 +817,21 @@ function printKeyTag(event) {
           .visually-hidden {
             display: none !important;
           }
+          .placeholder-glow {
+            contain: content;
+          }
+          tr {
+            contain: layout style;
+          }
+          /* Use transform instead of other properties for animations */
+          .action-button {
+            transition: transform 0.2s;
+            will-change: transform;
+          }
+
+          .action-button:hover {
+            transform: scale(1.05);
+          }
         </style>
       </head>
       <body>
@@ -880,10 +905,54 @@ function openKeyTagsByStockNumberModal(stockNumber) {
 
 function openHangTagsModal(stockNumber) {
   const modalIframe = document.getElementById("hangTagsIframe");
+  const modalElement = document.getElementById("hangTagsModal");
+
   modalIframe.src = `./hang-tags/?search=${stockNumber}`;
-  const hangTagsModal = new bootstrap.Modal(document.getElementById("hangTagsModal"));
+  const hangTagsModal = new bootstrap.Modal(modalElement);
+
+  // Add hidden.bs.modal event listener
+  modalElement.addEventListener(
+    "hidden.bs.modal",
+    () => {
+      cleanupModal(modalElement);
+    },
+    { once: true }
+  ); // Use once: true to auto-remove the listener
+
   hangTagsModal.show();
 }
+
+function openOverlayModal(stockNumber) {
+  const modalIframe = document.getElementById("overlayIframe");
+  const modalElement = document.getElementById("overlayModal");
+
+  modalIframe.src = `./overlay/?search=${stockNumber}`;
+  const overlayModal = new bootstrap.Modal(modalElement);
+
+  modalElement.addEventListener(
+    "hidden.bs.modal",
+    () => {
+      cleanupModal(modalElement);
+    },
+    { once: true }
+  );
+
+  overlayModal.show();
+}
+
+// Update keyTag modal handling
+document.addEventListener("DOMContentLoaded", () => {
+  const keytagModal = document.getElementById("keytagModal");
+  if (keytagModal) {
+    keytagModal.addEventListener(
+      "hidden.bs.modal",
+      () => {
+        cleanupModal(keytagModal);
+      },
+      { once: true }
+    );
+  }
+});
 
 function printIframeContent() {
   const iframe = document.getElementById("hangTagsIframe"); // Get the iframe element
@@ -909,9 +978,20 @@ document.getElementById("hangTagsIframe").addEventListener("load", function () {
   console.log("Iframe content loaded:", this.contentDocument.body.innerHTML);
 });
 
-function openOverlayModal(stockNumber) {
-  const modalIframe = document.getElementById("overlayIframe"); // Get the iframe element
-  modalIframe.src = `./overlay/?search=${stockNumber}`; // Set the src to the desired URL
-  const overlayModal = new bootstrap.Modal(document.getElementById("overlayModal")); // Initialize the modal
-  overlayModal.show(); // Show the modal
+// Add this function to handle modal cleanup
+function cleanupModal(modalElement) {
+  // Remove any lingering backdrops
+  const backdrops = document.querySelectorAll(".modal-backdrop");
+  backdrops.forEach((backdrop) => backdrop.remove());
+
+  // Ensure body classes are cleaned up
+  document.body.classList.remove("modal-open");
+  document.body.style.removeProperty("padding-right");
+
+  // Reset modal state
+  if (modalElement) {
+    modalElement.style.display = "none";
+    modalElement.setAttribute("aria-hidden", "true");
+    modalElement.removeAttribute("aria-modal");
+  }
 }
