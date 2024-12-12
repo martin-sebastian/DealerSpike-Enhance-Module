@@ -8,7 +8,9 @@
       pre {
         background-color: #f8f9fa;
         padding: 15px;
+        margin: 15px;
         border: 1px solid #ddd;
+        border-radius: 15px;
         overflow: auto;
         max-height: 800px;
       }
@@ -23,28 +25,27 @@
     <script>
       async function fetchAndSaveXMLAsJSON() {
         try {
-          // Step 1: Fetch the XML data from the URL
           const response = await fetch("https://www.flatoutmotorcycles.com/unitinventory_univ.xml");
           if (!response.ok) {
             throw new Error(`Failed to fetch data: ${response.statusText}`);
           }
 
-          // Step 2: Parse the XML data
           const xmlText = await response.text();
+          console.log("Fetched XML:", xmlText.substring(0, 200) + "...");
+
           const parser = new DOMParser();
           const xmlDoc = parser.parseFromString(xmlText, "text/xml");
 
-          // Step 3: Convert XML to JSON
           const json = xmlToJson(xmlDoc);
+          console.log("Converted JSON:", json);
 
-          // Step 4: Convert JSON object to string and display it in the HTML
-          const jsonString = JSON.stringify(json, null, 2); // Pretty-print with 2-space indent
+          const jsonString = JSON.stringify(json, null, 2);
           displayJSON(jsonString);
 
-          // Step 5: Offer the download of the JSON file
           downloadJSONFile(jsonString, "unitinventory.json");
         } catch (error) {
-          console.error(error);
+          console.error("Error in fetchAndSaveXMLAsJSON:", error);
+          document.getElementById("jsonDisplay").innerHTML = `<pre>Error: ${error.message}</pre>`;
         }
       }
 
@@ -89,7 +90,18 @@
       // Helper function to display JSON on the page
       function displayJSON(jsonString) {
         const jsonDisplay = document.getElementById("jsonDisplay");
-        jsonDisplay.innerHTML = `<pre>${jsonString}</pre>`;
+        if (!jsonDisplay) {
+          console.error("Could not find jsonDisplay element");
+          return;
+        }
+        try {
+          // Ensure the JSON is valid by parsing and re-stringifying it
+          const parsed = JSON.parse(jsonString);
+          jsonDisplay.innerHTML = `<pre>${JSON.stringify(parsed, null, 2)}</pre>`;
+        } catch (error) {
+          console.error("Error displaying JSON:", error);
+          jsonDisplay.innerHTML = `<pre>Error processing data: ${error.message}</pre>`;
+        }
       }
 
       // Helper function to trigger download of the JSON file
