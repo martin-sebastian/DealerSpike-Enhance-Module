@@ -8,7 +8,7 @@ body {
   width: 100%;
 }
 .dots {
-  background-image: radial-gradient(circle, #555 1px, transparent 1px);
+  background-image: radial-gradient(circle, #ddd 1px, transparent 1px);
   background-size: 15px 15px;
 }
 .bg-white {
