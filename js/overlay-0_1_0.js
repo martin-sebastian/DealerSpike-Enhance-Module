@@ -178,9 +178,9 @@ $.ajax({
     var accTotal = numeral(data.AccessoryItemsTotal).format("$0,0.00");
 
     if ($(data.AccessoryItems[0]).length && data.AccessoryItemsTotal > 0) {
-      var accessoryLine = `<li class="list-group-item"><a class="gray bold collapsed" data-toggle="collapse" href="#collapseItems" aria-expanded="false" aria-controls="collapseoverlay">Features <i class="fa fa-chevron-down collapse-icon" aria-hidden="true"></i></a> <span class=""> - ${accTotal}</span></li>`;
+      var accessoryLine = `<li class="list-group-item">Features <span class=""> - ${accTotal}</span></li>`;
     } else if ($(data.AccessoryItems[0]).length && data.AccessoryItemsTotal < 1) {
-      var accessoryLine = `<li class="list-group-item"><a class="gray bold collapsed" data-toggle="collapse" href="#collapseItems" aria-expanded="false" aria-controls="collapseoverlay">Features <i class="fa fa-chevron-down collapse-icon" aria-hidden="true"></i></a> <span class="gray"> - Included</span></li>`;
+      var accessoryLine = `<li class="list-group-item">Features <span class="gray"> - Included</span></li>`;
     } else {
       var accessoryLine = ``;
     }
@@ -448,23 +448,22 @@ $.ajax({
 
     // Carousel Container
     var carousel = `
-		<div class="shadow" style="overflow: hidden; border-radius: 10px !important; margin-bottom: 10px;">
+		<div class="">
 			<div id="carousel-overlay-generic" class="carousel slide" data-ride="">
+				<div class="carousel-inner shadow rounded-md" role="listbox">
+				${carouselImages}
+				</div>
 			
-			<div class="carousel-inner" role="listbox">
-			${carouselImages}
-			</div>
-			
-			<!-- Controls -->
-			<a class="left carousel-control" style="background: none;" href="#carousel-overlay-generic" role="button" data-slide="prev">
-				<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-				<span class="sr-only">Previous</span>
-			</a>
+				<!-- Controls -->
+				<a class="left carousel-control" style="background: none;" href="#carousel-overlay-generic" role="button" data-slide="prev">
+					<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+					<span class="sr-only">Previous</span>
+				</a>
 
-			<a class="right carousel-control" style="background: none;" href="#carousel-overlay-generic" role="button" data-slide="next">
-				<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-				<span class="sr-only">Next</span>
-			</a>
+				<a class="right carousel-control" style="background: none;" href="#carousel-overlay-generic" role="button" data-slide="next">
+					<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+					<span class="sr-only">Next</span>
+				</a>
 			</div>
 		</div>
 		`;
@@ -473,9 +472,9 @@ $.ajax({
     i = 0;
     while (i < data.Images.length) {
       if (i == 0) {
-        thumbnailImages += `<div class="mu-thumbnail pull-left"><a href="#carousel-overlay-generic" role="button" data-slide-to="${i}"><img style="width:100%;" src=" ${data.Images[i].ImgURL}" alt="error loading image"></a></div>`;
+        thumbnailImages += `<button type="button" class="btn btn-default btn-thumbnail" href="#carousel-overlay-generic" role="button" data-slide-to="${i}"><img style="width:100%;" src=" ${data.Images[i].ImgURL}" alt="error loading image"></button>`;
       } else {
-        thumbnailImages += `<div class="mu-thumbnail pull-left"><a href="#carousel-overlay-generic" role="button" data-slide-to="${i}"><img style="width:100%;" src=" ${data.Images[i].ImgURL}" alt="error loading image"></a></div>`;
+        thumbnailImages += `<button type="button" class="btn btn-default btn-thumbnail" href="#carousel-overlay-generic" role="button" data-slide-to="${i}"><img style="width:100%;" src=" ${data.Images[i].ImgURL}" alt="error loading image"></button>`;
       }
       i++;
     }
@@ -740,20 +739,70 @@ $.ajax({
 		</div>
 		<div id="overlayContainer" class="container-fluid" style="background: #efefef; padding-top: 10px; padding-bottom: 35px;">
 			<div class="row">
-				<div class="col-md-8">
-					${carousel}
-					<div style="padding: 0px; display: block; margin-bottom: 50px;">
-						${thumbnailImages}
-						<hr style="clear: both;">
+				<div class="col-md-6">
+					<div class="left-column-container">
+						<div class="carousel-container">
+							${carousel}
+						</div>
+						<hr class="hr-divider">
+						<div class="thumbnail-images-container">
+							${thumbnailImages}
+						</div>	
+						<h3 class="text-left bold">Trade-In</h3>
+						<div class="tradein-container panel rounded">
+							${tradeInItemsTemplate}
+							<form class="form-inline">
+								<div class="form-group">
+									<label for="exampleInputVehicle" class="sr-only">Year, Make, Model, Trim</label>
+									<input type="text" class="form-control" style="width: 100px;" id="exampleInputYear" placeholder="2020">
+								</div>
+								<div class="form-group">
+									<label for="exampleInputVehicle" class="sr-only">Make, Model, Trim</label>
+									<input type="text" class="form-control" style="width: 300px;" id="exampleInputVehicle" placeholder="Ninja 400">
+								</div>
+								<hr class="hr-divider">
+								<div class="form-group">
+									<label for="exampleInputCondition" class="sr-only">Condition</label>
+									<input type="password" class="form-control" style="width: auto;" id="exampleInputPassword1" placeholder="Describe condition">
+								</div>
+								<hr class="hr-divider">
+								<div class="form-group">
+									<label for="exampleInputPhoto" class="sr-only">Upload Photo</label>
+									<input type="file" id="exampleInputFile">
+									<p class="help-block">Upload a photo of the trade-in.</p>
+								</div>
+								<div class="checkbox">
+									<label>
+										<input type="checkbox"> Trade-In Approved
+									</label>
+								</div>
+							</form>
+						</div>
+						<h3 class="text-left bold">Informantion</h3>
+						<ul class="list-group">
+							${unitNumbersTemplate}
+						</ul>
 					</div>
 				</div>
-				<div class="col-md-4">
-					<ul class="list-group shadow">
-						<li class="list-group-item text-center">
-							<div class="price-payment-container">
-								<div class="our-price-container">
-									<div class="our-price-msrp">MSRP: <s>${msrpTotal}</s></div>
-									<div class="our-price">${yellowTag} ${ourPrice}</div>
+
+
+				<div class="col-md-6">
+					<div class="right-column-container">
+						<ul class="list-group">
+							<li class="list-group-item text-center">
+								<div class="price-payment-container">
+									<div class="price-payment-left">
+									<!-- MSRP price -->
+									<div class="our-price-msrp">
+										MSRP: <s>${msrpTotal}</s>
+									</div>
+
+									<!-- Yellow Tag and price -->
+									<div class="our-price">
+										${yellowTag} ${ourPrice}
+									</div>
+
+									<!-- total savings -->
 									<div class="total-savings">
 										<span class="label label-default">
 											Savings
@@ -763,53 +812,54 @@ $.ajax({
 											${totalSavings}
 										</span>
 									</div>
+									${inventoryStatusTemplate}
+							
+									<!-- sale program expires -->
 									<div class="price-expires silver">
 										Sale Program Ends: ${salePriceExpireDate}
-									</div>										
+									</div>
 								</div>
-								<div class="price-payment-divider"></div>
-								<div class="our-payment-container">
+								
+								<div class="price-payment-right">
 									${paymentCalc}
-									${inventoryStatusTemplate}
 								</div>
-							</div> <!-- // price-payment-container -->
-						</li>
+								</div>
+							</li>
+						</ul>
+						<ul class="list-group">
+							<li class="list-group-item bold">
+							${msrpLabel} <span class="pull-right">${MSRPUnit}</span>
+							</li>
+							${tradeInItemsTemplate} 
+							${matItemsTemplate} 
+							${discountItemsTemplate}
+							${freebieItemsTemplate}
+							
+							<li class="list-group-item">
+							${accessoryLine}
+								${accessoryItemsTemplate}
+							</li>
+							<li class="list-group-item">	
+								${OTDItemsTemplate}
+							</li>
+							
+						</ul>
+						<ul class="list-group">
+							<li class="list-group-item otd-li">	
+								<div class="total-otd-price">
+								Total O.T.D. Price: <span class="pull-right">${totalOTD}</span>
+								</div>
+							</li>
+						</ul>
 
-						<li class="list-group-item bold">${msrpLabel} <span class="pull-right">${MSRPUnit}</span></li>
-						${matItemsTemplate} 
-						${tradeInItemsTemplate} 
-						${discountItemsTemplate}
-						${freebieItemsTemplate}
-						${accessoryLine}
-						<div class="collapse" id="collapseItems">
-							${accessoryItemsTemplate}
-						</div>
-						<li class="list-group-item bold">
-							<a class="gray" data-toggle="collapse" href="#collapseFees" aria-expanded="false" aria-controls="collapseoverlay">Fees <i class="fa fa-chevron-down collapse-icon" aria-hidden="true"></i></a>
-						</li>
-						<div class="collapse in" id="collapseFees">
-							${OTDItemsTemplate}
-						</div>
-						
-						<li class="list-group-item otd-li">
-							<div class="total-otd-price">Total O.T.D. Price: <span class="pull-right">${totalOTD}</span></div>
-						</li>
-					</ul>
-					<p class="text-right bold" style="margin:-15px 5px 25px 0;">Quote Expires: ${eDate}</p>
+					</div>
 
-					<ul class="list-group shadow">
-						<li class="list-group-item bold">
-							<a class="gray collapsed" data-toggle="collapse" href="#collapseNumbers" aria-expanded="false" aria-controls="collapseoverlay">More Info. <i class="fa fa-chevron-down collapse-icon" aria-hidden="true"></i></a>
-						</li>
-						<div class="collapse" id="collapseNumbers">
-							${unitNumbersTemplate}
-						</div>
-					</ul>
-					<hr style="clear: both;">
-					${contactMobile}
 				</div>
 			</div>
 		</div>
+
+		<p class="text-right bold" style="margin:-15px 5px 25px 0;">Quote Expires: ${eDate}</p>
+		${contactMobile}
 		${featuresTemplate}
 		${walkthruVideoTemplate}
 		${unitDescripionTemplate}
@@ -817,6 +867,10 @@ $.ajax({
 		${oemSpecsTemplate}
 		${youtubeVideoTemplate}
 		${pdfBrochureTemplate}
+
+		
+
+		
 		`;
 
     $(".main-content").replaceWith(overlay);
@@ -836,9 +890,50 @@ $.ajax({
 		font-family: Roboto, Arial, Helvetica, sans-serif;
 		background: #efefef;
 	}
+	.hidden {
+		display: none;
+	}
+	.rounded-lg {
+		border-radius: 12px;
+	}
+	.rounded-md {
+		border-radius: 8px;
+	}
+	.rounded {
+		border-radius: 4px;
+	}
+	.panel {
+		background: #fff;
+		border: solid 1px #ddd;
+	}
+	.hr-divider {
+		margin: 10px 0;
+		border-top: solid 1px #ddd;
+	}
+	.btn-thumbnail {
+		padding: 0 1px;
+		margin: 1px;
+		width: 48px;
+		height: 48px;
+		object-fit: cover;
+	}
+	.left-column-container {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;	
+	}
+	.right-column-container {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;	
+	}
+	.tradein-container {
+		background: #fff;
+		padding: 10px;
+	}
 	.shadow {
-		box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
-		}
+		box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+	}
 	.mobile-preview {
 		width: 600px;
 	}
@@ -1149,12 +1244,12 @@ $.ajax({
 		display: flex;
 		flex-direction: row;
 		flex-wrap: wrap;
-		justify-content: space-between;
+		justify-content: space-around;
 		align-items: center;
 		width: 100%;
 		margin: 0 auto;
 		background: #fff;
-		}
+	}
 	.portal-price {
 		font-size: 85%;
 		color: #333;
