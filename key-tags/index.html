@@ -14,7 +14,7 @@
   </head>
   <body class="dots">
     <main>
-      <div class="left-panel shadow">
+      <div class="left-panel border-end">
         <div class="left-panel-content mx-4 my-3">
           <div class="mb-3">
             <label for="search" class="form-label fs-2 fw-bold">Search</label>
@@ -111,11 +111,11 @@
                 document.getElementById('modelVinVertical').innerHTML = this.value;"
             />
           </div>
-          <button class="btn btn-secondary btn-sm text-uppercase text-light fw-bold" onclick="clearKeyTag()">Clear</button>
-          <button type="button" class="btn btn-danger btn-sm text-uppercase text-light fw-bold" 
-            onclick="printKeyTags()">
-            Print Key Tag
-          </button>
+          <button type="button" class="btn btn-danger mb-1 w-100 text-uppercase text-light fw-bold" 
+          onclick="printKeyTags()">
+          Print Key Tag
+        </button>
+        <button class="btn btn-secondary w-full text-uppercase text-light fw-bold" onclick="clearKeyTag()">Clear</button>
         </div>
       </div>
       <div class="right-panel d-flex flex-column justify-content-center align-items-center">

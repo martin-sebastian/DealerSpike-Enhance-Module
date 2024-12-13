@@ -22,9 +22,7 @@
               <img id="logo" class="me-2" src="./img/fom-app-logo-01.svg" alt="Logo" width="180" height="30.6" />
             </a>
 
-            <button type="button" class="btn btn-danger btn-sm mx-1 border border-secondary text-center px-3"  title="Print Key Tags by Stock Number" onclick="openKeyTagsByStockNumberModal('${stockNumber}')">
-              <i class="bi bi-plus-circle me-1"></i> CREATE KEY TAG
-            </button>
+            
           </div>
 
 
@@ -209,7 +207,10 @@
 
     <main>
       <div class="container-fluid">
-        <div class="spacer-75"></div>
+        <div class="spacer-75 d-flex flex-row align-items-center"></div>
+        <button type="button" class="btn btn-warning fixed-top text-end" title="Print Key Tags by Stock Number" onclick="openKeyTagsByStockNumberModal('${stockNumber}')">
+          <h2><i class="bi bi-plus-circle"></i></h2>
+        </button>
         <div class="d-flex pb-2 text-secondary">
           <!-- element for displaying row count -->
           Results: <span class="mx-1" id="rowCountDisplay"></span>
@@ -258,7 +259,7 @@
         </div>
       </div>
 
-      <div class="modal fade" id="keytagModal" tabindex="-1" aria-labelledby="keytagModalLabel" aria-hidden="true">
+      <div class="modal vh-50 fade" id="keytagModal" tabindex="-1" aria-labelledby="keytagModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
           <div class="modal-content">
             <div class="modal-header d-flex flex-row justify-content-between align-items-center d-print-none">
@@ -270,7 +271,7 @@
               </div>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body bg-light dots" style="height:100%; width:100%; margin: 0; padding: 0;">
+            <div class="modal-body bg-light dots" style="height:100%; min-height: 75vh; width:100%; margin: 0; padding: 0;">
               <div class="main-content">
                 <!-- Elements to display the fetched data -->
                 <div id="keytagContainer" class="key-tag-container zoom-1 zoomElement text-truncate mx-1">
@@ -319,7 +320,7 @@
             <h5 class="modal-title text-capitalize" id="keyTagsByStockNumberModalLabel"><i class="bi bi-tag me-2 icon-circle"></i>CREATE KEY TAGS</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <div class="modal-body m-0 p-0 overflow-hidden" style="height: 100%; min-height: 78vh;">
+          <div class="modal-body m-0 p-0 overflow-hidden" style="height: 100%; width: 100% min-height: 100vh;">
             <iframe id="keyTagsByStockNumberModal" src="./key-tags/index.html" style="width: 100%; min-height: 78vh; height: 100%; border: 0; margin: 0; padding: 0"></iframe>
           </div>
           <div class="modal-footer">
@@ -357,7 +358,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body m-0 p-0">
-            <iframe id="roTagIframe" src="" style="width: 100%; height: 99%; border: none; margin: 0; padding: 0"></iframe>
+            <iframe id="roTagIframe" src="" style="width: 100%; height: 100%; border: none; margin: 0; padding: 0"></iframe>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
