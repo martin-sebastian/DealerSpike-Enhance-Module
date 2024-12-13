@@ -3,10 +3,10 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="./img/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="./img/favicon-16x16.png" />
-    <link rel="manifest" href="./img/site.webmanifest" />
+
     <title>FOM | PRINT TAGS</title>
     <link rel="stylesheet" href="./css/bootstrap.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
@@ -21,8 +21,9 @@
             <a class="navbar-brand" href="./">
               <img id="logo" class="me-2" src="./img/fom-app-logo-01.svg" alt="Logo" width="180" height="30.6" />
             </a>
-
-            
+            <button type="button" class="btn btn-danger btn-sm" title="Create custom tag" onclick="openKeyTagsByStockNumberModal('${stockNumber}')">
+              <i class="bi bi-plus-circle"></i> NEW
+            </button>
           </div>
 
 
@@ -208,9 +209,7 @@
     <main>
       <div class="container-fluid">
         <div class="spacer-75 d-flex flex-row align-items-center"></div>
-        <button type="button" class="btn btn-warning fixed-top text-end" title="Print Key Tags by Stock Number" onclick="openKeyTagsByStockNumberModal('${stockNumber}')">
-          <h2><i class="bi bi-plus-circle"></i></h2>
-        </button>
+        
         <div class="d-flex pb-2 text-secondary">
           <!-- element for displaying row count -->
           Results: <span class="mx-1" id="rowCountDisplay"></span>
