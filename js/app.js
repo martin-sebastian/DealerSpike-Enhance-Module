@@ -45,21 +45,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   showPlaceholder();
   await fetchData();
   updateRowCount();
-
-  let hoverTimeout;
-  document.querySelectorAll(".action-button").forEach((button) => {
-    button.addEventListener("mouseenter", () => {
-      clearTimeout(hoverTimeout);
-      hoverTimeout = setTimeout(() => {
-        button.classList.add("hover");
-      }, 50);
-    });
-
-    button.addEventListener("mouseleave", () => {
-      clearTimeout(hoverTimeout);
-      button.classList.remove("hover");
-    });
-  });
 });
 
 function handleGlobalClicks(event) {
@@ -316,7 +301,6 @@ async function processXMLData(xmlDoc) {
     el.classList.remove("placeholder-glow");
   });
 }
-
 // Helper function to initialize table features
 function initializeTableFeatures() {
   // Add event listeners for sorting
@@ -346,32 +330,43 @@ function filterTable() {
 
   let visibleRows = 0;
 
-  for (let i = 1; i < tr.length; i++) {
-    const titleTd = tr[i].getElementsByTagName("td")[4];
+  // Optimize loop by caching DOM queries and using more efficient selectors
+  const rows = Array.from(tr).slice(1); // Convert to array once, skip header
+  const filters = {
+    search: searchInput,
+    manufacturer: manufacturerFilter,
+    type: typeFilter,
+    usage: usageFilter,
+    year: yearFilter,
+    photos: photosFilter,
+    updated: updatedFilter,
+  };
+
+  rows.forEach((row) => {
+    const titleTd = row.querySelector("td:nth-child(5)");
     const hiddenSpan = titleTd?.querySelector(".visually-hidden");
 
     if (titleTd && hiddenSpan) {
-      const hiddenText = hiddenSpan.textContent || hiddenSpan.innerText;
+      const hiddenText = hiddenSpan.textContent;
+      const [stockNumber, vin, usage, year, manufacturer, modelName, modelType, modelColor, photos, updatedDate] = hiddenText.split(" ");
 
-      const [stockNumber, vin, usage, year, manufacturer, modelName, modelType, modelColor, photos, updatedDate, updatedDashDate] = hiddenText.split(" ");
-      //${stockNumber} ${vin} ${usage} ${year} ${manufacturer} ${modelName} ${modelType} ${color} ${photos} ${updatedDate}
+      const isVisible = Object.entries(filters).every(([key, value]) => {
+        if (!value) return true;
+        const text = {
+          search: hiddenText,
+          manufacturer,
+          type: modelType,
+          usage,
+          year,
+          photos,
+          updated: updatedDate,
+        }[key];
+        return text.toUpperCase().includes(value);
+      });
 
-      if (
-        (hiddenText.toUpperCase().indexOf(searchInput) > -1 || searchInput === "") &&
-        (manufacturer.toUpperCase().indexOf(manufacturerFilter) > -1 || manufacturerFilter === "") &&
-        (modelType.toUpperCase().indexOf(typeFilter) > -1 || typeFilter === "") &&
-        (usage.toUpperCase().indexOf(usageFilter) > -1 || usageFilter === "") &&
-        (year.toUpperCase().indexOf(yearFilter) > -1 || yearFilter === "") &&
-        (photos.toUpperCase().indexOf(photosFilter) > -1 || photosFilter === "") &&
-        (updatedDate.toUpperCase().indexOf(updatedFilter) > -1 || updatedFilter === "")
-      ) {
-        tr[i].style.display = "";
-        visibleRows++;
-      } else {
-        tr[i].style.display = "none";
-      }
+      row.style.display = isVisible ? "" : "none";
     }
-  }
+  });
 
   // Update row count after filtering
   updateRowCount();
@@ -552,14 +547,14 @@ function toggleVerticalKeyTag(event) {
   const keytagContainerTwo = document.getElementById("keytagContainerTwo");
 
   if (event.target.checked) {
-    // Show vertical, hide horizontal
+    // Show both formats when toggle is on
     keytagVerticalContainer.classList.remove("visually-hidden");
-    keytagContainer.classList.add("visually-hidden");
+    keytagContainer.classList.remove("visually-hidden");
     if (keytagContainerTwo) {
       keytagContainerTwo.classList.remove("visually-hidden");
     }
   } else {
-    // Show horizontal, hide vertical
+    // Show only horizontal when toggle is off
     keytagVerticalContainer.classList.add("visually-hidden");
     keytagContainer.classList.remove("visually-hidden");
     if (keytagContainerTwo) {
@@ -602,12 +597,13 @@ function printKeyTag(event) {
   }
 
   const keytagContainer = document.getElementById("keytagContainer");
+  const verticalToggle = document.querySelector('input[type="checkbox"][onchange="toggleVerticalKeyTag(event)"]');
+  const showBoth = verticalToggle && verticalToggle.checked;
+
   if (!keytagContainer) {
     console.error("Key tag container not found");
     return;
   }
-
-  console.log("Key tag container content:", keytagContainer.innerHTML);
 
   const printFrame = document.getElementById("printFrame");
   const printDocument = printFrame.contentDocument || printFrame.contentWindow.document;
@@ -835,39 +831,53 @@ function printKeyTag(event) {
         </style>
       </head>
       <body>
-        <div id="keytagContainer" class="${keytagContainer.classList.contains("visually-hidden") ? "visually-hidden" : ""}">
-          <div id="modelUsage">${keytagContainer.querySelector("#modelUsage").textContent}</div>
-          <div id="stockNumber">${keytagContainer.querySelector("#stockNumber").textContent}</div>
-          <div id="modelYear">${keytagContainer.querySelector("#modelYear").textContent}</div>
-          <div id="manufacturer">${keytagContainer.querySelector("#manufacturer").textContent}</div>
-          <div id="modelName">${keytagContainer.querySelector("#modelName").textContent}</div>
-          <div id="modelCode">${keytagContainer.querySelector("#modelCode").textContent}</div>
-          <div id="modelColor">${keytagContainer.querySelector("#modelColor").textContent}</div>
-          <div id="modelVin">${keytagContainer.querySelector("#modelVin").textContent}</div>
-        </div>
-        <div id="keytagContainerTwo" class="${keytagContainer.classList.contains("visually-hidden") ? "" : "visually-hidden"}">
-          <span class="rotated-label-text">
-            ${keytagContainer.querySelector("#modelYear").textContent}
-            ${keytagContainer.querySelector("#manufacturer").textContent}<br>
-            <span class="label-text-lower-vin">
-            ${keytagContainer.querySelector("#modelVin").textContent}
-            </span><br>
-            <span class="label-text-lower-model">
-            ${keytagContainer.querySelector("#modelName").textContent}
+        ${
+          showBoth
+            ? `
+          <div id="keytagContainer">
+            <div id="modelUsage">${keytagContainer.querySelector("#modelUsage").textContent}</div>
+            <div id="stockNumber">${keytagContainer.querySelector("#stockNumber").textContent}</div>
+            <div id="modelYear">${keytagContainer.querySelector("#modelYear").textContent}</div>
+            <div id="manufacturer">${keytagContainer.querySelector("#manufacturer").textContent}</div>
+            <div id="modelName">${keytagContainer.querySelector("#modelName").textContent}</div>
+            <div id="modelCode">${keytagContainer.querySelector("#modelCode").textContent}</div>
+            <div id="modelColor">${keytagContainer.querySelector("#modelColor").textContent}</div>
+            <div id="modelVin">${keytagContainer.querySelector("#modelVin").textContent}</div>
+          </div>
+          <div id="keytagContainerTwo">
+            <span class="rotated-label-text">
+              ${keytagContainer.querySelector("#modelYear").textContent}
+              ${keytagContainer.querySelector("#manufacturer").textContent}<br>
+              <span class="label-text-lower-vin">
+              ${keytagContainer.querySelector("#modelVin").textContent}
+              </span><br>
+              <span class="label-text-lower-model">
+              ${keytagContainer.querySelector("#modelName").textContent}
+              </span>
             </span>
-          </span>
-        </div>
+          </div>
+        `
+            : `
+          <div id="keytagContainer">
+            <div id="modelUsage">${keytagContainer.querySelector("#modelUsage").textContent}</div>
+            <div id="stockNumber">${keytagContainer.querySelector("#stockNumber").textContent}</div>
+            <div id="modelYear">${keytagContainer.querySelector("#modelYear").textContent}</div>
+            <div id="manufacturer">${keytagContainer.querySelector("#manufacturer").textContent}</div>
+            <div id="modelName">${keytagContainer.querySelector("#modelName").textContent}</div>
+            <div id="modelCode">${keytagContainer.querySelector("#modelCode").textContent}</div>
+            <div id="modelColor">${keytagContainer.querySelector("#modelColor").textContent}</div>
+            <div id="modelVin">${keytagContainer.querySelector("#modelVin").textContent}</div>
+          </div>
+        `
+        }
       </body>
     </html>
   `;
-
-  console.log("Print content:", printContent);
 
   printDocument.open();
   printDocument.write(printContent);
   printDocument.close();
 
-  // Use a Promise to ensure content is loaded before printing
   const printPromise = new Promise((resolve) => {
     printFrame.onload = resolve;
   });
@@ -905,93 +915,22 @@ function openKeyTagsByStockNumberModal(stockNumber) {
 
 function openHangTagsModal(stockNumber) {
   const modalIframe = document.getElementById("hangTagsIframe");
-  const modalElement = document.getElementById("hangTagsModal");
-
   modalIframe.src = `./hang-tags/?search=${stockNumber}`;
-  const hangTagsModal = new bootstrap.Modal(modalElement);
-
-  // Add hidden.bs.modal event listener
-  modalElement.addEventListener(
-    "hidden.bs.modal",
-    () => {
-      cleanupModal(modalElement);
-    },
-    { once: true }
-  ); // Use once: true to auto-remove the listener
-
+  const hangTagsModal = new bootstrap.Modal(document.getElementById("hangTagsModal"));
   hangTagsModal.show();
 }
 
 function openOverlayModal(stockNumber) {
   const modalIframe = document.getElementById("overlayIframe");
-  const modalElement = document.getElementById("overlayModal");
-
   modalIframe.src = `./overlay/?search=${stockNumber}`;
-  const overlayModal = new bootstrap.Modal(modalElement);
-
-  modalElement.addEventListener(
-    "hidden.bs.modal",
-    () => {
-      cleanupModal(modalElement);
-    },
-    { once: true }
-  );
-
+  const overlayModal = new bootstrap.Modal(document.getElementById("overlayModal"));
   overlayModal.show();
 }
 
-// Update keyTag modal handling
-document.addEventListener("DOMContentLoaded", () => {
-  const keytagModal = document.getElementById("keytagModal");
-  if (keytagModal) {
-    keytagModal.addEventListener(
-      "hidden.bs.modal",
-      () => {
-        cleanupModal(keytagModal);
-      },
-      { once: true }
-    );
-  }
-});
-
 function printIframeContent() {
-  const iframe = document.getElementById("hangTagsIframe"); // Get the iframe element
-  const iframeWindow = iframe.contentWindow || iframe; // Get the iframe's window object
-
-  if (iframeWindow) {
-    iframeWindow.focus(); // Focus on the iframe
-    try {
-      iframeWindow.print(); // Call the print method
-    } catch (error) {
-      console.error("Error printing iframe content:", error);
-    }
-  } else {
-    console.error("Iframe window not accessible.");
-  }
-}
-
-document.getElementById("hangTagsIframe").addEventListener("load", function () {
-  // Content is loaded, you can enable the print button or perform other actions
-});
-
-document.getElementById("hangTagsIframe").addEventListener("load", function () {
-  console.log("Iframe content loaded:", this.contentDocument.body.innerHTML);
-});
-
-// Add this function to handle modal cleanup
-function cleanupModal(modalElement) {
-  // Remove any lingering backdrops
-  const backdrops = document.querySelectorAll(".modal-backdrop");
-  backdrops.forEach((backdrop) => backdrop.remove());
-
-  // Ensure body classes are cleaned up
-  document.body.classList.remove("modal-open");
-  document.body.style.removeProperty("padding-right");
-
-  // Reset modal state
-  if (modalElement) {
-    modalElement.style.display = "none";
-    modalElement.setAttribute("aria-hidden", "true");
-    modalElement.removeAttribute("aria-modal");
+  const iframe = document.getElementById("hangTagsIframe");
+  if (iframe?.contentWindow) {
+    iframe.contentWindow.focus();
+    iframe.contentWindow.print();
   }
 }
