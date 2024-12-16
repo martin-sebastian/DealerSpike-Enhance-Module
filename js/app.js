@@ -22,10 +22,19 @@ document.addEventListener("DOMContentLoaded", async () => {
   DOM.init();
 
   // Theme handling - using existing theme functions instead of applyTheme
-  const savedTheme = sessionStorage.getItem("theme");
+  const savedTheme = localStorage.getItem("theme");
   if (savedTheme) {
     document.body.setAttribute("data-bs-theme", savedTheme);
     updateThemeIcon(savedTheme);
+  }
+
+  // Add vertical key tag switch state handling
+  const verticalKeyTagSwitch = document.getElementById("verticalKeyTagSwitch");
+  const savedVerticalKeyTagState = localStorage.getItem("verticalKeyTagState");
+  if (savedVerticalKeyTagState && verticalKeyTagSwitch) {
+    verticalKeyTagSwitch.checked = savedVerticalKeyTagState === "true";
+    // Trigger the toggle function to update the UI
+    toggleVerticalKeyTag({ target: verticalKeyTagSwitch });
   }
 
   // Add event listeners using delegation where possible
@@ -204,7 +213,11 @@ async function processXMLData(xmlDoc) {
       row.innerHTML = `
         <td data-cell="image" class="text-center">
           <a href="${webURL}" target="_blank">
-            ${imageUrl !== "N/A" ? `<img src="${imageUrl}" alt="${title}" loading="lazy" />` : `<i class="bi bi-card-image"></i>`}
+            ${
+              imageUrl !== "N/A"
+                ? `<img src="${imageUrl}" alt="${title}" style="max-width: 100px; max-height: 100px;" loading="lazy" />`
+                : `<i class="bi bi-card-image"></i>`
+            }
           </a>
         </td>
         <td class="text-center"><span class="badge ${usage === "New" ? "text-bg-success" : "text-bg-secondary"}">${usage}</span></td>
@@ -386,8 +399,8 @@ function toggleTheme() {
 
   updateThemeIcon(newTheme);
 
-  // Save the new theme to session storage
-  sessionStorage.setItem("theme", newTheme);
+  // Save the new theme to localStorage instead of sessionStorage
+  localStorage.setItem("theme", newTheme);
 }
 
 function updateThemeIcon(theme) {
@@ -545,6 +558,9 @@ function toggleVerticalKeyTag(event) {
   const keytagContainer = document.getElementById("keytagContainer");
   const keytagVerticalContainer = document.getElementById("keytagVerticalContainer");
   const keytagContainerTwo = document.getElementById("keytagContainerTwo");
+
+  // Save the state to localStorage
+  localStorage.setItem("verticalKeyTagState", event.target.checked);
 
   if (event.target.checked) {
     // Show both formats when toggle is on
