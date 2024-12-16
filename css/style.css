@@ -184,8 +184,7 @@ th {
   justify-content: center;
   align-items: center;
   width: 8.5in;
-  height: 11in;
-  gap: 0.0125in;
+  height: 10.8in;
   color: #333 !important;
   background: #fff !important;
 }
@@ -195,7 +194,7 @@ th {
   justify-content: start;
   align-items: start;
   width: 4.2in;
-  height: 11in;
+  height: 10.8in;
   color: #333;
   border: solid 1px #ddd;
 }
@@ -205,7 +204,7 @@ th {
   justify-content: start;
   align-items: start;
   width: 4.2in;
-  height: 11in;
+  height: 10.8in;
   background: #fff;
   color: #333;
   border: solid 1px #ddd;

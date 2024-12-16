@@ -950,3 +950,16 @@ function printIframeContent() {
     iframe.contentWindow.print();
   }
 }
+
+function printOverlayIframe() {
+  const iframe = document.getElementById("overlayIframe");
+  const printFrame = document.getElementById("printFrame");
+
+  // Copy content from overlay iframe to print frame
+  printFrame.srcdoc = iframe.contentDocument.documentElement.outerHTML;
+
+  // Wait for content to load then print
+  printFrame.onload = function () {
+    printFrame.contentWindow.print();
+  };
+}

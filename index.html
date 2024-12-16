@@ -242,17 +242,19 @@
       <div class="modal fade" id="overlayModal" tabindex="-1" aria-labelledby="overlayModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-fullscreen">
           <div class="modal-content">
-            <div class="modal-header bg-light text-dark border-0 visually-hidden">
+            <div class="modal-header bg-light text-dark border-0 visually-hidden d-print-none">
               <h5 class="modal-title" id="overlayModalLabel">OVERLAY PREVIEW</h5>
               <button type="button" class="btn-close btn-primary bg-light text-dark me-2" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body m-0 p-0">
+            <div class="modal-body m-0 p-0 d-print-none">
               <button type="button" class="btn btn-outline-secondary position-absolute top-0 end-0 mt-2 me-4" title="Esc" data-bs-dismiss="modal" aria-label="Close"><i class="bi bi-x-lg"></i></button>
               <iframe id="overlayIframe" src="" style="width: 100%; height: 99%; border: none; margin: 0; padding: 0"></iframe>
             </div>
-            <div class="modal-footer visually-hidden">
+            <div class="modal-footer d-print-none">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <!-- Print Button -->
+              <button type="button" class="btn btn-danger" onclick="printOverlayIframe()">
+                <i class="bi bi-printer me-2"></i> Print
+              </button>
             </div>
           </div>
         </div>
@@ -319,7 +321,7 @@
             <h5 class="modal-title text-capitalize" id="keyTagsByStockNumberModalLabel"><i class="bi bi-tag me-2 icon-circle"></i>CREATE KEY TAGS</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <div class="modal-body m-0 p-0 overflow-hidden" style="height: 100%; width: 100% min-height: 100vh;">
+          <div class="modal-body m-0 p-0 overflow-hidden" style="height: 100%; width: 100%; min-height: 100vh;">
             <iframe id="keyTagsByStockNumberModal" src="./key-tags/index.html" style="width: 100%; min-height: 78vh; height: 100%; border: 0; margin: 0; padding: 0"></iframe>
           </div>
           <div class="modal-footer">
@@ -337,8 +339,8 @@
             <h5 class="modal-title text-capitalize" id="hangTagsModalLabel"><i class="bi bi-tags me-2 icon-circle"></i>Hang Tags</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <div class="h-100">
-            <iframe id="hangTagsIframe" src="" style="width: 100%; height: 100%; border: none; margin: 0; padding: 0"></iframe>
+          <div class="h-100 m-0 p-0">
+            <iframe id="hangTagsIframe" src="" style="width: 100%; height: 100%; border: 0; margin: 0; padding: 0"></iframe>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -357,7 +359,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body m-0 p-0">
-            <iframe id="roTagIframe" src="" style="width: 100%; height: 100%; border: none; margin: 0; padding: 0"></iframe>
+            <iframe id="roTagIframe" src="" style="width: 100%; height: 100%; border: 0; margin: 0; padding: 0"></iframe>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

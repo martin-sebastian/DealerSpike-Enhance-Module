@@ -781,7 +781,7 @@ $.ajax({
 		</div>
 		<div id="overlayContainer" class="container-fluid" style="background: #fff; padding-top: 10px; padding-bottom: 35px; margin: 0; padding: 0;">
 			<div class="row">
-				<div class="col-md-6">
+				<div class="col-6">
 					<div class="left-column-container">
 						<div class="carousel-container">
 							${carousel}
@@ -828,7 +828,7 @@ $.ajax({
 				</div>
 
 
-				<div class="col-md-6">
+				<div class="col-6">
 					<div class="right-column-container">
 						<ul class="list-group">
 							<li class="list-group-item text-center">
@@ -899,8 +899,6 @@ $.ajax({
 			</div>
 		</div>
 
-		<p class="text-right bold" style="margin:-15px 5px 25px 0;">Quote Expires: ${eDate}</p>
-		${contactMobile}
 		${featuresTemplate}
 		${walkthruVideoTemplate}
 		${unitDescripionTemplate}
