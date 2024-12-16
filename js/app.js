@@ -99,12 +99,12 @@ function showPlaceholder(rowCount = 10) {
     const row1 = document.createElement("tr");
     const row2 = document.createElement("tr");
 
-    row1.className = "placeholder-glow w-100";
-    row2.className = "placeholder-glow w-100";
+    row1.className = "placeholder-wave";
+    row2.className = "placeholder-wave";
 
     // Set innerHTML once per row
-    row1.innerHTML = `<td>...</td>`; // Your placeholder cells
-    row2.innerHTML = `<td>...</td>`; // Your placeholder cells
+    row1.innerHTML = `<td class="placeholder-wave"><span class="placeholder col-12"></span></td>`; // Your placeholder cells
+    row2.innerHTML = `<td class="placeholder-wave"><span class="placeholder col-12"></span></td>`; // Your placeholder cells
 
     fragment.appendChild(row1);
     fragment.appendChild(row2);
