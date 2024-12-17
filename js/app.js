@@ -103,7 +103,10 @@ function showPlaceholder(rowCount = 10) {
     row2.className = "placeholder-wave";
 
     // Set innerHTML once per row
-    row1.innerHTML = `<td class="placeholder-wave"><span class="placeholder col-12"></span></td>`; // Your placeholder cells
+    row1.innerHTML = `
+    <td class="placeholder-wave"><span class="placeholder col-8"></span></td>
+    <td class="placeholder-wave"><span class="placeholder col-4"></span></td>
+    `; // Your placeholder cells
     row2.innerHTML = `<td class="placeholder-wave"><span class="placeholder col-12"></span></td>`; // Your placeholder cells
 
     fragment.appendChild(row1);
@@ -310,8 +313,8 @@ async function processXMLData(xmlDoc) {
   await processChunk(0);
 
   // After data is loaded
-  document.querySelectorAll(".placeholder-glow").forEach((el) => {
-    el.classList.remove("placeholder-glow");
+  document.querySelectorAll(".placeholder-wave").forEach((el) => {
+    el.classList.remove("placeholder-wave");
   });
 }
 // Helper function to initialize table features
@@ -850,7 +853,7 @@ function printKeyTag(event) {
         ${
           showBoth
             ? `
-          <div id="keytagContainer">
+          <div id="keytagContainer" style="margin-bottom: 0.1in;">
             <div id="modelUsage">${keytagContainer.querySelector("#modelUsage").textContent}</div>
             <div id="stockNumber">${keytagContainer.querySelector("#stockNumber").textContent}</div>
             <div id="modelYear">${keytagContainer.querySelector("#modelYear").textContent}</div>
