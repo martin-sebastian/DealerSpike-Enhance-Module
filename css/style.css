@@ -236,21 +236,29 @@ th {
 }
 th {
   cursor: pointer;
-  opacity: 0.4;
+  position: relative;
 }
-th:hover {
-  cursor: pointer;
-  opacity: 1;
+
+th::after {
+  content: "";
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
 }
-th:hover::after {
-  cursor: pointer;
-  content: " \25B2";
-}
+
 th.sort-asc::after {
-  content: " \25B2";
+  border-bottom: 5px solid currentColor;
+  border-top: none;
 }
+
 th.sort-desc::after {
-  content: " \25BC";
+  border-top: 5px solid currentColor;
+  border-bottom: none;
 }
 td {
   vertical-align: middle;

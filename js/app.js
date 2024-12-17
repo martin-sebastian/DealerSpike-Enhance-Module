@@ -987,3 +987,81 @@ function printOverlayIframe() {
     printFrame.contentWindow.print();
   };
 }
+
+function sortTableByColumn(header) {
+  const table = document.getElementById("vehiclesTable");
+  const tbody = table.querySelector("tbody");
+  const rows = Array.from(tbody.querySelectorAll("tr"));
+  const columnIndex = Array.from(header.parentElement.children).indexOf(header);
+  const isAscending = header.classList.toggle("sort-asc");
+
+  // Remove sort classes from other headers
+  header.parentElement.querySelectorAll("th").forEach((th) => {
+    if (th !== header) {
+      th.classList.remove("sort-asc", "sort-desc");
+    }
+  });
+
+  // Toggle sort direction
+  if (!isAscending) {
+    header.classList.add("sort-desc");
+  }
+
+  // Sort the rows
+  const sortedRows = rows.sort((a, b) => {
+    const aValue = a.children[columnIndex]?.textContent.trim() || "";
+    const bValue = b.children[columnIndex]?.textContent.trim() || "";
+
+    // Check if values are numbers
+    const aNum = parseFloat(aValue.replace(/[^0-9.-]+/g, ""));
+    const bNum = parseFloat(bValue.replace(/[^0-9.-]+/g, ""));
+
+    if (!isNaN(aNum) && !isNaN(bNum)) {
+      return isAscending ? aNum - bNum : bNum - aNum;
+    }
+
+    // Handle date sorting
+    const aDate = new Date(aValue);
+    const bDate = new Date(bValue);
+    if (!isNaN(aDate) && !isNaN(bDate)) {
+      return isAscending ? aDate - bDate : bDate - aDate;
+    }
+
+    // Default to string comparison
+    return isAscending ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
+  });
+
+  // Clear and re-append sorted rows
+  while (tbody.firstChild) {
+    tbody.removeChild(tbody.firstChild);
+  }
+  tbody.append(...sortedRows);
+
+  // Update row count after sorting
+  updateRowCount();
+}
+
+function createImageCell(imageUrl) {
+  // Base thumbnail URL
+  const thumbBase = "https://cdnmedia.endeavorsuite.com/images/ThumbGenerator/Thumb.aspx";
+
+  // Parameters for table thumbnails
+  const params = {
+    img: imageUrl,
+    mw: 100, // Max width of 100px for table
+    mh: 66, // Maintaining aspect ratio of ~1.5
+    f: 1, // Format parameter
+  };
+
+  // Create thumbnail URL
+  const thumbUrl = `${thumbBase}?img=${encodeURIComponent(params.img)}&mw=${params.mw}&mh=${params.mh}&f=${params.f}`;
+
+  return `
+    <td>
+      <img src="${thumbUrl}" 
+           alt="Vehicle Image" 
+           class="img-fluid"
+           loading="lazy">
+    </td>
+  `;
+}
