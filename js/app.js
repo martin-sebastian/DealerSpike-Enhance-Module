@@ -114,6 +114,7 @@ function showPlaceholder(rowCount = 10) {
     <td class="placeholder-wave"><span class="placeholder col-4"></span></td>
     <td class="placeholder-wave"><span class="placeholder col-8"></span></td>
     <td class="placeholder-wave"><span class="placeholder col-4"></span></td>
+    <td class="placeholder-wave"><span class="placeholder col-10"></span></td>
     `; // Your placeholder cells
     row2.innerHTML = `
     <td class="placeholder-wave"><span class="placeholder col-12"></span></td>
@@ -126,6 +127,7 @@ function showPlaceholder(rowCount = 10) {
     <td class="placeholder-wave"><span class="placeholder col-8"></span></td>
     <td class="placeholder-wave"><span class="placeholder col-12"></span></td>
     <td class="placeholder-wave"><span class="placeholder col-8"></span></td>
+    <td class="placeholder-wave"><span class="placeholder col-10"></span></td>
     `; // Your placeholder cells
 
     fragment.appendChild(row1);
@@ -960,7 +962,7 @@ function openHangTagsModal(stockNumber) {
 
 function openOverlayModal(stockNumber) {
   const modalIframe = document.getElementById("overlayIframe");
-  modalIframe.src = `./overlay/?search=${stockNumber}`;
+  modalIframe.src = `./quote/?search=${stockNumber}`;
   const overlayModal = new bootstrap.Modal(document.getElementById("overlayModal"));
   overlayModal.show();
 }

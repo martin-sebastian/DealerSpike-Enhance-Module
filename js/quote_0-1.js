@@ -335,8 +335,11 @@ document.addEventListener("DOMContentLoaded", function () {
       // Update the carousel container template
       var carousel = `
         <div class="carousel-container">
-          <div id="carousel-overlay-vehicle-info" class="carousel slide" data-bs-ride="carousel">
-            <!-- Carousel indicators -->
+          <div id="carousel-overlay-vehicle-info" 
+               class="carousel slide" 
+               data-bs-ride="false"
+               data-bs-interval="false"
+               data-interval="false">
             <div class="carousel-indicators">
               ${data.Images.map(
                 (_, index) => `
@@ -350,12 +353,10 @@ document.addEventListener("DOMContentLoaded", function () {
               ).join("")}
             </div>
 
-            <!-- Carousel items -->
             <div class="carousel-inner shadow rounded-md">
               ${carouselImages}
             </div>
-          
-            <!-- Carousel controls -->
+
             <button class="carousel-control-prev" type="button" data-bs-target="#carousel-overlay-vehicle-info" data-bs-slide="prev">
               <span class="carousel-control-prev-icon" aria-hidden="true"></span>
               <span class="visually-hidden">Previous</span>
@@ -725,12 +726,6 @@ document.addEventListener("DOMContentLoaded", function () {
           touch: true,
         });
       }
-
-      // Initialize tooltips (keep existing initialization)
-      const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-      const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl);
-      });
 
       showpay();
     })
