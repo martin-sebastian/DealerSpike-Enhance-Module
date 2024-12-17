@@ -85,7 +85,7 @@ $(document).ready(function () {
       } else if (data.UnitStatus == "Ordered") {
         inventoryStatusTemplate += `${data.UnitStatus}, Avail. ${arrivalDate}`;
       } else if (data.UnitStatus == "In Inventory" && data.Lot == "ONORDER") {
-        inventoryStatusTemplate += `Ordered, Avail. ${arrivalDate}`;
+        inventoryStatusTemplate += `<hr style="margin: 0 0 10px 0; border:0;"><span style="color: red; font-weight: 800; padding: 10px 0;">Ordered</span>, <span style="color: green; font-weight: 500; padding: 10px .;">Arriving ${arrivalDate}</span>`;
       } else if (data.UnitStatus == "In Inventory" && data.Lot == "SERVICE") {
         inventoryStatusTemplate += `In Service Being Prepared`;
       } else {
@@ -261,7 +261,7 @@ $(document).ready(function () {
         while (i < data.AccessoryItems.length) {
           if (data.AccessoryItems[i].ImgURL && data.AccessoryItems[i].Included === false) {
             muImageCardTemplate += `
-			<div class="col-md-3 col-sm-6">
+			<div class="accessory-items-card">
 				<div class="mu-feature-card shadow">
 					<img style="width: 100%;"
 					src="${data.AccessoryItems[i].ImgURL}">
@@ -275,7 +275,7 @@ $(document).ready(function () {
 			`;
           } else if (data.AccessoryItems[i].ImgURL && data.AccessoryItems[i].Included === true && data.AccessoryItems[i].Amount > 0) {
             muImageCardTemplate += `
-			<div class="col-md-3 col-sm-6">
+			<div class="accessory-items-cards">
 				<div class="mu-feature-card shadow">
 					<img style="width: 100%;"
 					src="${data.AccessoryItems[i].ImgURL}">
@@ -289,7 +289,7 @@ $(document).ready(function () {
 			`;
           } else if (data.AccessoryItems[i].ImgURL && data.AccessoryItems[i].Included === true && data.AccessoryItems[i].Amount === 0) {
             muImageCardTemplate += `
-			<div class="col-md-3 col-sm-6">
+			<div class="accessory-items-list">
 				<div class="mu-feature-card shadow">
 					<img style="width: 100%;"
 					src="${data.AccessoryItems[i].ImgURL}">
@@ -311,7 +311,7 @@ $(document).ready(function () {
       i = 0;
       while (i < data.Images.length) {
         if (i == 0) {
-          carouselImages += `<div class="item active"><img src=" ${data.Images[i].ImgURL}" alt="error loading image"></div><div class="carousel-caption"></div>`;
+          carouselImages += `<div class="item active"><img src=" ${data.Images[i].ImgURL}" alt="error loading image"></div><div class="carousel-caption">QUOTE</div>`;
         } else {
           carouselImages += `<div class="item"><img src=" ${data.Images[i].ImgURL}" alt="error loading image"></div><div class="carousel-caption"></div>`;
         }
@@ -327,19 +327,19 @@ $(document).ready(function () {
 
       // Carousel Container
       var carousel = `
-		<div class="" style="width: 4in; height: auto;">
-			<div id="carousel-overlay-generic" class="carousel slide" data-ride="">
+		<div class="carousel-container">
+			<div id="carousel-overlay-vehicle-info" class="carousel slide" data-ride="">
 				<div class="carousel-inner shadow rounded-md" role="listbox">
 				${carouselImages}
 				</div>
 			
 				<!-- Controls -->
-				<a class="left carousel-control" style="background: none;" href="#carousel-overlay-generic" role="button" data-slide="prev">
+				<a class="left carousel-control" style="background: none;" href="#carousel-overlay-vehicle-info" role="button" data-slide="prev">
 					<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
 					<span class="sr-only">Previous</span>
 				</a>
 
-				<a class="right carousel-control" style="background: none;" href="#carousel-overlay-generic" role="button" data-slide="next">
+				<a class="right carousel-control" style="background: none;" href="#carousel-overlay-vehicle-info" role="button" data-slide="next">
 					<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
 					<span class="sr-only">Next</span>
 				</a>
@@ -351,9 +351,9 @@ $(document).ready(function () {
       i = 0;
       while (i < data.Images.length) {
         if (i == 0) {
-          thumbnailImages += `<button type="button" class="btn btn-default btn-thumbnail" href="#carousel-overlay-generic" role="button" data-slide-to="${i}"><img style="width:100%;" src=" ${data.Images[i].ImgURL}" alt="error loading image"></button>`;
+          thumbnailImages += `<button type="button" class="btn btn-default btn-thumbnail" href="#carousel-overlay-vehicle-info" role="button" data-slide-to="${i}"><img style="width:100%;" src=" ${data.Images[i].ImgURL}" alt="error loading image"></button>`;
         } else {
-          thumbnailImages += `<button type="button" class="btn btn-default btn-thumbnail" href="#carousel-overlay-generic" role="button" data-slide-to="${i}"><img style="width:100%;" src=" ${data.Images[i].ImgURL}" alt="error loading image"></button>`;
+          thumbnailImages += `<button type="button" class="btn btn-default btn-thumbnail" href="#carousel-overlay-vehicle-info" role="button" data-slide-to="${i}"><img style="width:100%;" src=" ${data.Images[i].ImgURL}" alt="error loading image"></button>`;
         }
         i++;
       }
@@ -363,11 +363,11 @@ $(document).ready(function () {
 		<div class="vehicle-header-container">
 			<div class="vehicle-name-container">
 				<h3 class="vehicle-title" style="margin: 15px 0 0 0;">${prodTitle}</h3>
-				<h4 class="vehicle-subtitle" style="margin: 1px 0 5px 0; padding:0;">
-				<small>Model: </small>${data.ModelCode} 
-				<small class="hidden-xs">VIN: </small><span class="hidden-xs">${vinNumber} </span>
-				<small>Stock Number: </small>${stockNum}
-				</h4>
+				<h4 class="vehicle-subtitle" style="margin: 1px 0 15px 0; padding:0;">
+          <small>Model: </small>${data.ModelCode} 
+          <small class="hidden-xs">VIN: </small><span class="hidden-xs">${vinNumber} </span>
+          <small>Stock Number: </small>${stockNum}
+        </h4>
 			</div>
 	
 		</div>
@@ -443,10 +443,10 @@ $(document).ready(function () {
             <form name="calc" method="POST">
                 <a class="payment-toggle" role="button" data-toggle="collapse" href="#paymentSliders" aria-expanded="false" aria-controls="paymentSliders" onClick="showpay()">
                     <h3 class="payment">
-						<small>Payment</small>
-						$<span id="payment"><i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i></span>
-						<small>/mo.</small>
-						<i class="fa fa-pencil" title="Calculate Your Payment"></i>
+                        <small>Payment</small>
+                        $<span id="payment"><i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i></span>
+                        <small>/mo.</small>
+                        <i class="fa fa-pencil" title="Calculate Your Payment"></i>
                     </h3>
                 </a>
 				<input type="hidden" name="loan" size="10" value="${data.OTDPrice}">
@@ -479,7 +479,7 @@ $(document).ready(function () {
 								</div>
 							</div>
 						</div>
-						<div style="padding: 5px 0">
+						<div style="padding: 15px 0; clear: both;">
 							<a href="https://www.flatoutmotorcycles.com/financing-application" class="btn btn-danger">Apply for Financing</a>
 						</div>
 					</div>
@@ -500,118 +500,122 @@ $(document).ready(function () {
         "$0,0.00"
       );
       var overlay = `
-		<div class="mu-header" style="margin:0 auto;">
-			${muHeaderTemplate}
-		</div>
-			<div class="row" style="width: 8.5in;">
-				<div class="col-6" style="width: 4.2in;">
-					<div class="left-column-container">
-						<div class="carousel-container">
-							${carousel}
-						</div>
-						
-						<div class="thumbnail-images-container  hidden" style="margin-top: 5px;">
-							${thumbnailImages}
-						</div>	
-						<h3 class="text-left bold">Trade-In</h3>
-						<div class="tradein-container panel rounded" style="width: 4in;">
-							${tradeInItemsTemplate}
-							<form class="form-inline">
-								<div class="form-group">
-									<label for="InputVehicle" class="sr-only">Year, Make, Model, Trim</label>
-									<input type="text" class="form-control" style="width: 0.7in" id="InputYear" placeholder="2020">
-								</div>
-								<div class="form-group">
-									<label for="InputVehicle" class="sr-only">Make, Model, Trim</label>
-									<input type="text" class="form-control" style="width: 3in" id="InputVehicle" placeholder="Ninja 400">
-								</div>
-								<hr class="hr-divider">
-								<div class="form-group">
-									<label for="InputCondition" class="sr-only">Condition</label>
-									<input type="password" class="form-control" style="width: 3.7in" id="InputCondition" placeholder="Describe condition">
-								</div>
-								
-							</form>
-						</div>
-						<h3 class="text-left bold">Informantion</h3>
-						<ul class="list-group" style="width: 4in;">
-							${unitNumbersTemplate}
-						</ul>
-					</div>
-				</div>
+        <div style="width: 8.5in; margin: 0 auto; padding: 0.25in;">
+          <div class="mu-header">
+            ${muHeaderTemplate}
+          </div>
+          
+          <div style="display: flex; gap: 0.5in;">
+            <!-- Left Column -->
+            <div style="width: 4in;">
+              <div class="left-column-container">
+                <div class="carousel-container">
+                  ${carousel}
+                </div>
+                
+                <div class="thumbnail-images-container hidden" style="margin-top: 5px;">
+                  ${thumbnailImages}
+                </div>  
+                
+                <h3 class="text-left bold">Trade-In</h3>
+                <div class="tradein-container panel rounded">
+                  ${tradeInItemsTemplate}
+                  <form class="form-inline">
+                    <div class="form-group">
+                      <label for="InputVehicle" class="sr-only">Year, Make, Model, Trim</label>
+                      <input type="text" class="form-control" style="width: 0.7in" id="InputYear" placeholder="2020">
+                    </div>
+                    <div class="form-group">
+                      <label for="InputVehicle" class="sr-only">Make, Model, Trim</label>
+                      <input type="text" class="form-control" style="width: 3in" id="InputVehicle" placeholder="Ninja 400">
+                    </div>
+                    <hr class="hr-divider">
+                    <div class="form-group">
+                      <label for="InputCondition" class="sr-only">Condition</label>
+                      <input type="password" class="form-control" style="width: 3.7in" id="InputCondition" placeholder="Describe condition">
+                    </div>
+                    
+                  </form>
+                </div>
+                
+                <h3 class="text-left bold">Information</h3>
+                <ul class="list-group">
+                  ${unitNumbersTemplate}
+                </ul>
+              </div>
+            </div>
 
+            <!-- Right Column -->
+            <div style="width: 4in;">
+              <div class="right-column-container">
+                <ul class="list-group">
+                  <li class="list-group-item text-center">
+                    <div class="price-payment-container">
+                      <div class="price-payment-left">
+                        <!-- MSRP price -->
+                        <div class="our-price-msrp">
+                          MSRP: <s>${msrpTotal}</s>
+                        </div>
 
-				<div class="col-6" style="width: 4.2in;">
-					<div class="right-column-container" style="width: 4in;">
-						<ul class="list-group">
-							<li class="list-group-item text-center">
-								<div class="price-payment-container">
-									<div class="price-payment-left">
-									<!-- MSRP price -->
-									<div class="our-price-msrp">
-										MSRP: <s>${msrpTotal}</s>
-									</div>
+                        <!-- Yellow Tag and price -->
+                        <div class="our-price">
+                          ${yellowTag} ${ourPrice}
+                        </div>
 
-									<!-- Yellow Tag and price -->
-									<div class="our-price">
-										${yellowTag} ${ourPrice}
-									</div>
-
-									<!-- total savings -->
-									<div class="total-savings">
-										<span class="label label-default">
-											Savings
-										</span>
-										<i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-										<span class="label label-danger">
-											${totalSavings}
-										</span>
-									</div>
-									${inventoryStatusTemplate}
-							
-									<!-- sale program expires -->
-									<div class="price-expires silver">
-										Sale Program Ends: ${salePriceExpireDate}
-									</div>
-								</div>
-								
-								<div class="price-payment-right">
-									${paymentCalc}
-								</div>
-								</div>
-							</li>
-						</ul>
-						<ul class="list-group">
-							<li class="list-group-item bold">
-							${msrpLabel} <span class="pull-right">${MSRPUnit}</span>
-							</li>
-							${tradeInItemsTemplate} 
-							${matItemsTemplate} 
-							${discountItemsTemplate}
-							${freebieItemsTemplate}
-							<li class="list-group-item">
-							    ${accessoryLine}
-								${accessoryItemsTemplate}
-							</li>
-							<li class="list-group-item">	
-								${OTDItemsTemplate}
-							</li>
-							
-						</ul>
-						<ul class="list-group">
-							<li class="list-group-item otd-li">	
-								<div class="total-otd-price">
-								Total O.T.D. Price: <span class="pull-right">${totalOTD}</span>
-								</div>
-							</li>
-						</ul>
-
-					</div>
-
-				</div>
-			</div>
-		
-		`;
+                        <!-- total savings -->
+                        <div class="total-savings">
+                          <span class="label label-default">
+                            Savings
+                          </span>
+                          <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                          <span class="label label-danger">
+                            ${totalSavings}
+                          </span>
+                        </div>
+                        ${inventoryStatusTemplate}
+                      
+                        <!-- sale program expires -->
+                        <div class="price-expires silver">
+                          Sale Program Ends: ${salePriceExpireDate}
+                        </div>
+                      </div>
+                      
+                      <div class="price-payment-right">
+                        ${paymentCalc}
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+                
+                <ul class="list-group">
+                  <li class="list-group-item bold">
+                    ${msrpLabel} <span class="pull-right">${MSRPUnit}</span>
+                  </li>
+                  ${tradeInItemsTemplate} 
+                  ${matItemsTemplate} 
+                  ${discountItemsTemplate}
+                  ${freebieItemsTemplate}
+                  <li class="list-group-item">
+                    ${accessoryLine}
+                    ${accessoryItemsTemplate}
+                  </li>
+                  <li class="list-group-item">  
+                    ${OTDItemsTemplate}
+                  </li>
+                </ul>
+                
+                <ul class="list-group">
+                  <li class="list-group-item otd-li">  
+                    <div class="total-otd-price">
+                      Total O.T.D. Price: <span class="pull-right">${totalOTD}</span>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
 
       // Build the complete HTML structure first
       const pageContent = `
@@ -695,7 +699,7 @@ $(document).ready(function () {
       showpay();
 
       // Initialize carousel if needed
-      $("#carousel-overlay-generic").carousel({
+      $("#carousel-overlay-vehicle-info").carousel({
         interval: false,
       });
 
