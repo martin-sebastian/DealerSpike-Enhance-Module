@@ -612,3 +612,33 @@ th {
     width: 100% !important;
   }
 }
+
+.custom-tooltip {
+  position: absolute;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  pointer-events: none;
+  transform: translateY(-100%);
+  margin-top: -5px;
+  z-index: 1000;
+}
+
+.custom-tooltip::after {
+  content: "";
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 5px 5px 0;
+  border-style: solid;
+  border-color: rgba(0, 0, 0, 0.8) transparent transparent;
+}
+
+/* Hide default anchor */
+::backdrop {
+  display: none;
+}

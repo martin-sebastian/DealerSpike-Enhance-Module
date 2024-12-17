@@ -54,6 +54,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   showPlaceholder();
   await fetchData();
   updateRowCount();
+
+  initializeClipboardTooltips();
 });
 
 function handleGlobalClicks(event) {
@@ -1064,4 +1066,9 @@ function createImageCell(imageUrl) {
            loading="lazy">
     </td>
   `;
+}
+
+if (!HTMLElement.prototype.hasOwnProperty("popover")) {
+  console.warn("Popover API not supported - falling back to title attribute");
+  // ... fallback code ...
 }
