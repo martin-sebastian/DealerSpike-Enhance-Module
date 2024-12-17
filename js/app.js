@@ -863,7 +863,7 @@ function printKeyTag(event) {
             <div id="modelColor">${keytagContainer.querySelector("#modelColor").textContent}</div>
             <div id="modelVin">${keytagContainer.querySelector("#modelVin").textContent}</div>
           </div>
-          <div id="keytagContainerTwo">
+          <div id="keytagContainerTwo" style="margin-top: 0.1in;">
             <span class="rotated-label-text">
               ${keytagContainer.querySelector("#modelYear").textContent}
               ${keytagContainer.querySelector("#manufacturer").textContent}<br>
