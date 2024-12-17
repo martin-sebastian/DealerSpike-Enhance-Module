@@ -173,9 +173,9 @@ document.addEventListener("DOMContentLoaded", function () {
       // Accessory Total and Total collapse line
       var accTotal = numeral(data.AccessoryItemsTotal).format("$0,0.00");
 
-      if ($(data.AccessoryItems[0]).length && data.AccessoryItemsTotal > 0) {
+      if (data.AccessoryItems.length && data.AccessoryItemsTotal > 0) {
         var accessoryLine = `<li class="list-group-item">Features <span class=""> - ${accTotal}</span></li>`;
-      } else if ($(data.AccessoryItems[0]).length && data.AccessoryItemsTotal < 1) {
+      } else if (data.AccessoryItems.length && data.AccessoryItemsTotal < 1) {
         var accessoryLine = `<li class="list-group-item">Features <span class="gray"> - Included</span></li>`;
       } else {
         var accessoryLine = ``;
@@ -718,14 +718,27 @@ document.addEventListener("DOMContentLoaded", function () {
       // Replace the entire page content at once
       document.querySelector(".page-container").innerHTML = pageContent;
 
-      // Initialize carousel (keep existing initialization)
+      // Initialize carousel with vanilla JS
       const carouselElement = document.querySelector("#carousel-overlay-vehicle-info");
       if (carouselElement) {
         const carousel = new bootstrap.Carousel(carouselElement, {
           interval: false,
-          touch: true,
+          ride: false,
+          wrap: true,
+          pause: true,
         });
+
+        // Force stop any running carousel
+        carousel.pause();
       }
+
+      // Add event listener to stop carousel if it starts
+      document.querySelector("#carousel-overlay-vehicle-info")?.addEventListener("slide.bs.carousel", function (e) {
+        const carousel = bootstrap.Carousel.getInstance(this);
+        if (carousel) {
+          carousel.pause();
+        }
+      });
 
       showpay();
     })
