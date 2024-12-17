@@ -680,7 +680,6 @@ document.addEventListener("DOMContentLoaded", function () {
               </div>
               <div class="total-savings">
                 <span class="label label-default">Savings</span>
-                <i class="fa fa-arrow-circle-right"></i>
                 <span class="label label-danger">${totalSavings}</span>
               </div>
               ${inventoryStatusTemplate}
