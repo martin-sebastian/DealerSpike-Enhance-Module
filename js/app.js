@@ -106,8 +106,27 @@ function showPlaceholder(rowCount = 10) {
     row1.innerHTML = `
     <td class="placeholder-wave"><span class="placeholder col-8"></span></td>
     <td class="placeholder-wave"><span class="placeholder col-4"></span></td>
+    <td class="placeholder-wave"><span class="placeholder col-8"></span></td>
+    <td class="placeholder-wave"><span class="placeholder col-4"></span></td>
+    <td class="placeholder-wave"><span class="placeholder col-8"></span></td>
+    <td class="placeholder-wave"><span class="placeholder col-4"></span></td>
+    <td class="placeholder-wave"><span class="placeholder col-8"></span></td>
+    <td class="placeholder-wave"><span class="placeholder col-4"></span></td>
+    <td class="placeholder-wave"><span class="placeholder col-8"></span></td>
+    <td class="placeholder-wave"><span class="placeholder col-4"></span></td>
     `; // Your placeholder cells
-    row2.innerHTML = `<td class="placeholder-wave"><span class="placeholder col-12"></span></td>`; // Your placeholder cells
+    row2.innerHTML = `
+    <td class="placeholder-wave"><span class="placeholder col-12"></span></td>
+    <td class="placeholder-wave"><span class="placeholder col-8"></span></td>
+    <td class="placeholder-wave"><span class="placeholder col-12"></span></td>
+    <td class="placeholder-wave"><span class="placeholder col-8"></span></td>
+    <td class="placeholder-wave"><span class="placeholder col-12"></span></td>
+    <td class="placeholder-wave"><span class="placeholder col-8"></span></td>
+    <td class="placeholder-wave"><span class="placeholder col-12"></span></td>
+    <td class="placeholder-wave"><span class="placeholder col-8"></span></td>
+    <td class="placeholder-wave"><span class="placeholder col-12"></span></td>
+    <td class="placeholder-wave"><span class="placeholder col-8"></span></td>
+    `; // Your placeholder cells
 
     fragment.appendChild(row1);
     fragment.appendChild(row2);
