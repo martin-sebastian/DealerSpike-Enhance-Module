@@ -37,7 +37,7 @@ function showpay() {
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const urlstocknumber = urlParams.get("search");
-var stockNum = urlstocknumber;
+const stockNum = urlstocknumber;
 
 console.log("stockNum", stockNum);
 
@@ -537,13 +537,13 @@ document.addEventListener("DOMContentLoaded", function () {
                   ${carousel}
                 </div>
                 
-                <div class="thumbnail-images-container hidden" style="margin-top: 5px;">
+                <div class="thumbnail-images-container" style="margin-top: 5px;">
                   ${thumbnailImages}
                 </div>  
                 
                 <h3 class="text-left bold">Trade-In</h3>
-                <div class="tradein-container panel rounded">
-                  ${tradeInItemsTemplate}
+                <div class="tradein-container rounded">
+                 
                   <form class="form-inline">
                     <div class="form-group">
                       <label for="InputVehicle" class="sr-only">Year, Make, Model, Trim</label>
@@ -587,15 +587,15 @@ document.addEventListener("DOMContentLoaded", function () {
                         </div>
 
                         <!-- total savings -->
-                        <div class="total-savings">
-                          <span class="label label-danger">
+                        <h1 class="total-savingsxxx">
+                          <span class="badge text-bg-secondary">
                             Savings
                           </span>
                  
-                          <span class="label label-danger">
+                          <span class="badge text-bg-danger">
                             ${totalSavings}
                           </span>
-                        </div>
+                        </h1>
                         ${inventoryStatusTemplate}
                       
                         <!-- sale program expires -->
@@ -615,10 +615,10 @@ document.addEventListener("DOMContentLoaded", function () {
                   <li class="list-group-item bold">
                     ${msrpLabel} <span class="pull-right">${MSRPUnit}</span>
                   </li>
-                  ${tradeInItemsTemplate} 
-                  ${matItemsTemplate} 
-                  ${discountItemsTemplate}
-                  ${freebieItemsTemplate}
+                    ${tradeInItemsTemplate} 
+                    ${matItemsTemplate} 
+                    ${discountItemsTemplate}
+                    ${freebieItemsTemplate}
                   <li class="list-group-item">
                     ${accessoryLine}
                     ${accessoryItemsTemplate}
@@ -702,7 +702,7 @@ document.addEventListener("DOMContentLoaded", function () {
             </ul>
           </div>
 
-          <div class="otd-price">
+          <div class="otd-price my-2">
             <ul class="list-group">
               <li class="list-group-item otd-li">
                 <div class="total-otd-price">
