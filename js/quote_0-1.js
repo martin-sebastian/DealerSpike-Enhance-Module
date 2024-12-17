@@ -41,17 +41,19 @@ var stockNum = urlstocknumber;
 
 console.log("stockNum", stockNum);
 
-// Wait for DOM to be ready
-$(document).ready(function () {
-  $.ajax({
-    type: "GET",
-    url: "https://newportal.flatoutmotorcycles.com/portal/public/api/majorunit/stocknumber/" + stockNum,
-  })
-    .done(function (data) {
+document.addEventListener("DOMContentLoaded", function () {
+  fetch(`https://newportal.flatoutmotorcycles.com/portal/public/api/majorunit/stocknumber/${stockNum}`)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
+    })
+    .then((data) => {
       console.log("data.StockNumber", data.StockNumber);
       var prodTitle = data.Usage + " " + data.ModelYear + " " + data.Manufacturer + " " + data.B50ModelName;
       var vinNumber = data.VIN;
-      const qLevel = `<span class="badge" style="margin-left: 100px; padding: 10px 15px; font-weight: 900">Quote Level ${data.QuoteLevel}</span>`;
+      const qLevel = `<span class="badge bg-secondary" style="margin-left: 100px; padding: 10px 15px; font-weight: 900">Quote Level ${data.QuoteLevel}</span>`;
       var MSRPUnit = numeral(data.MSRPUnit).format("$0,0.00");
       var unitMSRP = numeral(data.MSRP - data.AccessoryItemsTotal).format("$0,0.00");
       var msrpLabel = data.MSRPTitle;
@@ -306,18 +308,23 @@ $(document).ready(function () {
         }
       }
 
-      // Carousel Images
+      // Update the carousel images template
       var carouselImages = ``;
       i = 0;
       while (i < data.Images.length) {
         if (i == 0) {
-          carouselImages += `<div class="item active"><img src=" ${data.Images[i].ImgURL}" alt="error loading image"></div><div class="carousel-caption">QUOTE</div>`;
+          carouselImages += `
+            <div class="carousel-item active">
+              <img src="${data.Images[i].ImgURL}" class="d-block w-100" alt="Vehicle Image">
+            </div>`;
         } else {
-          carouselImages += `<div class="item"><img src=" ${data.Images[i].ImgURL}" alt="error loading image"></div><div class="carousel-caption"></div>`;
+          carouselImages += `
+            <div class="carousel-item">
+              <img src="${data.Images[i].ImgURL}" class="d-block w-100" alt="Vehicle Image">
+            </div>`;
         }
 
         let itemIndex = data.MUItems.findIndex((item) => item.Id == data.Images[i].MUItemId);
-
         if (itemIndex != -1) {
           data.MUItems[itemIndex].ImgURL = data.Images[i].ImgURL;
           data.MUItems[itemIndex].Description = data.Images[i].Description;
@@ -325,27 +332,43 @@ $(document).ready(function () {
         i++;
       }
 
-      // Carousel Container
+      // Update the carousel container template
       var carousel = `
-		<div class="carousel-container">
-			<div id="carousel-overlay-vehicle-info" class="carousel slide" data-ride="">
-				<div class="carousel-inner shadow rounded-md" role="listbox">
-				${carouselImages}
-				</div>
-			
-				<!-- Controls -->
-				<a class="left carousel-control" style="background: none;" href="#carousel-overlay-vehicle-info" role="button" data-slide="prev">
-					<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-					<span class="sr-only">Previous</span>
-				</a>
+        <div class="carousel-container">
+          <div id="carousel-overlay-vehicle-info" class="carousel slide" data-bs-ride="carousel">
+            <!-- Carousel indicators -->
+            <div class="carousel-indicators">
+              ${data.Images.map(
+                (_, index) => `
+                <button type="button" 
+                  data-bs-target="#carousel-overlay-vehicle-info" 
+                  data-bs-slide-to="${index}" 
+                  ${index === 0 ? 'class="active" aria-current="true"' : ""}
+                  aria-label="Slide ${index + 1}">
+                </button>
+              `
+              ).join("")}
+            </div>
 
-				<a class="right carousel-control" style="background: none;" href="#carousel-overlay-vehicle-info" role="button" data-slide="next">
-					<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-					<span class="sr-only">Next</span>
-				</a>
-			</div>
-		</div>
-		`;
+            <!-- Carousel items -->
+            <div class="carousel-inner shadow rounded-md">
+              ${carouselImages}
+            </div>
+          
+            <!-- Carousel controls -->
+            <button class="carousel-control-prev" type="button" data-bs-target="#carousel-overlay-vehicle-info" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+
+            <button class="carousel-control-next" type="button" data-bs-target="#carousel-overlay-vehicle-info" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+          </div>
+        </div>
+      `;
+
       // MU Thumbnails
       var thumbnailImages = ``;
       i = 0;
@@ -365,7 +388,7 @@ $(document).ready(function () {
 				<h3 class="vehicle-title" style="margin: 15px 0 0 0;">${prodTitle}</h3>
 				<h4 class="vehicle-subtitle" style="margin: 1px 0 15px 0; padding:0;">
           <small>Model: </small>${data.ModelCode} 
-          <small class="hidden-xs">VIN: </small><span class="hidden-xs">${vinNumber} </span>
+          <small class="d-none d-sm-inline">VIN: </small><span class="d-none d-sm-inline">${vinNumber} </span>
           <small>Stock Number: </small>${stockNum}
         </h4>
 			</div>
@@ -441,7 +464,7 @@ $(document).ready(function () {
       var paymentCalc = `
 		<div class="payment-caclculator text-center">
             <form name="calc" method="POST">
-                <a class="payment-toggle" role="button" data-toggle="collapse" href="#paymentSliders" aria-expanded="false" aria-controls="paymentSliders" onClick="showpay()">
+                <a class="payment-toggle" role="button" data-bs-toggle="collapse" href="#paymentSliders" aria-expanded="false" aria-controls="paymentSliders" onClick="showpay()">
                     <h3 class="payment">
                         <small>Payment</small>
                         $<span id="payment"><i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i></span>
@@ -564,10 +587,10 @@ $(document).ready(function () {
 
                         <!-- total savings -->
                         <div class="total-savings">
-                          <span class="label label-default">
+                          <span class="label label-danger">
                             Savings
                           </span>
-                          <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                 
                           <span class="label label-danger">
                             ${totalSavings}
                           </span>
@@ -693,25 +716,31 @@ $(document).ready(function () {
     `;
 
       // Replace the entire page content at once
-      $(".page-container").html(pageContent);
+      document.querySelector(".page-container").innerHTML = pageContent;
 
-      // Initialize any necessary features after content is loaded
-      showpay();
+      // Initialize carousel (keep existing initialization)
+      const carouselElement = document.querySelector("#carousel-overlay-vehicle-info");
+      if (carouselElement) {
+        const carousel = new bootstrap.Carousel(carouselElement, {
+          interval: false,
+          touch: true,
+        });
+      }
 
-      // Initialize carousel if needed
-      $("#carousel-overlay-vehicle-info").carousel({
-        interval: false,
+      // Initialize tooltips (keep existing initialization)
+      const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+      const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
       });
 
-      // Initialize any other Bootstrap components
-      $('[data-toggle="tooltip"]').tooltip();
+      showpay();
     })
-    .fail(function (jqXHR, textStatus, errorThrown) {
-      console.error("Request failed:", textStatus, errorThrown);
-      $(".page-container").html(`
-      <div class="alert alert-danger">
-        Failed to load data for stock number ${stockNum}
-      </div>
-    `);
+    .catch((error) => {
+      console.error("Request failed:", error);
+      document.querySelector(".page-container").innerHTML = `
+        <div class="alert alert-danger">
+          Failed to load data for stock number ${stockNum}
+        </div>
+      `;
     });
 });
