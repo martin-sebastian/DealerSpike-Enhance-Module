@@ -313,6 +313,22 @@ document.addEventListener("DOMContentLoaded", function () {
         i++;
       }
 
+      var tradeInItemsTemplate = data.TradeInItems?.length
+        ? `
+          <div class="card">
+            <h5 class="card-title">Trade-In Allowance</h5>
+            ${data.TradeInItems.map(
+              (item) => `
+              <div class="d-flex justify-content-between align-items-center">
+                <span>${item.Description}</span>
+                <span>${numeral(item.Amount).format("$0,0.00")}</span>
+              </div>
+            `
+            ).join("")}
+          </div>
+        `
+        : "";
+
       // Accessory Items Template
       var accessoryItemsTemplate = data.AccessoryItems?.length
         ? `
@@ -763,20 +779,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
       `;
 
-      var tradeInItemsTemplate = `
-        <div class="card">
-          <h5 class="card-title">Trade-In Items</h5>
-          ${data.TradeInItems.map(
-            (item) => `
-            ${item.Description}
-            <span class="pull-right">
-              ${numeral(item.Amount).format("$0,0.00")}
-            </span>
-          `
-          ).join("")}
-        </div>
-      `;
-
       // Update the main page content structure
       const pageContent = `
         <div class="main-header">
@@ -807,6 +809,7 @@ document.addEventListener("DOMContentLoaded", function () {
             
             <!-- Pricing Details -->
             <div class="pricing-details">
+              ${tradeInItemsTemplate}
               ${matItemsTemplate}
               ${discountItemsTemplate}
               ${accessoryItemsTemplate}
