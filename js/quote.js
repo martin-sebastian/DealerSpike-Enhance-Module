@@ -1,3 +1,44 @@
+// Configuration constants
+const CONFIG = {
+  API_URL: "https://newportal.flatoutmotorcycles.com/portal/public/api",
+  MAIN_LOTS: ["SUZ", "KAW", "POL", "PREOWNED", "PRE OWNED"],
+  DEFAULT_INTEREST_RATE: 6.99,
+};
+
+// Function declarations should come before usage
+function initializeClipboardTooltips() {
+  const clipboardButtons = document.querySelectorAll("[data-clipboard-target]");
+  clipboardButtons.forEach((button) => {
+    new ClipboardJS(button);
+    const tooltip = new bootstrap.Tooltip(button, {
+      title: "Copy to clipboard",
+      placement: "top",
+      trigger: "hover",
+    });
+
+    button.addEventListener("click", () => {
+      tooltip.dispose();
+      const newTooltip = new bootstrap.Tooltip(button, {
+        title: "Copied!",
+        placement: "top",
+        trigger: "manual",
+      });
+      newTooltip.show();
+      setTimeout(() => {
+        newTooltip.dispose();
+        tooltip.dispose();
+      }, 1000);
+    });
+  });
+}
+
+// URL parameter handling (single instance)
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+const stockNum = urlParams.get("search");
+
+console.log("Attempting to fetch data for stock number:", stockNum);
+
 // Overlay by Martin Sebastian
 
 // Payment Calculator
@@ -33,23 +74,117 @@ function showpay() {
   };
 }
 
-// AJAX call and data processing
-const queryString = window.location.search;
-const urlParams = new URLSearchParams(queryString);
-const urlstocknumber = urlParams.get("search");
-const stockNum = urlstocknumber;
+// Move function definition to global scope, before the fetch call
+function updateTradeDetails() {
+  const tradeValueElement = document.getElementById("tradeValueDisplay");
+  const otdElement = document.getElementById("otdPriceDisplay");
+  const year = document.getElementById("InputYear").value;
+  const vehicle = document.getElementById("InputVehicle").value;
+  const condition = document.getElementById("InputCondition").value;
+  const value = document.getElementById("InputTradeValue").value;
 
-console.log("stockNum", stockNum);
+  if (tradeValueElement && value && value > 0) {
+    // Update trade-in display
+    tradeValueElement.style.display = "list-item";
+    const tradeDescription = `Trade-in: ${year} ${vehicle}${condition ? `, ${condition}` : ""}`;
+    tradeValueElement.innerHTML = `
+      ${tradeDescription}
+      <span class="pull-right">${numeral(value).format("$0,0.00")}</span>
+    `;
+
+    // Update OTD price
+    if (otdElement) {
+      const originalOTD = window.originalOTDPrice; // Use stored global value
+      const newOTD = originalOTD - parseFloat(value);
+      otdElement.innerHTML = `
+        Total O.T.D. Price: 
+        <span class="pull-right">${numeral(newOTD).format("$0,0.00")}</span>
+      `;
+    }
+  } else {
+    // Reset displays if no trade-in value
+    tradeValueElement.style.display = "none";
+    if (otdElement) {
+      otdElement.innerHTML = `
+        Total O.T.D. Price: 
+        <span class="pull-right">${numeral(window.originalOTDPrice).format("$0,0.00")}</span>
+      `;
+    }
+  }
+}
+
+// Add early console log to verify script execution
+console.log("Script starting...");
+
+// Define tradeInFormTemplate
+const tradeInFormTemplate = `
+  <div class="trade-in-form">
+    <!-- Your trade-in form HTML goes here -->
+    <h3>Trade-In Form</h3>
+    <form>
+      <label for="tradeYear">Year:</label>
+      <input type="text" id="tradeYear" name="tradeYear">
+      
+      <label for="tradeMake">Make:</label>
+      <input type="text" id="tradeMake" name="tradeMake">
+      
+      <label for="tradeModel">Model:</label>
+      <input type="text" id="tradeModel" name="tradeModel">
+      
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+`;
 
 document.addEventListener("DOMContentLoaded", function () {
-  fetch(`https://newportal.flatoutmotorcycles.com/portal/public/api/majorunit/stocknumber/${stockNum}`)
+  console.log("DOM Content Loaded");
+
+  // Create a loader element that can be controlled
+  const loader = document.createElement("div");
+  loader.id = "page-loader";
+  loader.className = "text-center";
+  loader.innerHTML = '<i class="fa fa-spinner fa-spin fa-3x"></i><p>Loading...</p>';
+
+  // Add error container to body early
+  const errorContainer = document.createElement("div");
+  errorContainer.id = "error-container";
+
+  // Clear and set up initial page structure
+  document.body.innerHTML = "";
+  document.body.appendChild(loader);
+  document.body.appendChild(errorContainer);
+
+  if (!stockNum) {
+    loader.style.display = "none"; // Hide loader
+    showError("No stock number provided in URL");
+    return;
+  }
+
+  const apiUrl = `${CONFIG.API_URL}/majorunit/stocknumber/${stockNum}`;
+  console.log("Attempting API call to:", apiUrl);
+
+  fetch(apiUrl)
     .then((response) => {
+      console.log("API Response received:", response.status);
       if (!response.ok) {
-        throw new Error("Network response was not ok");
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
       return response.json();
     })
     .then((data) => {
+      console.log("Data received:", data);
+      if (!data || !data.StockNumber) {
+        throw new Error("Invalid data received from API");
+      }
+
+      // Create page container
+      let pageContainer = document.createElement("div");
+      pageContainer.className = "page-container";
+      document.body.appendChild(pageContainer);
+
+      // Store original OTD price globally
+      window.originalOTDPrice = data.OTDPrice;
+
       console.log("data.StockNumber", data.StockNumber);
       var prodTitle = data.Usage + " " + data.ModelYear + " " + data.Manufacturer + " " + data.B50ModelName;
       var vinNumber = data.VIN;
@@ -94,35 +229,36 @@ document.addEventListener("DOMContentLoaded", function () {
         inventoryStatusTemplate += ``;
       }
 
-      // MU Items - 4 items allowed
-      var muItemsTemplate = ``;
+      // MU Items and Mat Items templates
+      var muItemsTemplate = `
+      <div class="card">
+        <h5 class="card-title">MU Items</h5>
+        ${data.MUItems.map(
+          (item) => `
+          ${item.Description}
+          <span class="pull-right">
+            -${numeral(item.Amount).format("$0,0.00")}
+          </span>
+        `
+        ).join("")}
+      </div>
+      `;
 
-      i = 0;
-      while (i < 4) {
-        if (data.MUItems[i]) {
-          muItemsTemplate += `<li class="list-group-item"><em>${data.MUItems[i].Description}</em> <span class="pull-right bold red">-${numeral(
-            data.MUItems[i].Amount
-          ).format("$0,0.00")}</span></li>`;
-        }
-        i++;
-      }
-      console.log(muItemsTemplate);
-
-      var matItemsTemplate = ``;
-
-      for (var i = 0; i < 9; i++) {
-        if (data.MatItems && data.MatItems[i]) {
-          if (data.MatItems[i].Description == "Indiana Sales Tax") {
-            matItemsTemplate += `<li class="list-group-item">${data.MatItems[i].Description} <span class="pull-rightxxx">${numeral(
-              data.MatItems[i].Amount
-            ).format("$0,0.00")}</span></li>`;
-          } else {
-            matItemsTemplate += `<li class="list-group-item"><em>${data.MatItems[i].Description}</em> <span class="pull-right">${numeral(
-              data.MatItems[i].Amount
-            ).format("$0,0.00")}</span></li>`;
-          }
-        }
-      }
+      var matItemsTemplate = data.MatItems?.length
+        ? `
+        <div class="card">
+          <h5 class="card-title">Rebates</h5>
+          ${data.MatItems.map(
+            (item) => `
+            <div class="d-flex justify-content-between align-items-center">
+              <span>${item.Description}</span>
+              <span>${numeral(item.Amount).format("$0,0.00")}</span>
+            </div>
+          `
+          ).join("")}
+        </div>
+      `
+        : "";
 
       // OTD Items - 9 items allowed
       var OTDItemsTemplate = ``;
@@ -130,45 +266,102 @@ document.addEventListener("DOMContentLoaded", function () {
       for (var i = 0; i < 9; i++) {
         if (data.OTDItems && data.OTDItems[i]) {
           var listItemClass = data.OTDItems[i].Description.startsWith("Indiana Sales Tax") ? "list-group-item tax" : "list-group-item";
-          OTDItemsTemplate += `<li class="${listItemClass}"><div class="otd-item-description">${
-            data.OTDItems[i].Description
-          }</div> <div class="otd-item-amount">${numeral(data.OTDItems[i].Amount).format("$0,0.00")}</div></li>`;
+          OTDItemsTemplate += `
+            <li class="${listItemClass}">
+              ${data.OTDItems[i].Description}
+              <span class="pull-right">
+                ${numeral(data.OTDItems[i].Amount).format("$0,0.00")}
+              </span>
+            </li>`;
         }
       }
 
-      // Trade in items - 5 items allowed
-      var tradeInItemsTemplate = ``;
+      // First create the accessoryImageMap
+      var carouselImages = ``;
+      var accessoryImageMap = new Map(); // Move this up before using it
 
       i = 0;
-      while (i < 5) {
-        if (data.TradeInItems[i]) {
-          tradeInItemsTemplate += `<li class="list-group-item"><em>${data.TradeInItems[i].Description}</em> <span class="pull-right bold red">${numeral(
-            data.TradeInItems[i].Amount
-          ).format("$0,0.00")}</span></li>`;
+      while (i < data.Images.length) {
+        // Find if this image is associated with an accessory
+        const associatedAccessory = data.AccessoryItems.find(
+          (acc) => data.Images[i].MUItemId && data.MUItems.find((mu) => mu.Id === data.Images[i].MUItemId && mu.Description === acc.Description)
+        );
+
+        // Store the mapping if this image belongs to an accessory
+        if (associatedAccessory) {
+          accessoryImageMap.set(associatedAccessory.Description, {
+            imgUrl: data.Images[i].ImgURL,
+            slideIndex: i,
+          });
         }
+
+        // Create carousel slide
+        carouselImages += `
+          <div class="carousel-item ${i === 0 ? "active" : ""}">
+            <img src="${data.Images[i].ImgURL}" class="d-block w-100" alt="Vehicle Image">
+            ${
+              associatedAccessory
+                ? `
+              <div class="carousel-caption feature-caption">
+                <h5>${associatedAccessory.Description}</h5>
+                ${associatedAccessory.ImageDescription ? `<p>${associatedAccessory.ImageDescription}</p>` : ""}
+              </div>
+            `
+                : ""
+            }
+          </div>`;
         i++;
       }
 
-      // Accessory Items - 100 items allowed
-      var accessoryItemsTemplate = ``;
+      // Accessory Items Template
+      var accessoryItemsTemplate = data.AccessoryItems?.length
+        ? `
+        <div class="card">
+          <h5 class="card-title">Accessories</h5>
+          ${data.AccessoryItems.map((item) => {
+            const imageInfo = accessoryImageMap.get(item.Description);
+            const priceDisplay = item.Included
+              ? `<span class="included-text">Included</span>${item.Amount > 0 ? ` <small>(value: ${numeral(item.Amount).format("$0,0.00")})</small>` : ""}`
+              : numeral(item.Amount).format("$0,0.00");
 
-      i = 0;
-      while (i < 100) {
-        if (data.AccessoryItems[i]) {
-          if (data.AccessoryItems[i].Included == false) {
-            accessoryItemsTemplate += `<li class="list-group-item">${data.AccessoryItems[i].Description} <span class="pull-right">${numeral(
-              data.AccessoryItems[i].Amount
-            ).format("$0,0.00")}</span></li>`;
-          } else {
-            accessoryItemsTemplate += `<li class="list-group-item"><small>${
-              data.AccessoryItems[i].Description
-            }</small> <span class="red">(<small>value:${numeral(data.AccessoryItems[i].Amount).format(
-              "$0,0.00"
-            )})</small></span> <span class="pull-right">Included</span></li>`;
-          }
-        }
-        i++;
-      }
+            return `
+              <div class="accessory-item ${imageInfo ? "has-image" : ""}">
+                ${
+                  imageInfo
+                    ? `<button class="btn btn-link view-feature p-0 me-2" data-bs-target="#carousel-overlay-vehicle-info" data-bs-slide-to="${imageInfo.slideIndex}">
+                      <i class="fa fa-camera"></i>
+                     </button>`
+                    : '<div class="me-4"></div>'
+                }
+                <div class="accessory-content d-flex justify-content-between align-items-center w-100">
+                  <span class="accessory-name">${item.Description}</span>
+                  <span class="accessory-price ms-2">${priceDisplay}</span>
+                </div>
+              </div>
+            `;
+          }).join("")}
+        </div>
+      `
+        : "";
+
+      // Discount Items Template
+      var discountItemsTemplate = data.DiscountItems?.length
+        ? `
+        <div class="card">
+          <h5 class="card-title">Discounts</h5>
+          ${data.DiscountItems.slice(0, 3)
+            .map(
+              (item) => `
+              <div class="d-flex justify-content-between align-items-center">
+                <span>${item.Description}</span>
+                <span class="text-danger fw-bold">${numeral(item.Amount).format("$0,0.00")}</span>
+              </div>
+            `
+            )
+            .join("")}
+        </div>
+      `
+        : "";
 
       // Accessory Total and Total collapse line
       var accTotal = numeral(data.AccessoryItemsTotal).format("$0,0.00");
@@ -190,19 +383,6 @@ document.addEventListener("DOMContentLoaded", function () {
           freebieItemsTemplate += `<li class="list-group-item"><em>${data.FreeItems[i].Description} (value: ${numeral(data.FreeItems[i].Amount).format(
             "$0,0.00"
           )})</em> <span class="pull-right">Free</span></li>`;
-        }
-        i++;
-      }
-
-      // Discount items - 3 items allowed
-      var discountItemsTemplate = ``;
-
-      i = 0;
-      while (i < 3) {
-        if (data.DiscountItems[i]) {
-          discountItemsTemplate += `<li class="list-group-item"><em>${data.DiscountItems[i].Description}</em> <span class="pull-right bold red">${numeral(
-            data.DiscountItems[i].Amount
-          ).format("$0,0.00")}</span></li>`;
         }
         i++;
       }
@@ -310,92 +490,134 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Update the carousel images template
       var carouselImages = ``;
+      var accessoryImageMap = new Map(); // Track which images belong to which accessories
+
       i = 0;
       while (i < data.Images.length) {
-        if (i == 0) {
-          carouselImages += `
-            <div class="carousel-item active">
-              <img src="${data.Images[i].ImgURL}" class="d-block w-100" alt="Vehicle Image">
-            </div>`;
-        } else {
-          carouselImages += `
-            <div class="carousel-item">
-              <img src="${data.Images[i].ImgURL}" class="d-block w-100" alt="Vehicle Image">
-            </div>`;
+        // Find if this image is associated with an accessory
+        const associatedAccessory = data.AccessoryItems.find(
+          (acc) => data.Images[i].MUItemId && data.MUItems.find((mu) => mu.Id === data.Images[i].MUItemId && mu.Description === acc.Description)
+        );
+
+        // Store the mapping if this image belongs to an accessory
+        if (associatedAccessory) {
+          accessoryImageMap.set(associatedAccessory.Description, {
+            imgUrl: data.Images[i].ImgURL,
+            slideIndex: i,
+          });
         }
 
-        let itemIndex = data.MUItems.findIndex((item) => item.Id == data.Images[i].MUItemId);
-        if (itemIndex != -1) {
-          data.MUItems[itemIndex].ImgURL = data.Images[i].ImgURL;
-          data.MUItems[itemIndex].Description = data.Images[i].Description;
-        }
+        // Create carousel slide
+        carouselImages += `
+          <div class="carousel-item ${i === 0 ? "active" : ""}">
+            <img src="${data.Images[i].ImgURL}" class="d-block w-100" alt="Vehicle Image">
+            ${
+              associatedAccessory
+                ? `
+              <div class="carousel-caption feature-caption">
+                <h5>${associatedAccessory.Description}</h5>
+                ${associatedAccessory.ImageDescription ? `<p>${associatedAccessory.ImageDescription}</p>` : ""}
+              </div>
+            `
+                : ""
+            }
+          </div>`;
         i++;
       }
+
+      // Add some CSS to style the new elements
+      const styleElement = document.createElement("style");
+      styleElement.textContent = `
+        .feature-caption {
+          background: rgba(0, 0, 0, 0.7);
+          border-radius: 4px;
+          padding: 10px;
+        }
+        
+        .accessory-item {
+          display: flex;
+          align-items: center;
+          padding: 8px 0;
+          border-bottom: 1px solid #eee;
+        }
+        
+        .accessory-item.has-image {
+          background-color: #f8f9fa;
+        }
+        
+        .included-text {
+          color: #28a745;
+          font-weight: bold;
+        }
+        
+        .view-feature {
+          color: #666;
+          min-width: 20px;
+        }
+        
+        .view-feature:hover {
+          color: #000;
+        }
+        
+        .accessory-content {
+          display: flex;
+          justify-content: space-between;
+          width: 100%;
+        }
+      `;
+      document.head.appendChild(styleElement);
 
       // Update the carousel container template
       var carousel = `
-        <div class="carousel-container">
-          <div id="carousel-overlay-vehicle-info" 
-               class="carousel slide" 
-               data-bs-ride="false"
-               data-bs-interval="false"
-               data-interval="false">
-            <div class="carousel-indicators">
-              ${data.Images.map(
-                (_, index) => `
-                <button type="button" 
-                  data-bs-target="#carousel-overlay-vehicle-info" 
-                  data-bs-slide-to="${index}" 
-                  ${index === 0 ? 'class="active" aria-current="true"' : ""}
-                  aria-label="Slide ${index + 1}">
-                </button>
-              `
-              ).join("")}
-            </div>
-
-            <div class="carousel-inner shadow rounded-md">
-              ${carouselImages}
-            </div>
-
-            <button class="carousel-control-prev" type="button" data-bs-target="#carousel-overlay-vehicle-info" data-bs-slide="prev">
-              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Previous</span>
+    <div class="carousel-container">
+      <div id="carousel-overlay-vehicle-info" 
+            class="carousel slide" 
+            data-bs-ride="false"
+            data-bs-interval="false"
+            data-interval="false">
+        <div class="carousel-indicators">
+          ${data.Images.map(
+            (_, index) => `
+            <button type="button" 
+              data-bs-target="#carousel-overlay-vehicle-info" 
+              data-bs-slide-to="${index}" 
+              ${index === 0 ? 'class="active" aria-current="true"' : ""}
+              aria-label="Slide ${index + 1}">
             </button>
-
-            <button class="carousel-control-next" type="button" data-bs-target="#carousel-overlay-vehicle-info" data-bs-slide="next">
-              <span class="carousel-control-next-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Next</span>
-            </button>
-          </div>
+          `
+          ).join("")}
         </div>
-      `;
 
-      // MU Thumbnails
-      var thumbnailImages = ``;
-      i = 0;
-      while (i < data.Images.length) {
-        if (i == 0) {
-          thumbnailImages += `<button type="button" class="btn btn-default btn-thumbnail" href="#carousel-overlay-vehicle-info" role="button" data-slide-to="${i}"><img style="width:100%;" src=" ${data.Images[i].ImgURL}" alt="error loading image"></button>`;
-        } else {
-          thumbnailImages += `<button type="button" class="btn btn-default btn-thumbnail" href="#carousel-overlay-vehicle-info" role="button" data-slide-to="${i}"><img style="width:100%;" src=" ${data.Images[i].ImgURL}" alt="error loading image"></button>`;
-        }
-        i++;
-      }
+        <div class="carousel-inner rounded">
+          ${carouselImages}
+        </div>
+
+        <button class="carousel-control-prev" type="button" data-bs-target="#carousel-overlay-vehicle-info" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+
+        <button class="carousel-control-next" type="button" data-bs-target="#carousel-overlay-vehicle-info" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+    </div>
+      `;
 
       // Major Unit Header with Year, Make, Model, VIN, Stock Number.
       var muHeaderTemplate = `
-		<div class="vehicle-header-container">
-			<div class="vehicle-name-container">
-				<h3 class="vehicle-title" style="margin: 15px 0 0 0;">${prodTitle}</h3>
-				<h4 class="vehicle-subtitle" style="margin: 1px 0 15px 0; padding:0;">
+    <div class="vehicle-header-container">
+      <div class="vehicle-name-container">
+        <h3 class="vehicle-title" style="margin: 15px 0 0 0; font-weight: 900;">${prodTitle}</h3>
+        <h4 class="vehicle-subtitle" style="margin: 1px 0 15px 0; padding:0;">
           <small>Model: </small>${data.ModelCode} 
           <small class="d-none d-sm-inline">VIN: </small><span class="d-none d-sm-inline">${vinNumber} </span>
           <small>Stock Number: </small>${stockNum}
         </h4>
-			</div>
-	
-		</div>
-		`;
+      </div>
+    </div>
+    `;
 
       // Boat Terms for Payment Calculator
       var loanTerms = ``;
@@ -465,16 +687,22 @@ document.addEventListener("DOMContentLoaded", function () {
       var paymentCalc = `
 		<div class="payment-caclculator text-center">
             <form name="calc" method="POST">
-                <a class="payment-toggle" role="button" data-bs-toggle="collapse" href="#paymentSliders" aria-expanded="false" aria-controls="paymentSliders" onClick="showpay()">
-                    <h3 class="payment">
+                <button type="button" 
+                        class="btn btn-danger w-100" 
+                        data-bs-toggle="collapse" 
+                        data-bs-target="#paymentSliders" 
+                        aria-expanded="false" 
+                        aria-controls="paymentSliders" 
+                        onClick="showpay()">
+                    <span class="payment m-0">
                         <small>Payment</small>
-                        $<span id="payment"><i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i></span>
+                        $<span id="payment" class="fw-bold"><i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i></span>
                         <small>/mo.</small>
                         <i class="fa fa-pencil" title="Calculate Your Payment"></i>
-                    </h3>
-                </a>
+                    </span>
+                </button>
 				<input type="hidden" name="loan" size="10" value="${data.OTDPrice}">
-				<pre class="hidden">${data.OTDPrice}</pre>
+
 				<div class="collapse" id="paymentSliders">
 					<div class="row">
 						<div class="col-lg-12 downpayment-container">
@@ -503,9 +731,7 @@ document.addEventListener("DOMContentLoaded", function () {
 								</div>
 							</div>
 						</div>
-						<div style="padding: 15px 0; clear: both;">
-							<a href="https://www.flatoutmotorcycles.com/financing-application" class="btn btn-danger">Apply for Financing</a>
-						</div>
+
 					</div>
 					<input type="hidden" name="pay" size="10">
 					<input type="hidden" onClick="showpay()" value="Calculate">
@@ -518,202 +744,92 @@ document.addEventListener("DOMContentLoaded", function () {
         </div>
 		`;
 
-      // LEVEL 3 START MAIN TEMPLATE
-
-      var ourPrice = numeral(data.MSRPUnit + data.AccessoryItemsTotal + data.MatItemsTotal + data.DiscountItemsTotal + data.TradeInItemsTotal).format(
-        "$0,0.00"
-      );
-      var overlay = `
-        <div style="width: 8.5in; margin: 0 auto; padding: 0.25in;">
-          <div class="mu-header">
-            ${muHeaderTemplate}
-          </div>
+      // Create a separate template for the price container
+      const priceContainer = `
+        <ul class="list-group">
+          <li class="list-group-item text-center">
+            ${paymentCalc}
+          </li>
           
-          <div style="display: flex; gap: 0.5in;">
-            <!-- Left Column -->
-            <div style="width: 4in;">
-              <div class="left-column-container">
-                <div class="carousel-container">
-                  ${carousel}
-                </div>
-                
-                <div class="thumbnail-images-container" style="margin-top: 5px;">
-                  ${thumbnailImages}
-                </div>  
-                
-                <h3 class="text-left bold">Trade-In</h3>
-                <div class="tradein-container rounded">
-                 
-                  <form class="form-inline">
-                    <div class="form-group">
-                      <label for="InputVehicle" class="sr-only">Year, Make, Model, Trim</label>
-                      <input type="text" class="form-control" style="width: 0.7in" id="InputYear" placeholder="2020">
-                    </div>
-                    <div class="form-group">
-                      <label for="InputVehicle" class="sr-only">Make, Model, Trim</label>
-                      <input type="text" class="form-control" style="width: 3in" id="InputVehicle" placeholder="Ninja 400">
-                    </div>
-                    <hr class="hr-divider">
-                    <div class="form-group">
-                      <label for="InputCondition" class="sr-only">Condition</label>
-                      <input type="password" class="form-control" style="width: 3.7in" id="InputCondition" placeholder="Describe condition">
-                    </div>
-                    
-                  </form>
-                </div>
-                
-                <h3 class="text-left bold">Information</h3>
-                <ul class="list-group">
-                  ${unitNumbersTemplate}
-                </ul>
+        </ul>
+      `;
+
+      // Trade In display template
+      const tradeInVehicleTemplate = `
+
+        <div id="tradeValueDisplay" style="display: ">
+          2020 Harley Davidson <span class="pull-right">$10,000</span>
+        </div>
+
+      `;
+
+      var tradeInItemsTemplate = `
+        <div class="card">
+          <h5 class="card-title">Trade-In Items</h5>
+          ${data.TradeInItems.map(
+            (item) => `
+            ${item.Description}
+            <span class="pull-right">
+              ${numeral(item.Amount).format("$0,0.00")}
+            </span>
+          `
+          ).join("")}
+        </div>
+      `;
+
+      // Update the main page content structure
+      const pageContent = `
+        <div class="main-header">
+          ${muHeaderTemplate}
+        </div>
+        
+        <div class="content-container">
+          <div class="left-column">
+            <div class="carousel-container">
+              ${carousel}
+            </div>
+            
+            <div class="trade-in-container">
+              ${tradeInFormTemplate}
+            </div>
+            
+            <div class="unit-info-container">
+              <h3 class="text-left bold">Information</h3>
+              <ul class="list-group">
+                ${unitNumbersTemplate}
+              </ul>
+            </div>
+          </div>
+
+          <div class="right-column">
+            <!-- Price and Payment Section -->
+            ${priceContainer}
+            
+            <!-- Pricing Details -->
+            <div class="pricing-details">
+              ${matItemsTemplate}
+              ${discountItemsTemplate}
+              ${accessoryItemsTemplate}
+              <div class="card">
+                <h5 class="card-title">Fees</h5>
+                ${OTDItemsTemplate}
               </div>
             </div>
-
-            <!-- Right Column -->
-            <div style="width: 4in;">
-              <div class="right-column-container">
-                <ul class="list-group">
-                  <li class="list-group-item text-center">
-                    <div class="price-payment-container">
-                      <div class="price-payment-left">
-                        <!-- MSRP price -->
-                        <div class="our-price-msrp">
-                          MSRP: <s>${msrpTotal}</s>
-                        </div>
-
-                        <!-- Yellow Tag and price -->
-                        <div class="our-price">
-                          ${yellowTag} ${ourPrice}
-                        </div>
-
-                        <!-- total savings -->
-                        <h1 class="total-savingsxxx">
-                          <span class="badge text-bg-secondary">
-                            Savings
-                          </span>
-                 
-                          <span class="badge text-bg-danger">
-                            ${totalSavings}
-                          </span>
-                        </h1>
-                        ${inventoryStatusTemplate}
-                      
-                        <!-- sale program expires -->
-                        <div class="price-expires silver">
-                          Sale Program Ends: ${salePriceExpireDate}
-                        </div>
-                      </div>
-                      
-                      <div class="price-payment-right">
-                        ${paymentCalc}
-                      </div>
-                    </div>
-                  </li>
-                </ul>
-                
-                <ul class="list-group">
-                  <li class="list-group-item bold">
-                    ${msrpLabel} <span class="pull-right">${MSRPUnit}</span>
-                  </li>
-                    ${tradeInItemsTemplate} 
-                    ${matItemsTemplate} 
-                    ${discountItemsTemplate}
-                    ${freebieItemsTemplate}
-                  <li class="list-group-item">
-                    ${accessoryLine}
-                    ${accessoryItemsTemplate}
-                  </li>
-                  <li class="list-group-item">  
-                    ${OTDItemsTemplate}
-                  </li>
-                </ul>
-                
-                <ul class="list-group">
-                  <li class="list-group-item otd-li">  
-                    <div class="total-otd-price">
-                      Total O.T.D. Price: <span class="pull-right">${totalOTD}</span>
-                    </div>
-                  </li>
-                </ul>
-              </div>
+            
+            <!-- OTD Price -->
+            <div class="otd-price">
+              <ul class="list-group">
+                <li class="list-group-item otd-li">  
+                  <div class="total-otd-price" id="otdPriceDisplay">
+                    Total O.T.D. Price: 
+                    <span class="pull-right fw-bold">${numeral(data.OTDPrice).format("$0,0.00")}</span>
+                  </div>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
       `;
-
-      // Build the complete HTML structure first
-      const pageContent = `
-      <div class="main-header">
-        <div class="vehicle-header-container">
-          ${muHeaderTemplate}
-        </div>
-      </div>
-      
-      <div class="content-container">
-        <div class="left-column">
-          <div class="carousel-container">
-            ${carousel}
-          </div>
-          
-          <div class="trade-in-container">
-            <h3 class="text-left bold">Trade-In</h3>
-            <div class="panel rounded">
-              ${tradeInItemsTemplate}
-            </div>
-          </div>
-          
-          <div class="unit-info-container">
-            <h3 class="text-left bold">Information</h3>
-            <ul class="list-group">
-              ${unitNumbersTemplate}
-            </ul>
-          </div>
-        </div>
-
-        <div class="right-column">
-          <div class="price-container">
-            <div class="price-payment-container">
-              <div class="our-price-msrp">
-                MSRP: <s>${msrpTotal}</s>
-              </div>
-              <div class="our-price">
-                ${yellowTag} ${ourPrice}
-              </div>
-              <div class="total-savings">
-                <span class="label label-default">Savings</span>
-                <span class="label label-danger">${totalSavings}</span>
-              </div>
-              ${inventoryStatusTemplate}
-            </div>
-          </div>
-
-          <div class="payment-calculator">
-            ${paymentCalc}
-          </div>
-
-          <div class="pricing-details">
-            <ul class="list-group">
-              ${matItemsTemplate}
-              ${discountItemsTemplate}
-              ${freebieItemsTemplate}
-              ${accessoryLine}
-              ${accessoryItemsTemplate}
-              ${OTDItemsTemplate}
-            </ul>
-          </div>
-
-          <div class="otd-price my-2">
-            <ul class="list-group">
-              <li class="list-group-item otd-li">
-                <div class="total-otd-price">
-                  Total O.T.D. Price: <span class="pull-right">${totalOTD}</span>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    `;
 
       // Replace the entire page content at once
       document.querySelector(".page-container").innerHTML = pageContent;
@@ -741,13 +857,37 @@ document.addEventListener("DOMContentLoaded", function () {
       });
 
       showpay();
+
+      // Initialize clipboard tooltips after content is loaded
+      initializeClipboardTooltips();
+
+      // Remove loader once everything is ready
+      loader.remove();
     })
     .catch((error) => {
-      console.error("Request failed:", error);
-      document.querySelector(".page-container").innerHTML = `
-        <div class="alert alert-danger">
-          Failed to load data for stock number ${stockNum}
-        </div>
-      `;
+      console.error("Error in fetch:", error);
+      loader.style.display = "none"; // Hide loader
+      showError(`Failed to load data: ${error.message}`);
     });
+});
+
+// Add helper function for showing errors
+function showError(message) {
+  const errorHtml = `
+    <div class="alert alert-danger" style="margin: 20px;">
+      <h4>Error Loading Vehicle Data</h4>
+      <p>${message}</p>
+      <p>Please try refreshing the page or contact support if the problem persists.</p>
+      <pre style="display: none;">${new Error().stack}</pre>
+    </div>
+  `;
+
+  const container = document.getElementById("error-container") || document.body;
+  container.innerHTML = errorHtml;
+}
+
+// Add global error handler
+window.addEventListener("error", function (event) {
+  console.error("Global error:", event.error);
+  showError(`Unexpected error: ${event.error?.message || "Unknown error"}`);
 });
