@@ -298,9 +298,7 @@ async function processXMLData(xmlDoc) {
             <a
               href="javascript:void(0);" 
               type="button" 
-              class="btn btn-danger action-button mx-1" 
-              
-              data-bs-placement="top"
+              class="btn btn-danger action-button mx-1"
               title="Pricing"
               onclick="openOverlayModal('${stockNumber}')"
             >
@@ -311,9 +309,8 @@ async function processXMLData(xmlDoc) {
             <a
               href="javascript:void(0);" 
               type="button" 
-              class="btn btn-danger action-button mx-1" 
-              
-              data-bs-placement="top"
+              class="btn btn-danger action-button mx-1"
+              style="display: none;"
               title="Pricing"
               data-bs-toggle="modal"
               data-bs-target="#pricingModal"
@@ -670,7 +667,7 @@ function printKeyTag(event) {
         <title>Print Key Tag</title>
         <style>
           @page {
-            outline: 1px solid red;
+            outline: 0px solid red;
             size: 1.625in 2.125in;
             margin: 0;
             scale: 1;
