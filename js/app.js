@@ -396,21 +396,39 @@ function filterTable() {
     const hiddenSpan = titleTd?.querySelector(".visually-hidden");
 
     if (titleTd && hiddenSpan) {
-      const hiddenText = hiddenSpan.textContent;
-      const [stockNumber, vin, usage, year, manufacturer, modelName, modelType, modelColor, photos, updatedDate] = hiddenText.split(" ");
+      const hiddenText = hiddenSpan.textContent.trim();
+      // Split the hidden text and map to named variables for clarity
+      const [stockNumber, vin, usage, year, manufacturer, modelName, modelType, color, updatedDate] = hiddenText.split(" ");
 
       const isVisible = Object.entries(filters).every(([key, value]) => {
-        if (!value) return true;
-        const text = {
-          search: hiddenText,
-          manufacturer,
-          type: modelType,
-          usage,
-          year,
-          photos,
-          updated: updatedDate,
-        }[key];
-        return text.toUpperCase().includes(value);
+        if (!value) return true; // Skip empty filters
+
+        // Get the text to compare based on filter type
+        let textToCompare = "";
+        switch (key) {
+          case "manufacturer":
+            textToCompare = manufacturer || "";
+            break;
+          case "year":
+            textToCompare = year || "";
+            break;
+          case "type":
+            textToCompare = modelType || "";
+            break;
+          case "usage":
+            textToCompare = usage || "";
+            break;
+          case "updated":
+            textToCompare = updatedDate || "";
+            break;
+          case "search":
+            textToCompare = hiddenText;
+            break;
+          default:
+            textToCompare = "";
+        }
+
+        return textToCompare.toUpperCase().includes(value);
       });
 
       row.style.display = isVisible ? "" : "none";
