@@ -263,15 +263,13 @@ async function processXMLData(xmlDoc) {
           <div class="input-group input-group-sm">
             <input type="text" class="form-control" value="${stockNumber}" placeholder="Stock Number" title="${stockNumber}" aria-label="stock number" aria-describedby="btnGroupAddon">
             <div class="input-group-text" id="btnGroupAddon">
-              <button type="button" class="btn-icon"  title="Copy to clipboard" 
-                      onclick="navigator.clipboard.writeText('${stockNumber}')" 
-                      onmouseup="
-                          this.setAttribute('data-bs-original-title', 'Copied!');
-                          var tooltip = bootstrap.Tooltip.getInstance(this);
-                          tooltip.setContent({ '.tooltip-inner': 'Copied!' });
-                          tooltip.show();
-                      ">
-                  <i class="bi bi-clipboard"></i>
+              <button type="button" 
+                      class="btn-icon" 
+                      data-bs-toggle="tooltip"
+                      data-bs-placement="top"
+                      data-bs-title="Copy to clipboard"
+                      onclick="navigator.clipboard.writeText('${stockNumber}')">
+                <i class="bi bi-clipboard"></i>
               </button>
             </div>
           </div>
@@ -307,7 +305,22 @@ async function processXMLData(xmlDoc) {
               onclick="openOverlayModal('${stockNumber}')"
             >
               <i class="bi bi-card-heading"></i>
-              <span style="font-size:10px; text-transform:uppercase;">Pricing</span>
+              <span style="font-size:10px; text-transform:uppercase;">Quote</span>
+            </a>
+
+            <a
+              href="javascript:void(0);" 
+              type="button" 
+              class="btn btn-danger action-button mx-1" 
+              
+              data-bs-placement="top"
+              title="Pricing"
+              data-bs-toggle="modal"
+              data-bs-target="#pricingModal"
+              onclick="openPricingModal('${stockNumber}')"
+            >
+              <i class="bi bi-card-heading"></i>
+              <span style="font-size:10px; text-transform:uppercase;">Overlay</span>
             </a>
           </div>  
         </td>`;
@@ -682,7 +695,7 @@ function printKeyTag(event) {
             box-sizing: border-box;
             border: 1px solid #ccc;
             border-radius: 0.1in;
-            padding: 0.05in;
+            padding: 0.12in;
             width: 100%;
             height: 100%;
             display: flex;
@@ -694,7 +707,7 @@ function printKeyTag(event) {
             box-sizing: border-box;
             border: 1px solid #ccc;
             border-radius: 0.1in;
-            padding: 0.05in;
+            padding: 0.12in;
             width: 100%;
             height: 100%;
             display: flex;
@@ -969,6 +982,20 @@ function openOverlayModal(stockNumber) {
   overlayModal.show();
 }
 
+function openNewOverlayModal(stockNumber) {
+  const modalIframe = document.getElementById("newOverlayIframe");
+  modalIframe.src = `./overlay/?search=${stockNumber}`;
+  const overlayModal = new bootstrap.Modal(document.getElementById("newOverlayModal"));
+  overlayModal.show();
+}
+
+function openServiceCalendarModal() {
+  const modalIframe = document.getElementById("serviceCalendarIframe");
+  modalIframe.src = `./calendar/index.html`;
+  const serviceCalendarModal = new bootstrap.Modal(document.getElementById("serviceCalendarModal"));
+  serviceCalendarModal.show();
+}
+
 function printIframeContent() {
   const iframe = document.getElementById("hangTagsIframe");
   if (iframe?.contentWindow) {
@@ -977,8 +1004,8 @@ function printIframeContent() {
   }
 }
 
-function printOverlayIframe() {
-  const iframe = document.getElementById("overlayIframe");
+function printNewOverlayIframe() {
+  const iframe = document.getElementById("newOverlayIframe");
   const printFrame = document.getElementById("printFrame");
 
   // Copy content from overlay iframe to print frame
@@ -1068,7 +1095,34 @@ function createImageCell(imageUrl) {
   `;
 }
 
-if (!HTMLElement.prototype.hasOwnProperty("popover")) {
-  console.warn("Popover API not supported - falling back to title attribute");
-  // ... fallback code ...
+function initializeClipboardTooltips() {
+  const clipboardButtons = document.querySelectorAll(".btn-icon[data-bs-toggle='tooltip']");
+  clipboardButtons.forEach((button) => {
+    const tooltip = new bootstrap.Tooltip(button, {
+      trigger: "hover focus",
+      placement: "top",
+      customClass: "clipboard-tooltip",
+      popperConfig(defaultBsPopperConfig) {
+        return {
+          ...defaultBsPopperConfig,
+          modifiers: [
+            ...defaultBsPopperConfig.modifiers,
+            {
+              name: "offset",
+              options: {
+                offset: [0, 8],
+              },
+            },
+          ],
+        };
+      },
+    });
+
+    button.addEventListener("click", () => {
+      tooltip.setContent({ ".tooltip-inner": "Copied!" });
+      setTimeout(() => {
+        tooltip.setContent({ ".tooltip-inner": "Copy to clipboard" });
+      }, 2000);
+    });
+  });
 }

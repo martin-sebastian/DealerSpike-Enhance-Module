@@ -1,6 +1,6 @@
 // Overlay by Martin Sebastian
 
-const urlstocknumber = null;
+const urlstocknumber = "";
 
 document.addEventListener("DOMContentLoaded", () => {
   const queryString = window.location.search;
@@ -13,8 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const dp = (princ / 100) * down;
     const term = parseFloat(document.calc.months.value);
     const intr = parseFloat(document.calc.rate.value) / 1200;
-    const payment =
-      ((princ - dp) * intr) / (1 - Math.pow(1 / (1 + intr), term));
+    const payment = ((princ - dp) * intr) / (1 - Math.pow(1 / (1 + intr), term));
 
     document.calc.pay.value = payment.toFixed(2);
     document.getElementById("payment").innerHTML = payment.toFixed(2);
@@ -44,18 +43,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const stockNum = urlstocknumber;
 
-  fetch(
-    `https://newportal.flatoutmotorcycles.com/portal/public/api/majorunit/stocknumber/${stockNum}`
-  )
+  fetch(`https://newportal.flatoutmotorcycles.com/portal/public/api/majorunit/stocknumber/${urlstocknumber}`)
     .then((response) => response.json())
     .then((data) => {
       const prodTitle = `${data.Usage} ${data.ModelYear} ${data.Manufacturer} ${data.B50ModelName}`;
       const vinNumber = data.VIN;
       const qLevel = `<span id="qLevel" class="badge" style="padding: 10px; font-weight: 900">${data.QuoteLevel}</span>`;
       const MSRPUnit = numeral(data.MSRPUnit).format("$0,0.00");
-      const unitMSRP = numeral(data.MSRP - data.AccessoryItemsTotal).format(
-        "$0,0.00"
-      );
+      const unitMSRP = numeral(data.MSRP - data.AccessoryItemsTotal).format("$0,0.00");
       const totalOTD = numeral(data.OTDPrice).format("$0,0.00");
       const quotePrice = numeral(data.QuotePrice).format("$0,0.00");
       const salePrice = numeral(data.Price).format("$0,0.00");
@@ -64,9 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const eDate = moment(data.ExpirationDate).format("MM/DD/YYYY");
       const disclaimer = `<p class="portal-fees">${data.Disclaimer}</p>`;
       const fomDisclaimer = `<p class="text-center"><small>*Price does NOT include, Manufacturer Surcharge, Manufacturer Commodity Surcharge, Freight, Dealer Document Fee $199, Sales Tax, Title Fee $30. Sale Price INCLUDES all factory incentives (If Applicable). See Flat Out Motorsports for full disclosure on current Fees and Surcharges.</small></p>`;
-      const salePriceExpireDate = moment(data.SalePriceExpireDate).format(
-        "MM/DD/YYYY"
-      );
+      const salePriceExpireDate = moment(data.SalePriceExpireDate).format("MM/DD/YYYY");
 
       const arrivalDate = moment(data.EstimatedArrival).format("MM/DD/YYYY");
       const newUsed = data.Usage;
@@ -77,35 +70,21 @@ document.addEventListener("DOMContentLoaded", () => {
         return items
           .slice(0, maxItems)
           .map((item) => {
-            return `<li class="list-group-item"><em>${
-              item.Description
-            }</em> <span class="pull-right bold red">${numeral(
-              item.Amount
-            ).format(formatAmount)}</span></li>`;
+            return `<li class="list-group-item"><em>${item.Description}</em> <span class="pull-right bold red">${numeral(item.Amount).format(
+              formatAmount
+            )}</span></li>`;
           })
           .join("");
       };
 
       //const muItemsTemplate = generateListItems(data.MUItems, 4, "$0,0.00");
       const matItemsTemplate = generateListItems(data.MatItems, 4, "$0,0.00");
-      const discountItemsTemplate = generateListItems(
-        data.DiscountItems,
-        10,
-        "$0,0.00"
-      );
+      const discountItemsTemplate = generateListItems(data.DiscountItems, 10, "$0,0.00");
       const otdItemsTemplate = generateListItems(data.OTDItems, 9, "$0,0.00");
 
-      const accessoryItemsTemplate = generateListItems(
-        data.AccessoryItems,
-        100,
-        "$0,0.00"
-      );
+      const accessoryItemsTemplate = generateListItems(data.AccessoryItems, 100, "$0,0.00");
 
-      const tradeInItemsTemplate = generateListItems(
-        data.TradeInItems,
-        5,
-        "$0,0.00"
-      );
+      const tradeInItemsTemplate = generateListItems(data.TradeInItems, 5, "$0,0.00");
 
       const discountTotal = `<li class="list-group-item">Discount <span class="pull-right bold">-${discount}</span></li>`;
 
@@ -114,15 +93,9 @@ document.addEventListener("DOMContentLoaded", () => {
           return `In Stock`;
         } else if (data.UnitStatus === "Ordered") {
           return `${data.UnitStatus}, Avail. ${arrivalDate}`;
-        } else if (
-          data.UnitStatus === "In Inventory" &&
-          data.Lot === "ONORDER"
-        ) {
+        } else if (data.UnitStatus === "In Inventory" && data.Lot === "ONORDER") {
           return `Ordered, Avail. ${arrivalDate}`;
-        } else if (
-          data.UnitStatus === "In Inventory" &&
-          data.Lot === "SERVICE"
-        ) {
+        } else if (data.UnitStatus === "In Inventory" && data.Lot === "SERVICE") {
           return `In Service Being Prepared`;
         } else {
           return ``;
@@ -166,9 +139,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       })();
 
-      const yellowTag = data.YellowTag
-        ? `<img src="https://newportal.flatoutmotorcycles.com/Portal/content/icons/ylwtag.png">`
-        : ``;
+      const yellowTag = data.YellowTag ? `<img src="https://newportal.flatoutmotorcycles.com/Portal/content/icons/ylwtag.png">` : ``;
 
       const muNavTemplate = `
           <nav class="navbar navbar-default" style="background: #fff; margin: 0; border: ; border-radius: 0;">
@@ -270,10 +241,9 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
         `;
 
-      const muImageCardTemplate = data.AccessoryItems.reduce(
-        (template, item) => {
-          if (item.ImgURL && item.Included === false) {
-            template += `
+      const muImageCardTemplate = data.AccessoryItems.reduce((template, item) => {
+        if (item.ImgURL && item.Included === false) {
+          template += `
             <div class="col-md-3 col-sm-6">
               <div class="mu-feature-card shadow">
                 <img style="width: 100%;" src="${item.ImgURL}">
@@ -285,8 +255,8 @@ document.addEventListener("DOMContentLoaded", () => {
               </div>
             </div>
           `;
-          } else if (item.ImgURL && item.Included === true && item.Amount > 0) {
-            template += `
+        } else if (item.ImgURL && item.Included === true && item.Amount > 0) {
+          template += `
             <div class="col-md-3 col-sm-6">
               <div class="mu-feature-card shadow">
                 <img style="width: 100%;" src="${item.ImgURL}">
@@ -298,12 +268,8 @@ document.addEventListener("DOMContentLoaded", () => {
               </div>
             </div>
           `;
-          } else if (
-            item.ImgURL &&
-            item.Included === true &&
-            item.Amount === 0
-          ) {
-            template += `
+        } else if (item.ImgURL && item.Included === true && item.Amount === 0) {
+          template += `
             <div class="col-md-3 col-sm-6">
               <div class="mu-feature-card shadow">
                 <img style="width: 100%;" src="${item.ImgURL}">
@@ -315,19 +281,15 @@ document.addEventListener("DOMContentLoaded", () => {
               </div>
             </div>
           `;
-          }
-          return template;
-        },
-        ""
-      );
+        }
+        return template;
+      }, "");
 
       const carouselImages = data.Images.reduce((template, image, index) => {
         const activeClass = index === 0 ? "active" : "";
         template += `<div class="item ${activeClass}"><img src="${image.ImgURL}" alt="error loading image"></div><div class="carousel-caption"></div>`;
 
-        const itemIndex = data.MUItems.findIndex(
-          (item) => item.Id == image.MUItemId
-        );
+        const itemIndex = data.MUItems.findIndex((item) => item.Id == image.MUItemId);
         if (itemIndex !== -1) {
           data.MUItems[itemIndex].ImgURL = image.ImgURL;
           data.MUItems[itemIndex].Description = image.Description;
@@ -375,9 +337,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return template;
       }, "");
 
-      const youtubeVideoTemplate = data.Videos.filter(
-        (video) => video.Platform === 0
-      )
+      const youtubeVideoTemplate = data.Videos.filter((video) => video.Platform === 0)
         .map((video) => {
           return `
           <div style="border-top: solid 1px #ddd; border-top: solid 1px #ededed;">
@@ -401,9 +361,7 @@ document.addEventListener("DOMContentLoaded", () => {
         })
         .join("");
 
-      const walkthruVideoTemplate = data.Videos.filter(
-        (video) => video.Platform === 1
-      )
+      const walkthruVideoTemplate = data.Videos.filter((video) => video.Platform === 1)
         .map((video) => {
           return `
           <div style="border-top: solid 1px #ddd; border-top: solid 1px #ededed;">
@@ -428,9 +386,7 @@ document.addEventListener("DOMContentLoaded", () => {
         })
         .join("");
 
-      const pdfBrochureTemplate = data.Videos.filter(
-        (video) => video.Platform === 2
-      )
+      const pdfBrochureTemplate = data.Videos.filter((video) => video.Platform === 2)
         .map((video) => {
           return `
           <div style="border-top: solid 1px #ddd; border-top: solid 1px #ededed;">
@@ -585,9 +541,7 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
         `;
 
-      const contactMobile = /Android|webOS|Opera Mini/i.test(
-        navigator.userAgent
-      )
+      const contactMobile = /Android|webOS|Opera Mini/i.test(navigator.userAgent)
         ? `
           <div class="text-center" style="margin: 25px 0;">
             <h4 class="hidden-xs">Questions?&nbsp;&nbsp;<small>Text</small>&nbsp;<strong>${stockNum}</strong>&nbsp;<small>to</small>&nbsp;<strong>317-576-3353</strong><small></small></h4>
@@ -607,13 +561,9 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
         `;
 
-      const ourPrice = numeral(
-        data.MSRPUnit +
-          data.AccessoryItemsTotal +
-          data.MatItemsTotal +
-          data.DiscountItemsTotal +
-          data.TradeInItemsTotal
-      ).format("$0,0.00");
+      const ourPrice = numeral(data.MSRPUnit + data.AccessoryItemsTotal + data.MatItemsTotal + data.DiscountItemsTotal + data.TradeInItemsTotal).format(
+        "$0,0.00"
+      );
 
       const overlay = `
           ${muHeaderTemplate}
@@ -653,9 +603,7 @@ document.addEventListener("DOMContentLoaded", () => {
                       </div>
                     </div>
                   </li>
-                  <li class="list-group-item bold">${
-                    data.MSRPTitle
-                  } <span class="pull-right">${MSRPUnit}</span></li>
+                  <li class="list-group-item bold">${data.MSRPTitle} <span class="pull-right">${MSRPUnit}</span></li>
                   ${matItemsTemplate} 
                   ${tradeInItemsTemplate} 
                   ${discountItemsTemplate}

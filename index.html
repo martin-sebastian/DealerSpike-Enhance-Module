@@ -9,7 +9,7 @@
 
     <title>FOM | PRINT TAGS</title>
     <link rel="stylesheet" href="./css/bootstrap.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="./css/bootstrap-icons.css">
     <link href="./css/style.css" rel="stylesheet" />
     
   </head>
@@ -128,10 +128,14 @@
       <div class="offcanvas-body">
         <form class="d-flex flex-column row-gap-3 my-3" role="search">
           <div class="d-flex flex-column row-gap-2">
-            
-            
             <button type="button" class="btn btn-danger" title="Create custom tag" onclick="openKeyTagsByStockNumberModal('${stockNumber}')">
               <i class="bi bi-tag float-start"></i> Create Custom Tag
+            </button>
+            <button type="button" class="btn btn-danger" title="Service Calendar" onclick="openServiceCalendarModal()">
+              <i class="bi bi-calendar-date float-start"></i> Service Calendar
+            </button>
+            <button type="button" class="btn btn-danger" title="Service Calendar" onclick="window.open('/admin', '_blak')">
+              <i class="bi bi-gear float-start"></i> Admin
             </button>
             <nav class="side-menu-footer">V.0.1.0</nav>
           </div>
@@ -175,13 +179,12 @@
       <div class="modal fade" id="overlayModal" tabindex="-1" aria-labelledby="overlayModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-fullscreen">
           <div class="modal-content">
-            <div class="modal-header bg-light text-dark visually-hidden d-print-none">
-              <h5 class="modal-title" id="overlayModalLabel">OVERLAY PREVIEW</h5>
-              <button type="button" class="btn-close btn-primary bg-light text-dark me-2" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-header d-print-none">
+              <h5 class="modal-title" id="overlayModalLabel"><i class="bi bi-tags me-2 icon-circle text-white"></i>QUOTE THIS VEHICLE</h5>
+              <button type="button" class="btn-close btn-primary" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body m-0 p-0 d-print-none">
-              <button type="button" class="btn btn-outline-secondary position-absolute top-0 end-0 mt-2 me-4" title="Esc" data-bs-dismiss="modal" aria-label="Close"><i class="bi bi-x-lg"></i></button>
-              <iframe id="overlayIframe" src="" frameborder="0" class="m-0 p-0 border-0 w-100 h-100 shadow-lg" style="border: 0; margin: 0; padding: 0; height:99%;"></iframe>
+              <iframe id="overlayIframe" src="" frameborder="1" class="w-100" style="max-height: 100%; min-height: 99%; border: 0; margin: 0; padding: 0;"></iframe>
             </div>
             <div class="modal-footer d-print-none">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -193,11 +196,32 @@
         </div>
       </div>
 
+      <div class="modal fade" id="newOverlayModal" tabindex="-1" aria-labelledby="newOverlayModal" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen">
+          <div class="modal-content">
+            <div class="modal-header d-print-none">
+              <h5 class="modal-title" id="pricingModalTitle">OVERLAY</h5>
+              <button type="button" class="btn-close btn-primary bg-light text-dark me-2" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body m-0 p-0 d-print-none">
+              <button type="button" class="btn btn-outline-secondary position-absolute top-0 end-0 mt-2 me-4" title="Esc" data-bs-dismiss="modal" aria-label="Close"><i class="bi bi-x-lg"></i></button>
+              <iframe id="newOverlayIframe" src="" frameborder="0" class="m-0 p-0 border-0 w-100 h-100 shadow-lg" style="border: 0; margin: 0; padding: 0; height:99%;"></iframe>
+            </div>
+            <div class="modal-footer d-print-none">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-danger" onclick="printNewOverlayIframe()">
+                <i class="bi bi-printer me-2"></i> Print
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="modal vh-50 fade" id="keytagModal" tabindex="-1" aria-labelledby="keytagModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
           <div class="modal-content">
             <div class="modal-header d-flex flex-row justify-content-between align-items-center d-print-none">
-              <h5 class="modal-title text-capitalize" id="keyTagsByStockNumberModalLabel"><i class="bi bi-tag me-2 icon-circle"></i></h5>
+              <h5 class="modal-title text-capitalize" id="keyTagsByStockNumberModalLabel"><i class="bi bi-tag me-2 icon-circle text-white"></i></h5>
               <h1 class="modal-title ms-2 fs-5" id="keytagModalLabel">StockNumber</h1>
               <div class="form-check form-switch w-50 d-flex justify-content-end">
                 <input class="form-check-input mx-3" type="checkbox" role="switch" id="verticalKeyTagSwitch" onchange="toggleVerticalKeyTag(event)">
@@ -251,7 +275,7 @@
       <div class="modal-dialog modal-xl">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title text-capitalize" id="keyTagsByStockNumberModalLabel"><i class="bi bi-tag me-2 icon-circle"></i>CREATE KEY TAGS</h5>
+            <h5 class="modal-title text-capitalize" id="keyTagsByStockNumberModalLabel"><i class="bi bi-tag me-2 icon-circle text-white"></i>CREATE KEY TAGS</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body m-0 p-0 overflow-hidden">
@@ -278,7 +302,7 @@
       <div class="modal-dialog modal-fullscreen">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title text-capitalize" id="hangTagsModalLabel"><i class="bi bi-tags me-2 icon-circle"></i>Hang Tags</h5>
+            <h5 class="modal-title text-capitalize" id="hangTagsModalLabel"><i class="bi bi-tags me-2 icon-circle text-white"></i>Hang Tags</h5>
             <label for="searchHangTags" class="visually-hidden">Search</label>
             <input type="text" class="form-control" placeholder="Search" style="max-width: 200px">
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -363,7 +387,34 @@
       </div>
     </div>
 
+    <div class="modal fade" id="serviceCalendarModal" tabindex="-1" aria-labelledby="serviceCalendarModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-fullscreen">
+        <div class="modal-content">
+          <div class="modal-header d-print-none">
+            <h1 class="modal-title fs-5" id="serviceCalendarModalLabel">Service Calendar</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body bg-light m-0 p-0">
+            <iframe id="serviceCalendarIframe" src="./calendar/index.html" frameborder="0" style="width: 100%; height: 100%; border: 0; margin: 0; padding: 0">
+              <link rel="stylesheet" href="./css/bootstrap.css">
+              <script>
+              // Check if Bootstrap is already available from parent
+              if (typeof window.parent.bootstrap === 'undefined') {
+                // Load Bootstrap only if not available from parent
+                document.write('<script src="./js/bootstrap.bundle.js"><\/script>');
+              }
+              </script>
+            </iframe>
+          </div>
+          <div class="modal-footer d-print-none">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <script src="./js/bootstrap.bundle.js"></script>
+    <script src="./js/popper.js"></script>
     <script src="./js/numeral.min.js"></script>
     <script src="./js/moment.js"></script>
     <script src="./js/app.js"></script>
