@@ -670,7 +670,8 @@ function printKeyTag(event) {
         <title>Print Key Tag</title>
         <style>
           @page {
-            size: 1.5in 2in;
+            outline: 1px solid red;
+            size: 1.625in 2.125in;
             margin: 0;
             scale: 1;
             @top {
@@ -685,7 +686,7 @@ function printKeyTag(event) {
             font-size: 8pt;
             font-weight: 600;
             margin: 0;
-            padding: 0.05in;
+            padding: 0.051in;
             width: 1.5in;
             height: 2in;
             overflow: hidden;
@@ -695,7 +696,7 @@ function printKeyTag(event) {
             box-sizing: border-box;
             border: 1px solid #ccc;
             border-radius: 0.1in;
-            padding: 0.12in;
+            padding: 0.0625in;
             width: 100%;
             height: 100%;
             display: flex;
@@ -703,11 +704,13 @@ function printKeyTag(event) {
             justify-content: space-between;
           }
           #keytagContainerTwo {
+            position: relative;
+            top: 0.06in;
             text-align: center;
             box-sizing: border-box;
             border: 1px solid #ccc;
             border-radius: 0.1in;
-            padding: 0.12in;
+            padding: 0.0625in;
             width: 100%;
             height: 100%;
             display: flex;
