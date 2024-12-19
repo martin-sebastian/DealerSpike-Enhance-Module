@@ -38,7 +38,7 @@
               list="datalistOptions"
               title="Filter vehicles by year, make, model, stock number or VIN"
               autocomplete="off"
-              style="width: 200px"
+              style="max-width: 200px"
               oninput="handleSearchInput(this.value)"
             />
             <datalist id="datalistOptions">
@@ -74,7 +74,7 @@
               <option value="2015">2010</option>
             </select>
 
-            <select id="manufacturerFilter" class="form-select d-inline-flex me-1" style="width: 150px">
+            <select id="manufacturerFilter" class="form-select d-inline-flex me-1" style="max-width: 150px">
               <option value="">Manufacturer</option>
               <option value="">All</option>
               <option value="BMW">BMW</option>
@@ -94,12 +94,12 @@
               <option value="Yamaha">Yamaha</option>
             </select>
           </form>
-          <div class="toggles-group">
+          <div class="toggles-group d-flex flex-row">
             <button id="toggleThemeButton" class="btn btn-outline-secondary px-3 mx-1" type="button">
               <i id="theme-icon" class="bi bi-moon-stars"></i>
             </button>
             <button
-              class="btn btn-danger py-0 px-2 mx-1 d-block d-sm-none"
+              class="btn btn-danger py-0 px-2 mx-1"
               type="button"
               data-bs-toggle="offcanvas"
               data-bs-target="#offcanvasScrolling"
@@ -114,7 +114,7 @@
     </header>
 
     <div
-      class="offcanvas offcanvas-end d-block d-sm-none"
+      class="offcanvas offcanvas-end"
       data-bs-scroll="true"
       data-bs-backdrop="false"
       tabindex="-1"
@@ -122,84 +122,17 @@
       aria-labelledby="offcanvasScrollingLabel"
     >
       <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">More Filters</h5>
+        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
       </div>
       <div class="offcanvas-body">
         <form class="d-flex flex-column row-gap-3 my-3" role="search">
           <div class="d-flex flex-column row-gap-2">
-            <label for="searchFilter" class="visually-hidden">Search</label>
-            <input
-              type="search"
-              class="form-control"
-              placeholder="Search"
-              aria-label="Search"
-              id="searchFilter"
-              title="Filter vehicles by year, name, stock number, or VIN"
-              autocomplete="off"
-            />
-            <select id="yearFilter" class="form-select me-2">
-              <option value="">Year</option>
-              <option value="2026">2026</option>
-              <option value="2025">2025</option>
-              <option value="2024">2024</option>
-              <option value="2023">2023</option>
-              <option value="2022">2022</option>
-              <option value="2021">2021</option>
-              <option value="2020">2020</option>
-              <option value="2019">2019</option>
-              <option value="2018">2018</option>
-              <option value="2017">2017</option>
-              <option value="2016">2016</option>
-              <option value="2015">2015</option>
-              <option value="2015">2014</option>
-              <option value="2015">2013</option>
-              <option value="2015">2012</option>
-              <option value="2015">2011</option>
-              <option value="2015">2010</option>
-            </select>
-            <select id="manufacturerFilter" class="form-select me-2">
-              <option value="">Manufacturer</option>
-              <option value="">All</option>
-              <option value="BMW">BMW</option>
-              <option value="Can-Am">Can-Am</option>
-              <option value="Harley-Davidson">Harley Davidson</option>
-              <option value="Honda">Honda</option>
-              <option value="Indian Motorcycle">Indian Motorcycle</option>
-              <option value="Kawasaki">Kawasaki</option>
-              <option value="Scarab">Scarab</option>
-              <option value="Sea-Doo">Sea-Doo</option>
-              <option value="South Bay">South Bay</option>
-              <option value="Suzuki">Suzuki</option>
-              <option value="Suzuki Marine">Suzuki Marine</option>
-              <option value="Polaris Industries">Polaris Industries</option>
-              <option value="Vanderhall">Vanderhall</option>
-              <option value="Victory Motorcycles">Victory Motorcycles</option>
-              <option value="Yamaha">Yamaha</option>
-            </select>
-            <select id="typeFilter" class="form-select me-2">
-              <option value="">Type</option>
-              <option value="3 Wheel Motorcycle">3 Wheel Motorcycle</option>
-              <option value="ATV">ATV</option>
-              <option value="Boat Trailers">Boat Trailers</option>
-              <option value="Boats">Boats</option>
-              <option value="Cruiser/V-Twin">Cruiser/V-Twin</option>
-              <option value="Dirt Bikes">Dirt Bikes</option>
-              <option value="Outboard Motors">Outboard Motors</option>
-              <option value="PWC">PWC</option>
-              <option value="Pontoons">Pontoons</option>
-              <option value="Scooters">Scooters</option>
-              <option value="Side x Side">Side x Side</option>
-              <option value="Street Bikes">Street Bikes</option>
-            </select>
-            <select id="usageFilter" class="form-select me-2">
-              <option value="">New or Used</option>
-              <option value="New">New</option>
-              <option value="Used">Used</option>
-            </select>
-            <label for="updatedFilterLabel" class="visually-hidden">Date Updated:</label>
-            <input type="date" id="updatedFilter" class="form-control me-2" />
-            <button class="btn btn-danger" onclick="filterTable()">Reset all filters</button>
+            
+            
+            <button type="button" class="btn btn-danger" title="Create custom tag" onclick="openKeyTagsByStockNumberModal('${stockNumber}')">
+              <i class="bi bi-tag float-start"></i> Create Custom Tag
+            </button>
             <nav class="side-menu-footer">V.0.1.0</nav>
           </div>
         </form>
@@ -242,13 +175,13 @@
       <div class="modal fade" id="overlayModal" tabindex="-1" aria-labelledby="overlayModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-fullscreen">
           <div class="modal-content">
-            <div class="modal-header bg-light text-dark border-0 visually-hidden d-print-none">
+            <div class="modal-header bg-light text-dark visually-hidden d-print-none">
               <h5 class="modal-title" id="overlayModalLabel">OVERLAY PREVIEW</h5>
               <button type="button" class="btn-close btn-primary bg-light text-dark me-2" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body m-0 p-0 d-print-none">
               <button type="button" class="btn btn-outline-secondary position-absolute top-0 end-0 mt-2 me-4" title="Esc" data-bs-dismiss="modal" aria-label="Close"><i class="bi bi-x-lg"></i></button>
-              <iframe id="overlayIframe" src="" style="width: 100%; height: 99%; border: none; margin: 0; padding: 0"></iframe>
+              <iframe id="overlayIframe" src="" frameborder="0" class="m-0 p-0 border-0 w-100 h-100 shadow-lg" style="border: 0; margin: 0; padding: 0; height:99%;"></iframe>
             </div>
             <div class="modal-footer d-print-none">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -322,7 +255,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body m-0 p-0 overflow-hidden">
-            <iframe id="keyTagsByStockNumberModal" src="./key-tags/index.html" style="width: 100%; min-height: 78vh; height: 100%; border: 0; margin: 0; padding: 0">
+            <iframe id="keyTagsByStockNumberModal" src="./key-tags/index.html" frameborder="0" class="shadow" style="width: 100%; min-height: 78vh; height: 100%; border: 0; margin: 0; padding: 0">
               <link rel="stylesheet" href="./css/bootstrap.css">
               <script>
               // Check if Bootstrap is already available from parent
@@ -346,10 +279,12 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title text-capitalize" id="hangTagsModalLabel"><i class="bi bi-tags me-2 icon-circle"></i>Hang Tags</h5>
+            <label for="searchHangTags" class="visually-hidden">Search</label>
+            <input type="text" class="form-control" placeholder="Search" style="max-width: 200px">
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="h-100 m-0 p-0">
-            <iframe id="hangTagsIframe" src="" style="width: 100%; height: 100%; border: 0; margin: 0; padding: 0">
+            <iframe id="hangTagsIframe" src="" frameborder="0" style="width: 100%; height: 100%; border: 0; margin: 0; padding: 0">
               <link rel="stylesheet" href="./css/bootstrap.css">
               <script>
               // Check if Bootstrap is already available from parent
@@ -377,7 +312,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body m-0 p-0">
-            <iframe id="roTagIframe" src="" style="width: 100%; height: 100%; border: 0; margin: 0; padding: 0">
+            <iframe id="roTagIframe" src="" frameborder="0" style="width: 100%; height: 100%; border: 0; margin: 0; padding: 0">
               <link rel="stylesheet" href="./css/bootstrap.css">
               <script>
               // Check if Bootstrap is already available from parent
@@ -432,6 +367,6 @@
     <script src="./js/numeral.min.js"></script>
     <script src="./js/moment.js"></script>
     <script src="./js/app.js"></script>
-    <iframe id="printFrame" style="display: none"></iframe>
+    <iframe id="printFrame" frameborder="0" style="display: none"></iframe>
   </body>
 </html>

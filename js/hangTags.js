@@ -34,7 +34,7 @@ function displayStockDetails(data, vehicleImage) {
   console.log("Stock Details:", data);
   console.log("Vehicle Image:", vehicleImage);
 
-  const companyLogo = "./img/fom-app-logo.svg";
+  const companyLogo = "../img/fom-app-logo.svg";
   // Get the details container element from the DOM
   const detailsContainer = document.getElementById("detailsContainer");
 

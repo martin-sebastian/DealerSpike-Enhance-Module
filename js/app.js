@@ -253,9 +253,9 @@ async function processXMLData(xmlDoc) {
         <td class="text-truncate">${manufacturer}</td>
         <td class="text-wrap" style="max-width: 300px;">
           <span class="text-wrap">${modelName}</span>
-          <span class="visually-hidden">${stockNumber} ${vin} ${usage} ${year} ${manufacturer} ${modelName} ${modelType} ${color} ${moment(updated).format(
-        "MM/DD/YYYY"
-      )} ${moment(updated).format("MM-DD-YYYY")}</span>
+          <span class="visually-hidden">
+          ${stockNumber} ${vin} ${usage} ${year} ${manufacturer} ${modelName} ${modelType} ${color} ${moment(updated).format("MM/DD/YYYY")}
+          </span>
         </td>
         <td class="visually-hidden">${modelType}</td>
         <td class="visually-hidden">${color}</td>
