@@ -1,6 +1,10 @@
 body {
   font-family: Roboto, sans-serif;
+  height: 100%;
+  margin: 10px 0;
+  padding: 0 10px;
 }
-.ec-events {
-  aspect-ratio: 1/1;
+
+.ec-month-view .ec-day {
+  aspect-ratio: 2/1 !important;
 }

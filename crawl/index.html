@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>XML File Crawler</title>
+  </head>
+  <body>
+    <h1>XML File Crawler</h1>
+    <p>Searching for <code>unitinventory_univ.xml</code>...</p>
+    <ul id="results">
+      <!-- Results will be appended here -->
+    </ul>
+
+    <script>
+      const baseUrls = [
+        "https://www.flatoutmotorcycles.com",
+        "https://hdofindy.com",
+        // Add more suspected domains here
+      ];
+
+      const targetFile = "unitinventory_univ.xml";
+
+      async function searchFile(url) {
+        try {
+          const response = await fetch(url);
+          const text = await response.text();
+
+          // Create a DOM parser
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(text, "text/html");
+
+          // Get all links
+          const links = Array.from(doc.querySelectorAll("a[href]")).map((link) => link.href);
+          const match = links.find((link) => link.includes(targetFile));
+
+          if (match) {
+            displayResult(match);
+          } else {
+            console.log(`File not found at: ${url}`);
+          }
+        } catch (err) {
+          console.error(`Error searching at ${url}:`, err.message);
+        }
+      }
+
+      function displayResult(url) {
+        const resultsList = document.getElementById("results");
+        const listItem = document.createElement("li");
+        const link = document.createElement("a");
+        link.href = url;
+        link.textContent = url;
+        link.target = "_blank"; // Open in a new tab
+        listItem.appendChild(link);
+        resultsList.appendChild(listItem);
+      }
+
+      async function crawl() {
+        for (const baseUrl of baseUrls) {
+          await searchFile(baseUrl);
+        }
+      }
+
+      // Start the crawler
+      crawl();
+    </script>
+  </body>
+</html>
