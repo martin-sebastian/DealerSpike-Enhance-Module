@@ -253,8 +253,9 @@ async function processXMLData(xmlDoc) {
         <td class="text-truncate">${manufacturer}</td>
         <td class="text-wrap" style="max-width: 300px;">
           <span class="text-wrap">${modelName}</span>
+          ${moment(updated).format("DD/MM/YYYY")}
           <span class="visually-hidden">
-          ${stockNumber} ${vin} ${usage} ${year} ${manufacturer} ${modelName} ${modelType} ${color} ${moment(updated).format("MM/DD/YYYY")}
+          ${stockNumber} ${vin} ${usage} ${year} ${manufacturer} ${modelName} ${modelType} ${color} ${moment(updated).format("YYYY-MM-DD")}
           </span>
         </td>
         <td class="visually-hidden">${modelType}</td>
@@ -370,19 +371,18 @@ function filterTable() {
   const typeFilter = document.getElementById("typeFilter")?.value.toUpperCase() || "";
   const usageFilter = document.getElementById("usageFilter")?.value.toUpperCase() || "";
   const photosFilter = document.getElementById("photosFilter")?.value.toUpperCase() || "";
-  const updatedFilter = document.getElementById("updatedFilter")?.value.toUpperCase() || "";
+  const updatedFilter = document.getElementById("updatedFilter")?.value || "";
 
   const table = document.getElementById("vehiclesTable");
   const tr = table?.getElementsByTagName("tr");
 
   if (!tr) return;
 
-  let visibleRows = 0;
+  // Split search input into individual terms
+  const searchTerms = searchInput.split(/\s+/).filter((term) => term.length > 0);
 
-  // Optimize loop by caching DOM queries and using more efficient selectors
   const rows = Array.from(tr).slice(1); // Convert to array once, skip header
   const filters = {
-    search: searchInput,
     manufacturer: manufacturerFilter,
     type: typeFilter,
     usage: usageFilter,
@@ -397,13 +397,14 @@ function filterTable() {
 
     if (titleTd && hiddenSpan) {
       const hiddenText = hiddenSpan.textContent.trim();
-      // Split the hidden text and map to named variables for clarity
       const [stockNumber, vin, usage, year, manufacturer, modelName, modelType, color, updatedDate] = hiddenText.split(" ");
 
-      const isVisible = Object.entries(filters).every(([key, value]) => {
+      // Check if all search terms match anywhere in the hidden text
+      const searchMatch = searchTerms.length === 0 || searchTerms.every((term) => hiddenText.toUpperCase().includes(term));
+
+      const filterMatch = Object.entries(filters).every(([key, value]) => {
         if (!value) return true; // Skip empty filters
 
-        // Get the text to compare based on filter type
         let textToCompare = "";
         switch (key) {
           case "manufacturer":
@@ -419,11 +420,10 @@ function filterTable() {
             textToCompare = usage || "";
             break;
           case "updated":
-            textToCompare = updatedDate || "";
-            break;
-          case "search":
-            textToCompare = hiddenText;
-            break;
+            // Strip time components from both dates for comparison
+            const rowDate = moment(updatedDate).startOf("day").format("YYYY-MM-DD");
+            const filterDate = moment(value).startOf("day").format("YYYY-MM-DD");
+            return rowDate === filterDate;
           default:
             textToCompare = "";
         }
@@ -431,7 +431,7 @@ function filterTable() {
         return textToCompare.toUpperCase().includes(value);
       });
 
-      row.style.display = isVisible ? "" : "none";
+      row.style.display = searchMatch && filterMatch ? "" : "none";
     }
   });
 
