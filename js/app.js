@@ -253,7 +253,7 @@ async function processXMLData(xmlDoc) {
         <td class="text-truncate">${manufacturer}</td>
         <td class="text-wrap" style="max-width: 300px;">
           <span class="text-wrap">${modelName}</span>
-          ${moment(updated).format("DD/MM/YYYY")}
+          
           <span class="visually-hidden">
           ${stockNumber} ${vin} ${usage} ${year} ${manufacturer} ${modelName} ${modelType} ${color} ${moment(updated).format("YYYY-MM-DD")}
           </span>
@@ -275,14 +275,16 @@ async function processXMLData(xmlDoc) {
             </div>
           </div>
         </td>
-        <td>${webPrice}</td>
-        <td><span class="badge text-bg-dark text-white-50 border">${moment(updated).fromNow()}</span>
-        <span class="visually-hidden">${moment(updated).format("MM-DD-YYYY")}</span>
+        <td><span class="badge bg-success p-2 w-100 fw-bold border">${webPrice}</span></td>
+        <td>
+          <span class="badge text-secondary p-2 w-100 fw-semibold border">${moment(updated).fromNow()}
+            <span class="small text-muted">${moment(updated).format("MM-DD-YYYY")}</span>
+          </span>
         </td>
         <td class="text-center">${
           imageElements.length > 10
-            ? `<span class="photos-status" title="In-House Photos Done"><i class="bi bi-camera2 text-warning"></i><span class="visually-hidden" style="font-size: 10px;">Done</span></span>`
-            : `<span class="photos-status" title="Awaiting Photo Shoot"><i class="bi bi-camera2 text-secondary"></i><span class="visually-hidden" style="font-size: 10px;"> Needs Photos </span></span>`
+            ? `<span class="photos-status" title="In-House Photos Done"><i class="bi bi-camera2 text-warning"></i><span class="visually-hidden" style="font-size: 10px;">FOM PHOTOS</span></span>`
+            : `<span class="photos-status" title="Awaiting Photo Shoot"><i class="bi bi-camera2 text-secondary"></i><span class="visually-hidden" style="font-size: 10px;">STOCK PHOTOS</span></span>`
         }</td>
         <td class="text-center text-nowrap">
           <div class="action-button-group" role="group" aria-label="Vehicles">

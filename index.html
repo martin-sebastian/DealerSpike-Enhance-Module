@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="./css/bootstrap-icons.css">
     <link href="./css/style.css" rel="stylesheet" />
     
+    
   </head>
   <body data-bs-theme="dark">
     <header class="fixed-top d-print-none">
@@ -94,7 +95,13 @@
               <option value="Yamaha">Yamaha</option>
             </select>
             <label for="updatedFilter" class="visually-hidden">Updated:</label>
-            <input type="date" id="updatedFilter" class="form-control d-inline-flex w-25 me-1" name="updatedFilter" onchange="filterTable()">
+            <input type="date" id="updatedFilter" value="" class="form-control d-inline-flex w-25 me-1 visually-hidden" name="updated-date" onchange="filterTable()">
+            <div class="form-check w-25 visually-hidden">
+              <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+              <label class="form-check-label" for="flexCheckChecked">
+                Stock Photos
+              </label>
+            </div>
           </form>
           <div class="toggles-group d-flex flex-row">
             <button id="toggleThemeButton" class="btn btn-outline-secondary px-3 mx-1" type="button">
