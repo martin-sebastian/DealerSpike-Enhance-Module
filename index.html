@@ -208,15 +208,15 @@
       <div class="modal fade" id="newOverlayModal" tabindex="-1" aria-labelledby="newOverlayModal" aria-hidden="true">
         <div class="modal-dialog modal-fullscreen">
           <div class="modal-content">
-            <div class="modal-header d-print-none">
-              <h5 class="modal-title" id="pricingModalTitle">OVERLAY</h5>
+            <div class="modal-header d-print-none" style="display: none;">
+              <h5 class="modal-title" id="pricingModalTitle">OVERLAY PREVIEW</h5>
               <button type="button" class="btn-close btn-primary bg-light text-dark me-2" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body m-0 p-0 d-print-none">
+            <div class="modal-body p-0 m-0 overflow-hidden d-print-none">
               <button type="button" class="btn btn-outline-secondary position-absolute top-0 end-0 mt-2 me-4" title="Esc" data-bs-dismiss="modal" aria-label="Close"><i class="bi bi-x-lg"></i></button>
               <iframe id="newOverlayIframe" src="" frameborder="0" class="m-0 p-0 border-0 w-100 h-100 shadow-lg" style="border: 0; margin: 0; padding: 0; height:99%;"></iframe>
             </div>
-            <div class="modal-footer d-print-none">
+            <div class="modal-footer d-print-none" style="display: none;">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
               <button type="button" class="btn btn-danger" onclick="printNewOverlayIframe()">
                 <i class="bi bi-printer me-2"></i> Print

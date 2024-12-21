@@ -779,7 +779,7 @@ $.ajax({
 		<div class="mu-header" style="margin:0 auto;">
 			${muHeaderTemplate}
 		</div>
-		<div id="overlayContainer" class="container-fluid" style="background: #fff; padding-top: 10px; padding-bottom: 35px; margin: 0; padding: 0;">
+		<div id="overlayContainer" class="container-fluid">
 			<div class="row">
 				<div class="col-md-6">
 					<div class="left-column-container">
@@ -910,7 +910,11 @@ $.ajax({
 		${pdfBrochureTemplate}
 
 		
-
+		<div class="footer-container" style="background: #fff; color: #666; margin-top: 300px; margin-bottom: 10px; border: solid 1px #ddd; border-radius: 12px;">
+			<div class="footer-content">
+				<p style="padding: 10px; margin: 0;">Overlay V.0.1.0</p>
+			</div>
+		</div>
 		
 		`;
 
@@ -930,6 +934,7 @@ $.ajax({
 	body {
 		font-family: Roboto, Arial, Helvetica, sans-serif;
 		background: #efefef;
+		padding: 100px 0:
 	}
 	.hidden {
 		display: none;

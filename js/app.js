@@ -313,11 +313,11 @@ async function processXMLData(xmlDoc) {
               href="javascript:void(0);" 
               type="button" 
               class="btn btn-danger action-button mx-1"
-              style="display: none;"
+              style="display: auto;"
               title="Pricing"
               data-bs-toggle="modal"
               data-bs-target="#pricingModal"
-              onclick="openPricingModal('${stockNumber}')"
+              onclick="openNewOverlayModal('${stockNumber}')"
             >
               <i class="bi bi-card-heading"></i>
               <span style="font-size:10px; text-transform:uppercase;">Overlay</span>
