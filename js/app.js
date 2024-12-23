@@ -172,6 +172,7 @@ async function fetchData() {
 
     // Fetch fresh data if cache is missing or expired
     console.log("Fetching fresh XML data...");
+    //const response = await fetch("https://www.sloansmotorcycle.com/unitinventory_univ.xml");
     const response = await fetch("https://www.flatoutmotorcycles.com/unitinventory_univ.xml");
     if (!response.ok) throw new Error("Network response was not ok");
 
@@ -450,7 +451,7 @@ function toggleTheme() {
 
   const logo = document.getElementById("logo");
   if (logo) {
-    logo.src = newTheme === "dark" ? "./img/fom-app-logo-01.svg" : "./img/fom-app-logo-02.svg";
+    logo.src = newTheme === "dark" ? "./img/app-logo-01.svg" : "./img/app-logo-02.svg";
   }
 
   updateThemeIcon(newTheme);
