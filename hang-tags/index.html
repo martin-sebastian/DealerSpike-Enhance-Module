@@ -49,6 +49,18 @@
               <input type="checkbox" id="descriptionCheckBox" onclick="hideDescription()" checked />
               Description
             </label>
+            <label>
+              <input type="checkbox" id="qrCodeCheckBox" onclick="hideQrCode()" checked />
+              QR Code
+            </label>
+            <label>
+              <input type="checkbox" id="barCodeCheckBox" onclick="hideBarCode()" checked />
+              Bar Code
+            </label>
+            <label>
+              <input type="checkbox" id="footerCheckBox" onclick="hideFooter()" checked />
+              Footer
+            </label>
           </div>
         </div>
       </div>
@@ -132,6 +144,33 @@
           elementDescription.classList.remove("hidden");
         } else {
           elementDescription.classList.add("hidden");
+        }
+      }
+      function hideQrCode() {
+        var qrCodeCheckBox = document.getElementById("qrCodeCheckBox");
+        var elementQrCode = document.getElementById("qrcode");
+        if (qrCodeCheckBox.checked == true) {
+          elementQrCode.classList.remove("hidden");
+        } else {
+          elementQrCode.classList.add("hidden");
+        }
+      }
+      function hideBarCode() {
+        var barCodeCheckBox = document.getElementById("barCodeCheckBox");
+        var elementBarCode = document.getElementById("barcode");
+        if (barCodeCheckBox.checked == true) {
+          elementBarCode.classList.remove("hidden");
+        } else {
+          elementBarCode.classList.add("hidden");
+        }
+      }
+      function hideFooterLine() {
+        var footerCheckBox = document.getElementById("footerCheckBox");
+        var elementFooter = document.getElementById("footerLine");
+        if (footerCheckBox.checked == true) {
+          elementFooter.classList.remove("hidden");
+        } else {
+          elementFooter.classList.add("hidden");
         }
       }
     </script>

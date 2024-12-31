@@ -209,10 +209,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 </ul>
                 <div class="text-center">
                   <div id="qrcode"></div>
-                  <h6 class="bold">SCAN FOR MORE INFO</h6>
+
                 </div>
             </div>
-            <div class="fixed-bottom text-center" style="width: 100%; box-shadow: 0px -25px 10px rgba(25.25.25.0.9);">
+            <div id="footerLineLeft" class="fixed-bottom text-center" style="width: 100%; box-shadow: 0px -25px 10px rgba(25.25.25.0.9);">
               <div class="tag-footer" style="width: 100%; border-radius: 5px; background: #EE0000 !important;">
                 <div class="footer-our-price">${yellowTag} ${ourPrice}</div>
                 <div class="footer-price-expires text-center">Sale Program Ends: ${salePriceExpireDate}</div>
@@ -244,10 +244,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 </div>
             </div> <!-- End Print Tag Body -->
             <div class="floor-expire-date-container text-center">
-                <small class="floor-expire-date">Flooring Expiration Date: ${floorExpireDate}</small>
+                <!-- <small class="floor-expire-date">Flooring Expiration Date: ${floorExpireDate}</small> -->
                 <svg id="barcode" class="barcode"></svg>
               </div>
-            <div class="tag-footer fixed-bottom text-center" style="width: 100%; border-radius: 5px; background: #EE0000 !important; box-shadow: 0px -25px 10px rgba(25.25.25.0.9);">
+            <div id="footerLineRight" class="tag-footer fixed-bottom text-center" style="width: 100%; border-radius: 5px; background: #EE0000 !important; box-shadow: 0px -25px 10px rgba(25.25.25.0.9);">
               <div class="footer-our-price">${yellowTag} ${ourPrice}</div>
               <div class="footer-price-expires text-center">Sale Program Ends: ${salePriceExpireDate}</div>
             </div>
@@ -548,3 +548,19 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 });
+
+function hideFooter() {
+  const footerCheckBox = document.getElementById("footerCheckBox");
+  const elementFooterLeft = document.getElementById("footerLineLeft");
+  const elementFooterRight = document.getElementById("footerLineRight");
+
+  if (footerCheckBox.checked) {
+    elementFooterLeft?.classList.remove("hidden");
+    elementFooterRight?.classList.remove("hidden");
+  } else {
+    elementFooterLeft?.classList.add("hidden");
+    elementFooterRight?.classList.add("hidden");
+  }
+}
+
+document.querySelector("#footerCheckBox")?.addEventListener("change", hideFooter);
