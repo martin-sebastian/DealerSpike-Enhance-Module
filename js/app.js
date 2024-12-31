@@ -314,7 +314,7 @@ async function processXMLData(xmlDoc) {
               href="javascript:void(0);" 
               type="button" 
               class="btn btn-danger action-button mx-1"
-              style="display: auto;"
+              style="display: none;"
               title="Pricing"
               data-bs-toggle="modal"
               data-bs-target="#pricingModal"
@@ -451,7 +451,7 @@ function toggleTheme() {
 
   const logo = document.getElementById("logo");
   if (logo) {
-    logo.src = newTheme === "dark" ? "./img/app-logo-01.svg" : "./img/app-logo-02.svg";
+    logo.src = newTheme === "dark" ? "./img/fom-app-logo-01.svg" : "./img/fom-app-logo-02.svg";
   }
 
   updateThemeIcon(newTheme);
