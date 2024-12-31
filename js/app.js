@@ -754,7 +754,7 @@ function printKeyTag(event) {
             border-bottom: 1px solid #ddd;
           }
           #modelYear {
-            font-size: 12pt;
+            font-size: 10pt;
             border-bottom: 1px solid #ddd;
           }
           #manufacturer {
@@ -861,7 +861,7 @@ function printKeyTag(event) {
             display: block;
             height: 100%;
             writing-mode: vertical-rl;
-            font-size: 17pt;
+            font-size: 16pt;
             line-height: 18pt;
             font-weight: 700;
             color: black;
