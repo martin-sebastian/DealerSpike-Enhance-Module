@@ -1,0 +1,25 @@
+.batch-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 20px;
+}
+
+.tag-container {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+@media print {
+  .batch-container {
+    gap: 0;
+  }
+
+  .tag-container {
+    page-break-after: always;
+  }
+
+  .tag-container:last-child {
+    page-break-after: auto;
+  }
+}

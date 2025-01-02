@@ -1,63 +1,11 @@
-// Near the top of the file, add a cache object
-const DOM = {
-  table: null,
-  tableBody: null,
-  filters: {},
-  init() {
-    this.table = document.getElementById("vehiclesTable");
-    this.tableBody = this.table?.getElementsByTagName("tbody")[0];
-    this.filters = {
-      search: document.getElementById("searchFilter"),
-      year: document.getElementById("yearFilter"),
-      manufacturer: document.getElementById("manufacturerFilter"),
-      type: document.getElementById("typeFilter"),
-      usage: document.getElementById("usageFilter"),
-      updated: document.getElementById("updatedFilter"),
-      photos: document.getElementById("photosFilter"),
-    };
-  },
-};
-
 document.addEventListener("DOMContentLoaded", async () => {
-  DOM.init();
-
-  // Theme handling - using existing theme functions instead of applyTheme
-  const savedTheme = localStorage.getItem("theme");
-  if (savedTheme) {
-    document.body.setAttribute("data-bs-theme", savedTheme);
-    updateThemeIcon(savedTheme);
+  try {
+    await DOM.init();
+    initializePrintHandlers();
+  } catch (error) {
+    console.error("Error during initialization:", error);
   }
-
-  // Add vertical key tag switch state handling
-  const verticalKeyTagSwitch = document.getElementById("verticalKeyTagSwitch");
-  const savedVerticalKeyTagState = localStorage.getItem("verticalKeyTagState");
-  if (savedVerticalKeyTagState && verticalKeyTagSwitch) {
-    verticalKeyTagSwitch.checked = savedVerticalKeyTagState === "true";
-    // Trigger the toggle function to update the UI
-    toggleVerticalKeyTag({ target: verticalKeyTagSwitch });
-  }
-
-  // Add event listeners using delegation where possible
-  document.addEventListener("click", handleGlobalClicks);
-
-  // Add filter listeners with debounce
-  if (DOM.filters.search) {
-    DOM.filters.search.addEventListener("keyup", debounce(filterTable, 250));
-  }
-  Object.values(DOM.filters).forEach((filter) => {
-    if (filter && filter.id !== "searchFilter") {
-      filter.addEventListener("change", filterTable);
-    }
-  });
-
-  // Show placeholder and fetch data
-  showPlaceholder();
-  await fetchData();
-  updateRowCount();
-
-  initializeClipboardTooltips();
 });
-
 function handleGlobalClicks(event) {
   const target = event.target;
 
@@ -238,6 +186,12 @@ async function processXMLData(xmlDoc) {
 
       const row = document.createElement("tr");
       row.innerHTML = `
+        <td>
+          <input type="checkbox" 
+                 class="form-check-input vehicle-select" 
+                 data-stock="${stockNumber}"
+                 data-vin="${vin}">
+        </td>
         <td data-cell="image" class="text-center">
           <a href="${webURL}" target="_blank">
             ${
@@ -304,7 +258,7 @@ async function processXMLData(xmlDoc) {
               type="button" 
               class="btn btn-danger action-button mx-1"
               title="Pricing"
-              onclick="openOverlayModal('${stockNumber}')"
+              onclick="openQuoteModal('${stockNumber}')"
             >
               <i class="bi bi-card-heading"></i>
               <span style="font-size:10px; text-transform:uppercase;">Quote</span>
@@ -663,324 +617,69 @@ zoomOutBtn.addEventListener("click", function () {
   zoomElementVertical.classList.add("zoom-0");
 });
 
-function printKeyTag(event) {
-  if (event) {
-    event.preventDefault();
-    event.stopPropagation();
-  }
-
+function printKeyTag() {
+  const printFrame = document.getElementById("printFrame");
   const keytagContainer = document.getElementById("keytagContainer");
-  const verticalToggle = document.querySelector('input[type="checkbox"][onchange="toggleVerticalKeyTag(event)"]');
-  const showBoth = verticalToggle && verticalToggle.checked;
+  const verticalContainer = document.getElementById("keytagVerticalContainer");
 
   if (!keytagContainer) {
     console.error("Key tag container not found");
     return;
   }
 
-  const printFrame = document.getElementById("printFrame");
-  const printDocument = printFrame.contentDocument || printFrame.contentWindow.document;
+  // Create print-specific styling
+  const printStyles = `
+    <style>
+      @media print {
+        body { margin: 0; padding: 0; }
+        .key-tag-container { 
+          page-break-inside: avoid;
+          margin: 0;
+          padding: 0;
+        }
+        /* Hide non-printable elements */
+        .d-print-none {
+          display: none !important;
+        }
+      }
+    </style>
+  `;
 
+  // Prepare print content
   const printContent = `
     <!DOCTYPE html>
     <html>
       <head>
-        <title>Print Key Tag</title>
-        <style>
-          @page {
-            outline: 0px solid red;
-            size: 1.625in 2.125in;
-            margin: 0;
-            scale: 1;
-            @top {
-              content: ""; /* No content for header */
-            }
-            @bottom {
-              content: ""; /* No content for footer */
-            }
-          }
-          body {
-            font-family: Arial, sans-serif;
-            font-size: 8pt;
-            font-weight: 600;
-            margin: 0;
-            padding: 0.051in;
-            width: 1.5in;
-            height: 2in;
-            overflow: hidden;
-          }
-          #keytagContainer {
-            text-align: center;
-            box-sizing: border-box;
-            border: 1px solid #ccc;
-            border-radius: 0.1in;
-            padding: 0.0625in;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-          }
-          #keytagContainerTwo {
-            position: relative;
-            top: 0.06in;
-            text-align: center;
-            box-sizing: border-box;
-            border: 1px solid #ccc;
-            border-radius: 0.1in;
-            padding: 0.0625in;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-          }
-          #keytagContainer div {
-            margin: 0;
-            padding: 0;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-          }
-          #modelUsage {
-            font-weight: bold;
-            font-size: 10pt;
-            line-height: 12px;
-            text-transform: uppercase;
-            border-bottom: 1px solid #ddd;
-          }
-          #stockNumber {
-            font-weight: bold;
-            font-size: 16pt;
-            border-bottom: 1px solid #ddd;
-          }
-          #modelYear {
-            font-size: 10pt;
-            border-bottom: 1px solid #ddd;
-          }
-          #manufacturer {
-            font-size: 10pt;
-            border-bottom: 1px solid #ddd;
-          }
-          #modelName {
-            font-size: 10pt;
-            border-bottom: 1px solid #eee;
-          }
-          #modelCode {
-            font-size: 8pt;
-            border-bottom: 1px solid #eee;
-          }
-          #modelColor {
-            font-size: 8pt;
-            border-bottom: 1px solid #eee;
-          }
-          #modelVin {
-            font-size: 8pt;
-          }
-          #modelUsage::after {
-            display: block;
-            text-align: left;
-            margin-bottom: -1px;
-            margin-top: -4px;
-            content: "USAGE";
-            font-size: 6px !important;
-            line-height: 8px;
-            color: #ddd;
-          }
-          #stockNumber::after {
-            display: block;
-            text-align: left;
-            margin-bottom: -1px;
-            margin-top: -4px;
-            content: "STOCK NUMBER";
-            font-size: 6px !important;
-            line-height: 8px;
-            color: #ddd;
-          }
-          #modelYear::after {
-            display: block;
-            text-align: left;
-            margin-bottom: -1px;
-            margin-top: -4px;
-            content: "YEAR";
-            font-size: 6px !important;
-            line-height: 8px;
-            color: #ddd;
-          }
-          #manufacturer::after {
-            display: block;
-            text-align: left;
-            margin-bottom: -1px;
-            margin-top: -4px;
-            content: "MANUFACTURER";
-            font-size: 6px !important;
-            line-height: 8px;
-            color: #ddd;
-          }
-          #modelName::after {
-            display: block;
-            text-align: left;
-            margin-bottom: -1px;
-            margin-top: -4px;
-            content: "MODEL";
-            font-size: 6px !important;
-            line-height: 8px;
-            color: #ddd;
-          }
-          #modelCode::after {
-            display: block;
-            text-align: left;
-            margin-bottom: -1px;
-            margin-top: -4px;
-            content: "CODE";
-            font-size: 6px !important;
-            line-height: 8px;
-            color: #ddd;
-          }
-          #modelColor::after {
-            display: block;
-            text-align: left;
-            margin-bottom: -1px;
-            margin-top: -4px;
-            content: "COLOR";
-            font-size: 6px !important;
-            line-height: 8px;
-            color: #ddd;
-          }
-          #modelVin::after {
-            display: block;
-            text-align: left;
-            margin-bottom: -1px;
-            margin-top: -4px;
-            content: "VIN";
-            font-size: 6px !important;
-            line-height: 8px;
-            color: #ddd;
-          }
-          /* New styles for the rotated label */
-          .rotated-label-text {
-            display: block;
-            height: 100%;
-            writing-mode: vertical-rl;
-            font-size: 16pt;
-            line-height: 18pt;
-            font-weight: 700;
-            color: black;
-          }
-          .label-text-lower-vin {
-            font-size: 12pt;
-            line-height: 12pt;
-            font-weight: 500;
-            margin-right: -10px;
-            padding: 0;
-            color: black;
-            white-space: nowrap;
-            overflow: hidden;
-          }
-          .label-text-lower-model {
-            font-size: 9pt;
-            line-height: 9pt;
-            font-weight: 700;
-            color: black;
-            padding: 0;
-            margin-right: -10px;
-          }
-          /* Add display none for visually-hidden class */
-          .visually-hidden {
-            display: none !important;
-          }
-          .placeholder-glow {
-            contain: content;
-          }
-          tr {
-            contain: layout style;
-          }
-          /* Use transform instead of other properties for animations */
-          .action-button {
-            transition: transform 0.2s;
-            will-change: transform;
-          }
-
-          .action-button:hover {
-            transform: scale(1.05);
-          }
-        </style>
+        ${printStyles}
+        <link rel="stylesheet" href="./css/style.css">
       </head>
       <body>
-        ${
-          showBoth
-            ? `
-          <div id="keytagContainer" style="margin-bottom: 0.1in;">
-            <div id="modelUsage">${keytagContainer.querySelector("#modelUsage").textContent}</div>
-            <div id="stockNumber">${keytagContainer.querySelector("#stockNumber").textContent}</div>
-            <div id="modelYear">${keytagContainer.querySelector("#modelYear").textContent}</div>
-            <div id="manufacturer">${keytagContainer.querySelector("#manufacturer").textContent}</div>
-            <div id="modelName">${keytagContainer.querySelector("#modelName").textContent}</div>
-            <div id="modelCode">${keytagContainer.querySelector("#modelCode").textContent}</div>
-            <div id="modelColor">${keytagContainer.querySelector("#modelColor").textContent}</div>
-            <div id="modelVin">${keytagContainer.querySelector("#modelVin").textContent}</div>
-          </div>
-          <div id="keytagContainerTwo" style="margin-top: 0.1in;">
-            <span class="rotated-label-text">
-              ${keytagContainer.querySelector("#modelYear").textContent}
-              ${keytagContainer.querySelector("#manufacturer").textContent}<br>
-              <span class="label-text-lower-vin">
-              ${keytagContainer.querySelector("#modelVin").textContent}
-              </span><br>
-              <span class="label-text-lower-model">
-              ${keytagContainer.querySelector("#modelName").textContent}
-              </span>
-            </span>
-          </div>
-        `
-            : `
-          <div id="keytagContainer">
-            <div id="modelUsage">${keytagContainer.querySelector("#modelUsage").textContent}</div>
-            <div id="stockNumber">${keytagContainer.querySelector("#stockNumber").textContent}</div>
-            <div id="modelYear">${keytagContainer.querySelector("#modelYear").textContent}</div>
-            <div id="manufacturer">${keytagContainer.querySelector("#manufacturer").textContent}</div>
-            <div id="modelName">${keytagContainer.querySelector("#modelName").textContent}</div>
-            <div id="modelCode">${keytagContainer.querySelector("#modelCode").textContent}</div>
-            <div id="modelColor">${keytagContainer.querySelector("#modelColor").textContent}</div>
-            <div id="modelVin">${keytagContainer.querySelector("#modelVin").textContent}</div>
-          </div>
-        `
-        }
+        ${keytagContainer.outerHTML}
+        ${verticalContainer && !verticalContainer.classList.contains("visually-hidden") ? verticalContainer.outerHTML : ""}
       </body>
     </html>
   `;
 
-  printDocument.open();
-  printDocument.write(printContent);
-  printDocument.close();
+  try {
+    // Load content into print frame
+    printFrame.contentDocument.write(printContent);
+    printFrame.contentDocument.close();
 
-  const printPromise = new Promise((resolve) => {
-    printFrame.onload = resolve;
-  });
-
-  printPromise.then(() => {
-    console.log("iframe loaded, attempting to print");
-    setTimeout(() => {
-      printFrame.contentWindow.focus();
-      printFrame.contentWindow.print();
-    }, 1000);
-  });
+    // Trigger print after content is loaded
+    printFrame.contentWindow.onload = function () {
+      try {
+        printFrame.contentWindow.print();
+      } catch (error) {
+        console.error("Error during print:", error);
+      }
+    };
+  } catch (error) {
+    console.error("Error preparing print content:", error);
+  }
 }
 
-// Wait for the DOM to be fully loaded before adding event listeners
-document.addEventListener("DOMContentLoaded", () => {
-  const printKeyTagButton = document.getElementById("printKeyTag");
-  if (printKeyTagButton) {
-    // Remove any existing event listeners
-    printKeyTagButton.removeEventListener("click", printKeyTag);
-    printKeyTagButton.removeEventListener("click", window.print);
-
-    // Add the new event listener
-    printKeyTagButton.addEventListener("click", printKeyTag);
-  } else {
-    console.error("Print Key Tag button not found");
-  }
-});
+// Event listener for print button
+document.getElementById("printKeyTag").addEventListener("click", printKeyTag);
 
 function openKeyTagsByStockNumberModal(stockNumber) {
   const modalIframe = document.getElementById("keyTagsByStockNumberModal");
@@ -996,11 +695,12 @@ function openHangTagsModal(stockNumber) {
   hangTagsModal.show();
 }
 
-function openOverlayModal(stockNumber) {
-  const modalIframe = document.getElementById("overlayIframe");
-  modalIframe.src = `./quote/?search=${stockNumber}`;
-  const overlayModal = new bootstrap.Modal(document.getElementById("overlayModal"));
-  overlayModal.show();
+function openQuoteModal(stockNumber) {
+  const modal = document.getElementById("quoteModal");
+  const iframe = document.getElementById("overlayIframe");
+  iframe.src = `/product/?search=${stockNumber}`;
+  const bsModal = new bootstrap.Modal(modal);
+  bsModal.show();
 }
 
 function openNewOverlayModal(stockNumber) {
@@ -1154,3 +854,275 @@ document.addEventListener(
   },
   false
 );
+
+// Add select all functionality
+document.getElementById("selectAll")?.addEventListener("change", (e) => {
+  const checkboxes = document.querySelectorAll(".vehicle-select");
+  checkboxes.forEach((checkbox) => (checkbox.checked = e.target.checked));
+});
+
+// Add a button for batch processing
+const batchButton = `
+  <button id="processBatchButton" 
+          class="btn btn-primary" 
+          disabled>
+    Process Selected (<span id="selectedCount">0</span>)
+  </button>
+`;
+
+// Add counter functionality
+document.addEventListener("change", (e) => {
+  if (e.target.matches(".vehicle-select")) {
+    const selectedCount = document.querySelectorAll(".vehicle-select:checked").length;
+    document.getElementById("selectedCount").textContent = selectedCount;
+    document.getElementById("processBatchButton").disabled = selectedCount === 0;
+  }
+});
+
+// Function to handle batch processing
+async function processBatchKeyTags() {
+  const selectedVehicles = Array.from(document.querySelectorAll(".vehicle-select:checked")).map((checkbox) => checkbox.dataset.stock);
+
+  if (selectedVehicles.length === 0) return;
+
+  // Open overlay modal
+  const overlayModal = document.getElementById("overlayModal");
+  const modalIframe = document.getElementById("overlayIframe");
+
+  // Pass selected vehicles to overlay
+  modalIframe.src = `./overlay/?batch=${selectedVehicles.join(",")}`;
+
+  const bsModal = new bootstrap.Modal(overlayModal);
+  bsModal.show();
+}
+
+// Add event listener for batch button
+document.getElementById("processBatchButton")?.addEventListener("click", processBatchKeyTags);
+
+// Update the selection counter and button state
+document.addEventListener("change", (e) => {
+  if (e.target.matches(".vehicle-select") || e.target.matches("#selectAll")) {
+    const selectedCount = document.querySelectorAll(".vehicle-select:checked").length;
+    const countBadge = document.getElementById("selectedCount");
+    const batchButton = document.getElementById("batchActionsButton");
+
+    // Update count badge
+    countBadge.textContent = `${selectedCount} selected`;
+
+    // Enable/disable batch actions button
+    batchButton.disabled = selectedCount === 0;
+
+    // Optionally update select all checkbox state
+    if (e.target.matches(".vehicle-select")) {
+      const selectAll = document.getElementById("selectAll");
+      const allCheckboxes = document.querySelectorAll(".vehicle-select");
+      selectAll.checked = selectedCount === allCheckboxes.length;
+      selectAll.indeterminate = selectedCount > 0 && selectedCount < allCheckboxes.length;
+    }
+  }
+});
+
+// Handle batch action clicks
+document.getElementById("processBatchButton")?.addEventListener("click", (e) => {
+  e.preventDefault();
+  processBatchKeyTags();
+});
+
+// Placeholder for future hang tags functionality
+document.getElementById("printHangTagsButton")?.addEventListener("click", (e) => {
+  e.preventDefault();
+  // Future implementation
+  alert("Hang tags printing coming soon!");
+});
+
+// Add this to ensure the print button works for single key tags
+document.getElementById("printKeyTag")?.addEventListener("click", function () {
+  window.print();
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+  // Initialize print button handler
+  const printKeyTagButton = document.getElementById("printKeyTag");
+  if (printKeyTagButton) {
+    printKeyTagButton.addEventListener("click", function () {
+      console.log("Print button clicked"); // Debug log
+      printKeyTag();
+    });
+  }
+});
+
+function printKeyTag() {
+  const printFrame = document.getElementById("printFrame");
+  const keytagContainer = document.getElementById("keytagContainer");
+  const verticalContainer = document.getElementById("keytagVerticalContainer");
+
+  if (!keytagContainer) {
+    console.error("Key tag container not found");
+    return;
+  }
+
+  // Create print-specific styling
+  const printStyles = `
+    <style>
+      @media print {
+        body { margin: 0; padding: 0; }
+        .key-tag-container { 
+          page-break-inside: avoid;
+          margin: 0;
+          padding: 0;
+        }
+        /* Hide non-printable elements */
+        .d-print-none {
+          display: none !important;
+        }
+      }
+    </style>
+  `;
+
+  // Prepare print content
+  const printContent = `
+    <!DOCTYPE html>
+    <html>
+      <head>
+        ${printStyles}
+        <link rel="stylesheet" href="./css/style.css">
+      </head>
+      <body>
+        ${keytagContainer.outerHTML}
+        ${verticalContainer && !verticalContainer.classList.contains("visually-hidden") ? verticalContainer.outerHTML : ""}
+      </body>
+    </html>
+  `;
+
+  try {
+    // Load content into print frame
+    printFrame.contentDocument.write(printContent);
+    printFrame.contentDocument.close();
+
+    // Trigger print after content is loaded
+    printFrame.contentWindow.onload = function () {
+      try {
+        printFrame.contentWindow.print();
+      } catch (error) {
+        console.error("Error during print:", error);
+      }
+    };
+  } catch (error) {
+    console.error("Error preparing print content:", error);
+  }
+}
+
+// Add debug logging for modal events
+const keytagModal = document.getElementById("keytagModal");
+if (keytagModal) {
+  keytagModal.addEventListener("shown.bs.modal", function () {
+    console.log("Modal opened");
+    // Re-bind print button when modal is shown
+    const modalPrintButton = document.getElementById("printKeyTag");
+    if (modalPrintButton && !modalPrintButton.hasEventListener) {
+      modalPrintButton.addEventListener("click", printKeyTag);
+      modalPrintButton.hasEventListener = true;
+    }
+  });
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  // Initialize all event listeners
+  initializePrintHandlers();
+});
+
+function initializePrintHandlers() {
+  // Initialize print button handler
+  const printKeyTagButton = document.getElementById("printKeyTag");
+  const keytagModal = document.getElementById("keytagModal");
+  const printFrame = document.getElementById("printFrame");
+
+  // Log what elements we found/didn't find
+  console.log("Print initialization:", {
+    printButton: !!printKeyTagButton,
+    modal: !!keytagModal,
+    printFrame: !!printFrame,
+  });
+
+  // Only add event listener if button exists
+  if (printKeyTagButton) {
+    printKeyTagButton.addEventListener("click", function () {
+      console.log("Print button clicked");
+      printKeyTag();
+    });
+  }
+
+  // Only add modal listener if modal exists
+  if (keytagModal) {
+    keytagModal.addEventListener("shown.bs.modal", function () {
+      console.log("Modal opened");
+      // Re-bind print button when modal is shown
+      const modalPrintButton = document.getElementById("printKeyTag");
+      if (modalPrintButton && !modalPrintButton.hasEventListener) {
+        modalPrintButton.addEventListener("click", printKeyTag);
+        modalPrintButton.hasEventListener = true;
+      }
+    });
+  }
+}
+
+// Near the top of the file, add a cache object
+const DOM = {
+  table: null,
+  tableBody: null,
+  filters: {},
+  init() {
+    this.table = document.getElementById("vehiclesTable");
+    this.tableBody = this.table?.getElementsByTagName("tbody")[0];
+    this.filters = {
+      search: document.getElementById("searchFilter"),
+      year: document.getElementById("yearFilter"),
+      manufacturer: document.getElementById("manufacturerFilter"),
+      type: document.getElementById("typeFilter"),
+      usage: document.getElementById("usageFilter"),
+      updated: document.getElementById("updatedFilter"),
+      photos: document.getElementById("photosFilter"),
+    };
+    this.loadVehicleData();
+  },
+
+  async loadVehicleData() {
+    try {
+      console.log("Loading vehicle data...");
+      const response = await fetch("./data/vehicles.xml");
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.text();
+      this.processVehicleData(data);
+    } catch (error) {
+      console.error("Error loading vehicle data:", error);
+    }
+  },
+
+  processVehicleData(xmlData) {
+    try {
+      const parser = new DOMParser();
+      const xmlDoc = parser.parseFromString(xmlData, "text/xml");
+      // ... your existing vehicle processing code ...
+      this.displayVehicles(/* your processed data */);
+    } catch (error) {
+      console.error("Error processing vehicle data:", error);
+    }
+  },
+
+  displayVehicles(vehicles) {
+    const tbody = document.querySelector("#vehiclesTable tbody");
+    if (!tbody) {
+      console.error("Vehicle table body not found");
+      return;
+    }
+    // ... your existing display code ...
+  },
+};
+
+<iframe id="printFrame" style="display:none;"></iframe>;
+
+<button type="button" id="printKeyTag" class="btn btn-danger">
+  <i class="bi bi-printer"></i> Print Key Tag
+</button>;
