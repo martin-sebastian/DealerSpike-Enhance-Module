@@ -1,0 +1,45 @@
+/* Batch Key Tag Container */
+.batch-key-tag-container {
+  width: 1.5in;
+  height: 2in;
+  border: 1px solid #000;
+  padding: 0.25in;
+  margin: 0.125in;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Individual field styling */
+.batch-key-tag-container .model-usage {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.batch-key-tag-container .stock-number {
+  font-size: 16px;
+}
+
+/* Zoom levels for batch preview */
+.batch-zoom-0 {
+  transform: scale(0.5);
+}
+.batch-zoom-1 {
+  transform: scale(1);
+}
+.batch-zoom-2 {
+  transform: scale(1.5);
+}
+
+/* Print-specific styles */
+@media print {
+  .batch-key-tag-container {
+    margin: 0;
+    padding: 0.25in;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .batch-d-print-none {
+    display: none !important;
+  }
+}

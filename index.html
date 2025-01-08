@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="./css/bootstrap-icons.css">
     <link href="./css/style.css" rel="stylesheet" />
     <link href="./css/styles.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/batch-print.css">
     
     
   </head>
@@ -159,14 +160,15 @@
         
         <div class="d-flex justify-content-between align-items-center mb-3">
           <div class="d-flex gap-2 align-items-center">
-            <span id="selectedCount" class="badge bg-secondary">0 selected</span>
+            
             <div class="dropdown">
-              <button class="btn btn-primary dropdown-toggle" 
+              <button class="btn btn-danger dropdown-toggle" 
                       type="button" 
                       id="batchActionsButton" 
                       data-bs-toggle="dropdown" 
                       aria-expanded="false"
                       disabled>
+                      <span id="selectedCount" class="badge bg-dark me-2 fw-normal">0 selected</span>
                 Batch Actions
               </button>
               <ul class="dropdown-menu" aria-labelledby="batchActionsButton">
@@ -426,7 +428,7 @@
             <h5 class="modal-title" id="batchModalLabel">Batch Key Tags</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <div class="modal-body bg-light dots" id="batchContainer">
+          <div class="modal-body bg-light text-dark dots" id="batchContainer">
             <!-- Batch tags will be inserted here -->
           </div>
           <div class="modal-footer d-print-none">
@@ -438,6 +440,19 @@
         </div>
       </div>
     </div>
+
+    <template id="batchKeyTagTemplate">
+      <div class="batch-key-tag-container batch-zoom-1 zoomElement text-truncate mx-1 mb-4">
+        <div class="model-usage text-truncate"></div>
+        <div class="stock-number"></div>
+        <div class="model-year text-truncate"></div>
+        <div class="manufacturer text-truncate"></div>
+        <div class="model-name text-truncate"></div>
+        <div class="model-code text-truncate"></div>
+        <div class="model-color text-truncate"></div>
+        <div class="model-vin text-truncate"></div>
+      </div>
+    </template>
 
     <script src="js/bootstrap.bundle.js"></script>
     <script src="js/popper.js"></script>

@@ -1179,3 +1179,81 @@ function updateSelectedCount() {
     batchButton.disabled = selectedCount === 0;
   }
 }
+
+document.getElementById("processBatchButton").addEventListener("click", () => {
+  const selectedRows = document.querySelectorAll('#vehiclesTable tbody tr input[type="checkbox"]:checked');
+  console.log(`Processing ${selectedRows.length} selected vehicles`);
+
+  const selectedVehicles = Array.from(selectedRows).map((checkbox) => {
+    const row = checkbox.closest("tr");
+    const hiddenSpan = row.querySelector(".visually-hidden");
+    const hiddenData = hiddenSpan.textContent.trim().split(" ");
+
+    // Extract data from the hidden span
+    const [stockNumber, vin, usage, year, manufacturer, modelName, modelType, color] = hiddenData;
+
+    // Log each vehicle being processed
+    console.log(`Processing vehicle: ${stockNumber}`);
+
+    return {
+      usage,
+      stockNumber,
+      year,
+      manufacturer,
+      modelName,
+      modelCode: modelType,
+      color,
+      vin,
+    };
+  });
+
+  processBatchPrint(selectedVehicles);
+});
+
+function processBatchPrint(selectedVehicles) {
+  // Create iframe
+  const iframe = document.createElement("iframe");
+  iframe.style.display = "none";
+  document.body.appendChild(iframe);
+
+  // Get the iframe document
+  const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+
+  // Add necessary styles to iframe
+  const styleSheet = document.createElement("link");
+  styleSheet.rel = "stylesheet";
+  styleSheet.href = "css/batch-print.css";
+  iframeDoc.head.appendChild(styleSheet);
+
+  // Create container in iframe
+  const container = iframeDoc.createElement("div");
+  container.id = "batchContainer";
+
+  // Get template
+  const template = document.getElementById("batchKeyTagTemplate");
+
+  // Process each vehicle
+  selectedVehicles.forEach((vehicle) => {
+    const keyTag = template.content.cloneNode(true);
+    const tagContainer = keyTag.querySelector(".batch-key-tag-container");
+
+    // Fill in the data
+    tagContainer.querySelector(".model-usage").textContent = vehicle.usage;
+    tagContainer.querySelector(".stock-number").textContent = vehicle.stockNumber;
+    // ... fill in other fields ...
+
+    container.appendChild(keyTag);
+  });
+
+  // Add container to iframe
+  iframeDoc.body.appendChild(container);
+
+  // Print when styles are loaded
+  styleSheet.onload = () => {
+    iframe.contentWindow.print();
+    // Remove iframe after printing
+    setTimeout(() => {
+      document.body.removeChild(iframe);
+    }, 100);
+  };
+}

@@ -372,6 +372,7 @@ th {
   height: 12px !important;
 }
 .key-tag-container {
+  background: #fff;
   border: solid 1px #ccc;
   border-radius: 10px;
   padding: 0px 5px;
