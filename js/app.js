@@ -1,11 +1,88 @@
+// 1. DOM object declaration (must be first thing in the file)
+const DOM = {
+  tableBody: null,
+  table: null,
+  filters: {},
+
+  async init() {
+    console.log("Initializing DOM object...");
+    try {
+      this.table = document.getElementById("vehiclesTable");
+      if (!this.table) throw new Error("Table element not found");
+
+      this.tableBody = this.table.querySelector("tbody");
+      if (!this.tableBody) throw new Error("Table body not found");
+
+      await fetchData();
+      return true;
+    } catch (error) {
+      console.error("Error in DOM initialization:", error);
+      throw error;
+    }
+  },
+};
+
+// 2. Main initialization
 document.addEventListener("DOMContentLoaded", async () => {
   try {
+    console.log("DOM Content Loaded");
     await DOM.init();
     initializePrintHandlers();
+    initializeBatchPrinting();
   } catch (error) {
     console.error("Error during initialization:", error);
   }
 });
+
+// 3. Initialize print handlers with null checks and debugging
+function initializePrintHandlers() {
+  console.log("Initializing print handlers...");
+
+  // Wrap in setTimeout to ensure DOM is ready
+  setTimeout(() => {
+    const printKeyTagButton = document.getElementById("printKeyTag");
+    const keytagModal = document.getElementById("keytagModal");
+
+    console.log("Print elements found:", {
+      printButton: !!printKeyTagButton,
+      modal: !!keytagModal,
+    });
+
+    if (keytagModal) {
+      keytagModal.addEventListener("shown.bs.modal", function () {
+        const modalPrintButton = document.getElementById("printKeyTag");
+        if (modalPrintButton && !modalPrintButton.hasEventListener) {
+          modalPrintButton.addEventListener("click", printKeyTag);
+          modalPrintButton.hasEventListener = true;
+        }
+      });
+    } else {
+      console.warn("Keytag modal not found in DOM");
+    }
+  }, 0);
+}
+
+// 4. Initialize batch printing with null checks
+function initializeBatchPrinting() {
+  console.log("Initializing batch printing...");
+
+  const selectAll = document.getElementById("selectAll");
+  if (selectAll) {
+    selectAll.addEventListener("change", (e) => {
+      const checkboxes = document.querySelectorAll(".vehicle-select");
+      checkboxes.forEach((checkbox) => (checkbox.checked = e.target.checked));
+      updateSelectedCount();
+    });
+  }
+
+  // Use event delegation for checkbox changes
+  document.body.addEventListener("change", (e) => {
+    if (e.target.matches(".vehicle-select")) {
+      updateSelectedCount();
+    }
+  });
+}
+
 function handleGlobalClicks(event) {
   const target = event.target;
 
@@ -739,10 +816,13 @@ function printNewOverlayIframe() {
 }
 
 function sortTableByColumn(header) {
+  // Skip sorting if it's the checkbox column
+  const columnIndex = Array.from(header.parentElement.children).indexOf(header);
+  if (columnIndex === 0) return; // Exit if it's the checkbox column
+
   const table = document.getElementById("vehiclesTable");
   const tbody = table.querySelector("tbody");
   const rows = Array.from(tbody.querySelectorAll("tr"));
-  const columnIndex = Array.from(header.parentElement.children).indexOf(header);
   const isAscending = header.classList.toggle("sort-asc");
 
   // Remove sort classes from other headers
@@ -1066,63 +1146,36 @@ function initializePrintHandlers() {
   }
 }
 
-// Near the top of the file, add a cache object
-const DOM = {
-  table: null,
-  tableBody: null,
-  filters: {},
-  init() {
-    this.table = document.getElementById("vehiclesTable");
-    this.tableBody = this.table?.getElementsByTagName("tbody")[0];
-    this.filters = {
-      search: document.getElementById("searchFilter"),
-      year: document.getElementById("yearFilter"),
-      manufacturer: document.getElementById("manufacturerFilter"),
-      type: document.getElementById("typeFilter"),
-      usage: document.getElementById("usageFilter"),
-      updated: document.getElementById("updatedFilter"),
-      photos: document.getElementById("photosFilter"),
-    };
-    this.loadVehicleData();
-  },
+// Add the new batch printing functionality
+function initializeBatchPrinting() {
+  console.log("Initializing batch printing...");
+  const selectAll = document.getElementById("selectAll");
+  if (selectAll) {
+    selectAll.addEventListener("change", (e) => {
+      const checkboxes = document.querySelectorAll(".vehicle-select");
+      checkboxes.forEach((checkbox) => (checkbox.checked = e.target.checked));
+      updateSelectedCount();
+    });
+  }
 
-  async loadVehicleData() {
-    try {
-      console.log("Loading vehicle data...");
-      const response = await fetch("./data/vehicles.xml");
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data = await response.text();
-      this.processVehicleData(data);
-    } catch (error) {
-      console.error("Error loading vehicle data:", error);
+  // Update counter when individual checkboxes change
+  document.addEventListener("change", (e) => {
+    if (e.target.matches(".vehicle-select")) {
+      updateSelectedCount();
     }
-  },
+  });
+}
 
-  processVehicleData(xmlData) {
-    try {
-      const parser = new DOMParser();
-      const xmlDoc = parser.parseFromString(xmlData, "text/xml");
-      // ... your existing vehicle processing code ...
-      this.displayVehicles(/* your processed data */);
-    } catch (error) {
-      console.error("Error processing vehicle data:", error);
-    }
-  },
+function updateSelectedCount() {
+  const selectedCount = document.querySelectorAll(".vehicle-select:checked").length;
+  const countBadge = document.getElementById("selectedCount");
+  const batchButton = document.getElementById("batchActionsButton");
 
-  displayVehicles(vehicles) {
-    const tbody = document.querySelector("#vehiclesTable tbody");
-    if (!tbody) {
-      console.error("Vehicle table body not found");
-      return;
-    }
-    // ... your existing display code ...
-  },
-};
+  if (countBadge) {
+    countBadge.textContent = `${selectedCount} selected`;
+  }
 
-<iframe id="printFrame" style="display:none;"></iframe>;
-
-<button type="button" id="printKeyTag" class="btn btn-danger">
-  <i class="bi bi-printer"></i> Print Key Tag
-</button>;
+  if (batchButton) {
+    batchButton.disabled = selectedCount === 0;
+  }
+}

@@ -646,3 +646,18 @@ th {
 ::backdrop {
   display: none;
 }
+
+/* Fixed width for checkbox column */
+#vehiclesTable th:first-child,
+#vehiclesTable td:first-child {
+  width: 20px;
+  min-width: 20px;
+  max-width: 20px;
+  padding: 1rem;
+  text-align: center;
+}
+
+/* Remove sort cursor from checkbox column */
+#vehiclesTable th:first-child {
+  cursor: default;
+}
