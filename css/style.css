@@ -1,7 +1,9 @@
-html,
+html {
+  scroll-behavior: smooth;
+}
 body {
   margin: 0;
-  padding: 0;
+  padding-top: 70px;
 }
 .search-width {
   max-width: 440px;
@@ -297,9 +299,10 @@ th {
   text-transform: uppercase;
 }
 .action-button {
-  min-width: 75px;
-  max-width: 100px;
-  font-size: 10px;
+  min-width: 70px;
+  max-width: 70px;
+  margin-right: 2px;
+  font-size: 8px;
   font-weight: 400;
   text-transform: uppercase;
 }

@@ -172,7 +172,6 @@ async function fetchData() {
 
     // Fetch fresh data if cache is missing or expired
     console.log("Fetching fresh XML data...");
-    //const response = await fetch("https://www.sloansmotorcycle.com/unitinventory_univ.xml");
     const response = await fetch("https://www.flatoutmotorcycles.com/unitinventory_univ.xml");
     if (!response.ok) throw new Error("Network response was not ok");
 
@@ -198,162 +197,217 @@ async function fetchData() {
   }
 }
 
-// Separate function to process the XML data
-async function processXMLData(xmlDoc) {
-  // Clear existing content including placeholders
-  while (DOM.tableBody.firstChild) {
-    DOM.tableBody.removeChild(DOM.tableBody.firstChild);
+// Add this new function to fetch additional data
+async function fetchAdditionalData(stockNumber) {
+  try {
+    const response = await fetch(`https://newportal.flatoutmotorcycles.com/portal/public/api/majorunit/stocknumber/${stockNumber}`);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    return {
+      yellowTag: data.YellowTag || false,
+      stocked: data.Stocked || false,
+      strikePrice: data.StrikePrice || false,
+      mapped: data.Mapped || false,
+      quoteLevel: data.QuoteLevel || null,
+    };
+  } catch (error) {
+    console.error(`Error fetching additional data for stock ${stockNumber}:`, error);
+    return {
+      yellowTag: false,
+      stocked: false,
+      strikePrice: false,
+      mapped: false,
+      quoteLevel: null,
+    };
   }
-
-  const items = xmlDoc.getElementsByTagName("item");
-  if (!DOM.tableBody) return;
-
-  // Create a document fragment to batch DOM updates
-  const fragment = document.createDocumentFragment();
-
-  // Process items in chunks to prevent UI blocking
-  const chunkSize = 20;
-  const processChunk = async (startIndex) => {
-    const endIndex = Math.min(startIndex + chunkSize, items.length);
-
-    for (let i = startIndex; i < endIndex; i++) {
-      const item = items[i];
-
-      // Extract values once to avoid repeated DOM access
-      const imageUrl = item.getElementsByTagName("images")[0]?.getElementsByTagName("imageurl")[0]?.textContent || "N/A";
-      const title = item.getElementsByTagName("title")[0]?.textContent || "N/A";
-      const webURL = item.getElementsByTagName("link")[0]?.textContent || "N/A";
-      const stockNumber = item.getElementsByTagName("stocknumber")[0]?.textContent || "N/A";
-      const vin = item.getElementsByTagName("vin")[0]?.textContent || "N/A";
-      const price = item.getElementsByTagName("price")[0]?.textContent || "N/A";
-      const webPrice = numeral(price).format("$0,0.00");
-      const manufacturer = item.getElementsByTagName("manufacturer")[0]?.textContent || "N/A";
-      const year = item.getElementsByTagName("year")[0]?.textContent || "N/A";
-      const modelName = item.getElementsByTagName("model_name")[0]?.textContent || "N/A";
-      const modelType = item.getElementsByTagName("model_type")[0]?.textContent || "N/A";
-      const color = item.getElementsByTagName("color")[0]?.textContent || "N/A";
-      const usage = item.getElementsByTagName("usage")[0]?.textContent || "N/A";
-      const updated = item.getElementsByTagName("updated")[0]?.textContent || "N/A";
-      const imageElements = item.getElementsByTagName("imageurl");
-
-      const row = document.createElement("tr");
-      row.innerHTML = `
-        <td data-cell="image" class="text-center">
-          <a href="${webURL}" target="_blank">
-            ${
-              imageUrl !== "N/A"
-                ? `<img src="${imageUrl}" alt="${title}" style="max-width: 100px; max-height: 100px;" loading="lazy" />`
-                : `<i class="bi bi-card-image"></i>`
-            }
-          </a>
-        </td>
-        <td class="text-center"><span class="badge ${usage === "New" ? "text-bg-success" : "text-bg-secondary"}">${usage}</span></td>
-        <td class="text-center">
-          <span class="badge text-bg-dark border">${year}</span>
-        </td>
-        <td class="text-truncate">${manufacturer}</td>
-        <td class="text-wrap" style="max-width: 300px;">
-          <span class="text-wrap">${modelName}</span>
-          
-          <span class="visually-hidden">
-          ${stockNumber} ${vin} ${usage} ${year} ${manufacturer} ${modelName} ${modelType} ${color} ${moment(updated).format("YYYY-MM-DD")}
-          </span>
-        </td>
-        <td class="visually-hidden">${modelType}</td>
-        <td class="visually-hidden">${color}</td>
-        <td>
-          <div class="input-group input-group-sm">
-            <input type="text" class="form-control" value="${stockNumber}" placeholder="Stock Number" title="${stockNumber}" aria-label="stock number" aria-describedby="btnGroupAddon">
-            <div class="input-group-text" id="btnGroupAddon">
-              <button type="button" 
-                      class="btn-icon" 
-                      data-bs-toggle="tooltip"
-                      data-bs-placement="top"
-                      data-bs-title="Copy to clipboard"
-                      onclick="navigator.clipboard.writeText('${stockNumber}')">
-                <i class="bi bi-clipboard"></i>
-              </button>
-            </div>
-          </div>
-        </td>
-        <td><span class="badge bg-success p-2 w-100 fw-bold border">${webPrice}</span></td>
-        <td>
-          <span class="badge text-secondary p-2 w-100 fw-semibold border">${moment(updated).fromNow()}
-            <span class="small text-muted">${moment(updated).format("MM-DD-YYYY")}</span>
-          </span>
-        </td>
-        <td class="text-center">${
-          imageElements.length > 10
-            ? `<span class="photos-status" title="In-House Photos Done"><i class="bi bi-camera2 text-warning"></i><span class="visually-hidden" style="font-size: 10px;">FOM PHOTOS</span></span>`
-            : `<span class="photos-status" title="Awaiting Photo Shoot"><i class="bi bi-camera2 text-secondary"></i><span class="visually-hidden" style="font-size: 10px;">STOCK PHOTOS</span></span>`
-        }</td>
-        <td class="text-center text-nowrap">
-          <div class="action-button-group" role="group" aria-label="Vehicles">
-            <button type="button" id="keytagModalButton" class="btn btn-danger action-button mx-1"  title="Print Key Tag" data-bs-toggle="modal" data-bs-target="#keytagModal" data-bs-stocknumber="${stockNumber}">
-              <i class="bi bi-tag"></i>
-              <span style="font-size:10px; text-transform:uppercase;">Key Tags</span>
-            </button>
-
-            <button type="button" class="btn btn-danger action-button mx-1"  title="Print Hang Tags" data-bs-toggle="modal" data-bs-target="#HangTagModal" data-bs-stocknumber="${stockNumber}" onclick="openHangTagsModal('${stockNumber}')">
-              <i class="bi bi-tags"></i>
-              <span style="font-size:10px; margin-top:-10px; padding:0; text-transform:uppercase;">Hang Tags</span>
-            </button>
-            
-            <a
-              href="javascript:void(0);" 
-              type="button" 
-              class="btn btn-danger action-button mx-1"
-              title="Pricing"
-              onclick="openOverlayModal('${stockNumber}')"
-            >
-              <i class="bi bi-card-heading"></i>
-              <span style="font-size:10px; text-transform:uppercase;">Quote</span>
-            </a>
-
-            <a
-              href="javascript:void(0);" 
-              type="button" 
-              class="btn btn-danger action-button mx-1"
-              style="display: none;"
-              title="Pricing"
-              data-bs-toggle="modal"
-              data-bs-target="#pricingModal"
-              onclick="openNewOverlayModal('${stockNumber}')"
-            >
-              <i class="bi bi-card-heading"></i>
-              <span style="font-size:10px; text-transform:uppercase;">Overlay</span>
-            </a>
-          </div>  
-        </td>`;
-
-      fragment.appendChild(row);
-    }
-
-    if (startIndex === 0) {
-      // Clear existing content on first chunk
-      DOM.tableBody.innerHTML = "";
-    }
-
-    // Append the fragment
-    DOM.tableBody.appendChild(fragment);
-
-    if (endIndex < items.length) {
-      // Process next chunk in next animation frame
-      requestAnimationFrame(() => processChunk(endIndex));
-    } else {
-      // All chunks processed - initialize features
-      initializeTableFeatures();
-    }
-  };
-
-  // Start processing first chunk
-  await processChunk(0);
-
-  // After data is loaded
-  document.querySelectorAll(".placeholder-wave").forEach((el) => {
-    el.classList.remove("placeholder-wave");
-  });
 }
+
+// Modify the processXMLData function
+async function processXMLData(xmlDoc) {
+  try {
+    while (DOM.tableBody.firstChild) {
+      DOM.tableBody.removeChild(DOM.tableBody.firstChild);
+    }
+
+    const items = Array.from(xmlDoc.getElementsByTagName("item"));
+    console.log(`Processing ${items.length} items`);
+
+    if (!DOM.tableBody) {
+      console.error("Table body not found");
+      return;
+    }
+
+    const fragment = document.createDocumentFragment();
+    const chunkSize = 20;
+
+    const processChunk = async (startIndex) => {
+      try {
+        const endIndex = Math.min(startIndex + chunkSize, items.length);
+        console.log(`Processing chunk from ${startIndex} to ${endIndex}`);
+
+        const chunk = items.slice(startIndex, endIndex);
+        const concurrencyLimit = 5;
+
+        for (let i = 0; i < chunk.length; i += concurrencyLimit) {
+          const batchItems = chunk.slice(i, i + concurrencyLimit);
+          const promises = batchItems.map(async (item) => {
+            try {
+              // Extract values once to avoid repeated DOM access
+              const imageUrl = item.getElementsByTagName("images")[0]?.getElementsByTagName("imageurl")[0]?.textContent || "N/A";
+              const title = item.getElementsByTagName("title")[0]?.textContent || "N/A";
+              const webURL = item.getElementsByTagName("link")[0]?.textContent || "N/A";
+              const stockNumber = item.getElementsByTagName("stocknumber")[0]?.textContent || "N/A";
+              const vin = item.getElementsByTagName("vin")[0]?.textContent || "N/A";
+              const price = item.getElementsByTagName("price")[0]?.textContent || "N/A";
+              const webPrice = numeral(price).format("$0,0.00");
+              const manufacturer = item.getElementsByTagName("manufacturer")[0]?.textContent || "N/A";
+              const year = item.getElementsByTagName("year")[0]?.textContent || "N/A";
+              const modelName = item.getElementsByTagName("model_name")[0]?.textContent || "N/A";
+              const modelType = item.getElementsByTagName("model_type")[0]?.textContent || "N/A";
+              const color = item.getElementsByTagName("color")[0]?.textContent || "N/A";
+              const usage = item.getElementsByTagName("usage")[0]?.textContent || "N/A";
+              const updated = item.getElementsByTagName("updated")[0]?.textContent || "N/A";
+              const imageElements = item.getElementsByTagName("imageurl");
+
+              // Fetch additional data
+              const additionalData = await fetchAdditionalData(stockNumber);
+
+              // Create row with combined data
+              const row = document.createElement("tr");
+              row.innerHTML = `
+                <td data-cell="image" class="text-center">
+                  <a href="${webURL}" target="_blank">
+                    ${
+                      imageUrl !== "N/A"
+                        ? `<img src="${imageUrl}" alt="${title}" style="width: 75px; height: auto; aspect-ratio: 3/2;" loading="lazy" />`
+                        : `<div class="d-flex justify-content-center align-items-center border rounded mx-auto" style="width: 75px; height: auto; aspect-ratio: 3/2;">
+                            <i class="bi bi-card-image"></i>
+                          </div>`
+                    }
+                  </a>
+                </td>
+                <td class="text-start">
+                  <span class="badge ${usage === "New" ? "text-bg-success" : "text-bg-secondary"}">${usage}</span>
+                  ${additionalData.quoteLevel ? `<span class="badge text-bg-secondary px-2">q${additionalData.quoteLevel}</span>` : ""}
+                  ${additionalData.mapped ? `<span class="badge text-bg-danger px-2">m</span>` : ""}
+                  ${additionalData.yellowTag ? `<span class="badge text-bg-warning px-2"><i class="bi bi-tag"></i></span>` : ""}
+                </td>
+                <td class="text-center">
+                  <span class="badge text-bg-dark border">${year}</span>
+                </td>
+                <td class="text-wrap" style="width: 10rem;">${manufacturer}</td>
+                <td class="text-wrap" style="width: 16rem;">
+                  <div class="text-start line-clamp-2">${modelName}</div>
+
+                  <span class="visually-hidden">
+                  ${stockNumber} ${vin} ${usage} ${year} ${manufacturer} ${modelName} ${modelType} ${color} ${moment(updated).format("YYYY-MM-DD")}
+                  </span>
+                </td>
+                <td class="visually-hidden">${modelType}</td>
+                <td class="visually-hidden">${color}</td>
+                <td>
+                  <div class="input-group input-group-sm">
+                    <input type="text" class="form-control" value="${stockNumber}" placeholder="Stock Number" title="${stockNumber}" aria-label="stock number" aria-describedby="btnGroupAddon">
+                    <div class="input-group-text" id="btnGroupAddon">
+                      <button type="button" 
+                              class="btn-icon" 
+                              data-bs-toggle="tooltip"
+                              data-bs-placement="top"
+                              data-bs-title="Copy to clipboard"
+                              onclick="navigator.clipboard.writeText('${stockNumber}')">
+                        <i class="bi bi-clipboard"></i>
+                      </button>
+                    </div>
+                  </div>
+                  
+                </td>
+                <td><span class="badge bg-success p-2 w-100 fw-bold border">${webPrice}</span></td>
+                <td>
+                  <div class="border text-center p-1 mx-4 rounded">
+                    <span class="fw-semibold d-block">${moment(updated).format("MM-DD-YYYY")}</span>
+                    <span class="fw-light text-sm text-muted d-block">${moment(updated).fromNow()}</span>
+                  </div>
+                </td>
+                <td class="text-center">${
+                  imageElements.length > 10
+                    ? `<span class="photos-status" title="In-House Photos Done"><i class="bi bi-camera2 text-warning"></i><span class="visually-hidden" style="font-size: 10px;">FOM PHOTOS</span></span>`
+                    : `<span class="photos-status" title="Awaiting Photo Shoot"><i class="bi bi-camera2 text-secondary"></i><span class="visually-hidden" style="font-size: 10px;">STOCK PHOTOS</span></span>`
+                }</td>
+                <td class="text-center text-nowrap">
+                  <div class="action-button-group" role="group" aria-label="Vehicles">
+
+                    <button type="button" id="keytagModalButton" class="btn btn-danger btn-sm action-button" title="Print Key Tag" data-bs-toggle="modal" data-bs-target="#keytagModal" data-bs-stocknumber="${stockNumber}">
+                      <i class="bi bi-tag"></i>
+                      <span style="font-size:8px; text-transform:uppercase;">Key Tags</span>
+                    </button>
+
+                    <button type="button" class="btn btn-danger btn-sm action-button" title="Print Hang Tags" data-bs-toggle="modal" data-bs-target="#HangTagModal" data-bs-stocknumber="${stockNumber}" onclick="openHangTagsModal('${stockNumber}')">
+                      <i class="bi bi-tags"></i>
+                      <span style="font-size:8px; margin-top:-10px; padding:0; text-transform:uppercase;">Hang Tags</span>
+                    </button>
+                    
+                    <a
+                      href="javascript:void(0);" 
+                      type="button" 
+                      class="btn btn-danger btn-sm action-button"
+                      title="Pricing"
+                      onclick="openOverlayModal('${stockNumber}')"
+                    >
+                      <i class="bi bi-card-heading"></i>
+                      <span style="font-size:8px; text-transform:uppercase;">Quote</span>
+                    </a>
+
+                    <a
+                      href="javascript:void(0);" 
+                      type="button" 
+                      class="btn btn-danger btn-sm action-button"
+                      style="display: none;"
+                      title="Pricing"
+                      data-bs-toggle="modal"
+                      data-bs-target="#pricingModal"
+                      onclick="openNewOverlayModal('${stockNumber}')"
+                    >
+                      <i class="bi bi-card-heading"></i>
+                      <span style="font-size:8px; text-transform:uppercase;">Overlay</span>
+                    </a>
+                  </div>  
+                </td>`;
+
+              return row;
+            } catch (error) {
+              console.error(`Error processing item:`, error);
+              return null;
+            }
+          });
+
+          const rows = (await Promise.all(promises)).filter((row) => row !== null);
+          rows.forEach((row) => fragment.appendChild(row));
+        }
+
+        if (startIndex === 0) {
+          DOM.tableBody.innerHTML = "";
+        }
+
+        DOM.tableBody.appendChild(fragment);
+
+        if (endIndex < items.length) {
+          requestAnimationFrame(() => processChunk(endIndex));
+        } else {
+          initializeTableFeatures();
+        }
+      } catch (error) {
+        console.error(`Error in processChunk:`, error);
+      }
+    };
+
+    await processChunk(0);
+  } catch (error) {
+    console.error(`Error in processXMLData:`, error);
+  }
+}
+
 // Helper function to initialize table features
 function initializeTableFeatures() {
   // Add event listeners for sorting
@@ -375,7 +429,6 @@ function filterTable() {
   const usageFilter = document.getElementById("usageFilter")?.value.toUpperCase() || "";
   const photosFilter = document.getElementById("photosFilter")?.value.toUpperCase() || "";
   const updatedFilter = document.getElementById("updatedFilter")?.value || "";
-
   const table = document.getElementById("vehiclesTable");
   const tr = table?.getElementsByTagName("tr");
 
