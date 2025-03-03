@@ -309,9 +309,10 @@ async function processXMLData(xmlDoc) {
         </td>
         <td><span class="badge bg-success p-2 w-100 fw-bold border">${webPrice}</span></td>
         <td>
-          <span class="badge text-secondary p-2 w-100 fw-semibold border">${moment(updated).fromNow()}
-            <span class="small text-muted">${moment(updated).format("MM-DD-YYYY")}</span>
-          </span>
+          <div class="badge flex flex-column text-secondary p-2 fw-semibold border">
+          <div class="small w-100 text-muted">${moment(updated).fromNow()}</div>
+          <div class="small w-100 text-muted">${moment(updated).format("MM-DD-YYYY")}</div>
+          </div>
         </td>
         <td class="text-center">${
           imageElements.length > 10
@@ -395,6 +396,17 @@ function initializeTableFeatures() {
 
   // Count rows after data is loaded
   filterTable();
+}
+
+function sortTableByColumn(header) {
+  const table = document.getElementById("vehiclesTable");
+  const rows = Array.from(table.rows).slice(1); // Skip header row
+  rows.sort((a, b) => {
+    const aValue = a.cells[header.cellIndex].textContent.toLowerCase();
+    const bValue = b.cells[header.cellIndex].textContent.toLowerCase();
+    return aValue.localeCompare(bValue);
+  });
+  table.tBodies[0].append(...rows);
 }
 
 function filterTable() {
@@ -815,61 +827,61 @@ function printNewOverlayIframe() {
   };
 }
 
-function sortTableByColumn(header) {
-  // Skip sorting if it's the checkbox column
-  const columnIndex = Array.from(header.parentElement.children).indexOf(header);
-  if (columnIndex === 0) return; // Exit if it's the checkbox column
+// function sortTableByColumn(header) {
+//   // Skip sorting if it's the checkbox column
+//   const columnIndex = Array.from(header.parentElement.children).indexOf(header);
+//   if (columnIndex === 0) return; // Exit if it's the checkbox column
 
-  const table = document.getElementById("vehiclesTable");
-  const tbody = table.querySelector("tbody");
-  const rows = Array.from(tbody.querySelectorAll("tr"));
-  const isAscending = header.classList.toggle("sort-asc");
+//   const table = document.getElementById("vehiclesTable");
+//   const tbody = table.querySelector("tbody");
+//   const rows = Array.from(tbody.querySelectorAll("tr"));
+//   const isAscending = header.classList.toggle("sort-asc");
 
-  // Remove sort classes from other headers
-  header.parentElement.querySelectorAll("th").forEach((th) => {
-    if (th !== header) {
-      th.classList.remove("sort-asc", "sort-desc");
-    }
-  });
+//   // Remove sort classes from other headers
+//   header.parentElement.querySelectorAll("th").forEach((th) => {
+//     if (th !== header) {
+//       th.classList.remove("sort-asc", "sort-desc");
+//     }
+//   });
 
-  // Toggle sort direction
-  if (!isAscending) {
-    header.classList.add("sort-desc");
-  }
+//   // Toggle sort direction
+//   if (!isAscending) {
+//     header.classList.add("sort-desc");
+//   }
 
-  // Sort the rows
-  const sortedRows = rows.sort((a, b) => {
-    const aValue = a.children[columnIndex]?.textContent.trim() || "";
-    const bValue = b.children[columnIndex]?.textContent.trim() || "";
+//   // Sort the rows
+//   const sortedRows = rows.sort((a, b) => {
+//     const aValue = a.children[columnIndex]?.textContent.trim() || "";
+//     const bValue = b.children[columnIndex]?.textContent.trim() || "";
 
-    // Check if values are numbers
-    const aNum = parseFloat(aValue.replace(/[^0-9.-]+/g, ""));
-    const bNum = parseFloat(bValue.replace(/[^0-9.-]+/g, ""));
+//     // Check if values are numbers
+//     const aNum = parseFloat(aValue.replace(/[^0-9.-]+/g, ""));
+//     const bNum = parseFloat(bValue.replace(/[^0-9.-]+/g, ""));
 
-    if (!isNaN(aNum) && !isNaN(bNum)) {
-      return isAscending ? aNum - bNum : bNum - aNum;
-    }
+//     if (!isNaN(aNum) && !isNaN(bNum)) {
+//       return isAscending ? aNum - bNum : bNum - aNum;
+//     }
 
-    // Handle date sorting
-    const aDate = new Date(aValue);
-    const bDate = new Date(bValue);
-    if (!isNaN(aDate) && !isNaN(bDate)) {
-      return isAscending ? aDate - bDate : bDate - aDate;
-    }
+//     // Handle date sorting
+//     const aDate = new Date(aValue);
+//     const bDate = new Date(bValue);
+//     if (!isNaN(aDate) && !isNaN(bDate)) {
+//       return isAscending ? aDate - bDate : bDate - aDate;
+//     }
 
-    // Default to string comparison
-    return isAscending ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
-  });
+//     // Default to string comparison
+//     return isAscending ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
+//   });
 
-  // Clear and re-append sorted rows
-  while (tbody.firstChild) {
-    tbody.removeChild(tbody.firstChild);
-  }
-  tbody.append(...sortedRows);
+//   // Clear and re-append sorted rows
+//   while (tbody.firstChild) {
+//     tbody.removeChild(tbody.firstChild);
+//   }
+//   tbody.append(...sortedRows);
 
-  // Update row count after sorting
-  updateRowCount();
-}
+//   // Update row count after sorting
+//   updateRowCount();
+// }
 
 function createImageCell(imageUrl) {
   // Base thumbnail URL
