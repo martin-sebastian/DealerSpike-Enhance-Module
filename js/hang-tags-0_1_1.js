@@ -72,7 +72,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return items
           .slice(0, maxItems)
           .map((item) => {
-            return `<li class="list-group-item">${item.Description} <span class="pull-right bold red">${numeral(item.Amount).format(formatAmount)}</span></li>`;
+            return `<li class="list-group-item">${item.Description} <span class="pull-right bold">${numeral(item.Amount).format(formatAmount)}</span></li>`;
           })
           .join("");
       };
