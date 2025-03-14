@@ -9,13 +9,17 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/print-js/1.6.0/print.min.js"></script>
     <link rel="stylesheet" href="../css/bootstrap.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="../css/key-tags.css" />
-    <link rel="stylesheet" href="../css/print.css" />
+    <link rel="stylesheet" href="../css/custom-key-tags.css" />
+    <link rel="stylesheet" href="../css/custom-key-tag-print.css" />
   </head>
   <body class="dots">
     <main>
       <div class="left-panel border-end">
         <div class="left-panel-content mx-4 my-3">
+          <div class="form-check form-switch w-100 d-flex justify-content-start">
+            <input class="form-check-input mx-3" type="checkbox" role="switch" id="customVerticalKeyTagSwitch" onchange="toggleCustomVerticalKeyTag(event)">
+            <label class="form-check-label" for="customVerticalKeyTagSwitch">Vertical Keytag</label>
+          </div>
           <div class="mb-3">
             <label for="search" class="form-label fs-2 fw-bold">Search</label>
             <input type="search" class="form-control" id="search" placeholder="Enter current Stock #" onkeyup="keyTag(this.value)" />
@@ -129,24 +133,24 @@
               <div id="modelNameHorizontal" class="model-name"><span class="placeholder rounded-5 col-8 h-12"></span></div>
               <div id="modelCodeHorizontal" class="model-code"><span class="placeholder rounded-5 col-5 h-12"></span></div>
               <div id="modelColorHorizontal" class="model-color"><span class="placeholder rounded-5 col-8"></span></div>
-              <div id="modelVin" class="model-vin"><span class="placeholder rounded col-10"></span></div>
+              <div id="modelVin" class="model-vin"><span class="placeholder rounded-5 col-10"></span></div>
             </div>
 
             <!-- New rotated label -->
-            <div style="display: none;" id="keytagContainerRight" class="key-tag-container-right">
-              <div class="vertical-content">
+            <div id="keytagContainerRight" class="key-tag-container-right visually-hidden">
+              <div class="vertical-content" style="border: 1px solid red; text-align: center;">
                 <!-- First column (rightmost) -->
-                <div class="year-make-column">
+                <div class="year-manufacturer-column" style="border: 1px solid blue; font-size: 17pt; font-weight: 800; letter-spacing: -1px;">
                   <span id="modelYearVertical"></span>
                   <span id="manufacturerVertical"></span>
                 </div>
                 <!-- Second column -->
-                <div class="vin-column">
-                  <span id="modelVinVertical"></span>
+                <div class="vin-column" style="border: 1px solid green;">
+                  <span id="modelVinVertical" class="model-vin-vertical"></span>
                 </div>
                 <!-- Third column -->
-                <div class="model-column">
-                  <span id="modelNameVertical"></span>
+                <div class="model-column" style="border: 1px solid yellow;">
+                  <span id="modelNameVertical" class="model-name-vertical"></span>
                 </div>
               </div>
             </div>
@@ -156,6 +160,33 @@
     </main>
     
     <script>
+      // Load saved vertical key tag state on page load
+      document.addEventListener('DOMContentLoaded', function() {
+        const savedState = localStorage.getItem("customVerticalKeyTagState");
+        const verticalKeyTagSwitch = document.getElementById("customVerticalKeyTagSwitch");
+        const keytagVerticalContainer = document.getElementById("keytagContainerRight");
+        
+        if (savedState === "true" && verticalKeyTagSwitch && keytagVerticalContainer) {
+          verticalKeyTagSwitch.checked = true;
+          keytagVerticalContainer.classList.remove("visually-hidden");
+        }
+      });
+
+      function toggleCustomVerticalKeyTag(event) {
+        const keytagVerticalContainer = document.getElementById("keytagContainerRight");
+
+        // Save the state to localStorage
+        localStorage.setItem("customVerticalKeyTagState", event.target.checked);
+
+        if (event.target.checked) {
+          // Show both formats when toggle is on
+          keytagVerticalContainer.classList.remove("visually-hidden");
+        } else {
+          // Show only horizontal when toggle is off
+          keytagVerticalContainer.classList.add("visually-hidden");
+        }
+      }
+
       // Function to fetch the data
       async function keyTag(stockNumber) {
         try {
@@ -255,6 +286,7 @@
         }
       }
 
+
       function clearKeyTag() {
         const elements = {
           horizontal: {
@@ -264,15 +296,14 @@
             manufacturer: '<span class="placeholder rounded-5 col-7 h-12"></span>',
             modelName: '<span class="placeholder rounded-5 col-8 h-12"></span>',
             modelCode: '<span class="placeholder rounded-5 col-5 h-12"></span>',
-            modelColor: '<span class="placeholder rounded-5 col-8 h-12"></span>'
+            modelColor: '<span class="placeholder rounded-5 col-8 h-12"></span>',
+            modelVin: '<span class="placeholder rounded-5 col-10 h-12"></span>'
           },
-          // Special cases that don't follow the Horizontal/Vertical pattern
-          special: {
-            modelVin: '<span class="placeholder rounded col-10"></span>',
-            modelVinVertical: '<span class="placeholder rounded-5" style="width: 12px; height: 156px !important;"></span>',
-            modelYearVertical: '<span class="placeholder rounded-5" style="width: 12px; height: 48px !important;"></span>',
-            manufacturerVertical: '<span class="placeholder rounded-5" style="width: 12px; height: 96px !important;"></span>',
-            modelNameVertical: '<span class="placeholder rounded-5" style="width: 12px; height: 96px !important;"></span>'
+          vertical: {
+            modelYear: '<span class="placeholder rounded-5 r-90"></span>',
+            manufacturer: '<span class="placeholder rounded-5 r-90"></span>',
+            modelName: '<span class="placeholder rounded-5 r-90"></span>',
+            modelVin: '<span class="placeholder rounded-5 r-90"></span>'
           },
           inputs: ['search', 'newUsed', 'stockNumber', 'year', 'manufacturerInput', 
                    'modelNameInput', 'modelCodeInput', 'modelColorInput', 'vinInput']
@@ -280,17 +311,20 @@
 
         // Clear horizontal labels
         Object.entries(elements.horizontal).forEach(([key, value]) => {
-          document.getElementById(`${key}Horizontal`).innerHTML = value;
+          const element = document.getElementById(key === 'modelVin' ? key : `${key}Horizontal`);
+          if (element) element.innerHTML = value;
         });
 
-        // Clear special cases
-        Object.entries(elements.special).forEach(([key, value]) => {
-          document.getElementById(key).innerHTML = value;
+        // Clear vertical labels
+        Object.entries(elements.vertical).forEach(([key, value]) => {
+          const element = document.getElementById(`${key}Vertical`);
+          if (element) element.innerHTML = value;
         });
 
         // Clear input fields
         elements.inputs.forEach(id => {
-          document.getElementById(id).value = '';
+          const element = document.getElementById(id);
+          if (element) element.value = '';
         });
       }
 

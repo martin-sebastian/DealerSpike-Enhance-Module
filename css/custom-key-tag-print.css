@@ -1,0 +1,353 @@
+@media print {
+  /* Page Setup */
+  @page {
+    size: 2.125in 1.625in;
+    scale: 1;
+  }
+
+  * {
+    font-family: Arial, Helvetica, sans-serif;
+    print-color-adjust: exact;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    scale: 1;
+    background-color: #fff;
+    print-color-adjust: exact;
+  }
+
+  /* Print Container Setup */
+  #keytagContainer {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 1.5in;
+    height: 2in;
+    padding: 5px;
+    margin: 0;
+    border: none;
+    overflow: hidden;
+  }
+  .year-make-container {
+    font-size: 18pt;
+    line-height: 18pt;
+    font-weight: 700;
+    letter-spacing: -1px;
+  }
+  .model-vin-vertical {
+    font-size: 13pt;
+    line-height: 20px;
+    font-weight: 700;
+  }
+  .model-name-vertical {
+    font-size: 8pt !important;
+    line-height: 12px;
+    font-weight: 800;
+  }
+  .warning-icon-container {
+    text-align: center;
+    font-size: 300%;
+    color: red;
+    padding-top: 80px;
+  }
+  .error-message {
+    text-align: center;
+    font-size: large;
+  }
+  .blank-line {
+    background: #ccc;
+    border-radius: 4px;
+    height: 11px;
+    margin-bottom: 10px;
+  }
+  .placeholder {
+    font-size: 12px !important;
+    line-height: 12px !important;
+    height: 12px !important;
+    background: #ddd !important;
+  }
+  .key-tag-container {
+    padding: 15px 4px 0px 4px;
+    border: solid 1px #ddd;
+    border-radius: 6px;
+    padding: 0px;
+    margin-top: 0px;
+    width: 1.5in;
+    height: 2in;
+    background: #fff !important;
+    zoom: 2;
+  }
+  .keytag-label {
+    font-size: 6px;
+    color: #999;
+    margin: -8px 0 0px 0;
+    padding-left: 0px;
+  }
+  .model-usage {
+    text-align: center;
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 800;
+    border-bottom: solid 1px #eee;
+  }
+  .stock-number {
+    text-align: center;
+    font-size: 18px;
+    line-height: 22px;
+    font-weight: 900;
+    border-bottom: solid 1px #eee;
+  }
+  .model-year {
+    text-align: center;
+    font-size: 18px;
+    line-height: 22px;
+    font-weight: 800;
+    border-bottom: solid 1px #eee;
+  }
+  .manufacturer {
+    text-align: center;
+    font-size: 14px;
+    line-height: 18px;
+    font-weight: 800;
+    border-bottom: solid 1px #eee;
+  }
+  .model-name {
+    text-align: center;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 800;
+    white-space: nowrap;
+    overflow: hidden;
+    border-bottom: solid 1px #eee;
+  }
+  .model-code {
+    text-align: center;
+    font-size: 14px;
+    line-height: 18px;
+    font-weight: 800;
+    border-bottom: solid 1px #eee;
+  }
+  .model-color {
+    text-align: center;
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 800;
+    white-space: nowrap;
+    overflow: hidden;
+    border-bottom: solid 1px #eee;
+  }
+  .model-vin {
+    text-align: center;
+    font-size: 12px;
+    font-weight: 800;
+    line-height: 18px;
+  }
+  .model-usage::after {
+    display: block;
+    text-align: left;
+    padding-left: 2px;
+    margin-bottom: 0px;
+    margin-top: -4px;
+    content: "USAGE";
+    font-size: 6px !important;
+    line-height: 8px;
+    color: #ddd;
+  }
+  .stock-number::after {
+    display: block;
+    text-align: left;
+    padding-top: 2px;
+    padding-left: 2px;
+    margin-bottom: 0px;
+    margin-top: -4px;
+    content: "STOCK#";
+    font-size: 6px !important;
+    line-height: 6px;
+    color: #ddd;
+  }
+  .model-year::after {
+    display: block;
+    text-align: left;
+    padding-left: 2px;
+    margin-bottom: 0px;
+    margin-top: -4px;
+    content: "YEAR";
+    font-size: 6px !important;
+    line-height: 6px;
+    color: #ddd;
+  }
+  .manufacturer::after {
+    display: block;
+    text-align: left;
+    padding-left: 2px;
+    margin-bottom: 0px;
+    margin-top: -4px;
+    content: "MANUF.";
+    font-size: 6px !important;
+    line-height: 8px;
+    color: #ddd;
+  }
+  .model-name::after {
+    display: block;
+    text-align: left;
+    padding-left: 2px;
+    margin-bottom: 0px;
+    margin-top: -4px;
+    content: "MODEL";
+    font-size: 6px !important;
+    line-height: 8px;
+    color: #ddd;
+  }
+  .model-code::after {
+    display: block;
+    text-align: left;
+    padding-left: 2px;
+    margin-bottom: 0px;
+    margin-top: -4px;
+    content: "CODE";
+    font-size: 6px !important;
+    line-height: 8px;
+    color: #ddd;
+  }
+  .model-color::after {
+    display: block;
+    text-align: left;
+    padding-top: 2px;
+    padding-left: 2px;
+    margin-bottom: 0px;
+    margin-top: -4px;
+    content: "COLOR";
+    font-size: 6px !important;
+    line-height: 8px;
+    color: #ddd;
+  }
+  .model-vin::after {
+    display: block;
+    text-align: left;
+    padding-top: 2px;
+    padding-left: 2px;
+    margin-bottom: 0px;
+    margin-top: -4px;
+    content: "VIN";
+    font-size: 6px !important;
+    line-height: 6px;
+    color: #ddd;
+  }
+
+  /* Print Visibility Controls */
+  body * {
+    visibility: hidden;
+  }
+
+  #keytagContainer,
+  #keytagContainer * {
+    visibility: visible !important;
+  }
+
+  #keytagContainer {
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: block !important;
+    width: 1.5in;
+    height: 2in;
+  }
+
+  /* Key Tag Print Adjustments */
+  .key-tag-container {
+    zoom: 1;
+  }
+
+  #keytagContainer div {
+    font-size: 7pt;
+    line-height: 1.1;
+  }
+
+  #keytagContainer #stockNumber {
+    font-size: 9pt;
+    font-weight: bold;
+  }
+
+  /* Page Break Controls */
+  #keytagContainerLeft,
+  .key-tag-container-left {
+    page-break-after: always;
+  }
+
+  /* Label Status Colors */
+  .label-success,
+  .label-warning {
+    background-color: #5cb85c !important;
+    color: #fff !important;
+    border: 1px solid #5cb85c !important;
+  }
+
+  .label-danger {
+    background-color: #dc3545 !important;
+    color: #fff !important;
+    border: 1px solid #dc3545 !important;
+  }
+
+  .label-default {
+    background-color: #777 !important;
+    color: #fff !important;
+    border: 1px solid #777 !important;
+  }
+
+  /* Right tag vertical text layout */
+  .key-tag-container-right {
+    display: block;
+    width: 1.5in !important;
+    height: 2in !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.1in;
+    page-break-after: always;
+  }
+
+  /* Container for vertical columns */
+  .vertical-content {
+    display: flex;
+    flex-direction: row-reverse;
+    height: 95%;
+    gap: 0.15in;
+    align-items: center;
+  }
+
+  /* Individual vertical columns */
+  .year-make-column,
+  .vin-column,
+  .model-column {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    transform: rotate(0deg);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  /* Specific text sizes and spacing */
+  .year-make-column {
+    font-size: 14pt;
+    font-weight: bold;
+  }
+
+  .vin-column {
+    font-size: 12pt;
+  }
+
+  .model-column {
+    font-size: 12pt;
+  }
+
+  /* Add spacing between items in year-make column */
+  .year-make-column span {
+    margin: 0.1in 0;
+  }
+}

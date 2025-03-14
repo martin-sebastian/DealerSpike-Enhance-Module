@@ -285,18 +285,11 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title text-capitalize" id="keyTagsByStockNumberModalLabel"><i class="bi bi-tag me-2 icon-circle text-white"></i>CREATE KEY TAGS</h5>
+            
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body m-0 p-0 overflow-hidden">
-            <iframe id="keyTagsByStockNumberModal" src="./key-tags/index.html" frameborder="0" class="shadow" style="width: 100%; min-height: 78vh; height: 100%; border: 0; margin: 0; padding: 0">
-              <link rel="stylesheet" href="./css/bootstrap.css">
-              <script>
-              // Check if Bootstrap is already available from parent
-              if (typeof window.parent.bootstrap === 'undefined') {
-                // Load Bootstrap only if not available from parent
-                document.write('<script src="./js/bootstrap.bundle.js"><\/script>');
-              }
-              </script>
+            <iframe id="keyTagsByStockNumberiFrame" src="./key-tags/index.html" frameborder="0" style="width: 100%; min-height: 78vh; height: 100%; border: 0; margin-bottom: -10px; margin-top: 0px; padding: 0">
             </iframe>
           </div>
           <div class="modal-footer">
