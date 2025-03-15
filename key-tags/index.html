@@ -8,7 +8,7 @@
     <!-- Latest compiled and minified CSS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/print-js/1.6.0/print.min.js"></script>
     <link rel="stylesheet" href="../css/bootstrap.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="../css/bootstrap-icons.css">
     <link rel="stylesheet" href="../css/custom-key-tags.css" />
   </head>
   <body class="dots">
@@ -19,6 +19,7 @@
             <input class="form-check-input mx-3" type="checkbox" role="switch" id="customVerticalKeyTagSwitch" onchange="toggleCustomVerticalKeyTag(event)">
             <label class="form-check-label" for="customVerticalKeyTagSwitch">Vertical Keytag</label>
           </div>
+          <hr class="my-3">
           <div class="mb-3">
             <label for="search" class="form-label fs-2 fw-bold">Search</label>
             <input type="search" class="form-control" id="search" placeholder="Enter current Stock #" onkeyup="keyTag(this.value)" />
@@ -337,7 +338,8 @@
         // Create a temporary container for printing
         const printContainer = document.createElement('div');
         printContainer.id = 'printContainer';
-        printContainer.style.width = '1.5in';
+        printContainer.style.width = '1.625in';
+        printContainer.style.height = '2.125in';
         
         // Clone the horizontal tag and its content
         const horizontalTag = document.getElementById('keytagContainerLeft').cloneNode(true);
@@ -365,98 +367,38 @@
         printJS({
           printable: 'printContainer',
           type: 'html',
-          css: ['../css/bootstrap.css', '../css/custom-key-tags.css'],
+          //css: ['../css/bootstrap.css', '../css/custom-key-tags.css'],
           style: `
             @page {
-              size: 1.5in 2in;
+              size: 1.625in 2.125in;
+              scale: 1;
               margin: 0;
               padding: 0;
             }
             @media print {
               html, body {
+                font-family: 'Roboto', sans-serif !important;
+                font-weight: 600 !important;
+                font-size: 9pt !important;
+                letter-spacing: -0.5px !important;
                 margin: 0 !important;
                 padding: 0 !important;
-                width: 1.5in !important;
-                height: 2in !important;
+                width: 1.625in !important;
+                height: 2.125in !important;
               }
               #printContainer {
-                width: 1.5in !important;
+                width: 1.625in !important;
+                height: 2.125in !important;
               }
-              .print-page {
-                width: 1.5in !important;
-                height: 2in !important;
-                padding: 0.1in !important;
-                page-break-after: always !important;
-                display: block !important;
-                position: relative !important;
-                background: white !important;
-              }
+
               /* Horizontal tag styles */
-              .model-usage { font-size: 10pt !important; font-weight: bold !important; }
-              .stock-number { font-size: 16pt !important; font-weight: bold !important; }
-              .model-year, .manufacturer, .model-name { font-size: 10pt !important; }
-              .model-code, .model-color, .model-vin { font-size: 8pt !important; }
+              .model-usage { font-size: 10pt !important; font-weight: 700 !important; }
+              .stock-number { font-size: 16pt !important; font-weight: 700 !important; }
+              .model-year, .manufacturer, .model-name { font-size: 10pt !important; font-weight: 700 !important; }
+              .model-code, .model-color, .model-vin { font-size: 8pt !important; font-weight: 700 !important; }
               
               /* Vertical tag styles */
-              .vertical-content {
-                width: 100% !important;
-                height: 100% !important;
-                writing-mode: vertical-rl !important;
-                text-orientation: mixed !important;
-                display: flex !important;
-                flex-direction: row !important;
-                justify-content: space-between !important;
-                align-items: center !important;
-                transform: rotate(180deg) !important;
-              }
-              .year-manufacturer-column {
-                height: 100% !important;
-                display: flex !important;
-                flex-direction: column !important;
-                justify-content: flex-start !important;
-                align-items: flex-start !important;
-                font-size: 17pt !important;
-                font-weight: 800 !important;
-                letter-spacing: -1px !important;
-              }
-              .vin-column {
-                height: 100% !important;
-                display: flex !important;
-                align-items: center !important;
-              }
-              .model-column {
-                height: 100% !important;
-                display: flex !important;
-                align-items: center !important;
-              }
-              .model-vin-vertical {
-                font-size: 12pt !important;
-                line-height: 1 !important;
-                font-weight: 500 !important;
-                white-space: nowrap !important;
-              }
-              .model-name-vertical {
-                font-size: 9pt !important;
-                line-height: 1 !important;
-                font-weight: 700 !important;
-                white-space: nowrap !important;
-              }
-              #modelYearVertical,
-              #manufacturerVertical {
-                display: block !important;
-                white-space: nowrap !important;
-                margin: 0.05in 0 !important;
-              }
-              /* Hide placeholders in print */
-              .placeholder {
-                display: none !important;
-              }
-              /* Ensure content is visible */
-              * {
-                color: black !important;
-                visibility: visible !important;
-                opacity: 1 !important;
-              }
+              .model-year-vertical, .manufacturer-vertical, .model-name-vertical, .model-vin-vertical { font-size: 10pt !important; font-weight: 700 !important; }
             }
           `,
           documentTitle: 'Key Tags',
