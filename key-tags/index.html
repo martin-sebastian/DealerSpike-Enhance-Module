@@ -116,9 +116,9 @@
           </div>
           <button class="btn btn-secondary mr-1 text-uppercase text-light fw-bold" onclick="clearKeyTag()">Clear</button>
           <button type="button" class="btn btn-danger w-50 text-uppercase text-light fw-bold" 
-          onclick="printKeyTags()">
-          Print Key Tag
-        </button>
+            onclick="printKeyTags()">
+            Print Key Tag
+          </button>
         </div>
       </div>
       <div class="right-panel d-flex flex-column justify-content-center align-items-center">
@@ -137,22 +137,10 @@
             </div>
 
             <!-- New rotated label -->
-            <div id="keytagContainerRight" class="key-tag-container-right visually-hidden">
-              <div class="vertical-content" style="text-align: center;">
-                <!-- First column (rightmost) -->
-                <div class="year-manufacturer-column" style="font-size: 17pt; font-weight: 800; letter-spacing: -1px;">
-                  <span id="modelYearVertical"></span>
-                  <span id="manufacturerVertical"></span>
-                </div>
-                <!-- Second column -->
-                <div class="vin-column">
-                  <span id="modelVinVertical" class="model-vin-vertical"></span>
-                </div>
-                <!-- Third column -->
-                <div class="model-column">
-                  <span id="modelNameVertical" class="model-name-vertical"></span>
-                </div>
-              </div>
+            <div id="keytagContainerRight" class="key-tag-container-right" style="writing-mode: vertical-rl;">
+              <div id="yearManufacturerVertical" class="year-manufacturer-vertical" style="text-align: center;"></div>
+              <div id="modelVinVertical" class="model-vin-vertical" style="text-align: center;"></div>
+              <div id="modelNameVertical" class="model-name-vertical" style="text-align: center;"></div>
             </div>
           </div>
         </div>
@@ -202,6 +190,7 @@
 
           const data = await response.json();
           console.log("Data fetched from portal successfully:", data);
+          const yearManufacturerVertical = data.ModelYear + " " + data.Manufacturer;
 
  
 
@@ -216,14 +205,12 @@
             document.getElementById("modelColorHorizontal").innerHTML = data.Color || "N/A";
             document.getElementById("modelVin").innerHTML = data.VIN || "N/A";
 
-            document.getElementById("modelYearVertical").innerHTML = data.ModelYear || "N/A";
-            document.getElementById("manufacturerVertical").innerHTML = data.Manufacturer || "N/A";
+            document.getElementById("yearManufacturerVertical").innerHTML = data.ModelYear + " " + data.Manufacturer || "N/A";
             document.getElementById("modelNameVertical").innerHTML = data.ModelName || "N/A";
             document.getElementById("modelVinVertical").innerHTML = data.VIN || "N/A";
 
             // Check if elements exist before setting innerHTML
-            const modelYearVertical = document.getElementById("modelYearVertical");
-            const manufacturerVertical = document.getElementById("manufacturerVertical");
+            const yearManufacturerVertical = document.getElementById("yearManufacturerVertical");
             const modelNameVertical = document.getElementById("modelNameVertical");
             const modelVinVertical = document.getElementById("modelVinVertical");
 
@@ -300,10 +287,9 @@
             modelVin: '<span class="placeholder rounded-5 col-10 h-12"></span>'
           },
           vertical: {
-            modelYear: '<span class="placeholder rounded-5 r-90"></span>',
-            manufacturer: '<span class="placeholder rounded-5 r-90"></span>',
-            modelName: '<span class="placeholder rounded-5 r-90"></span>',
-            modelVin: '<span class="placeholder rounded-5 r-90"></span>'
+            yearManufacturer: '<span class="placeholder rounded-5"></span>',
+            modelName: '<span class="placeholder rounded-5"></span>',
+            modelVin: '<span class="placeholder rounded-5"></span>'
           },
           inputs: ['search', 'newUsed', 'stockNumber', 'year', 'manufacturerInput', 
                    'modelNameInput', 'modelCodeInput', 'modelColorInput', 'vinInput']
@@ -344,8 +330,8 @@
         // Clone the horizontal tag and its content
         const horizontalTag = document.getElementById('keytagContainerLeft').cloneNode(true);
         horizontalTag.classList.add('print-page');
-        horizontalTag.style.width = '1.5in';
-        horizontalTag.style.height = '2in';
+        horizontalTag.style.width = '1.625in';
+        horizontalTag.style.height = '2.125in';
         horizontalTag.style.pageBreakAfter = 'always';
         printContainer.appendChild(horizontalTag);
 
@@ -355,52 +341,76 @@
           const verticalTag = verticalTagContainer.cloneNode(true);
           verticalTag.classList.remove('visually-hidden');
           verticalTag.classList.add('print-page');
-          verticalTag.style.width = '1.5in';
-          verticalTag.style.height = '2in';
+          verticalTag.style.width = '1.625in';
+          verticalTag.style.height = '2.125in';
           printContainer.appendChild(verticalTag);
         }
+
+        // Apply print styles
+        const printStyles = `
+          @page {
+            size: 1.625in 2.125in;
+            scale: 1;
+            margin: 0.125in;
+            padding: 0;
+          }
+          .key-tag-container-left {
+            border: solid 1px #ddd;
+            border-radius: 6pt;
+            padding: 0.125in;
+            margin: 0.125in;
+            width: 1.625in;
+            height: 2.125in;
+            background: #fff !important;
+            zoom: 1;
+          }
+          .key-tag-container-right {
+            border: solid 1px #ddd;
+            border-radius: 6px;
+            padding: 0px;
+            margin-top: 0px;
+            width: 1.5in;
+            height: 2in;
+            background: #fff !important;
+            zoom: 1;
+          }
+          #printContainer {
+            text-align: center;
+            display: inline-block;
+            width: 1.5in !important;
+            height: 2.0in !important;
+            margin: 0 auto !important;
+            background: white !important;
+          }
+          .print-page {
+            width: 1.5in !important;
+            height: 2.0in !important;
+            margin: 0.0in !important;
+            padding: 0.02in !important;
+            border: 1px solid #000 !important;
+            background: white !important;
+          }
+         
+          /* Hide placeholders in print */
+          .placeholder {
+            display: none !important;
+          }
+        `;
+
+        // Create style element
+        const styleElement = document.createElement('style');
+        styleElement.textContent = printStyles;
+        printContainer.appendChild(styleElement);
 
         // Add the container to the body temporarily
         document.body.appendChild(printContainer);
 
-        // Apply print styles
+        // Print using printJS
         printJS({
-          printable: 'printContainer',
+          printable: printContainer,
           type: 'html',
-          //css: ['../css/bootstrap.css', '../css/custom-key-tags.css'],
-          style: `
-            @page {
-              size: 1.625in 2.125in;
-              scale: 1;
-              margin: 0;
-              padding: 0;
-            }
-            @media print {
-              html, body {
-                font-family: 'Roboto', sans-serif !important;
-                font-weight: 600 !important;
-                font-size: 9pt !important;
-                letter-spacing: -0.5px !important;
-                margin: 0 !important;
-                padding: 0 !important;
-                width: 1.625in !important;
-                height: 2.125in !important;
-              }
-              #printContainer {
-                width: 1.625in !important;
-                height: 2.125in !important;
-              }
-
-              /* Horizontal tag styles */
-              .model-usage { font-size: 10pt !important; font-weight: 700 !important; }
-              .stock-number { font-size: 16pt !important; font-weight: 700 !important; }
-              .model-year, .manufacturer, .model-name { font-size: 10pt !important; font-weight: 700 !important; }
-              .model-code, .model-color, .model-vin { font-size: 8pt !important; font-weight: 700 !important; }
-              
-              /* Vertical tag styles */
-              .model-year-vertical, .manufacturer-vertical, .model-name-vertical, .model-vin-vertical { font-size: 10pt !important; font-weight: 700 !important; }
-            }
-          `,
+          css: ['../css/bootstrap.css', '../css/custom-key-tags.css'],
+          style: printStyles,
           documentTitle: 'Key Tags',
           onLoadingEnd: function() {
             // Clean up - remove the temporary container
