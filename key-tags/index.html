@@ -137,10 +137,10 @@
             </div>
 
             <!-- New rotated label -->
-            <div id="keytagContainerRight" class="key-tag-container-right" style="writing-mode: vertical-rl;">
-              <div id="yearManufacturerVertical" class="year-manufacturer-vertical" style="text-align: center;"></div>
-              <div id="modelVinVertical" class="model-vin-vertical" style="text-align: center;"></div>
-              <div id="modelNameVertical" class="model-name-vertical" style="text-align: center;"></div>
+            <div id="keytagContainerRight" class="key-tag-container-right">
+              <div id="yearManufacturerVertical" class="year-manufacturer-vertical"></div>
+              <div id="modelVinVertical" class="model-vin-vertical"></div>
+              <div id="modelNameVertical" class="model-name-vertical"></div>
             </div>
           </div>
         </div>
@@ -349,7 +349,7 @@
         // Apply print styles
         const printStyles = `
           @page {
-            size: 1.625in 2.125in;
+            size: 1.5in 2.0in;
             scale: 1;
             margin: 0.125in;
             padding: 0;
@@ -362,9 +362,11 @@
             width: 1.625in;
             height: 2.125in;
             background: #fff !important;
+            overflow: hidden;
             zoom: 1;
           }
           .key-tag-container-right {
+            writing-mode: vertical-rl;
             border: solid 1px #ddd;
             border-radius: 6px;
             padding: 0px;
@@ -372,7 +374,14 @@
             width: 1.5in;
             height: 2in;
             background: #fff !important;
+            overflow: hidden;
             zoom: 1;
+            
+          }
+          .year-manufacturer-vertical {
+            font-size: 18pt !important;
+            line-height: 18pt;
+            font-weight: 700;
           }
           #printContainer {
             text-align: center;
