@@ -5,117 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vehicle Quote</title>
     <link href="../css/bootstrap.css" rel="stylesheet" />
-    <link href="../css/style.css" rel="stylesheet" />
     <link rel="stylesheet" href="../css/font-awesome.css" />
-    <style>
-      /* Print settings */
-      @page {
-        size: letter;
-        margin: 0.25in;
-      }
-
-      body {
-        background: #f0f0f0;
-        margin: 0;
-        padding: 1rem;
-      }
-
-      /* Page container mimics paper size */
-      .page-container {
-        width: 8.5in;
-        min-height: 11in;
-        margin: 0 auto;
-        background: white;
-        padding: 0.25in;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      }
-
-      /* Main content layout */
-      .content-container {
-        display: flex;
-        gap: 0.25in;
-        margin-top: 0.25in;
-      }
-
-      /* Column sizing */
-      .left-column {
-        width: 4in;
-      }
-
-      .right-column {
-        width: 4in;
-      }
-      .pull-right {
-        float: right;
-      }
-
-      /* Component spacing */
-      .trade-in-container,
-      .unit-info-container,
-      .price-container,
-      .payment-calculator,
-      .pricing-details {
-        margin-bottom: 0.25in;
-      }
-
-      /* Carousel sizing */
-      .carousel-container {
-        width: 100%;
-        margin-bottom: 0.25in;
-      }
-
-      .carousel-container img {
-        width: 100%;
-        height: auto;
-        object-fit: cover;
-      }
-
-      .card {
-        width: 100%;
-        margin: 5px 0;
-        padding: 0.125in;
-      }
-
-      /* Price display */
-      .price-payment-container {
-        text-align: center;
-        padding: 0.125in;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-      }
-
-      /* Print specific styles */
-      @media print {
-        body {
-          margin: 0;
-          padding: 0;
-          background: white;
-        }
-
-        .page-container {
-          width: 8in;
-          box-shadow: none;
-          padding: 0.25in;
-        }
-
-        .no-print {
-          display: none;
-        }
-
-        /* Force page break if content exceeds one page */
-        .page-break {
-          page-break-before: always;
-        }
-      }
-
-      #page-loader {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        z-index: 1000;
-      }
-    </style>
+    <link rel="stylesheet" href="../css/quote.css" />
   </head>
   <body class="dots">
     <div class="page-container">
@@ -124,38 +15,33 @@
       </header>
 
       <div class="content-container">
-        <!-- Left Column -->
-        <div class="left-column">
-          <div class="carousel-container">
-            <!-- Images will be inserted here -->
-          </div>
+        <div class="carousel-container card">
+          <!-- Images will be inserted here -->
+        </div>
 
-          <div class="trade-in-container">
-            <!-- Trade-in form will be inserted here -->
-          </div>
+        <div class="trade-in-container visually-hidden">
+          <!-- Trade-in form will be inserted here -->
+        </div>
 
-          <div class="unit-info-container">
-            <!-- Unit information will be inserted here -->
-          </div>
+        <div class="unit-info-container">
+          <!-- Unit information will be inserted here -->
         </div>
 
         <!-- Right Column -->
-        <div class="right-column">
-          <div class="price-container">
-            <!-- Price and savings will be inserted here -->
-          </div>
+        <div class="price-container">
+          <!-- Price and savings will be inserted here -->
+        </div>
 
-          <div class="payment-calculator">
-            <!-- Payment calculator will be inserted here -->
-          </div>
+        <div class="payment-calculator">
+          <!-- Payment calculator will be inserted here -->
+        </div>
 
-          <div class="pricing-details">
-            <!-- MAT items, accessories, etc will be inserted here -->
-          </div>
+        <div class="pricing-details">
+          <!-- MAT items, accessories, etc will be inserted here -->
+        </div>
 
-          <div class="otd-price">
-            <!-- OTD price will be inserted here -->
-          </div>
+        <div class="otd-price">
+          <!-- OTD price will be inserted here -->
         </div>
       </div>
     </div>

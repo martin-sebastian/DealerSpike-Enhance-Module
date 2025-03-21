@@ -1,0 +1,54 @@
+body {
+  background: #f0f0f0;
+  margin: 0;
+  padding: 1rem;
+}
+
+/* Page container mimics paper size */
+.page-container {
+  width: 450px;
+  min-height: auto;
+  margin: 0 auto;
+  background: white;
+  padding: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Main content layout */
+.content-container {
+  border: 1px solid red;
+}
+
+/* Carousel sizing */
+.carousel-container {
+  width: 100%;
+  margin-bottom: 0.25in;
+}
+
+.carousel-container img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.card {
+  width: 100%;
+  margin: 5px 0;
+  padding: 5px;
+}
+
+/* Price display */
+.price-payment-container {
+  text-align: center;
+  padding: 5px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+#page-loader {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+}
