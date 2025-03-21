@@ -22,7 +22,8 @@
           <hr class="my-3">
           <div class="mb-3">
             <label for="search" class="form-label fs-2 fw-bold">Search</label>
-            <input type="search" class="form-control" id="search" placeholder="Enter current Stock #" onkeyup="keyTag(this.value)" />
+            <input type="search" class="form-control" id="search" placeholder="Enter Stock #" onkeyup="keyTag(this.value)" />
+            <label for="search" class="w-100 small text-center text-muted form-label opacity-75">Searches Digital IQ Portal database</label>
           </div>
           <div class="w-100 text-center py-2">
             <div style="border: 1px solid #eee; margin-bottom: -15px" /></div>
@@ -124,7 +125,7 @@
       <div class="right-panel d-flex flex-column justify-content-center align-items-center">
         <div id="message" class="message-container"></div>
         <div class="main-content">
-          <div id="keytagContainer" class="d-flex flex-row justify-content-center align-items-center">
+          <div id="keytagsContainer" class="d-flex flex-row justify-content-center align-items-center">
             <div id="keytagContainerLeft" class="key-tag-container-left">
               <div id="modelUsageHorizontal" class="model-usage"><span class="placeholder rounded-5 col-4"></span></div>
               <div id="stockNumberHorizontal" class="stock-number"><span class="placeholder rounded-5 col-8 h-12"></span></div>
@@ -287,9 +288,9 @@
             modelVin: '<span class="placeholder rounded-5 col-10 h-12"></span>'
           },
           vertical: {
-            yearManufacturer: '<span class="placeholder rounded-5"></span>',
-            modelName: '<span class="placeholder rounded-5"></span>',
-            modelVin: '<span class="placeholder rounded-5"></span>'
+            yearManufacturer: '<span class="placeholder rounded-5" style="writing-mode: vertical-rl;"></span>',
+            modelName: '<span class="placeholder rounded-5" style="writing-mode: vertical-rl;"></span>',
+            modelVin: '<span class="placeholder rounded-5" style="writing-mode: vertical-rl;"></span>'
           },
           inputs: ['search', 'newUsed', 'stockNumber', 'year', 'manufacturerInput', 
                    'modelNameInput', 'modelCodeInput', 'modelColorInput', 'vinInput']
@@ -348,40 +349,63 @@
 
         // Apply print styles
         const printStyles = `
+          @page :first {
+            size: 1.625in 2.125in;
+            margin-left: 0.06in;
+            margin-top: 0.065in;
+            margin-bottom: 0.062in;
+            margin-right: 0.06in;
+            page-orientation: landscape;
+          }
           @page {
-            size: 1.5in 2.0in;
-            scale: 1;
-            margin: 0.125in;
-            padding: 0;
+            size: 1.625in 2.125in;
+            margin-left: 0.06in;
+            margin-top: 0.062in;
+            margin-bottom: 0.062in;
+            margin-right: 0.06in;
+            page-orientation: landscape;
           }
           .key-tag-container-left {
-            border: solid 1px #ddd;
+            border: dashed 1px #ddd;
             border-radius: 6pt;
-            padding: 0.125in;
-            margin: 0.125in;
-            width: 1.625in;
-            height: 2.125in;
+            width: 1.5in;
+            height: 2in;
+            margin: 0 auto;
             background: #fff !important;
-            overflow: hidden;
             zoom: 1;
+            page-break-after: always;
           }
           .key-tag-container-right {
             writing-mode: vertical-rl;
-            border: solid 1px #ddd;
+            border: dashed 1px #ddd;
             border-radius: 6px;
-            padding: 0px;
-            margin-top: 0px;
             width: 1.5in;
             height: 2in;
+            margin: 0 auto;
             background: #fff !important;
-            overflow: hidden;
             zoom: 1;
-            
+            page-break-before: always;
           }
           .year-manufacturer-vertical {
+            text-orientation: mixed;
+            text-align: center;
             font-size: 18pt !important;
-            line-height: 18pt;
-            font-weight: 700;
+            font-weight: 700 !important;
+            letter-spacing: -1px !important;
+          }
+          .model-vin-vertical {
+            text-orientation: mixed;
+            text-align: center !important;
+            font-size: 13pt !important;
+            line-height: 13pt !important;
+            font-weight: 700 !important;
+          }
+          .model-name-vertical {
+            text-orientation: mixed;
+            text-align: center !important;
+            font-size: 13pt !important;
+            line-height: 13pt !important;
+            font-weight: 700 !important;
           }
           #printContainer {
             text-align: center;
@@ -396,7 +420,7 @@
             height: 2.0in !important;
             margin: 0.0in !important;
             padding: 0.02in !important;
-            border: 1px solid #000 !important;
+            border: 1px dashed #ddd !important;
             background: white !important;
           }
          
