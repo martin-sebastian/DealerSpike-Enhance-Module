@@ -22,9 +22,18 @@
             <a class="navbar-brand" href="./">
               <img id="logo" class="me-2 pt-1" src="./img/fom-app-logo-01.svg" alt="Logo" width="180" height="30.6" />
             </a>
-            <button type="button" class="btn btn-danger btn-sm" title="Create custom tag" onclick="openKeyTagsByStockNumberModal('${stockNumber}')">
-              <i class="bi bi-plus-circle"></i> NEW
-            </button>
+          </div>
+          <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+            <button type="button" class="btn btn-outline-secondary" title="Create custom key tag" onclick="openKeyTagsByStockNumberModal('${stockNumber}')"><i class="bi bi-tag"></i></button>
+            <div class="btn-group" role="group">
+              <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                New
+              </button>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#" title="Create custom key tag" onclick="openKeyTagsByStockNumberModal('${stockNumber}')"><i class="bi bi-tag"></i> Custom Key Tag</a></li>
+                <li><a class="dropdown-item disabled" href="#"><i class="bi bi-tags"></i> Custom Hang Tags</a></li>
+              </ul>
+            </div>
           </div>
 
 
@@ -193,12 +202,14 @@
               <button type="button" class="btn-close btn-primary" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body m-0 p-0 d-print-none">
-              <iframe id="overlayIframe" src="" frameborder="0" class="w-100 h-screen" style="max-height: 100%; min-height: 99%; border: 0; margin: 0; padding: 0;"></iframe>
+              <iframe id="overlayIframe" src="" frameborder="0" class="w-100 h-100"></iframe>
             </div>
             <div class="modal-footer d-print-none">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Export as Image</button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Export PDF</button>
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
               <button type="button" class="btn btn-danger" onclick="printOverlayIframe()">
-                <i class="bi bi-printer me-2"></i> Print
+                <i class="bi bi-printer"></i>
               </button>
             </div>
           </div>

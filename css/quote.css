@@ -3,6 +3,17 @@ body {
   margin: 0;
   padding: 1rem;
 }
+.dots {
+  background-image: radial-gradient(circle, #ddd 1px, transparent 1px);
+  background-size: 15px 15px;
+}
+.bg-white {
+  background: #fff;
+}
+
+.hidden {
+  display: none !important;
+}
 
 /* Page container mimics paper size */
 .page-container {
@@ -16,7 +27,11 @@ body {
 
 /* Main content layout */
 .content-container {
-  border: 1px solid red;
+  border: 0px solid red;
+}
+
+.vehicle-title {
+  font-weight: 900;
 }
 
 /* Carousel sizing */

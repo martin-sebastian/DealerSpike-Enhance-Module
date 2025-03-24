@@ -118,7 +118,7 @@ console.log("Script starting...");
 
 // Define tradeInFormTemplate
 const tradeInFormTemplate = `
-  <div class="trade-in-form">
+  <div class="trade-in-form hidden">
     <!-- Your trade-in form HTML goes here -->
     <h3>Trade-In Form</h3>
     <form>
@@ -541,48 +541,6 @@ document.addEventListener("DOMContentLoaded", function () {
         i++;
       }
 
-      // Add some CSS to style the new elements
-      const styleElement = document.createElement("style");
-      styleElement.textContent = `
-        .feature-caption {
-          background: rgba(0, 0, 0, 0.7);
-          border-radius: 4px;
-          padding: 10px;
-        }
-        
-        .accessory-item {
-          display: flex;
-          align-items: center;
-          padding: 8px 0;
-          border-bottom: 1px solid #eee;
-        }
-        
-        .accessory-item.has-image {
-          background-color: #f8f9fa;
-        }
-        
-        .included-text {
-          color: #28a745;
-          font-weight: bold;
-        }
-        
-        .view-feature {
-          color: #666;
-          min-width: 20px;
-        }
-        
-        .view-feature:hover {
-          color: #000;
-        }
-        
-        .accessory-content {
-          display: flex;
-          justify-content: space-between;
-          width: 100%;
-        }
-      `;
-      document.head.appendChild(styleElement);
-
       // Update the carousel container template
       var carousel = `
     <div class="carousel-container">
@@ -625,12 +583,11 @@ document.addEventListener("DOMContentLoaded", function () {
       var muHeaderTemplate = `
     <div class="vehicle-header-container">
       <div class="vehicle-name-container">
-        <h3 class="vehicle-title" style="margin: 15px 0 0 0; font-weight: 900;">${prodTitle}</h3>
-        <h4 class="vehicle-subtitle" style="margin: 1px 0 15px 0; padding:0;">
+        <h4 class="vehicle-title my-0">${prodTitle}</h4>
+        <h5 class="vehicle-subtitle">
           <small>Model: </small>${data.ModelCode} 
-          <small class="d-none d-sm-inline">VIN: </small><span class="d-none d-sm-inline">${vinNumber} </span>
           <small>Stock Number: </small>${stockNum}
-        </h4>
+        </h5>
       </div>
     </div>
     `;
@@ -786,7 +743,7 @@ document.addEventListener("DOMContentLoaded", function () {
         </div>
         
         <div class="content-container">
-          <div class="left-column">
+          <div class="mb-2">
             <div class="carousel-container">
               ${carousel}
             </div>
@@ -796,39 +753,35 @@ document.addEventListener("DOMContentLoaded", function () {
             </div>
             
             <div class="unit-info-container">
-              <h3 class="text-left bold">Information</h3>
+              <h5 class="text-left small mb-0 text-muted">Unit Information</h5>
               <ul class="list-group">
                 ${unitNumbersTemplate}
               </ul>
             </div>
           </div>
 
-          <div class="right-column">
+          <div class="mb-2">
+          <h5 class="text-left small mb-0 text-muted">Estimated Payment</h5>
             <!-- Price and Payment Section -->
             ${priceContainer}
             
             <!-- Pricing Details -->
-            <div class="pricing-details">
+            <div class="card hidden">
               ${tradeInItemsTemplate}
               ${matItemsTemplate}
               ${discountItemsTemplate}
               ${accessoryItemsTemplate}
-              <div class="card">
-                <h5 class="card-title">Fees</h5>
-                ${OTDItemsTemplate}
-              </div>
+            </div>
+            <div class="card">
+              ${OTDItemsTemplate}
             </div>
             
             <!-- OTD Price -->
-            <div class="otd-price">
-              <ul class="list-group">
-                <li class="list-group-item otd-li">  
-                  <div class="total-otd-price" id="otdPriceDisplay">
-                    Total O.T.D. Price: 
-                    <span class="pull-right fw-bold">${numeral(data.OTDPrice).format("$0,0.00")}</span>
-                  </div>
-                </li>
-              </ul>
+            <div class="card">
+              <div class="total-otd-price" id="otdPriceDisplay">
+                Total Price: 
+                <span class="pull-right fw-bold">${numeral(data.OTDPrice).format("$0,0.00")}</span>
+              </div>
             </div>
           </div>
         </div>
