@@ -14,7 +14,18 @@ body {
 .hidden {
   display: none !important;
 }
-
+#ourPriceDisplay {
+  
+  padding: 10px 0;
+  border-radius: 10px;
+}
+#ourPriceDisplay h1 {
+  font-size: 2rem;
+  line-height: 1.2;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: #000 !important;
+}
 /* Page container mimics paper size */
 .page-container {
   width: 450px;
@@ -52,10 +63,16 @@ body {
   padding: 5px;
 }
 
+.payment-calculator {
+  padding: 20px;
+  border: 1px solid #eee;
+  border-radius: 4px;
+}
+
 /* Price display */
 .price-payment-container {
   text-align: center;
-  padding: 5px;
+  padding: 75px;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
@@ -67,3 +84,24 @@ body {
   transform: translate(-50%, -50%);
   z-index: 1000;
 }
+
+#paymentSliders {
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.export-btn {
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.export-btn:hover {
+    background-color: #0056b3;
+}
+

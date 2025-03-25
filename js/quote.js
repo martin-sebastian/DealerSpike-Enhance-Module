@@ -658,10 +658,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Payment Calculator
       var paymentCalc = `
-		<div class="payment-caclculator text-center">
+		<div class="payment-calculator text-center">
             <form name="calc" method="POST">
                 <button type="button" 
-                        class="btn btn-danger w-100" 
+                        class="btn btn-outline-secondary w-100" 
                         data-bs-toggle="collapse" 
                         data-bs-target="#paymentSliders" 
                         aria-expanded="false" 
@@ -711,7 +711,7 @@ document.addEventListener("DOMContentLoaded", function () {
 					<div style="height: 10px;"></div>
 				</div>
 			</form>
-			<div class="credit-approval-message gray">
+			<div class="credit-approval-message opacity-50 small">
 				Subject to credit approval.
 			</div>
         </div>
@@ -719,18 +719,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Create a separate template for the price container
       const priceContainer = `
-        <ul class="list-group">
-          <li class="list-group-item text-center">
+        <div class="text-center">
             ${paymentCalc}
-          </li>
-          
-        </ul>
+        </div>
+      `;
+
+      // Our Price display template
+      const ourPriceContainer = `
+        <div id="ourPriceDisplay" class="text-center">
+        <h1 class="text-center fw-bold">${numeral(data.OTDPrice).format("$0,0.00")}</h1>
+        </div>
+
       `;
 
       // Trade In display template
       const tradeInVehicleTemplate = `
-
-        <div id="tradeValueDisplay" style="display: ">
+        <div id="tradeValueDisplay" style="display: none;">
           2020 Harley Davidson <span class="pull-right">$10,000</span>
         </div>
 
@@ -752,18 +756,26 @@ document.addEventListener("DOMContentLoaded", function () {
               ${tradeInFormTemplate}
             </div>
             
-            <div class="unit-info-container">
+            <div class="trade-in-container">
+              ${tradeInFormTemplate}
+            </div>
+            
+            <div class="unit-info-container hidden">
               <h5 class="text-left small mb-0 text-muted">Unit Information</h5>
               <ul class="list-group">
                 ${unitNumbersTemplate}
               </ul>
             </div>
           </div>
+          <div class="card mb-2">
+              ${ourPriceContainer}
+            </div>
 
           <div class="mb-2">
-          <h5 class="text-left small mb-0 text-muted">Estimated Payment</h5>
+          <h5 class="text-left small mb-0 text-muted hidden">Estimated Payment</h5>
+
             <!-- Price and Payment Section -->
-            ${priceContainer}
+              ${priceContainer}
             
             <!-- Pricing Details -->
             <div class="card hidden">
@@ -775,10 +787,10 @@ document.addEventListener("DOMContentLoaded", function () {
             <div class="card">
               ${OTDItemsTemplate}
             </div>
-            
+
             <!-- OTD Price -->
             <div class="card">
-              <div class="total-otd-price" id="otdPriceDisplay">
+              <div class="total-otd-price bold" id="otdPriceDisplay">
                 Total Price: 
                 <span class="pull-right fw-bold">${numeral(data.OTDPrice).format("$0,0.00")}</span>
               </div>
@@ -819,6 +831,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Remove loader once everything is ready
       loader.remove();
+
+      // Add the export button after other elements are loaded
+      createExportButton();
     })
     .catch((error) => {
       console.error("Error in fetch:", error);
@@ -847,3 +862,48 @@ window.addEventListener("error", function (event) {
   console.error("Global error:", event.error);
   showError(`Unexpected error: ${event.error?.message || "Unknown error"}`);
 });
+
+function createExportButton() {
+    const container = document.querySelector('.export-btn-container');
+    if (!container) {
+        console.warn('Export button container not found');
+        return;
+    }
+    
+    const exportBtn = document.createElement('button');
+    exportBtn.className = 'export-btn';
+    exportBtn.textContent = 'Export as Image';
+    exportBtn.addEventListener('click', exportAsImage);
+    
+    container.appendChild(exportBtn);
+}
+
+function exportAsImage() {
+    const element = document.querySelector('.page-container');
+    
+    html2canvas(element, {
+        allowTaint: true,
+        useCORS: true,
+        scale: 2,
+        backgroundColor: '#ffffff'
+    }).then(canvas => {
+        const image = canvas.toDataURL('image/jpeg', 0.9);
+        
+        const link = document.createElement('a');
+        link.download = 'vehicle-quote.jpg';
+        link.href = image;
+        link.click();
+    });
+}
+
+// Assuming you have an init or load function in quote.js
+// Add this to your existing initialization code
+function initializePage() {
+    // ... your existing initialization code ...
+    
+    // Add the export button after other elements are loaded
+    createExportButton();
+}
+
+// If you don't have an init function, you can use:
+window.addEventListener('load', createExportButton);
