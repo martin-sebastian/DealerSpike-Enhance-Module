@@ -8,51 +8,57 @@
     <link rel="stylesheet" href="../css/font-awesome.css" />
     <link rel="stylesheet" href="../css/quote.css" />
   </head>
-  <body class="dots">
-    <div class="page-container">
-      <header style="padding-top: 100px;">
-        <div class="main-header">
-          
-        </div>
-      </header>
-
-      <div class="content-container">
-        <div class="carousel-container card">
-          <!-- Images will be inserted here -->
-        </div>
-
-        <div class="trade-in-container hidden">
-          <!-- Trade-in form will be inserted here -->
-        </div>
-
-        <div class="unit-info-container hidden">
-          <!-- Unit information will be inserted here -->
-        </div>
-
-        <!-- Right Column -->
-        <div class="price-container">
-          <!-- Price and savings will be inserted here -->
-        </div>
-
-        <div class="payment-calculator">
-          <!-- Payment calculator will be inserted here -->
-        </div>
-
-        <div class="pricing-details">
-          <!-- MAT items, accessories, etc will be inserted here -->
-        </div>
-
-        <div class="otd-price">
-          <!-- OTD price will be inserted here -->
-        </div>
-        
-        <div class="export-btn-container d-print-none">
-          <!-- Export button will be inserted here -->
+  <body class="dots m-0 p-0">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary d-print-none">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Navbar</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <div class="export-btn-container"></div>
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Link</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"> Dropdown </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Action</a></li>
+                <li><a class="dropdown-item" href="#">Another action</a></li>
+                <li><hr class="dropdown-divider" /></li>
+                <li><a class="dropdown-item" href="#">Something else here</a></li>
+              </ul>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+            </li>
+          </ul>
+          <form class="d-flex" role="search" onsubmit="handleSearch(event)">
+            <input class="form-control me-2" type="search" placeholder="Stock Number" aria-label="Search" id="stockNumberSearch" required />
+            <button class="btn btn-outline-success" type="submit">Search</button>
+          </form>
         </div>
       </div>
-    </div>
+    </nav>
 
-    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"
+      integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
     <script src="../js/bootstrap.bundle.js"></script>
     <script src="../js/numeral.js"></script>
     <script src="../js/moment.js"></script>

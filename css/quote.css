@@ -1,3 +1,102 @@
+/* reset styles */
+input[type="range"] {
+  -webkit-appearance: none; /* Hides the slider so that custom slider can be made */
+  width: 100%; /* Specific width is required for Firefox. */
+  background: transparent; /* Otherwise white in Chrome */
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+}
+
+input[type="range"]:focus {
+  outline: none; /* Removes the blue border. You should probably do some kind of focus styling for accessibility reasons though. */
+}
+
+input[type="range"]::-ms-track {
+  width: 100%;
+  cursor: pointer;
+
+  /* Hides the slider so custom styles can be added */
+  background: transparent;
+  border-color: transparent;
+  color: transparent;
+}
+
+/* slider thumb */
+/* Special styling for WebKit/Blink */
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  border: 1px solid #000000;
+  height: 30px;
+  width: 64px;
+  border-radius: 5px;
+  background: #ffffff;
+  cursor: pointer;
+  margin-top: -12px;
+}
+
+/* All the same stuff for Firefox */
+input[type="range"]::-moz-range-thumb {
+  border: 1px solid #000000;
+  height: 30px;
+  width: 64px;
+  border-radius: 5px;
+  background: #ffffff;
+  cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  width: 90%;
+  height: 8.4px;
+  cursor: pointer;
+  background: #555;
+  border-radius: 1.3px;
+  border: 0.2px solid #010101;
+}
+
+input[type="range"]:focus::-webkit-slider-runnable-track {
+  background: #666;
+}
+
+input[type="range"]::-moz-range-track {
+  width: 90%;
+  height: 8.4px;
+  cursor: pointer;
+  background: #555;
+  border-radius: 1.3px;
+  border: 0.2px solid #010101;
+}
+
+input[type="range"]::-ms-track {
+  width: 100%;
+  height: 8.4px;
+  cursor: pointer;
+  background: transparent;
+  border-color: transparent;
+  border-width: 16px 0;
+  color: transparent;
+}
+input[type="range"]::-ms-fill-lower {
+  background: #2a6495;
+  border: 0.2px solid #010101;
+  border-radius: 2.6px;
+  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+}
+input[type="range"]:focus::-ms-fill-lower {
+  background: #3071a9;
+}
+input[type="range"]::-ms-fill-upper {
+  background: #3071a9;
+  border: 0.2px solid #010101;
+  border-radius: 2.6px;
+  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+}
+input[type="range"]:focus::-ms-fill-upper {
+  background: #367ebd;
+}
+
+/* Global styles */
 body {
   background: #f0f0f0;
   margin: 0;
@@ -10,12 +109,10 @@ body {
 .bg-white {
   background: #fff;
 }
-
 .hidden {
   display: none !important;
 }
 #ourPriceDisplay {
-  
   padding: 10px 0;
   border-radius: 10px;
 }
@@ -32,7 +129,8 @@ body {
   min-height: auto;
   margin: 0 auto;
   background: white;
-  padding: 10px;
+  padding: 20px;
+  border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -40,21 +138,41 @@ body {
 .content-container {
   border: 0px solid red;
 }
-
-.vehicle-title {
-  font-weight: 900;
+.vehicle-header {
+  text-align: left;
 }
-
+.vehicle-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+.vehicle-subtitle {
+  font-size: 1rem;
+  font-weight: 700;
+}
+.vehicle-subtitle small {
+  font-weight: 500;
+}
 /* Carousel sizing */
 .carousel-container {
   width: 100%;
-  margin-bottom: 0.25in;
+  margin: 5px 0;
 }
 
 .carousel-container img {
   width: 100%;
   height: auto;
   object-fit: cover;
+}
+
+.unit-info-container {
+  margin: 5px 0;
+}
+.unit-info-container ul {
+  margin: 0;
+  padding: 0;
+}
+.unit-info-container ul li {
+  padding: 5px 10px;
 }
 
 .card {
@@ -64,9 +182,7 @@ body {
 }
 
 .payment-calculator {
-  padding: 20px;
-  border: 1px solid #eee;
-  border-radius: 4px;
+  text-align: center;
 }
 
 /* Price display */
@@ -84,24 +200,86 @@ body {
   transform: translate(-50%, -50%);
   z-index: 1000;
 }
+#payment {
+  margin-left: -4px;
+  margin-right: -4px;
+}
 
-#paymentSliders {
+.payment-collapsed-container {
   margin-top: 10px;
   padding: 10px;
-  border: 1px solid #ddd;
+  border: 1px solid red;
   border-radius: 4px;
+}
+.range-slider .downpayment-bg {
+  background-color: #ee0000;
+}
+.range-slider .downpayment-bg .slider-handle {
+  background-color: #ee0000;
+}
+.range-slider .downpayment-bg .slider-handle:hover {
+  background-color: #ee0000;
+}
+.credit-slider-label {
+  color: #ee0000;
+  font-weight: 700;
+}
+.range-slider .credit-bg {
+  background-color: #ee0000;
+}
+.range-slider .credit-bg .slider-handle {
+  background-color: #007bff;
+}
+.updated-value-line {
+  border: 1px solid red;
+}
+.downpayment-value {
+  border: 1px solid red;
+}
+.downpayment-label {
+  border: 1px solid blue;
+  padding: 5px;
+}
+.slider-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid pink;
+  background-color: #ccc;
+  padding: 10px;
+}
+.credit-slider-label {
+  border: 1px solid green;
+}
+.apr-label {
+  border: 1px solid red;
+  padding: 5px;
+}
+.apr-value {
+  border: 1px solid skyblue;
+}
+.loan-term-container {
+  border: 1px solid red;
+  padding: 0 0 10px 0;
+}
+.loan-term-label {
+  border: 1px solid red;
+}
+.credit-disclaimer-container {
+  border-radius: 5px;
+  border: 1px solid red;
+  padding: 5px 0;
 }
 
 .export-btn {
-    padding: 8px 16px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 .export-btn:hover {
-    background-color: #0056b3;
+  background-color: #0056b3;
 }
-

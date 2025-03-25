@@ -106,7 +106,7 @@ function updateTradeDetails() {
     tradeValueElement.style.display = "none";
     if (otdElement) {
       otdElement.innerHTML = `
-        Total O.T.D. Price: 
+        Total Price: 
         <span class="pull-right">${numeral(window.originalOTDPrice).format("$0,0.00")}</span>
       `;
     }
@@ -149,10 +149,14 @@ document.addEventListener("DOMContentLoaded", function () {
   const errorContainer = document.createElement("div");
   errorContainer.id = "error-container";
 
-  // Clear and set up initial page structure
-  document.body.innerHTML = "";
-  document.body.appendChild(loader);
-  document.body.appendChild(errorContainer);
+  // Get the capture container instead of clearing body
+  const captureContainer = document.getElementById("capture-container");
+  if (captureContainer) {
+    // Clear only the capture container
+    captureContainer.innerHTML = "";
+    captureContainer.appendChild(loader);
+    captureContainer.appendChild(errorContainer);
+  }
 
   if (!stockNum) {
     loader.style.display = "none"; // Hide loader
@@ -177,6 +181,9 @@ document.addEventListener("DOMContentLoaded", function () {
         throw new Error("Invalid data received from API");
       }
 
+      // Store data globally
+      window.vehicleData = data;
+
       // Create page container
       let pageContainer = document.createElement("div");
       pageContainer.className = "page-container";
@@ -186,48 +193,16 @@ document.addEventListener("DOMContentLoaded", function () {
       window.originalOTDPrice = data.OTDPrice;
 
       console.log("data.StockNumber", data.StockNumber);
-      var prodTitle = data.Usage + " " + data.ModelYear + " " + data.Manufacturer + " " + data.B50ModelName;
-      var vinNumber = data.VIN;
+      const prodTitle = data.Usage + " " + data.ModelYear + " " + data.Manufacturer + " " + data.B50ModelName;
       const qLevel = `<span class="badge bg-secondary" style="margin-left: 100px; padding: 10px 15px; font-weight: 900">Quote Level ${data.QuoteLevel}</span>`;
-      var MSRPUnit = numeral(data.MSRPUnit).format("$0,0.00");
-      var unitMSRP = numeral(data.MSRP - data.AccessoryItemsTotal).format("$0,0.00");
-      var msrpLabel = data.MSRPTitle;
-      var msrpTotal = numeral(data.MSRPUnit).format("$0,0.00");
-      var totalOTD = numeral(data.OTDPrice).format("$0,0.00");
-      var quotePrice = numeral(data.QuotePrice).format("$0,0.00");
-      var salePrice = numeral(data.Price).format("$0,0.00");
-      var discount = numeral(data.QuotePrice - data.Price).format("$0,0.00");
-      var savings = numeral(data.Savings).format("$0,0.00");
 
-      var eDate = moment(data.ExpirationDate).format("MM/DD/YYYY");
-      var disclaimer = `<p class="portal-fees">${data.Disclaimer}</p>`;
-      var fomDisclaimer = `<p class="text-center"><small>*Price does NOT include, Manufacturer Surcharge, Manufacturer Commodity Surcharge, Freight, Dealer Document Fee $199, Sales Tax, Title Fee $30. Sale Price INCLUDES all factory incentives (If Applicable). See Flat Out Motorsports for full disclosure on current Fees and Surcharges.</small></p>`;
-      var image = data.ImageUrl;
-      var linkToUnit = data.DetailUrl;
-      var salePriceExpireDate = moment(data.SalePriceExpireDate).format("MM/DD/YYYY");
+      const ourPrice = numeral(data.OTDPrice).format("$0,0.00");
+      const discountTotal = numeral(data.MSRPUnit - data.Price).format("$0,0.00");
 
-      var arrivalDate = moment(data.EstimatedArrival).format("MM/DD/YYYY");
-      var newUsed = data.Usage;
-      var milesHours = data.Miles;
-      var inventoryStatus = data.UnitStatus;
-
-      // Discount Item
-      var discountTotal = `<li class="list-group-item">Discount <span class="pull-right bold">-${discount}</span></li>`;
-
-      // Inventory Status & Arrival Date
-      var inventoryStatusTemplate = ``;
-
-      if (data.UnitStatus == "In Inventory" && data.Lot != "ONORDER") {
-        inventoryStatusTemplate += `<h3 class="text-color-success bold">In Stock</h3>`;
-      } else if (data.UnitStatus == "Ordered") {
-        inventoryStatusTemplate += `${data.UnitStatus}, Avail. ${arrivalDate}`;
-      } else if (data.UnitStatus == "In Inventory" && data.Lot == "ONORDER") {
-        inventoryStatusTemplate += `<hr style="margin: 0 0 10px 0; border:0;"><span style="color: red; font-weight: 800; padding: 10px 0;">Ordered</span>, <span style="color: green; font-weight: 500; padding: 10px .;">Arriving ${arrivalDate}</span>`;
-      } else if (data.UnitStatus == "In Inventory" && data.Lot == "SERVICE") {
-        inventoryStatusTemplate += `In Service Being Prepared`;
-      } else {
-        inventoryStatusTemplate += ``;
-      }
+      const arrivalDate = moment(data.EstimatedArrival).format("MM/DD/YYYY");
+      const newUsed = data.Usage;
+      const milesHours = data.Miles;
+      const inventoryStatus = data.UnitStatus;
 
       // MU Items and Mat Items templates
       var muItemsTemplate = `
@@ -298,7 +273,11 @@ document.addEventListener("DOMContentLoaded", function () {
         // Create carousel slide
         carouselImages += `
           <div class="carousel-item ${i === 0 ? "active" : ""}">
-            <img src="${data.Images[i].ImgURL}" class="d-block w-100" alt="Vehicle Image">
+            <img 
+              src="${data.Images[i].ImgURL}" 
+              class="d-block w-100" 
+              alt="Vehicle Image"
+            >
             ${
               associatedAccessory
                 ? `
@@ -403,7 +382,7 @@ document.addEventListener("DOMContentLoaded", function () {
         i++;
       }
 
-      var totalSavings = numeral(data.DiscountItemsTotal + data.MatItemsTotal + data.TradeInItemsTotal + data.AccessoryItemsTotal).format("$0,0.00");
+      const totalSavings = numeral(data.DiscountItemsTotal + data.MatItemsTotal + data.TradeInItemsTotal + data.AccessoryItemsTotal).format("$0,0.00");
 
       // Unit Numbers & status info
       var unitNumbersTemplate = ``;
@@ -526,7 +505,11 @@ document.addEventListener("DOMContentLoaded", function () {
         // Create carousel slide
         carouselImages += `
           <div class="carousel-item ${i === 0 ? "active" : ""}">
-            <img src="${data.Images[i].ImgURL}" class="d-block w-100" alt="Vehicle Image">
+            <img 
+              src="${data.Images[i].ImgURL}" 
+              class="d-block w-100" 
+              alt="Vehicle Image"
+            >
             ${
               associatedAccessory
                 ? `
@@ -581,15 +564,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Major Unit Header with Year, Make, Model, VIN, Stock Number.
       var muHeaderTemplate = `
-    <div class="vehicle-header-container">
-      <div class="vehicle-name-container">
-        <h4 class="vehicle-title my-0">${prodTitle}</h4>
-        <h5 class="vehicle-subtitle">
+      <div class="vehicle-header">
+        <h1 class="vehicle-title my-0">${prodTitle}</h1>
+        <p class="vehicle-subtitle my-0">
           <small>Model: </small>${data.ModelCode} 
-          <small>Stock Number: </small>${stockNum}
-        </h5>
+          <small>Stock Number: </small>${data.StockNumber}
+        </p>
       </div>
-    </div>
     `;
 
       // Boat Terms for Payment Calculator
@@ -657,64 +638,76 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       // Payment Calculator
-      var paymentCalc = `
-		<div class="payment-calculator text-center">
-            <form name="calc" method="POST">
-                <button type="button" 
-                        class="btn btn-outline-secondary w-100" 
-                        data-bs-toggle="collapse" 
-                        data-bs-target="#paymentSliders" 
-                        aria-expanded="false" 
-                        aria-controls="paymentSliders" 
-                        onClick="showpay()">
-                    <span class="payment m-0">
-                        <small>Payment</small>
-                        $<span id="payment" class="fw-bold"><i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i></span>
-                        <small>/mo.</small>
-                        <i class="fa fa-pencil" title="Calculate Your Payment"></i>
-                    </span>
-                </button>
-				<input type="hidden" name="loan" size="10" value="${data.OTDPrice}">
+      const paymentCalc = `
+		<div class="payment-calculator">
+
+      <form name="calc" method="POST">
+
+        <button type="button" 
+          class="btn btn-secondary w-100" 
+          data-bs-toggle="collapse" 
+          data-bs-target="#paymentSliders" 
+          aria-expanded="false" 
+          aria-controls="paymentSliders" 
+          onClick="showpay()">
+            <span class="our-price-display">
+              <small>Price:</small>
+              <span class="fs-2 fw-bold">
+                ${numeral(data.OTDPrice).format("$0,0.00")}
+              </span>
+            </span>
+            <hr class="my-0" />
+            <span class="payment m-0 text-light">
+                <small>Est. Payment:</small>
+                <span class="fw-bold">$</span>
+                <span id="payment" class="fw-bold">
+                  <i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i>0.00
+                </span>
+                <small>/mo. Subject to credit approval.</small>
+            </span>
+        </button>
+
+        <input type="hidden" name="loan" size="10" value="${data.OTDPrice}">
 
 				<div class="collapse" id="paymentSliders">
-					<div class="row">
-						<div class="col-lg-12 downpayment-container">
-							<div class="" style="margin: 25px 0">
-								<span class="fo-label-green"><span class="fo-badge" id="downpaymentRangeValue"></span>% Down</span>
-								<i class="fa fa-spinner fa-level-down fa-2x"></i>
-							</div>
-							<input name="downpayment" type="range" min="0.00" max="30.00" value="10" step="5" class="slider downpayment-bg" id="downpaymentRange" onChange="showpay()">
-							<p class="slider-title"><span class="credit-slider-label pull-left">0%</span>Down Payment<span class="credit-slider-label pull-right">30%</span></p>
-						</div>
+					<div class="payment-collapsed-container">
 
-						<div class="col-md-12 credit-container">
-							<div class="hidden" style="margin: 25px 0">
-								<span class="fo-label-dark-green"><span class="fo-badge" id="percentRangeValue"></span>% APR</span>
-								<i class="fa fa-spinner fa-level-down fa-1x"></i>
+            <div class="downpayment-container">
+							<div class="downpayment-label">
+								<span class="updated-value-line"><span class="downpayment-value" id="downpaymentRangeValue"></span>% Down</span>
 							</div>
-							<input name="rate" type="range" min="3.99" max="19.99" value="6.99" step="1" class="slider credit-bg-new rotated" id="percentRange" onChange="showpay()">
-							<p class="slider-title"><span class="credit-slider-label pull-left">POOR</span>Credit Standing<span class="credit-slider-label pull-right">EXCELENT</span></p>
-						</div>
 
-						<div class="col-md-12 terms-container">
-							<div class="loan-term">
-							<p class="terms-label">Loan Term In months <i class="fa fa-spinner fa-level-down fa-1x"></i></p>
-								<div data-toggle="buttons">
-									${loanTerms}
-								</div>
-							</div>
-						</div>
+							<div class="slider-row">
+                <span class="credit-slider-label">0%</span>
+                  <input name="downpayment" type="range" min="0.00" max="30.00" value="10" step="5" class="range-slider downpayment-bg" id="downpaymentRange" onChange="showpay()">
+                <span class="credit-slider-label">30%</span>
+              </div>
+            </div>
 
+            <div class="apr-container">
+              <div class="apr-label">
+                <span class="updated-value-line"><span class="apr-value" id="percentRangeValue"></span>% APR</span>
+              </div>
+							
+							<div class="slider-row">
+                <span class="credit-slider-label">LOW</span>
+                <input name="rate" type="range" min="3.99" max="19.99" value="6.99" step="1" class="range-slider credit-bg" id="percentRange" onChange="showpay()">
+                <span class="credit-slider-label">HIGH</span>
+              </div>
+            </div>
+
+              <div class="loan-term-container">
+                <p class="loan-term-label">Loan Term (Months)</p>
+                  <div data-toggle="buttons">${loanTerms}</div>
+              </div>
 					</div>
 					<input type="hidden" name="pay" size="10">
 					<input type="hidden" onClick="showpay()" value="Calculate">
-					<div style="height: 10px;"></div>
 				</div>
+
 			</form>
-			<div class="credit-approval-message opacity-50 small">
-				Subject to credit approval.
-			</div>
-        </div>
+
+    </div>
 		`;
 
       // Create a separate template for the price container
@@ -742,11 +735,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Update the main page content structure
       const pageContent = `
+      <div id="capture-container">
         <div class="main-header">
           ${muHeaderTemplate}
         </div>
         
-        <div class="content-container">
+        <div class="content-body">
           <div class="mb-2">
             <div class="carousel-container">
               ${carousel}
@@ -760,19 +754,15 @@ document.addEventListener("DOMContentLoaded", function () {
               ${tradeInFormTemplate}
             </div>
             
-            <div class="unit-info-container hidden">
-              <h5 class="text-left small mb-0 text-muted">Unit Information</h5>
+            <div class="unit-info-container">
               <ul class="list-group">
                 ${unitNumbersTemplate}
               </ul>
             </div>
           </div>
-          <div class="card mb-2">
-              ${ourPriceContainer}
-            </div>
+   
 
           <div class="mb-2">
-          <h5 class="text-left small mb-0 text-muted hidden">Estimated Payment</h5>
 
             <!-- Price and Payment Section -->
               ${priceContainer}
@@ -796,7 +786,9 @@ document.addEventListener("DOMContentLoaded", function () {
               </div>
             </div>
           </div>
+
         </div>
+      </div>
       `;
 
       // Replace the entire page content at once
@@ -812,7 +804,6 @@ document.addEventListener("DOMContentLoaded", function () {
           pause: true,
         });
 
-        // Force stop any running carousel
         carousel.pause();
       }
 
@@ -825,15 +816,13 @@ document.addEventListener("DOMContentLoaded", function () {
       });
 
       showpay();
-
-      // Initialize clipboard tooltips after content is loaded
       initializeClipboardTooltips();
+
+      // Create export button after content is loaded
+      createExportButton();
 
       // Remove loader once everything is ready
       loader.remove();
-
-      // Add the export button after other elements are loaded
-      createExportButton();
     })
     .catch((error) => {
       console.error("Error in fetch:", error);
@@ -853,8 +842,11 @@ function showError(message) {
     </div>
   `;
 
-  const container = document.getElementById("error-container") || document.body;
-  container.innerHTML = errorHtml;
+  // Update to use capture container instead of body
+  const container = document.getElementById("error-container") || document.getElementById("capture-container");
+  if (container) {
+    container.innerHTML = errorHtml;
+  }
 }
 
 // Add global error handler
@@ -864,46 +856,228 @@ window.addEventListener("error", function (event) {
 });
 
 function createExportButton() {
-    const container = document.querySelector('.export-btn-container');
-    if (!container) {
-        console.warn('Export button container not found');
-        return;
+  const container = document.querySelector(".export-btn-container");
+  if (!container) {
+    console.error("Export button container not found");
+    return;
+  }
+
+  // Regular capture button
+  const exportBtn = document.createElement("button");
+  exportBtn.className = "btn btn-primary export-btn me-2";
+  exportBtn.textContent = "Quick Export";
+  exportBtn.addEventListener("click", captureFullContent);
+
+  // Full page capture button
+  const fullExportBtn = document.createElement("button");
+  fullExportBtn.className = "btn btn-secondary export-btn";
+  fullExportBtn.textContent = "Full Page Export";
+  fullExportBtn.addEventListener("click", captureFullContentStitched);
+
+  container.appendChild(exportBtn);
+  container.appendChild(fullExportBtn);
+}
+
+// This would require a server endpoint that converts external URLs to base64
+async function convertToBase64Images() {
+  const images = document.querySelectorAll("#capture-container img");
+  for (let img of images) {
+    try {
+      const response = await fetch("/api/convert-image-to-base64?url=" + encodeURIComponent(img.src));
+      const data = await response.json();
+      img.src = data.base64;
+    } catch (error) {
+      console.warn("Failed to convert image:", img.src);
     }
-    
-    const exportBtn = document.createElement('button');
-    exportBtn.className = 'export-btn';
-    exportBtn.textContent = 'Export as Image';
-    exportBtn.addEventListener('click', exportAsImage);
-    
-    container.appendChild(exportBtn);
+  }
 }
 
-function exportAsImage() {
-    const element = document.querySelector('.page-container');
-    
-    html2canvas(element, {
-        allowTaint: true,
-        useCORS: true,
-        scale: 2,
-        backgroundColor: '#ffffff'
-    }).then(canvas => {
-        const image = canvas.toDataURL('image/jpeg', 0.9);
-        
-        const link = document.createElement('a');
-        link.download = 'vehicle-quote.jpg';
-        link.href = image;
-        link.click();
+// Then in your export function
+async function exportAsImage() {
+  // Show loading indicator
+  const loadingIndicator = document.createElement("div");
+  loadingIndicator.innerHTML = '<div class="text-center"><i class="fa fa-spinner fa-spin fa-3x"></i><p>Generating image...</p></div>';
+  document.body.appendChild(loadingIndicator);
+
+  try {
+    await convertToBase64Images();
+    const element = document.querySelector("#capture-container");
+    const canvas = await html2canvas(element, {
+      allowTaint: true,
+      useCORS: true,
+      scale: 2,
     });
+    const image = canvas.toDataURL("image/jpeg", 0.9);
+    const link = document.createElement("a");
+    link.download = "vehicle-quote.jpg";
+    link.href = image;
+    link.click();
+  } catch (error) {
+    console.error("Export failed:", error);
+  } finally {
+    document.body.removeChild(loadingIndicator);
+  }
 }
 
-// Assuming you have an init or load function in quote.js
-// Add this to your existing initialization code
-function initializePage() {
-    // ... your existing initialization code ...
-    
-    // Add the export button after other elements are loaded
-    createExportButton();
+function generateFilename(data) {
+  const timestamp = moment().format("YYYY-MM-DD");
+  const parts = [data.StockNumber, data.ModelYear, data.Manufacturer, data.B50ModelName, timestamp];
+
+  return (
+    parts
+      .filter(Boolean) // Remove any undefined/null values
+      .join("_") // Join with underscores
+      .replace(/\s+/g, "_") // Replace spaces with underscores
+      .replace(/[^a-zA-Z0-9._-]/g, "") + // Remove special characters
+    ".jpg"
+  );
 }
 
-// If you don't have an init function, you can use:
-window.addEventListener('load', createExportButton);
+async function captureFullContent() {
+  try {
+    // Store original scroll position
+    const originalScrollPos = window.scrollY;
+
+    // Get the element we want to capture
+    const element = document.querySelector("#capture-container");
+    const rect = element.getBoundingClientRect();
+
+    // Scroll element into view
+    element.scrollIntoView();
+
+    // Wait a bit for any reflows/repaints
+    await new Promise((resolve) => setTimeout(resolve, 100));
+
+    // Start screen capture
+    const stream = await navigator.mediaDevices.getDisplayMedia({
+      preferCurrentTab: true,
+      video: {
+        displaySurface: "browser",
+      },
+    });
+
+    const video = document.createElement("video");
+    video.srcObject = stream;
+    await new Promise((resolve) => (video.onloadedmetadata = resolve));
+    video.play();
+
+    // Create canvas with full element dimensions
+    const canvas = document.createElement("canvas");
+    canvas.width = element.scrollWidth;
+    canvas.height = element.scrollHeight;
+
+    const ctx = canvas.getContext("2d");
+
+    // Draw the full element
+    ctx.drawImage(
+      video,
+      rect.left,
+      rect.top,
+      element.scrollWidth,
+      element.scrollHeight, // Source rectangle
+      0,
+      0,
+      element.scrollWidth,
+      element.scrollHeight // Destination rectangle
+    );
+
+    // Stop screen capture
+    stream.getTracks().forEach((track) => track.stop());
+
+    // Restore original scroll position
+    window.scrollTo(0, originalScrollPos);
+
+    // Generate filename using vehicle data
+    const data = window.vehicleData;
+    const filename = `${data.ModelYear}_${data.Manufacturer}_stock-${data.StockNumber}.jpg`.replace(/\s+/g, "_").replace(/[^a-zA-Z0-9._-]/g, "");
+
+    // Use the custom filename
+    const image = canvas.toDataURL("image/jpeg", 0.9);
+    const link = document.createElement("a");
+    link.download = filename;
+    link.href = image;
+    link.click();
+  } catch (err) {
+    console.error("Error capturing screen:", err);
+    alert("Screen capture failed or was cancelled");
+    // Ensure scroll position is restored even if there's an error
+    window.scrollTo(0, originalScrollPos);
+  }
+}
+
+// Alternative approach using multiple captures and stitching
+async function captureFullContentStitched() {
+  try {
+    // Store original scroll position
+    const originalScrollPos = window.scrollY;
+
+    const element = document.querySelector("#capture-container");
+    const rect = element.getBoundingClientRect();
+
+    // Calculate number of captures needed
+    const viewportHeight = window.innerHeight;
+    const totalHeight = element.scrollHeight;
+    const captures = Math.ceil(totalHeight / viewportHeight);
+
+    // Create final canvas
+    const finalCanvas = document.createElement("canvas");
+    finalCanvas.width = element.scrollWidth;
+    finalCanvas.height = totalHeight;
+    const finalCtx = finalCanvas.getContext("2d");
+
+    // Start screen capture
+    const stream = await navigator.mediaDevices.getDisplayMedia({
+      preferCurrentTab: true,
+      video: {
+        displaySurface: "browser",
+      },
+    });
+
+    const video = document.createElement("video");
+    video.srcObject = stream;
+    await new Promise((resolve) => (video.onloadedmetadata = resolve));
+    video.play();
+
+    // Capture each section
+    for (let i = 0; i < captures; i++) {
+      // Scroll to section
+      window.scrollTo(0, i * viewportHeight);
+
+      // Wait for scroll and repaint
+      await new Promise((resolve) => setTimeout(resolve, 100));
+
+      // Draw this section to the canvas
+      finalCtx.drawImage(video, rect.left, rect.top, rect.width, viewportHeight, 0, i * viewportHeight, rect.width, viewportHeight);
+    }
+
+    // Stop screen capture
+    stream.getTracks().forEach((track) => track.stop());
+
+    // Restore original scroll position
+    window.scrollTo(0, originalScrollPos);
+
+    // Download the stitched image
+    const image = finalCanvas.toDataURL("image/jpeg", 0.9);
+    const link = document.createElement("a");
+    link.download = "vehicle-quote-full.jpg";
+    link.href = image;
+    link.click();
+  } catch (err) {
+    console.error("Error capturing screen:", err);
+    alert("Screen capture failed or was cancelled");
+    // Restore scroll position
+    window.scrollTo(0, originalScrollPos);
+  }
+}
+
+function handleSearch(event) {
+  event.preventDefault(); // Prevent form submission
+
+  const searchInput = document.getElementById("stockNumberSearch");
+  const stockNumber = searchInput.value.trim();
+
+  if (stockNumber) {
+    // Update URL and reload page
+    window.location.href = `${window.location.pathname}?search=${encodeURIComponent(stockNumber)}`;
+  }
+}
