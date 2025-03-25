@@ -23,18 +23,7 @@
               <img id="logo" class="me-2 pt-1" src="./img/fom-app-logo-01.svg" alt="Logo" width="180" height="30.6" />
             </a>
           </div>
-          <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-            <button type="button" class="btn btn-outline-secondary" title="Create custom key tag" onclick="openKeyTagsByStockNumberModal('${stockNumber}')"><i class="bi bi-tag"></i></button>
-            <div class="btn-group" role="group">
-              <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                New
-              </button>
-              <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#" title="Create custom key tag" onclick="openKeyTagsByStockNumberModal('${stockNumber}')"><i class="bi bi-tag"></i> Custom Key Tag</a></li>
-                <li><a class="dropdown-item disabled" href="#"><i class="bi bi-tags"></i> Custom Hang Tags</a></li>
-              </ul>
-            </div>
-          </div>
+          
 
 
           <form class="d-flex flex-row d-none d-sm-block" role="search">
@@ -113,6 +102,19 @@
             </div>
           </form>
           <div class="toggles-group d-flex flex-row">
+            <div class="btn-group me-1" role="group" aria-label="Button group with nested dropdown">
+              <button type="button" class="btn btn-outline-secondary" title="Create custom key tag" onclick="openKeyTagsByStockNumberModal('${stockNumber}')"><i class="bi bi-tag"></i></button>
+              <div class="btn-group" role="group">
+                <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                  New
+                </button>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="#" title="Create custom key tag" onclick="openKeyTagsByStockNumberModal('${stockNumber}')"><i class="bi bi-tag me-2"></i> Custom Key Tag</a></li>
+                  <li><a class="dropdown-item disabled" href="#"><i class="bi bi-tags me-2"></i> Custom Hang Tags</a></li>
+                  <li><a class="dropdown-item" href="quote/"><i class="bi bi-card-heading me-2"></i> Custom Quote</a></li>
+                </ul>
+              </div>
+            </div>
             <button id="toggleThemeButton" class="btn btn-outline-secondary px-3 mx-1" type="button">
               <i id="theme-icon" class="bi bi-moon-stars"></i>
             </button>

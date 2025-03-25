@@ -864,18 +864,18 @@ function createExportButton() {
 
   // Regular capture button
   const exportBtn = document.createElement("button");
-  exportBtn.className = "btn btn-primary export-btn me-2";
+  exportBtn.className = "btn btn-primary btn-sm export-btn me-2";
   exportBtn.textContent = "Quick Export";
   exportBtn.addEventListener("click", captureFullContent);
 
   // Full page capture button
-  const fullExportBtn = document.createElement("button");
-  fullExportBtn.className = "btn btn-secondary export-btn";
-  fullExportBtn.textContent = "Full Page Export";
-  fullExportBtn.addEventListener("click", captureFullContentStitched);
+  // const fullExportBtn = document.createElement("button");
+  // fullExportBtn.className = "btn btn-secondary export-btn";
+  // fullExportBtn.textContent = "Full Page Export";
+  // fullExportBtn.addEventListener("click", captureFullContentStitched);
 
   container.appendChild(exportBtn);
-  container.appendChild(fullExportBtn);
+  // container.appendChild(fullExportBtn);
 }
 
 // This would require a server endpoint that converts external URLs to base64
@@ -933,6 +933,37 @@ function generateFilename(data) {
   );
 }
 
+async function saveFile(blob, filename) {
+  if ("showSaveFilePicker" in window) {
+    try {
+      const handle = await window.showSaveFilePicker({
+        suggestedName: filename,
+        types: [
+          {
+            description: "JPEG Image",
+            accept: {
+              "image/jpeg": [".jpg", ".jpeg"],
+            },
+          },
+        ],
+      });
+      const writable = await handle.createWritable();
+      await writable.write(blob);
+      await writable.close();
+    } catch (err) {
+      if (err.name === "AbortError") return; // User cancelled
+      throw err; // Re-throw other errors
+    }
+  } else {
+    // Fallback for browsers that don't support file picker
+    const link = document.createElement("a");
+    link.download = filename;
+    link.href = URL.createObjectURL(blob);
+    link.click();
+    URL.revokeObjectURL(link.href);
+  }
+}
+
 async function captureFullContent() {
   try {
     // Store original scroll position
@@ -987,21 +1018,18 @@ async function captureFullContent() {
     // Restore original scroll position
     window.scrollTo(0, originalScrollPos);
 
-    // Generate filename using vehicle data
     const data = window.vehicleData;
-    const filename = `${data.ModelYear}_${data.Manufacturer}_stock-${data.StockNumber}.jpg`.replace(/\s+/g, "_").replace(/[^a-zA-Z0-9._-]/g, "");
+    const filename = generateFilename(data);
 
-    // Use the custom filename
-    const image = canvas.toDataURL("image/jpeg", 0.9);
-    const link = document.createElement("a");
-    link.download = filename;
-    link.href = image;
-    link.click();
+    // Convert canvas to blob
+    const blob = await new Promise((resolve) => {
+      canvas.toBlob(resolve, "image/jpeg", 0.9);
+    });
+
+    await saveFile(blob, filename);
   } catch (err) {
     console.error("Error capturing screen:", err);
     alert("Screen capture failed or was cancelled");
-    // Ensure scroll position is restored even if there's an error
-    window.scrollTo(0, originalScrollPos);
   }
 }
 
