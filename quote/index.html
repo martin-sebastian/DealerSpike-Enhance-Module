@@ -5,11 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vehicle Quote</title>
     <link href="../css/bootstrap.css" rel="stylesheet" />
-    <link rel="stylesheet" href="../css/font-awesome.css" />
+    <link rel="stylesheet" href="../css/bootstrap-icons.css" />
     <link rel="stylesheet" href="../css/quote.css" />
   </head>
   <body class="dots m-0 p-0">
-    <nav class="navbar fixed-top navbar-expand-lg bg-body-tertiary d-print-none border-bottom" aria-current="page" data-bs-theme="dark">
+    <nav
+      class="navbar fixed-top navbar-expand-lg bg-body-tertiary justify-content-around d-print-none border-bottom opacity-90"
+      aria-current="page"
+      data-bs-theme="dark"
+    >
       <div class="container-fluid">
         <a class="navbar-brand" href="../">
           <img src="../img/fom-app-logo-01.svg" alt="FOM Logo" width="180" height="30.6" />
@@ -28,38 +32,100 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <form class="d-flex" role="search" onsubmit="handleSearch(event)">
             <input class="form-control me-2" type="search" placeholder="Stock Number" aria-label="Search" id="stockNumberSearch" required />
-            <button class="btn btn-outline-danger" type="submit">Search</button>
+            <button class="btn btn-danger" type="submit"><i class="bi bi-arrow-return-left"></i></button>
           </form>
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="./">Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Link</a>
+              <a class="btn btn-outline-secondary ms-1" aria-current="page" href="./">Clear</a>
             </li>
             <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"> Dropdown </a>
+              <a class="btn btn-outline-secondary mx-1" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Templates <i class="bi bi-chevron-compact-down"></i
+              ></a>
               <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Action</a></li>
-                <li><a class="dropdown-item" href="#">Another action</a></li>
+                <li><a class="dropdown-item" href="#">Facebook Marketplace Quote</a></li>
+                <li><a class="dropdown-item" href="#">SMS Text Quote</a></li>
                 <li><hr class="dropdown-divider" /></li>
-                <li><a class="dropdown-item" href="#">Something else here</a></li>
+                <li><a class="dropdown-item" href="#">All Templates</a></li>
               </ul>
             </li>
-            <li class="nav-item">
-              <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-            </li>
           </ul>
-          
-          <div class="export-btn-container"></div>
+          <div class="show-hide-container d-inline-flex me-5">
+            <div class="form-check mx-1">
+              <input class="form-check-input" type="checkbox" value="" id="quoteHeader" checked />
+              <label class="form-check-label text-light" for="quoteHeader">Header</label>
+            </div>
+            <div class="form-check mx-1">
+              <input class="form-check-input" type="checkbox" value="" id="quoteImages" checked />
+              <label class="form-check-label text-light" for="quoteImages">Images</label>
+            </div>
+            <div class="form-check mx-1">
+              <input class="form-check-input" type="checkbox" value="" id="quotePayment" checked />
+              <label class="form-check-label text-light" for="quotePayment">Payment</label>
+            </div>
+            <div class="form-check mx-1">
+              <input class="form-check-input" type="checkbox" value="" id="quoteRebates" checked />
+              <label class="form-check-label text-light" for="quoteRebates">Rebates</label>
+            </div>
+            <div class="form-check mx-1">
+              <input class="form-check-input" type="checkbox" value="" id="quoteDiscounts" checked />
+              <label class="form-check-label text-light" for="quoteDiscounts">Discounts</label>
+            </div>
+            <div class="form-check mx-1">
+              <input class="form-check-input" type="checkbox" value="" id="quoteAccessories" checked />
+              <label class="form-check-label text-light" for="quoteAccessories">Accessories</label>
+            </div>
+            <div class="form-check mx-1">
+              <input class="form-check-input" type="checkbox" value="" id="quoteFees" checked />
+              <label class="form-check-label text-light" for="quoteFees">Fees</label>
+            </div>
+            <div class="form-check mx-1">
+              <input class="form-check-input" type="checkbox" value="" id="quoteTotal" checked />
+              <label class="form-check-label text-light" for="quoteTotal">Total</label>
+            </div>
+          </div>
+          <div class="btn-group me-5" role="group" aria-label="Button group with nested dropdown">
+            <button type="button" class="btn btn-outline-secondary" title="Create custom key tag" onclick="openKeyTagsByStockNumberModal('${stockNumber}')">
+              <i class="bi bi-tag"></i>
+            </button>
+            <div class="btn-group" role="group">
+              <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-grid-3x3-gap-fill"></i>
+              </button>
+              <ul class="dropdown-menu">
+                <li>
+                  <a class="dropdown-item" href="#" title="Create custom key tag" onclick="openKeyTagsByStockNumberModal('${stockNumber}')"
+                    ><i class="bi bi-tag me-2"></i> Custom Key Tag</a
+                  >
+                </li>
+                <li>
+                  <a class="dropdown-item disabled" href="#"><i class="bi bi-tags me-2"></i> Custom Hang Tags</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="./quote/"><i class="bi bi-card-heading me-2"></i> Custom Quote</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="export-btn-container" style="min-width: 150px"></div>
         </div>
       </div>
     </nav>
 
-    <main class="d-flex flex-column w-100 vh-100 align-items-center justify-content-center">
+    <main class="d-flex flex-column w-100 min-vh-100 align-items-center justify-content-center">
+      <div class="spacer-100 d-print-none"></div>
       <div class="page-container">
         <p class="text-center mt-4 text-muted opacity-50">Enter Stock Number</p>
+        <div class="capture-container">
+          <div class="main-header"></div>
+          <div class="carousel-container"></div>
+          <div class="trade-in-container"></div>
+          <div class="unit-info-container"></div>
+          <div class="payment-calculator"></div>
+          <div class="total-otd-price"></div>
+        </div>
       </div>
+      <div class="spacer-100 d-print-none"></div>
     </main>
 
     <script src="../js/bootstrap.bundle.js"></script>

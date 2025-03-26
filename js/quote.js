@@ -89,7 +89,7 @@ function updateTradeDetails() {
     const tradeDescription = `Trade-in: ${year} ${vehicle}${condition ? `, ${condition}` : ""}`;
     tradeValueElement.innerHTML = `
       ${tradeDescription}
-      <span class="pull-right">${numeral(value).format("$0,0.00")}</span>
+      <span class="float-end">${numeral(value).format("$0,0.00")}</span>
     `;
 
     // Update OTD price
@@ -98,7 +98,7 @@ function updateTradeDetails() {
       const newOTD = originalOTD - parseFloat(value);
       otdElement.innerHTML = `
         Total O.T.D. Price: 
-        <span class="pull-right">${numeral(newOTD).format("$0,0.00")}</span>
+        <span class="float-end">${numeral(newOTD).format("$0,0.00")}</span>
       `;
     }
   } else {
@@ -107,7 +107,7 @@ function updateTradeDetails() {
     if (otdElement) {
       otdElement.innerHTML = `
         Total Price: 
-        <span class="pull-right">${numeral(window.originalOTDPrice).format("$0,0.00")}</span>
+        <span class="float-end">${numeral(window.originalOTDPrice).format("$0,0.00")}</span>
       `;
     }
   }
@@ -193,6 +193,7 @@ document.addEventListener("DOMContentLoaded", function () {
       window.originalOTDPrice = data.OTDPrice;
 
       console.log("data.StockNumber", data.StockNumber);
+      const stockNumber = data.StockNumber;
       const prodTitle = data.Usage + " " + data.ModelYear + " " + data.Manufacturer + " " + data.B50ModelName;
       const qLevel = `<span class="badge bg-secondary" style="margin-left: 100px; padding: 10px 15px; font-weight: 900">Quote Level ${data.QuoteLevel}</span>`;
 
@@ -205,24 +206,24 @@ document.addEventListener("DOMContentLoaded", function () {
       const inventoryStatus = data.UnitStatus;
 
       // MU Items and Mat Items templates
-      var muItemsTemplate = `
-      <div class="card">
-        <h5 class="card-title">MU Items</h5>
+      var muItemsTemplate = data.MUItems?.length
+        ? `
+        <div class="card">
         ${data.MUItems.map(
           (item) => `
           ${item.Description}
-          <span class="pull-right">
+          <span class="float-end">
             -${numeral(item.Amount).format("$0,0.00")}
           </span>
         `
         ).join("")}
-      </div>
-      `;
+        </div>
+        `
+        : "";
 
       var matItemsTemplate = data.MatItems?.length
         ? `
         <div class="card">
-          <h5 class="card-title">Rebates</h5>
           ${data.MatItems.map(
             (item) => `
             <div class="d-flex justify-content-between align-items-center">
@@ -234,43 +235,28 @@ document.addEventListener("DOMContentLoaded", function () {
         </div>
       `
         : "";
+      var OTDItemsTemplate = data.OTDItems?.length
+        ? `
+        <div class="card">
+          <h5 class="card-title fs-6 my-0">Fees and Taxes</h5>
+          ${data.OTDItems.map(
+            (item) => `
+            <div class="d-flex justify-content-between align-items-center">
+              <span>${item.Description}</span>
+              <span>${numeral(item.Amount).format("$0,0.00")}</span>
+            </div>
+          `
+          ).join("")}
+        </div>
+      `
+        : "";
 
-      // OTD Items - 9 items allowed
-      var OTDItemsTemplate = ``;
-
-      for (var i = 0; i < 9; i++) {
-        if (data.OTDItems && data.OTDItems[i]) {
-          var listItemClass = data.OTDItems[i].Description.startsWith("Indiana Sales Tax") ? "list-group-item tax" : "list-group-item";
-          OTDItemsTemplate += `
-            <li class="${listItemClass}">
-              ${data.OTDItems[i].Description}
-              <span class="pull-right">
-                ${numeral(data.OTDItems[i].Amount).format("$0,0.00")}
-              </span>
-            </li>`;
-        }
-      }
-
-      // First create the accessoryImageMap
-      var carouselImages = ``;
-      var accessoryImageMap = new Map(); // Move this up before using it
+      // Remove accessoryImageMap since we don't need it anymore
+      var carouselImages = "";
 
       i = 0;
       while (i < data.Images.length) {
-        // Find if this image is associated with an accessory
-        const associatedAccessory = data.AccessoryItems.find(
-          (acc) => data.Images[i].MUItemId && data.MUItems.find((mu) => mu.Id === data.Images[i].MUItemId && mu.Description === acc.Description)
-        );
-
-        // Store the mapping if this image belongs to an accessory
-        if (associatedAccessory) {
-          accessoryImageMap.set(associatedAccessory.Description, {
-            imgUrl: data.Images[i].ImgURL,
-            slideIndex: i,
-          });
-        }
-
-        // Create carousel slide
+        // Create carousel slide with simplified caption
         carouselImages += `
           <div class="carousel-item ${i === 0 ? "active" : ""}">
             <img 
@@ -278,16 +264,10 @@ document.addEventListener("DOMContentLoaded", function () {
               class="d-block w-100" 
               alt="Vehicle Image"
             >
-            ${
-              associatedAccessory
-                ? `
-              <div class="carousel-caption feature-caption">
-                <h5>${associatedAccessory.Description}</h5>
-                ${associatedAccessory.ImageDescription ? `<p>${associatedAccessory.ImageDescription}</p>` : ""}
-              </div>
-            `
-                : ""
-            }
+            <div class="carousel-caption">
+              <h5>${prodTitle}</h5>
+              <p>Vin: ${data.VIN} // Stock # ${stockNumber}</p>
+            </div>
           </div>`;
         i++;
       }
@@ -295,7 +275,7 @@ document.addEventListener("DOMContentLoaded", function () {
       var tradeInItemsTemplate = data.TradeInItems?.length
         ? `
           <div class="card">
-            <h5 class="card-title">Trade-In Allowance</h5>
+            <h5 class="card-title fs-6 my-0">Trade-In Allowance</h5>
             ${data.TradeInItems.map(
               (item) => `
               <div class="d-flex justify-content-between align-items-center">
@@ -312,25 +292,19 @@ document.addEventListener("DOMContentLoaded", function () {
       var accessoryItemsTemplate = data.AccessoryItems?.length
         ? `
         <div class="card">
-          <h5 class="card-title">Accessories</h5>
+          <h5 class="card-title fs-6 my-0">Accessories</h5>
           ${data.AccessoryItems.map((item) => {
-            const imageInfo = accessoryImageMap.get(item.Description);
             const priceDisplay = item.Included
-              ? `<span class="included-text">Included</span>${item.Amount > 0 ? ` <small>(value: ${numeral(item.Amount).format("$0,0.00")})</small>` : ""}`
-              : numeral(item.Amount).format("$0,0.00");
+              ? `${item.Amount > 0 ? `${item.Description} (value: ${numeral(item.Amount).format("$0,0.00")})` : item.Description}`
+              : item.Description;
 
             return `
-              <div class="accessory-item ${imageInfo ? "has-image" : ""}">
-                ${
-                  imageInfo
-                    ? `<button class="btn btn-link view-feature p-0 me-2" data-bs-target="#carousel-overlay-vehicle-info" data-bs-slide-to="${imageInfo.slideIndex}">
-                      <i class="fa fa-camera"></i>
-                     </button>`
-                    : '<div class="me-4"></div>'
-                }
-                <div class="accessory-content d-flex justify-content-between align-items-center w-100">
-                  <span class="accessory-name">${item.Description}</span>
-                  <span class="accessory-price ms-2">${priceDisplay}</span>
+              <div class="accessory-item w-100">
+                <div class="d-flex justify-content-between align-items-center">
+                  <span class="accessory-name flex-grow-1">${priceDisplay}</span>
+                  <span class="accessory-price text-end ms-2">
+                    ${item.Included ? '<span class="included-text">Included</span>' : numeral(item.Amount).format("$0,0.00")}
+                  </span>
                 </div>
               </div>
             `;
@@ -343,7 +317,7 @@ document.addEventListener("DOMContentLoaded", function () {
       var discountItemsTemplate = data.DiscountItems?.length
         ? `
         <div class="card">
-          <h5 class="card-title">Discounts</h5>
+          <h5 class="card-title fs-6 my-0">Discounts</h5>
           ${data.DiscountItems.slice(0, 3)
             .map(
               (item) => `
@@ -377,7 +351,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (data.FreeItems[i]) {
           freebieItemsTemplate += `<li class="list-group-item"><em>${data.FreeItems[i].Description} (value: ${numeral(data.FreeItems[i].Amount).format(
             "$0,0.00"
-          )})</em> <span class="pull-right">Free</span></li>`;
+          )})</em> <span class="float-end">Free</span></li>`;
         }
         i++;
       }
@@ -388,22 +362,22 @@ document.addEventListener("DOMContentLoaded", function () {
       var unitNumbersTemplate = ``;
 
       if (inventoryStatus !== null) {
-        unitNumbersTemplate += `<li class="list-group-item">Status: <span class="pull-right">${inventoryStatus}</span></li>`;
+        unitNumbersTemplate += `<li class="list-group-item">Status: <span class="float-end">${inventoryStatus}</span></li>`;
       }
       if (data.EstimatedArrival !== null) {
-        unitNumbersTemplate += `<li class="list-group-item">Available: <span class="pull-right">${arrivalDate}</span></li>`;
+        unitNumbersTemplate += `<li class="list-group-item">Available: <span class="float-end">${arrivalDate}</span></li>`;
       }
       if (data.Usage.length) {
-        unitNumbersTemplate += `<li class="list-group-item">Usage: <span class="pull-right">${newUsed}</span></li>`;
+        unitNumbersTemplate += `<li class="list-group-item">Usage: <span class="float-end">${newUsed}</span></li>`;
       }
       if (data.Miles >= 0) {
-        unitNumbersTemplate += `<li class="list-group-item">Miles/Hours: <span class="pull-right">${milesHours}</span></li>`;
+        unitNumbersTemplate += `<li class="list-group-item">Miles/Hours: <span class="float-end">${milesHours}</span></li>`;
       }
       if (data.StockNumber.length) {
-        unitNumbersTemplate += `<li class="list-group-item">Stock #: <span class="pull-right">${stockNum}</span></li>`;
+        unitNumbersTemplate += `<li class="list-group-item">Stock #: <span class="float-end">${stockNum}</span></li>`;
       }
       if (data.VIN.length) {
-        unitNumbersTemplate += `<li class="list-group-item">VIN: <span class="pull-right">${data.VIN}</span></li>`;
+        unitNumbersTemplate += `<li class="list-group-item">VIN: <span class="float-end">${data.VIN}</span></li>`;
       }
 
       // Availability
@@ -439,7 +413,7 @@ document.addEventListener("DOMContentLoaded", function () {
           if (data.AccessoryItems[i].ImgURL && data.AccessoryItems[i].Included === false) {
             muImageCardTemplate += `
 			<div class="accessory-items-card">
-				<div class="mu-feature-card shadow">
+				<div class="mu-feature-card">
 					<img style="width: 100%;"
 					src="${data.AccessoryItems[i].ImgURL}">
 					<div style="padding: 10px;">
@@ -453,7 +427,7 @@ document.addEventListener("DOMContentLoaded", function () {
           } else if (data.AccessoryItems[i].ImgURL && data.AccessoryItems[i].Included === true && data.AccessoryItems[i].Amount > 0) {
             muImageCardTemplate += `
 			<div class="accessory-items-cards">
-				<div class="mu-feature-card shadow">
+				<div class="mu-feature-card">
 					<img style="width: 100%;"
 					src="${data.AccessoryItems[i].ImgURL}">
 					<div style="padding: 10px;">
@@ -467,7 +441,7 @@ document.addEventListener("DOMContentLoaded", function () {
           } else if (data.AccessoryItems[i].ImgURL && data.AccessoryItems[i].Included === true && data.AccessoryItems[i].Amount === 0) {
             muImageCardTemplate += `
 			<div class="accessory-items-list">
-				<div class="mu-feature-card shadow">
+				<div class="mu-feature-card">
 					<img style="width: 100%;"
 					src="${data.AccessoryItems[i].ImgURL}">
 					<div style="padding: 10px;">
@@ -481,47 +455,6 @@ document.addEventListener("DOMContentLoaded", function () {
           }
           i++;
         }
-      }
-
-      // Update the carousel images template
-      var carouselImages = ``;
-      var accessoryImageMap = new Map(); // Track which images belong to which accessories
-
-      i = 0;
-      while (i < data.Images.length) {
-        // Find if this image is associated with an accessory
-        const associatedAccessory = data.AccessoryItems.find(
-          (acc) => data.Images[i].MUItemId && data.MUItems.find((mu) => mu.Id === data.Images[i].MUItemId && mu.Description === acc.Description)
-        );
-
-        // Store the mapping if this image belongs to an accessory
-        if (associatedAccessory) {
-          accessoryImageMap.set(associatedAccessory.Description, {
-            imgUrl: data.Images[i].ImgURL,
-            slideIndex: i,
-          });
-        }
-
-        // Create carousel slide
-        carouselImages += `
-          <div class="carousel-item ${i === 0 ? "active" : ""}">
-            <img 
-              src="${data.Images[i].ImgURL}" 
-              class="d-block w-100" 
-              alt="Vehicle Image"
-            >
-            ${
-              associatedAccessory
-                ? `
-              <div class="carousel-caption feature-caption">
-                <h5>${associatedAccessory.Description}</h5>
-                ${associatedAccessory.ImageDescription ? `<p>${associatedAccessory.ImageDescription}</p>` : ""}
-              </div>
-            `
-                : ""
-            }
-          </div>`;
-        i++;
       }
 
       // Update the carousel container template
@@ -704,9 +637,7 @@ document.addEventListener("DOMContentLoaded", function () {
 					<input type="hidden" name="pay" size="10">
 					<input type="hidden" onClick="showpay()" value="Calculate">
 				</div>
-
 			</form>
-
     </div>
 		`;
 
@@ -728,11 +659,48 @@ document.addEventListener("DOMContentLoaded", function () {
       // Trade In display template
       const tradeInVehicleTemplate = `
         <div id="tradeValueDisplay" style="display: none;">
-          2020 Harley Davidson <span class="pull-right">$10,000</span>
+          2020 Harley Davidson <span class="float-end">$10,000</span>
         </div>
 
       `;
 
+      // Visibility Toggle Checkboxes template
+      const visibilityToggleTemplate = `
+        <div class="show-hide-container d-inline-flex me-5">
+          <div class="form-check mx-1">
+            <input class="form-check-input" type="checkbox" value="" id="quoteHeader" checked />
+            <label class="form-check-label text-light" for="quoteHeader">Header</label>
+          </div>
+          <div class="form-check mx-1">
+            <input class="form-check-input" type="checkbox" value="" id="quoteImages" checked />
+            <label class="form-check-label text-light" for="quoteImages">Images</label>
+          </div>
+          <div class="form-check mx-1">
+            <input class="form-check-input" type="checkbox" value="" id="quotePayment" checked />
+            <label class="form-check-label text-light" for="quotePayment">Payment</label>
+          </div>
+          <div class="form-check mx-1">
+            <input class="form-check-input" type="checkbox" value="" id="quoteRebates" checked />
+            <label class="form-check-label text-light" for="quoteRebates">Rebates</label>
+          </div>
+          <div class="form-check mx-1">
+            <input class="form-check-input" type="checkbox" value="" id="quoteDiscounts" checked />
+            <label class="form-check-label text-light" for="quoteDiscounts">Discounts</label>
+          </div>
+          <div class="form-check mx-1">
+            <input class="form-check-input" type="checkbox" value="" id="quoteAccessories" checked />
+            <label class="form-check-label text-light" for="quoteAccessories">Accessories</label>
+          </div>
+          <div class="form-check mx-1">
+            <input class="form-check-input" type="checkbox" value="" id="quoteFees" checked />
+            <label class="form-check-label text-light" for="quoteFees">Fees</label>
+          </div>
+          <div class="form-check mx-1">
+            <input class="form-check-input" type="checkbox" value="" id="quoteTotal" checked />
+            <label class="form-check-label text-light" for="quoteTotal">Total</label>
+          </div>
+        </div>
+      `;
       // Update the main page content structure
       const pageContent = `
       <div id="capture-container">
@@ -741,49 +709,44 @@ document.addEventListener("DOMContentLoaded", function () {
         </div>
         
         <div class="content-body">
-          <div class="mb-2">
-            <div class="carousel-container">
-              ${carousel}
-            </div>
-            
-            <div class="trade-in-container">
-              ${tradeInFormTemplate}
-            </div>
-            
-            <div class="trade-in-container">
-              ${tradeInFormTemplate}
-            </div>
-            
-            <div class="unit-info-container">
-              <ul class="list-group">
-                ${unitNumbersTemplate}
-              </ul>
+          <div class="carousel-container">
+            ${carousel}
+          </div>
+          
+          <div class="trade-in-container">
+            ${tradeInFormTemplate}
+          </div>
+
+          <div class="unit-info-container hidden">
+            <div class="card">
+              ${unitNumbersTemplate}
             </div>
           </div>
-   
+          <!-- Price and Payment Section -->
+          <div>
+            ${priceContainer}
+          </div>
+          <div class="trade-in-container">
+            ${tradeInItemsTemplate}
+          </div>
+          <div class="mat-items-container">
+            ${matItemsTemplate}
+          </div>
+          <div class="discount-items-container">
+            ${discountItemsTemplate}
+          </div>
+          <div class="accessory-items-container">
+            ${accessoryItemsTemplate}
+          </div>
+          <div class="otd-items-container">
+            ${OTDItemsTemplate}
+          </div>
 
-          <div class="mb-2">
-
-            <!-- Price and Payment Section -->
-              ${priceContainer}
-            
-            <!-- Pricing Details -->
-            <div class="card hidden">
-              ${tradeInItemsTemplate}
-              ${matItemsTemplate}
-              ${discountItemsTemplate}
-              ${accessoryItemsTemplate}
-            </div>
-            <div class="card">
-              ${OTDItemsTemplate}
-            </div>
-
-            <!-- OTD Price -->
-            <div class="card">
-              <div class="total-otd-price bold" id="otdPriceDisplay">
+          <!-- OTD Price -->
+          <div class="card otd-price-container">
+            <div class="total-otd-price bold" id="otdPriceDisplay">
                 Total Price: 
-                <span class="pull-right fw-bold">${numeral(data.OTDPrice).format("$0,0.00")}</span>
-              </div>
+                <span class="float-end fw-bold">${numeral(data.OTDPrice).format("$0,0.00")}</span>
             </div>
           </div>
 
@@ -817,12 +780,26 @@ document.addEventListener("DOMContentLoaded", function () {
 
       showpay();
       initializeClipboardTooltips();
-
-      // Create export button after content is loaded
+      initializeVisibilityToggles();
       createExportButton();
 
       // Remove loader once everything is ready
       loader.remove();
+
+      // Add this to your style section or CSS file
+      const styleElement = document.createElement("style");
+      styleElement.textContent = `
+        .main-header,
+        .carousel-container,
+        .payment-calculator,
+        .mat-items-container,
+        .discount-items-container,
+        .otd-items-container,
+        .otd-price-container {
+          transition: display 0.3s ease;
+        }
+      `;
+      document.head.appendChild(styleElement);
     })
     .catch((error) => {
       console.error("Error in fetch:", error);
@@ -928,7 +905,7 @@ async function captureFullContent() {
     // Image quality settings
     const scaleFactor = 2.0; // Increase for higher resolution (1.0 = original size)
     const imageQuality = 1.0; // 0.0 to 1.0 (0% to 100%)
-    
+
     // Store original scroll position
     const originalScrollPos = window.scrollY;
 
@@ -961,7 +938,7 @@ async function captureFullContent() {
     canvas.height = element.scrollHeight * scaleFactor;
 
     const ctx = canvas.getContext("2d");
-    
+
     // Scale the context to increase resolution
     ctx.scale(scaleFactor, scaleFactor);
 
@@ -1009,4 +986,31 @@ function handleSearch(event) {
     // Update URL and reload page
     window.location.href = `${window.location.pathname}?search=${encodeURIComponent(stockNumber)}`;
   }
+}
+
+function initializeVisibilityToggles() {
+  // Define the mapping of checkbox IDs to their target containers
+  const toggleMap = {
+    quoteHeader: ".main-header",
+    quoteImages: ".carousel-container",
+    quotePayment: ".payment-calculator",
+    quoteRebates: ".mat-items-container",
+    quoteDiscounts: ".discount-items-container",
+    quoteAccessories: ".accessory-items-container",
+    quoteFees: ".otd-items-container",
+    quoteTotal: ".otd-price-container",
+  };
+
+  // Add event listeners to all checkboxes
+  Object.keys(toggleMap).forEach((checkboxId) => {
+    const checkbox = document.getElementById(checkboxId);
+    if (checkbox) {
+      checkbox.addEventListener("change", (e) => {
+        const container = document.querySelector(toggleMap[checkboxId]);
+        if (container) {
+          container.style.display = e.target.checked ? "" : "none";
+        }
+      });
+    }
+  });
 }

@@ -100,17 +100,38 @@ input[type="range"]:focus::-ms-fill-upper {
 body {
   background: #f0f0f0;
   margin: 0;
-  padding: 1rem;
+  padding: 0;
 }
 .dots {
   background-image: radial-gradient(circle, #ddd 1px, transparent 1px);
   background-size: 15px 15px;
+}
+.spacer-200 {
+  height: 200px;
+}
+.spacer-100 {
+  height: 100px;
+}
+.spacer-50 {
+  height: 50px;
+}
+.spacer-25 {
+  height: 25px;
+}
+.spacer-10 {
+  height: 10px;
 }
 .bg-white {
   background: #fff;
 }
 .hidden {
   display: none !important;
+}
+.opacity-90 {
+  opacity: 0.9;
+}
+.opacity-95 {
+  opacity: 0.95;
 }
 #ourPriceDisplay {
   padding: 10px 0;
@@ -147,7 +168,7 @@ body {
   text-align: left;
 }
 .vehicle-title {
-  font-size: 1.3rem;
+  font-size: 1.1rem;
   font-weight: 700;
 }
 .vehicle-subtitle {
@@ -162,13 +183,37 @@ body {
   width: 100%;
   margin: 5px 0;
 }
-
 .carousel-container img {
   width: 100%;
   height: auto;
   object-fit: cover;
 }
-
+.carousel-caption {
+  color: #ffffff;
+  padding: 20px;
+  border-radius: 5px;
+}
+.carousel-caption h5 {
+  font-size: 1rem;
+  font-weight: 900;
+  background-color: rgba(0, 0, 0, 0.4);
+  border-radius: 5px;
+  padding: 5px;
+}
+.carousel-caption p {
+  font-size: 0.7rem;
+  font-weight: 500;
+  background-color: rgba(0, 0, 0, 0.4);
+  border-radius: 5px;
+  padding: 5px;
+}
+.carousel-indicators {
+  opacity: 0.1;
+}
+.carousel-indicators:hover {
+  opacity: 1;
+}
+/* Unit info container */
 .unit-info-container {
   margin: 5px 0;
 }
@@ -194,7 +239,7 @@ body {
 .price-payment-container {
   text-align: center;
   padding: 75px;
-  border: 1px solid #ddd;
+  border: 0px solid #ddd;
   border-radius: 4px;
 }
 
@@ -209,11 +254,16 @@ body {
   margin-left: -4px;
   margin-right: -4px;
 }
-
+.credit-bg {
+  background-color: #f3eb44 !important;
+}
+.downpayment-bg {
+  background-color: #f3eb44 !important;
+}
 .payment-collapsed-container {
   margin-top: 10px;
   padding: 10px;
-  border: 1px solid red;
+  border: 1px solid #ddd;
   border-radius: 4px;
 }
 .range-slider .downpayment-bg {
@@ -225,54 +275,57 @@ body {
 .range-slider .downpayment-bg .slider-handle:hover {
   background-color: #ee0000;
 }
+
 .credit-slider-label {
   color: #ee0000;
   font-weight: 700;
+  padding: 5px;
 }
 .range-slider .credit-bg {
   background-color: #ee0000;
 }
 .range-slider .credit-bg .slider-handle {
-  background-color: #007bff;
+  background-color: #000000;
 }
 .updated-value-line {
-  border: 1px solid red;
+  border: 0px solid red;
 }
 .downpayment-value {
-  border: 1px solid red;
+  border: 0px solid red;
 }
 .downpayment-label {
-  border: 1px solid blue;
+  border: 0px solid blue;
   padding: 5px;
 }
 .slider-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border: 1px solid pink;
-  background-color: #ccc;
-  padding: 10px;
+  border: 0px solid pink;
+  background-color: #fff;
+  padding: 5px;
+  margin-bottom: 10px;
 }
 .credit-slider-label {
-  border: 1px solid green;
+  border: 0px solid green;
 }
 .apr-label {
-  border: 1px solid red;
+  border: 0px solid red;
   padding: 5px;
 }
 .apr-value {
-  border: 1px solid skyblue;
+  border: 0px solid skyblue;
 }
 .loan-term-container {
-  border: 1px solid red;
+  border: 0px solid red;
   padding: 0 0 10px 0;
 }
 .loan-term-label {
-  border: 1px solid red;
+  border: 0px solid red;
 }
 .credit-disclaimer-container {
   border-radius: 5px;
-  border: 1px solid red;
+  border: 0px solid red;
   padding: 5px 0;
 }
 
@@ -280,4 +333,13 @@ body {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+}
+
+.accessory-price {
+  min-width: 100px; /* Or whatever width works for your prices */
+  text-align: right;
+}
+
+.accessory-name {
+  padding-right: 1rem;
 }
