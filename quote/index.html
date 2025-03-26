@@ -9,138 +9,194 @@
     <link rel="stylesheet" href="../css/quote.css" />
   </head>
   <body class="dots m-0 p-0">
-    <nav
-      class="navbar fixed-top navbar-expand-lg bg-body-tertiary justify-content-around d-print-none border-bottom opacity-90"
-      aria-current="page"
-      data-bs-theme="dark"
-    >
-      <div class="container-fluid">
-        <a class="navbar-brand" href="../">
+    <div class="d-flex flex-row flex-nowrap">
+      <!-- Start Sidebar -->
+      <div class="d-flex flex-column flex-shrink-0 p-3 text-bg-dark vh-100 overflow-hidden" style="width: 280px">
+        <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
           <img src="../img/fom-app-logo-01.svg" alt="FOM Logo" width="180" height="30.6" />
         </a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <form class="d-flex" role="search" onsubmit="handleSearch(event)">
-            <input class="form-control me-1" type="search" placeholder="Stock Number" aria-label="Search" id="stockNumberSearch" required />
-            <button class="btn btn-danger me-2" type="submit"><i class="bi bi-arrow-return-left"></i></button>
-          </form>
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <a class="btn btn-outline-secondary ms-1" aria-current="page" href="./">Clear</a>
-            </li>
-            <li class="nav-item dropdown">
-              <a class="btn btn-outline-secondary mx-1" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Templates <i class="bi bi-chevron-compact-down"></i
-              ></a>
-              <ul class="dropdown-menu">
-                <li>
-                  <a class="dropdown-item" href="#"><i class="bi bi-messenger me-2"></i> Facebook Marketplace Quote</a>
-                </li>
-                <li>
-                  <a class="dropdown-item" href="#"><i class="bi bi-chat-dots me-2"></i> SMS Text Quote</a>
-                </li>
-                <li><hr class="dropdown-divider" /></li>
-                <li>
-                  <a class="dropdown-item" href="#"><i class="bi bi-list me-2"></i> All Templates</a>
-                </li>
-              </ul>
-            </li>
+        <hr />
+        <ul class="nav nav-pills flex-column mb-auto">
+          <li class="nav-item">
+            <a href="#" class="nav-link active" aria-current="page">
+              <i class="bi bi-house"></i>
+              Home
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-link text-white">
+              <i class="bi bi-speedometer2"></i>
+              Dashboard
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-link text-white">
+              <i class="bi bi-speedometer2"></i>
+              Orders
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-link text-white">
+              <i class="bi bi-speedometer2"></i>
+              Products
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-link text-white">
+              <i class="bi bi-speedometer2"></i>
+              Customers
+            </a>
+          </li>
+        </ul>
+        <div class="show-hide-container me-5">
+          <div class="form-check mx-1">
+            <input class="form-check-input" type="checkbox" value="" id="quoteName" checked />
+            <label class="form-check-label text-light" for="quoteName">Name</label>
+          </div>
+          <div class="form-check mx-1">
+            <input class="form-check-input" type="checkbox" value="" id="quoteHeader" checked />
+            <label class="form-check-label text-light" for="quoteHeader">Header</label>
+          </div>
+          <div class="form-check mx-1">
+            <input class="form-check-input" type="checkbox" value="" id="quoteImages" checked />
+            <label class="form-check-label text-light" for="quoteImages">Images</label>
+          </div>
+          <div class="form-check mx-1">
+            <input class="form-check-input" type="checkbox" value="" id="quotePayment" checked />
+            <label class="form-check-label text-light" for="quotePayment">Payment</label>
+          </div>
+          <div class="form-check mx-1">
+            <input class="form-check-input" type="checkbox" value="" id="quoteRebates" checked />
+            <label class="form-check-label text-light" for="quoteRebates">Rebates</label>
+          </div>
+          <div class="form-check mx-1">
+            <input class="form-check-input" type="checkbox" value="" id="quoteDiscounts" checked />
+            <label class="form-check-label text-light" for="quoteDiscounts">Discounts</label>
+          </div>
+          <div class="form-check mx-1">
+            <input class="form-check-input" type="checkbox" value="" id="quoteAccessories" checked />
+            <label class="form-check-label text-light" for="quoteAccessories">Accessories</label>
+          </div>
+          <div class="form-check mx-1">
+            <input class="form-check-input" type="checkbox" value="" id="quoteFees" checked />
+            <label class="form-check-label text-light" for="quoteFees">Fees</label>
+          </div>
+          <div class="form-check mx-1">
+            <input class="form-check-input" type="checkbox" value="" id="quoteTotal" checked />
+            <label class="form-check-label text-light" for="quoteTotal">Total</label>
+          </div>
+        </div>
+        <hr />
+        <div class="dropdown">
+          <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2" />
+            <strong>mdo</strong>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+            <li><a class="dropdown-item" href="#">New project...</a></li>
+            <li><a class="dropdown-item" href="#">Settings</a></li>
+            <li><a class="dropdown-item" href="#">Profile</a></li>
+            <li><hr class="dropdown-divider" /></li>
+            <li><a class="dropdown-item" href="#">Sign out</a></li>
           </ul>
-          <div class="show-hide-container d-inline-flex me-5">
-            <div class="form-check mx-1">
-              <input class="form-check-input" type="checkbox" value="" id="quoteName" checked />
-              <label class="form-check-label text-light" for="quoteName">Name</label>
-            </div>
-            <div class="form-check mx-1">
-              <input class="form-check-input" type="checkbox" value="" id="quoteHeader" checked />
-              <label class="form-check-label text-light" for="quoteHeader">Header</label>
-            </div>
-            <div class="form-check mx-1">
-              <input class="form-check-input" type="checkbox" value="" id="quoteImages" checked />
-              <label class="form-check-label text-light" for="quoteImages">Images</label>
-            </div>
-            <div class="form-check mx-1">
-              <input class="form-check-input" type="checkbox" value="" id="quotePayment" checked />
-              <label class="form-check-label text-light" for="quotePayment">Payment</label>
-            </div>
-            <div class="form-check mx-1">
-              <input class="form-check-input" type="checkbox" value="" id="quoteRebates" checked />
-              <label class="form-check-label text-light" for="quoteRebates">Rebates</label>
-            </div>
-            <div class="form-check mx-1">
-              <input class="form-check-input" type="checkbox" value="" id="quoteDiscounts" checked />
-              <label class="form-check-label text-light" for="quoteDiscounts">Discounts</label>
-            </div>
-            <div class="form-check mx-1">
-              <input class="form-check-input" type="checkbox" value="" id="quoteAccessories" checked />
-              <label class="form-check-label text-light" for="quoteAccessories">Accessories</label>
-            </div>
-            <div class="form-check mx-1">
-              <input class="form-check-input" type="checkbox" value="" id="quoteFees" checked />
-              <label class="form-check-label text-light" for="quoteFees">Fees</label>
-            </div>
-            <div class="form-check mx-1">
-              <input class="form-check-input" type="checkbox" value="" id="quoteTotal" checked />
-              <label class="form-check-label text-light" for="quoteTotal">Total</label>
-            </div>
-          </div>
-          <div class="btn-group me-5 hidden" role="group" aria-label="Button group with nested dropdown">
-            <button type="button" class="btn btn-outline-secondary" title="Create custom key tag" onclick="openKeyTagsByStockNumberModal('${stockNumber}')">
-              <i class="bi bi-tag"></i>
+        </div>
+      </div>
+      <!-- End Sidebar -->
+      <!-- Start Main -->
+      <main class="d-flex flex-nowrap flex-column w-100 min-vh-100 vh-100 overflow-y-auto align-items-start justify-content-start">
+        <nav
+          class="navbar navbar-expand-lg bg-body-tertiary w-100 justify-content-around d-print-none border-bottom opacity-90"
+          aria-current="page"
+          data-bs-theme="dark"
+        >
+          <div class="container-fluid">
+            <a class="navbar-brand" href="../">
+              <i class="bi bi-arrows-collapse-vertical"></i>
+            </a>
+            <button
+              class="navbar-toggler"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="btn-group" role="group">
-              <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="bi bi-grid-3x3-gap-fill"></i>
-              </button>
-              <ul class="dropdown-menu">
-                <li>
-                  <a class="dropdown-item" href="#" title="Create custom key tag" onclick="openKeyTagsByStockNumberModal('${stockNumber}')"
-                    ><i class="bi bi-tag me-2"></i> Custom Key Tag</a
-                  >
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <form class="d-flex" role="search" onsubmit="handleSearch(event)">
+                <input class="form-control me-1" type="search" placeholder="Stock Number" aria-label="Search" id="stockNumberSearch" required />
+                <button class="btn btn-danger me-2" type="submit"><i class="bi bi-arrow-return-left"></i></button>
+              </form>
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                  <a class="btn btn-outline-secondary ms-1" aria-current="page" href="./">Clear</a>
                 </li>
-                <li>
-                  <a class="dropdown-item disabled" href="#"><i class="bi bi-tags me-2"></i> Custom Hang Tags</a>
-                </li>
-                <li>
-                  <a class="dropdown-item" href="./quote/"><i class="bi bi-card-heading me-2"></i> Custom Quote</a>
+                <li class="nav-item dropdown">
+                  <a class="btn btn-outline-secondary mx-1" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Templates <i class="bi bi-chevron-compact-down"></i
+                  ></a>
+                  <ul class="dropdown-menu">
+                    <li>
+                      <a class="dropdown-item" href="#"><i class="bi bi-messenger me-2"></i> Facebook Marketplace Quote</a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="#"><i class="bi bi-chat-dots me-2"></i> SMS Text Quote</a>
+                    </li>
+                    <li><hr class="dropdown-divider" /></li>
+                    <li>
+                      <a class="dropdown-item" href="#"><i class="bi bi-list me-2"></i> All Templates</a>
+                    </li>
+                  </ul>
                 </li>
               </ul>
+
+              <div class="btn-group me-5 hidden" role="group" aria-label="Button group with nested dropdown">
+                <button type="button" class="btn btn-outline-secondary" title="Create custom key tag" onclick="openKeyTagsByStockNumberModal('${stockNumber}')">
+                  <i class="bi bi-tag"></i>
+                </button>
+                <div class="btn-group" role="group">
+                  <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-grid-3x3-gap-fill"></i>
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li>
+                      <a class="dropdown-item" href="#" title="Create custom key tag" onclick="openKeyTagsByStockNumberModal('${stockNumber}')"
+                        ><i class="bi bi-tag me-2"></i> Custom Key Tag</a
+                      >
+                    </li>
+                    <li>
+                      <a class="dropdown-item disabled" href="#"><i class="bi bi-tags me-2"></i> Custom Hang Tags</a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="./quote/"><i class="bi bi-card-heading me-2"></i> Custom Quote</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="export-btn-container" style="min-width: 150px"></div>
+              <button id="placeholderSaveBtn" class="btn btn-danger ms-2 d-flex align-items-center gap-2" disabled>
+                <i class="bi bi-floppy"></i>
+                <span>Save Quote</span>
+              </button>
             </div>
           </div>
-          <div class="export-btn-container" style="min-width: 150px"></div>
-          <button id="placeholderSaveBtn" class="btn btn-danger ms-2 d-flex align-items-center gap-2" disabled>
-            <i class="bi bi-floppy"></i>
-            <span>Save Quote</span>
-          </button>
+        </nav>
+        <div class="page-container">
+          <p class="text-center mt-4 text-muted opacity-50">Enter Stock Number</p>
+          <div class="capture-container">
+            <div class="main-header"></div>
+            <div class="carousel-container"></div>
+            <div class="trade-in-container"></div>
+            <div class="unit-info-container"></div>
+            <div class="payment-calculator"></div>
+            <div class="total-otd-price"></div>
+          </div>
         </div>
-      </div>
-    </nav>
-
-    <main class="d-flex flex-column w-100 min-vh-100 align-items-center justify-content-center">
-      <div class="spacer-100 d-print-none"></div>
-      <div class="page-container">
-        <p class="text-center mt-4 text-muted opacity-50">Enter Stock Number</p>
-        <div class="capture-container">
-          <div class="main-header"></div>
-          <div class="carousel-container"></div>
-          <div class="trade-in-container"></div>
-          <div class="unit-info-container"></div>
-          <div class="payment-calculator"></div>
-          <div class="total-otd-price"></div>
-        </div>
-      </div>
-      <div class="spacer-100 d-print-none"></div>
-    </main>
+      </main>
+      <!-- End Main -->
+    </div>
 
     <script src="../js/bootstrap.bundle.js"></script>
     <script src="../js/numeral.js"></script>

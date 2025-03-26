@@ -667,6 +667,10 @@ document.addEventListener("DOMContentLoaded", function () {
       // Visibility Toggle Checkboxes template
       const visibilityToggleTemplate = `
         <div class="show-hide-container d-inline-flex me-5">
+          <div class="form-date mx-1">
+            <input type="date" id="quoteDate" name="quoteDate">
+            <label class="form-check-label text-light" for="quoteDate">Date</label>
+          </div>
           <div class="form-check mx-1">
             <input class="form-check-input" type="checkbox" value="" id="quoteName" checked />
             <label class="form-check-label text-light" for="quoteName">Name</label>
@@ -705,13 +709,20 @@ document.addEventListener("DOMContentLoaded", function () {
           </div>
         </div>
       `;
+
+      // Quote Dates
+      let quoteDate = Date.now();
+      let quoteDateFormatted = moment(quoteDate).format("MM/DD/YYYY");
+      let quoteTime = Date.now();
+      let quoteTimeFormatted = moment(quoteTime).format("h:mm a");
+
       // Update the main page content structure
       const pageContent = `
       <div id="capture-container">
        <div class="quote-name input-group mb-3">
-        <span class="input-group-text" id="basic-addon1"><i class="bi bi-person"></i></span>
+        <span class="input-group-text quote-name" id="basic-addon1"><i class="bi bi-person"></i></span>
         <input type="text" class="form-control" placeholder="Full Name" aria-label="Name" aria-describedby="basic-addon1" id="quoteNameInput">
-        <span class="input-group-text">Quote</span>
+        <span class="input-group-text quote-date">${quoteDateFormatted} ${quoteTimeFormatted}</span>
       </div>
         <div class="main-header">
           ${muHeaderTemplate}
@@ -721,17 +732,14 @@ document.addEventListener("DOMContentLoaded", function () {
           <div class="carousel-container">
             ${carousel}
           </div>
-          
           <div class="trade-in-container">
             ${tradeInFormTemplate}
           </div>
-
           <div class="unit-info-container hidden">
             <div class="card">
               ${unitNumbersTemplate}
             </div>
           </div>
-          <!-- Price and Payment Section -->
           <div>
             ${priceContainer}
           </div>
@@ -1009,6 +1017,7 @@ function handleSearch(event) {
 
 function initializeVisibilityToggles() {
   const toggleMap = {
+    quoteName: ".quote-name",
     quoteHeader: ".main-header",
     quoteImages: ".carousel-container",
     quotePayment: ".payment-calculator",
