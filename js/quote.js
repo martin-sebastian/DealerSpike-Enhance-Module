@@ -925,6 +925,10 @@ async function saveFile(blob, filename) {
 
 async function captureFullContent() {
   try {
+    // Image quality settings
+    const scaleFactor = 2.0; // Increase for higher resolution (1.0 = original size)
+    const imageQuality = 1.0; // 0.0 to 1.0 (0% to 100%)
+    
     // Store original scroll position
     const originalScrollPos = window.scrollY;
 
@@ -951,12 +955,15 @@ async function captureFullContent() {
     await new Promise((resolve) => (video.onloadedmetadata = resolve));
     video.play();
 
-    // Create canvas with full element dimensions
+    // Create canvas with scaled dimensions for higher resolution
     const canvas = document.createElement("canvas");
-    canvas.width = element.scrollWidth;
-    canvas.height = element.scrollHeight;
+    canvas.width = element.scrollWidth * scaleFactor;
+    canvas.height = element.scrollHeight * scaleFactor;
 
     const ctx = canvas.getContext("2d");
+    
+    // Scale the context to increase resolution
+    ctx.scale(scaleFactor, scaleFactor);
 
     // Draw the full element
     ctx.drawImage(
@@ -980,80 +987,15 @@ async function captureFullContent() {
     const data = window.vehicleData;
     const filename = generateFilename(data);
 
-    // Convert canvas to blob
+    // Convert canvas to blob with configurable quality
     const blob = await new Promise((resolve) => {
-      canvas.toBlob(resolve, "image/jpeg", 0.9);
+      canvas.toBlob(resolve, "image/jpeg", imageQuality);
     });
 
     await saveFile(blob, filename);
   } catch (err) {
     console.error("Error capturing screen:", err);
     alert("Screen capture failed or was cancelled");
-  }
-}
-
-// Alternative approach using multiple captures and stitching
-async function captureFullContentStitched() {
-  try {
-    // Store original scroll position
-    const originalScrollPos = window.scrollY;
-
-    const element = document.querySelector("#capture-container");
-    const rect = element.getBoundingClientRect();
-
-    // Calculate number of captures needed
-    const viewportHeight = window.innerHeight;
-    const totalHeight = element.scrollHeight;
-    const captures = Math.ceil(totalHeight / viewportHeight);
-
-    // Create final canvas
-    const finalCanvas = document.createElement("canvas");
-    finalCanvas.width = element.scrollWidth;
-    finalCanvas.height = totalHeight;
-    const finalCtx = finalCanvas.getContext("2d");
-
-    // Start screen capture
-    const stream = await navigator.mediaDevices.getDisplayMedia({
-      preferCurrentTab: true,
-      video: {
-        displaySurface: "browser",
-      },
-    });
-
-    const video = document.createElement("video");
-    video.srcObject = stream;
-    await new Promise((resolve) => (video.onloadedmetadata = resolve));
-    video.play();
-
-    // Capture each section
-    for (let i = 0; i < captures; i++) {
-      // Scroll to section
-      window.scrollTo(0, i * viewportHeight);
-
-      // Wait for scroll and repaint
-      await new Promise((resolve) => setTimeout(resolve, 100));
-
-      // Draw this section to the canvas
-      finalCtx.drawImage(video, rect.left, rect.top, rect.width, viewportHeight, 0, i * viewportHeight, rect.width, viewportHeight);
-    }
-
-    // Stop screen capture
-    stream.getTracks().forEach((track) => track.stop());
-
-    // Restore original scroll position
-    window.scrollTo(0, originalScrollPos);
-
-    // Download the stitched image
-    const image = finalCanvas.toDataURL("image/jpeg", 0.9);
-    const link = document.createElement("a");
-    link.download = "vehicle-quote-full.jpg";
-    link.href = image;
-    link.click();
-  } catch (err) {
-    console.error("Error capturing screen:", err);
-    alert("Screen capture failed or was cancelled");
-    // Restore scroll position
-    window.scrollTo(0, originalScrollPos);
   }
 }
 
