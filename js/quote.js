@@ -864,8 +864,8 @@ function createExportButton() {
 
   // Regular capture button
   const exportBtn = document.createElement("button");
-  exportBtn.className = "btn btn-primary btn-sm export-btn me-2";
-  exportBtn.textContent = "Quick Export";
+  exportBtn.className = "btn btn-danger ms-2";
+  exportBtn.textContent = "Save Quote as JPG";
   exportBtn.addEventListener("click", captureFullContent);
 
   // Full page capture button
@@ -876,47 +876,6 @@ function createExportButton() {
 
   container.appendChild(exportBtn);
   // container.appendChild(fullExportBtn);
-}
-
-// This would require a server endpoint that converts external URLs to base64
-async function convertToBase64Images() {
-  const images = document.querySelectorAll("#capture-container img");
-  for (let img of images) {
-    try {
-      const response = await fetch("/api/convert-image-to-base64?url=" + encodeURIComponent(img.src));
-      const data = await response.json();
-      img.src = data.base64;
-    } catch (error) {
-      console.warn("Failed to convert image:", img.src);
-    }
-  }
-}
-
-// Then in your export function
-async function exportAsImage() {
-  // Show loading indicator
-  const loadingIndicator = document.createElement("div");
-  loadingIndicator.innerHTML = '<div class="text-center"><i class="fa fa-spinner fa-spin fa-3x"></i><p>Generating image...</p></div>';
-  document.body.appendChild(loadingIndicator);
-
-  try {
-    await convertToBase64Images();
-    const element = document.querySelector("#capture-container");
-    const canvas = await html2canvas(element, {
-      allowTaint: true,
-      useCORS: true,
-      scale: 2,
-    });
-    const image = canvas.toDataURL("image/jpeg", 0.9);
-    const link = document.createElement("a");
-    link.download = "vehicle-quote.jpg";
-    link.href = image;
-    link.click();
-  } catch (error) {
-    console.error("Export failed:", error);
-  } finally {
-    document.body.removeChild(loadingIndicator);
-  }
 }
 
 function generateFilename(data) {

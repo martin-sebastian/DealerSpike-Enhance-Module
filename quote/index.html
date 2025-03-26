@@ -9,10 +9,10 @@
     <link rel="stylesheet" href="../css/quote.css" />
   </head>
   <body class="dots m-0 p-0">
-    <nav class="navbar navbar-expand-lg bg-body-tertiary d-print-none">
+    <nav class="navbar fixed-top navbar-expand-lg bg-body-tertiary d-print-none border-bottom" aria-current="page" data-bs-theme="dark">
       <div class="container-fluid">
         <a class="navbar-brand" href="../">
-          <img src="../img/fom-app-logo-02.svg" alt="FOM Logo" width="180" height="30.6" />
+          <img src="../img/fom-app-logo-01.svg" alt="FOM Logo" width="180" height="30.6" />
         </a>
         <button
           class="navbar-toggler"
@@ -26,10 +26,13 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <div class="export-btn-container"></div>
+          <form class="d-flex" role="search" onsubmit="handleSearch(event)">
+            <input class="form-control me-2" type="search" placeholder="Stock Number" aria-label="Search" id="stockNumberSearch" required />
+            <button class="btn btn-outline-danger" type="submit">Search</button>
+          </form>
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">Home</a>
+              <a class="nav-link active" aria-current="page" href="./">Home</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#">Link</a>
@@ -47,13 +50,17 @@
               <a class="nav-link disabled" aria-disabled="true">Disabled</a>
             </li>
           </ul>
-          <form class="d-flex" role="search" onsubmit="handleSearch(event)">
-            <input class="form-control me-2" type="search" placeholder="Stock Number" aria-label="Search" id="stockNumberSearch" required />
-            <button class="btn btn-outline-success" type="submit">Search</button>
-          </form>
+          
+          <div class="export-btn-container"></div>
         </div>
       </div>
     </nav>
+
+    <main class="d-flex flex-column w-100 vh-100 align-items-center justify-content-center">
+      <div class="page-container">
+        <p class="text-center mt-4 text-muted opacity-50">Enter Stock Number</p>
+      </div>
+    </main>
 
     <script src="../js/bootstrap.bundle.js"></script>
     <script src="../js/numeral.js"></script>

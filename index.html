@@ -23,8 +23,6 @@
               <img id="logo" class="me-2 pt-1" src="./img/fom-app-logo-01.svg" alt="Logo" width="180" height="30.6" />
             </a>
           </div>
-          
-
 
           <form class="d-flex flex-row d-none d-sm-block" role="search">
             <label for="searchFilter" class="visually-hidden">Search</label>
@@ -102,16 +100,16 @@
             </div>
           </form>
           <div class="toggles-group d-flex flex-row">
-            <div class="btn-group me-1" role="group" aria-label="Button group with nested dropdown">
+            <div class="btn-group me-5" role="group" aria-label="Button group with nested dropdown">
               <button type="button" class="btn btn-outline-secondary" title="Create custom key tag" onclick="openKeyTagsByStockNumberModal('${stockNumber}')"><i class="bi bi-tag"></i></button>
               <div class="btn-group" role="group">
                 <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                  New
+                  <i class="bi bi-grid-3x3-gap-fill"></i>
                 </button>
                 <ul class="dropdown-menu">
                   <li><a class="dropdown-item" href="#" title="Create custom key tag" onclick="openKeyTagsByStockNumberModal('${stockNumber}')"><i class="bi bi-tag me-2"></i> Custom Key Tag</a></li>
                   <li><a class="dropdown-item disabled" href="#"><i class="bi bi-tags me-2"></i> Custom Hang Tags</a></li>
-                  <li><a class="dropdown-item" href="quote/"><i class="bi bi-card-heading me-2"></i> Custom Quote</a></li>
+                  <li><a class="dropdown-item" href="./quote/"><i class="bi bi-card-heading me-2"></i> Custom Quote</a></li>
                 </ul>
               </div>
             </div>
@@ -133,6 +131,7 @@
       </nav>
     </header>
 
+    <!-- RIGHT SIDE MENU-->
     <div
       class="offcanvas offcanvas-end"
       data-bs-scroll="true"
@@ -148,16 +147,22 @@
       <div class="offcanvas-body">
         <form class="d-flex flex-column row-gap-3 my-3" role="search">
           <div class="d-flex flex-column row-gap-2">
-            <button type="button" class="btn btn-danger" title="Create custom tag" onclick="openKeyTagsByStockNumberModal('${stockNumber}')">
-              <i class="bi bi-tag float-start"></i> Create Custom Tag
+            <button type="button" class="btn btn-danger" title="Create custom key tag" onclick="openKeyTagsByStockNumberModal('${stockNumber}')">
+              <i class="bi bi-tag float-start"></i> Create Custom Key Tag
+            </button>
+            <button type="button" class="btn btn-danger disabled" title="Create custom hang tags" onclick="openKeyTagsByStockNumberModal('${stockNumber}')">
+              <i class="bi bi-tags float-start"></i> Create Custom Hang Tags
+            </button>
+            <button type="button" class="btn btn-danger" title="Create custom quote" onclick="window.location.href = './quote/'">
+              <i class="bi bi-card-heading float-start"></i> Create Custom Quote
             </button>
             <button type="button" class="btn btn-danger" title="Service Calendar" onclick="openServiceCalendarModal()">
-              <i class="bi bi-calendar-date float-start"></i> Service Calendar
+              <i class="bi bi-calendar-date float-start"></i> Service Calendar Demo
             </button>
-            <button type="button" class="btn btn-danger" title="Service Calendar" onclick="window.open('/admin', '_blak')">
-              <i class="bi bi-gear float-start"></i> Admin
+            <button type="button" class="btn btn-danger disabled" title="Settings" onclick="window.open('/admin')">
+              <i class="bi bi-gear float-start"></i>Settings - coming soon.
             </button>
-            <nav class="side-menu-footer">V.0.1.0</nav>
+            <nav class="side-menu-footer text-light text-muted">V.0.3.0</nav>
           </div>
         </form>
       </div>
