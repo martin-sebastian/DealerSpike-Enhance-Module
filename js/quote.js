@@ -903,8 +903,8 @@ async function saveFile(blob, filename) {
 async function captureFullContent() {
   try {
     // Image quality settings
-    const scaleFactor = 2.0; // Increase for higher resolution (1.0 = original size)
-    const imageQuality = 1.0; // 0.0 to 1.0 (0% to 100%)
+    const scaleFactor = 1.0; // Increase for higher resolution (1.0 = original size)
+    const imageQuality = 2.0; // 0.0 to 1.0 (0% to 100%)
 
     // Store original scroll position
     const originalScrollPos = window.scrollY;
