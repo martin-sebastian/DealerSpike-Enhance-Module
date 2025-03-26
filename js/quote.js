@@ -794,9 +794,20 @@ document.addEventListener("DOMContentLoaded", function () {
         .payment-calculator,
         .mat-items-container,
         .discount-items-container,
+        .accessory-items-container,
         .otd-items-container,
         .otd-price-container {
-          transition: display 0.3s ease;
+          overflow: hidden;
+          transition: all 0.3s ease-in-out;
+          opacity: 1;
+          max-height: 2000px; /* Set this to something larger than your largest section */
+        }
+
+        .section-hidden {
+          opacity: 0;
+          max-height: 0;
+          margin: 0 !important;
+          padding: 0 !important;
         }
       `;
       document.head.appendChild(styleElement);
@@ -839,20 +850,19 @@ function createExportButton() {
     return;
   }
 
-  // Regular capture button
+  // Remove placeholder button if it exists
+  document.getElementById("placeholderSaveBtn")?.remove();
+
+  // Create the real button
   const exportBtn = document.createElement("button");
-  exportBtn.className = "btn btn-danger ms-2";
-  exportBtn.textContent = "Save Quote as JPG";
+  exportBtn.className = "btn btn-danger ms-2 d-flex align-items-center gap-2";
+  exportBtn.innerHTML = `
+    <i class="bi bi-floppy"></i>
+    <span>Save Quote</span>
+  `;
   exportBtn.addEventListener("click", captureFullContent);
 
-  // Full page capture button
-  // const fullExportBtn = document.createElement("button");
-  // fullExportBtn.className = "btn btn-secondary export-btn";
-  // fullExportBtn.textContent = "Full Page Export";
-  // fullExportBtn.addEventListener("click", captureFullContentStitched);
-
   container.appendChild(exportBtn);
-  // container.appendChild(fullExportBtn);
 }
 
 function generateFilename(data) {
@@ -989,7 +999,6 @@ function handleSearch(event) {
 }
 
 function initializeVisibilityToggles() {
-  // Define the mapping of checkbox IDs to their target containers
   const toggleMap = {
     quoteHeader: ".main-header",
     quoteImages: ".carousel-container",
@@ -1001,14 +1010,17 @@ function initializeVisibilityToggles() {
     quoteTotal: ".otd-price-container",
   };
 
-  // Add event listeners to all checkboxes
   Object.keys(toggleMap).forEach((checkboxId) => {
     const checkbox = document.getElementById(checkboxId);
     if (checkbox) {
       checkbox.addEventListener("change", (e) => {
         const container = document.querySelector(toggleMap[checkboxId]);
         if (container) {
-          container.style.display = e.target.checked ? "" : "none";
+          if (e.target.checked) {
+            container.classList.remove("section-hidden");
+          } else {
+            container.classList.add("section-hidden");
+          }
         }
       });
     }
