@@ -572,7 +572,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Payment Calculator
       const paymentCalc = `
-		<div class="payment-calculator">
+		<div class="payment-calculator my-2">
 
       <form name="calc" method="POST">
 
@@ -668,6 +668,10 @@ document.addEventListener("DOMContentLoaded", function () {
       const visibilityToggleTemplate = `
         <div class="show-hide-container d-inline-flex me-5">
           <div class="form-check mx-1">
+            <input class="form-check-input" type="checkbox" value="" id="quoteName" checked />
+            <label class="form-check-label text-light" for="quoteName">Name</label>
+          </div>
+          <div class="form-check mx-1">
             <input class="form-check-input" type="checkbox" value="" id="quoteHeader" checked />
             <label class="form-check-label text-light" for="quoteHeader">Header</label>
           </div>
@@ -704,6 +708,11 @@ document.addEventListener("DOMContentLoaded", function () {
       // Update the main page content structure
       const pageContent = `
       <div id="capture-container">
+       <div class="quote-name input-group mb-3">
+        <span class="input-group-text" id="basic-addon1"><i class="bi bi-person"></i></span>
+        <input type="text" class="form-control" placeholder="Full Name" aria-label="Name" aria-describedby="basic-addon1" id="quoteNameInput">
+        <span class="input-group-text">Quote</span>
+      </div>
         <div class="main-header">
           ${muHeaderTemplate}
         </div>
