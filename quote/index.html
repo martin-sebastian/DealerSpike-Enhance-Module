@@ -21,25 +21,25 @@
         </div>
         <ul class="nav nav-pills flex-column my-4">
           <li class="nav-item">
-            <a href="/app/" class="nav-link text-white">
+            <a href="../" class="nav-link text-white">
               <i class="bi bi-house mx-2"></i>
               <span>Inventory</span>
             </a>
           </li>
           <li>
-            <a href="/app/keytags/" class="nav-link text-white">
+            <a href="../key-tags" class="nav-link text-white">
               <i class="bi bi-tag mx-2"></i>
               <span>Key Tags</span>
             </a>
           </li>
           <li>
-            <a href="/app/hangtags/" class="nav-link text-white">
+            <a href="../hang-tags" class="nav-link text-white">
               <i class="bi bi-tags mx-2"></i>
               <span>Hang Tags</span>
             </a>
           </li>
           <li>
-            <a href="/app/quotes/" class="nav-link active">
+            <a href="../quote" class="nav-link active">
               <i class="bi bi-card-heading mx-2"></i>
               <span>Quotes</span>
             </a>
@@ -104,7 +104,7 @@
             aria-expanded="false"
           >
             <img src="../img/fom-building-256.jpg" alt="" width="32" height="32" class="rounded-circle mx-2 admin-avatar" />
-            <strong class="admin-text">Admin</strong>
+            <span class="admin-text">Admin</span>
           </a>
           <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
             <li><a class="dropdown-item" href="#">Settings</a></li>
@@ -123,8 +123,8 @@
           <div class="container-fluid">
             <a class="navbar-brand" href="#">
               <i class="bi bi-arrows-collapse-vertical"></i>
-              <hr class="vr" />
             </a>
+            <div class="vr me-3"></div>
             <button
               class="navbar-toggler"
               type="button"
@@ -187,7 +187,7 @@
 
         <!-- Main Content -->
         <main class="flex-grow-1 overflow-y-auto py-5 d-flex flex-column align-items-center justify-content-center" style="padding-top: 300px">
-          <h1 x-data="{ message: 'I ❤️ Alpine' }" x-text="message" class="my-5"></h1>
+          <h1 x-data="{ message: 'I ❤️ Alpine' }" x-text="message" class="my-5 hidden"></h1>
           <div class="page-container w-100 zoom-container" style="transform-origin: center center">
             <p class="text-center mt-4 text-muted opacity-50">Enter Stock Number</p>
             <div class="capture-container">

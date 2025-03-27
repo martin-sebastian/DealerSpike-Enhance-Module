@@ -129,15 +129,7 @@ ul .nav-pill:hover {
   background-color: #444 !important;
   cursor: pointer;
 }
-.vr {
-  display: inline-block;
-  transform: rotate(0deg);
-  border: 1px solid red;
-  height: 100%;
-  width: 1px;
-  margin: 0 10px;
-  padding: 0;
-}
+
 .spacer-200 {
   height: 200px;
 }
