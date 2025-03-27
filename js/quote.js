@@ -5,6 +5,17 @@ const CONFIG = {
   DEFAULT_INTEREST_RATE: 6.99,
 };
 
+// Add this near the top of the file, with other configuration constants
+const ALPINE_CONFIG = {
+  initializeCustomerData() {
+    return {
+      firstName: "",
+      lastName: "",
+      // Add any other customer-related data here
+    };
+  },
+};
+
 // Function declarations should come before usage
 function initializeClipboardTooltips() {
   const clipboardButtons = document.querySelectorAll("[data-clipboard-target]");
@@ -138,15 +149,15 @@ const tradeInFormTemplate = `
 
 // Add sidebar collapse functionality
 function initializeSidebar() {
-  const sidebar = document.querySelector('.d-flex.flex-column.flex-shrink-0');
-  const collapseButton = document.querySelector('.navbar-brand i.bi-arrows-collapse-vertical');
-  
+  const sidebar = document.querySelector(".d-flex.flex-column.flex-shrink-0");
+  const collapseButton = document.querySelector(".navbar-brand i.bi-arrows-collapse-vertical");
+
   if (sidebar && collapseButton) {
-    collapseButton.addEventListener('click', () => {
-      sidebar.classList.toggle('collapsed');
+    collapseButton.addEventListener("click", () => {
+      sidebar.classList.toggle("collapsed");
       // Update the icon
-      collapseButton.classList.toggle('bi-arrows-collapse-vertical');
-      collapseButton.classList.toggle('bi-arrows-expand-vertical');
+      collapseButton.classList.toggle("bi-arrows-expand-vertical");
+      collapseButton.classList.toggle("bi-arrows-collapse-vertical");
     });
   }
 }
@@ -171,23 +182,23 @@ function resetZoom() {
 }
 
 function updateZoom() {
-  const container = document.querySelector('.zoom-container');
+  const container = document.querySelector(".zoom-container");
   if (container) {
     container.style.transform = `scale(${currentZoom})`;
-    document.getElementById('zoomLevel').textContent = `${Math.round(currentZoom * 100)}%`;
+    document.getElementById("zoomLevel").textContent = `${Math.round(currentZoom * 100)}%`;
   }
 }
 
 // Add keyboard shortcuts for zoom
-document.addEventListener('keydown', function(e) {
+document.addEventListener("keydown", function (e) {
   if (e.ctrlKey || e.metaKey) {
-    if (e.key === '=') {
+    if (e.key === "=") {
       e.preventDefault();
       adjustZoom(ZOOM_STEP);
-    } else if (e.key === '-') {
+    } else if (e.key === "-") {
       e.preventDefault();
       adjustZoom(-ZOOM_STEP);
-    } else if (e.key === '0') {
+    } else if (e.key === "0") {
       e.preventDefault();
       resetZoom();
     }
@@ -196,7 +207,11 @@ document.addEventListener('keydown', function(e) {
 
 document.addEventListener("DOMContentLoaded", function () {
   console.log("DOM Content Loaded");
-  
+
+  // Add this right after the console.log
+  // Initialize Alpine.js data
+  document.body.setAttribute("x-data", JSON.stringify(ALPINE_CONFIG.initializeCustomerData()));
+
   // Initialize sidebar
   initializeSidebar();
 
@@ -780,15 +795,15 @@ document.addEventListener("DOMContentLoaded", function () {
       // Update the main page content structure
       const pageContent = `
       <div id="capture-container">
-       <div class="quote-name input-group mb-3">
-        <span class="input-group-text quote-name" id="basic-addon1"><i class="bi bi-person"></i></span>
-        <input type="text" class="form-control" placeholder="Full Name" aria-label="Name" aria-describedby="basic-addon1" id="quoteNameInput">
-        <span class="input-group-text quote-date">${quoteDateFormatted} ${quoteTimeFormatted}</span>
-      </div>
+      
+        
+        <div class="quote-date-container">
+        ${quoteDateFormatted} ${quoteTimeFormatted}
+        </div>
+
         <div class="main-header">
           ${muHeaderTemplate}
         </div>
-        
         <div class="content-body">
           <div class="carousel-container">
             ${carousel}

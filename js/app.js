@@ -304,7 +304,7 @@ async function processXMLData(xmlDoc) {
               type="button" 
               class="btn btn-danger action-button mx-1"
               title="Pricing"
-              onclick="window.open('/quote/?search=${stockNumber}')"
+              onclick="window.location.href = '/quote/?search=${stockNumber}'"
             >
               <i class="bi bi-card-heading"></i>
               <span style="font-size:10px; text-transform:uppercase;">Quote</span>

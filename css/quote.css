@@ -107,6 +107,37 @@ body {
   background-image: radial-gradient(circle, #ddd 1px, transparent 1px);
   background-size: 15px 15px;
 }
+ul .nav-pill:hover {
+  background-color: #444 !important;
+  cursor: pointer;
+}
+.nav-pill:active {
+  background-color: #444 !important;
+  cursor: pointer;
+}
+.nav-pill a {
+  color: #fff !important;
+  cursor: pointer;
+}
+.nav-pill a:hover {
+  color: #fff !important;
+  background-color: #444 !important;
+  cursor: pointer;
+}
+.nav-pill a:active {
+  color: #fff !important;
+  background-color: #444 !important;
+  cursor: pointer;
+}
+.vr {
+  display: inline-block;
+  transform: rotate(0deg);
+  border: 1px solid red;
+  height: 100%;
+  width: 1px;
+  margin: 0 10px;
+  padding: 0;
+}
 .spacer-200 {
   height: 200px;
 }
@@ -128,11 +159,26 @@ body {
 .hidden {
   display: none !important;
 }
+.opacity-5 {
+  opacity: 0.05;
+}
+.opacity-10 {
+  opacity: 0.1;
+}
+.opacity-20 {
+  opacity: 0.2;
+}
 .opacity-90 {
   opacity: 0.9;
 }
 .opacity-95 {
   opacity: 0.95;
+}
+.opacity-98 {
+  opacity: 0.98;
+}
+.opacity-100 {
+  opacity: 1;
 }
 #ourPriceDisplay {
   padding: 10px 0;
@@ -366,16 +412,19 @@ body {
 .sidebar.collapsed .nav-link {
   padding: 0.5rem;
   text-align: center;
+  cursor: pointer;
 }
 
 .sidebar.collapsed .nav-link i {
   margin: 0;
   font-size: 1.2rem;
+  cursor: pointer;
 }
 
 .sidebar.collapsed .dropdown-toggle {
   padding: 0.5rem;
   text-align: center;
+  cursor: pointer;
 }
 
 .sidebar.collapsed .dropdown-toggle img {

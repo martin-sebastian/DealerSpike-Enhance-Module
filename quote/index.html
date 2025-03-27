@@ -3,55 +3,60 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <title>Vehicle Quote</title>
     <link href="../css/bootstrap.css" rel="stylesheet" />
     <link rel="stylesheet" href="../css/bootstrap-icons.css" />
     <link rel="stylesheet" href="../css/quote.css" />
   </head>
-  <body class="dots m-0 p-0">
+  <body class="dots m-0 p-0" x-data="{ firstName: '', lastName: '' }">
     <div class="d-flex flex-row flex-nowrap">
       <!-- Start Sidebar -->
-      <div class="d-flex flex-column flex-shrink-0 p-2 text-bg-dark vh-100 overflow-hidden opacity-90 d-print-none sidebar collapsed" style="width: 250px">
+      <div class="d-flex flex-column flex-shrink-0 p-2 text-bg-dark vh-100 overflow-hidden opacity-98 d-print-none sidebar" style="width: 280px">
         <div class="navbar-brand my-2 mx-2">
           <a href="/" class="d-flex align-items-center mb-1 mb-md-0 me-md-auto text-white text-decoration-none">
-            <img src="../img/fom-app-logo-01.svg" alt="FOM Logo" width="240" height="36" class="logo-full" />
+            <img src="../img/fom-app-logo-01.svg" alt="FOM Logo" width="180" height="27" class="logo-full" />
             <img src="../img/sidebar-logo.png" alt="FOM Icon" width="48" height="48" class="logo-icon rounded-circle" />
           </a>
         </div>
-        <div class="my-5 opacity-50"></div>
-        <ul class="nav nav-pills flex-column mb-auto">
+        <ul class="nav nav-pills flex-column my-4">
           <li class="nav-item">
-            <a href="#" class="nav-link active">
-              <i class="bi bi-house me-2"></i>
-              <span>Home</span>
+            <a href="/app/" class="nav-link text-white">
+              <i class="bi bi-house mx-2"></i>
+              <span>Inventory</span>
             </a>
           </li>
           <li>
-            <a href="#" class="nav-link text-white">
-              <i class="bi bi-speedometer2 me-2"></i>
-              <span>Dashboard</span>
+            <a href="/app/keytags/" class="nav-link text-white">
+              <i class="bi bi-tag mx-2"></i>
+              <span>Key Tags</span>
             </a>
           </li>
           <li>
-            <a href="#" class="nav-link text-white">
-              <i class="bi bi-speedometer2 me-2"></i>
-              <span>Orders</span>
+            <a href="/app/hangtags/" class="nav-link text-white">
+              <i class="bi bi-tags mx-2"></i>
+              <span>Hang Tags</span>
             </a>
           </li>
           <li>
-            <a href="#" class="nav-link text-white">
-              <i class="bi bi-speedometer2 me-2"></i>
-              <span>Products</span>
-            </a>
-          </li>
-          <li>
-            <a href="#" class="nav-link text-white">
-              <i class="bi bi-speedometer2 me-2"></i>
-              <span>Customers</span>
+            <a href="/app/quotes/" class="nav-link active">
+              <i class="bi bi-card-heading mx-2"></i>
+              <span>Quotes</span>
             </a>
           </li>
         </ul>
+
         <div class="show-hide-container flex-column flex-nowrap mb-auto">
+          <form>
+            <div class="mb-3 mx-3">
+              <label for="inputFirstName" class="form-label">Customer Name</label>
+              <input type="text" class="form-control form-control-sm" placeholder="First Name" id="inputFirstName" x-model="firstName" />
+            </div>
+            <div class="mb-3 mx-3">
+              <label for="inputLastName" class="form-label visually-hidden">Last Name</label>
+              <input type="text" class="form-control form-control-sm" placeholder="Last Name" id="inputLastName" x-model="lastName" />
+            </div>
+          </form>
           <div class="form-check mx-3">
             <input class="form-check-input" type="checkbox" value="" id="quoteName" checked />
             <label class="form-check-label text-light mx-2" for="quoteName">Name</label>
@@ -89,10 +94,16 @@
             <label class="form-check-label text-light mx-2" for="quoteTotal">Total</label>
           </div>
         </div>
-        <hr />
+        <div class="mb-auto"></div>
+        <hr class="mx-2 my-2 opacity-10" />
         <div class="dropdown">
-          <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-            <img src="../img/fom-building-256.jpg" alt="" width="32" height="32" class="rounded-circle me-2 admin-avatar" />
+          <a
+            href="#"
+            class="d-flex align-items-center text-white text-decoration-none px-2 py-2 dropdown-toggle"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <img src="../img/fom-building-256.jpg" alt="" width="32" height="32" class="rounded-circle mx-2 admin-avatar" />
             <strong class="admin-text">Admin</strong>
           </a>
           <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
@@ -104,14 +115,15 @@
         </div>
       </div>
       <!-- End Sidebar -->
-      
+
       <!-- Start Main Content Area (contains navbar and main content) -->
       <div class="d-flex flex-column flex-grow-1 vh-100 overflow-hidden">
         <!-- Navbar -->
-        <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom opacity-90">
+        <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom opacity-95">
           <div class="container-fluid">
             <a class="navbar-brand" href="#">
-              <i class="bi bi-arrows-expand-vertical"></i>
+              <i class="bi bi-arrows-collapse-vertical"></i>
+              <hr class="vr" />
             </a>
             <button
               class="navbar-toggler"
@@ -164,7 +176,7 @@
                   </div>
                 </li>
               </ul>
-              <div class="export-btn-container" style="min-width: 150px"></div>
+              <div class="export-btn-container"></div>
               <button id="placeholderSaveBtn" class="btn btn-danger ms-2 d-flex align-items-center gap-2" disabled>
                 <i class="bi bi-floppy"></i>
                 <span>Save Quote</span>
@@ -172,12 +184,21 @@
             </div>
           </div>
         </nav>
-        
+
         <!-- Main Content -->
-        <main class="flex-grow-1 overflow-y-auto p-3 d-flex align-items-center justify-content-center">
-          <div class="page-container w-100 zoom-container" style="transform-origin: center center;">
+        <main class="flex-grow-1 overflow-y-auto py-5 d-flex flex-column align-items-center justify-content-center" style="padding-top: 300px">
+          <h1 x-data="{ message: 'I ❤️ Alpine' }" x-text="message" class="my-5"></h1>
+          <div class="page-container w-100 zoom-container" style="transform-origin: center center">
             <p class="text-center mt-4 text-muted opacity-50">Enter Stock Number</p>
             <div class="capture-container">
+              <div class="customer-name">
+                <template x-if="firstName || lastName">
+                  <h3>
+                    <span x-text="firstName"></span>
+                    <span x-text="lastName"></span>
+                  </h3>
+                </template>
+              </div>
               <div class="main-header"></div>
               <div class="carousel-container"></div>
               <div class="trade-in-container"></div>
