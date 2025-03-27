@@ -11,89 +11,91 @@
   <body class="dots m-0 p-0">
     <div class="d-flex flex-row flex-nowrap">
       <!-- Start Sidebar -->
-      <div class="d-flex flex-column flex-shrink-0 p-3 text-bg-dark vh-100 overflow-hidden" style="width: 280px">
-        <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-          <img src="../img/fom-app-logo-01.svg" alt="FOM Logo" width="180" height="30.6" />
-        </a>
-        <hr />
+      <div class="d-flex flex-column flex-shrink-0 p-2 text-bg-dark vh-100 overflow-hidden opacity-90 d-print-none sidebar collapsed" style="width: 250px">
+        <div class="navbar-brand my-2 mx-2">
+          <a href="/" class="d-flex align-items-center mb-1 mb-md-0 me-md-auto text-white text-decoration-none">
+            <img src="../img/fom-app-logo-01.svg" alt="FOM Logo" width="240" height="36" class="logo-full" />
+            <img src="../img/sidebar-logo.png" alt="FOM Icon" width="48" height="48" class="logo-icon rounded-circle" />
+          </a>
+        </div>
+        <div class="my-5 opacity-50"></div>
         <ul class="nav nav-pills flex-column mb-auto">
           <li class="nav-item">
-            <a href="#" class="nav-link active" aria-current="page">
-              <i class="bi bi-house"></i>
-              Home
+            <a href="#" class="nav-link active">
+              <i class="bi bi-house me-2"></i>
+              <span>Home</span>
             </a>
           </li>
           <li>
             <a href="#" class="nav-link text-white">
-              <i class="bi bi-speedometer2"></i>
-              Dashboard
+              <i class="bi bi-speedometer2 me-2"></i>
+              <span>Dashboard</span>
             </a>
           </li>
           <li>
             <a href="#" class="nav-link text-white">
-              <i class="bi bi-speedometer2"></i>
-              Orders
+              <i class="bi bi-speedometer2 me-2"></i>
+              <span>Orders</span>
             </a>
           </li>
           <li>
             <a href="#" class="nav-link text-white">
-              <i class="bi bi-speedometer2"></i>
-              Products
+              <i class="bi bi-speedometer2 me-2"></i>
+              <span>Products</span>
             </a>
           </li>
           <li>
             <a href="#" class="nav-link text-white">
-              <i class="bi bi-speedometer2"></i>
-              Customers
+              <i class="bi bi-speedometer2 me-2"></i>
+              <span>Customers</span>
             </a>
           </li>
         </ul>
-        <div class="show-hide-container me-5">
-          <div class="form-check mx-1">
+        <div class="show-hide-container flex-column flex-nowrap mb-auto">
+          <div class="form-check mx-3">
             <input class="form-check-input" type="checkbox" value="" id="quoteName" checked />
-            <label class="form-check-label text-light" for="quoteName">Name</label>
+            <label class="form-check-label text-light mx-2" for="quoteName">Name</label>
           </div>
-          <div class="form-check mx-1">
+          <div class="form-check mx-3">
             <input class="form-check-input" type="checkbox" value="" id="quoteHeader" checked />
-            <label class="form-check-label text-light" for="quoteHeader">Header</label>
+            <label class="form-check-label text-light mx-2" for="quoteHeader">Header</label>
           </div>
-          <div class="form-check mx-1">
+          <div class="form-check mx-3">
             <input class="form-check-input" type="checkbox" value="" id="quoteImages" checked />
-            <label class="form-check-label text-light" for="quoteImages">Images</label>
+            <label class="form-check-label text-light mx-2" for="quoteImages">Images</label>
           </div>
-          <div class="form-check mx-1">
+          <div class="form-check mx-3">
             <input class="form-check-input" type="checkbox" value="" id="quotePayment" checked />
-            <label class="form-check-label text-light" for="quotePayment">Payment</label>
+            <label class="form-check-label text-light mx-2" for="quotePayment">Payment</label>
           </div>
-          <div class="form-check mx-1">
+          <div class="form-check mx-3">
             <input class="form-check-input" type="checkbox" value="" id="quoteRebates" checked />
-            <label class="form-check-label text-light" for="quoteRebates">Rebates</label>
+            <label class="form-check-label text-light mx-2" for="quoteRebates">Rebates</label>
           </div>
-          <div class="form-check mx-1">
+          <div class="form-check mx-3">
             <input class="form-check-input" type="checkbox" value="" id="quoteDiscounts" checked />
-            <label class="form-check-label text-light" for="quoteDiscounts">Discounts</label>
+            <label class="form-check-label text-light mx-2" for="quoteDiscounts">Discounts</label>
           </div>
-          <div class="form-check mx-1">
+          <div class="form-check mx-3">
             <input class="form-check-input" type="checkbox" value="" id="quoteAccessories" checked />
-            <label class="form-check-label text-light" for="quoteAccessories">Accessories</label>
+            <label class="form-check-label text-light mx-2" for="quoteAccessories">Accessories</label>
           </div>
-          <div class="form-check mx-1">
+          <div class="form-check mx-3">
             <input class="form-check-input" type="checkbox" value="" id="quoteFees" checked />
-            <label class="form-check-label text-light" for="quoteFees">Fees</label>
+            <label class="form-check-label text-light mx-2" for="quoteFees">Fees</label>
           </div>
-          <div class="form-check mx-1">
+          <div class="form-check mx-3">
             <input class="form-check-input" type="checkbox" value="" id="quoteTotal" checked />
-            <label class="form-check-label text-light" for="quoteTotal">Total</label>
+            <label class="form-check-label text-light mx-2" for="quoteTotal">Total</label>
           </div>
         </div>
         <hr />
         <div class="dropdown">
           <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-            <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2" />
-            <strong>mdo</strong>
+            <img src="../img/fom-building-256.jpg" alt="" width="32" height="32" class="rounded-circle me-2 admin-avatar" />
+            <strong class="admin-text">Admin</strong>
           </a>
           <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
-            <li><a class="dropdown-item" href="#">New project...</a></li>
             <li><a class="dropdown-item" href="#">Settings</a></li>
             <li><a class="dropdown-item" href="#">Profile</a></li>
             <li><hr class="dropdown-divider" /></li>
@@ -102,16 +104,14 @@
         </div>
       </div>
       <!-- End Sidebar -->
-      <!-- Start Main -->
-      <main class="d-flex flex-nowrap flex-column w-100 min-vh-100 vh-100 overflow-y-auto align-items-start justify-content-start">
-        <nav
-          class="navbar navbar-expand-lg bg-body-tertiary w-100 justify-content-around d-print-none border-bottom opacity-90"
-          aria-current="page"
-          data-bs-theme="dark"
-        >
+      
+      <!-- Start Main Content Area (contains navbar and main content) -->
+      <div class="d-flex flex-column flex-grow-1 vh-100 overflow-hidden">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom opacity-90">
           <div class="container-fluid">
-            <a class="navbar-brand" href="../">
-              <i class="bi bi-arrows-collapse-vertical"></i>
+            <a class="navbar-brand" href="#">
+              <i class="bi bi-arrows-expand-vertical"></i>
             </a>
             <button
               class="navbar-toggler"
@@ -135,8 +135,8 @@
                 </li>
                 <li class="nav-item dropdown">
                   <a class="btn btn-outline-secondary mx-1" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Templates <i class="bi bi-chevron-compact-down"></i
-                  ></a>
+                    Templates <i class="bi bi-chevron-compact-down"></i>
+                  </a>
                   <ul class="dropdown-menu">
                     <li>
                       <a class="dropdown-item" href="#"><i class="bi bi-messenger me-2"></i> Facebook Marketplace Quote</a>
@@ -150,31 +150,20 @@
                     </li>
                   </ul>
                 </li>
+                <li class="nav-item d-flex align-items-center ms-2">
+                  <div class="btn-group">
+                    <button class="btn btn-outline-secondary" onclick="adjustZoom(-0.1)" title="Zoom Out">
+                      <i class="bi bi-zoom-out"></i>
+                    </button>
+                    <button class="btn btn-outline-secondary" onclick="resetZoom()" title="Reset Zoom">
+                      <span id="zoomLevel">100%</span>
+                    </button>
+                    <button class="btn btn-outline-secondary" onclick="adjustZoom(0.1)" title="Zoom In">
+                      <i class="bi bi-zoom-in"></i>
+                    </button>
+                  </div>
+                </li>
               </ul>
-
-              <div class="btn-group me-5 hidden" role="group" aria-label="Button group with nested dropdown">
-                <button type="button" class="btn btn-outline-secondary" title="Create custom key tag" onclick="openKeyTagsByStockNumberModal('${stockNumber}')">
-                  <i class="bi bi-tag"></i>
-                </button>
-                <div class="btn-group" role="group">
-                  <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="bi bi-grid-3x3-gap-fill"></i>
-                  </button>
-                  <ul class="dropdown-menu">
-                    <li>
-                      <a class="dropdown-item" href="#" title="Create custom key tag" onclick="openKeyTagsByStockNumberModal('${stockNumber}')"
-                        ><i class="bi bi-tag me-2"></i> Custom Key Tag</a
-                      >
-                    </li>
-                    <li>
-                      <a class="dropdown-item disabled" href="#"><i class="bi bi-tags me-2"></i> Custom Hang Tags</a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="./quote/"><i class="bi bi-card-heading me-2"></i> Custom Quote</a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
               <div class="export-btn-container" style="min-width: 150px"></div>
               <button id="placeholderSaveBtn" class="btn btn-danger ms-2 d-flex align-items-center gap-2" disabled>
                 <i class="bi bi-floppy"></i>
@@ -183,19 +172,22 @@
             </div>
           </div>
         </nav>
-        <div class="page-container">
-          <p class="text-center mt-4 text-muted opacity-50">Enter Stock Number</p>
-          <div class="capture-container">
-            <div class="main-header"></div>
-            <div class="carousel-container"></div>
-            <div class="trade-in-container"></div>
-            <div class="unit-info-container"></div>
-            <div class="payment-calculator"></div>
-            <div class="total-otd-price"></div>
+        
+        <!-- Main Content -->
+        <main class="flex-grow-1 overflow-y-auto p-3 d-flex align-items-center justify-content-center">
+          <div class="page-container w-100 zoom-container" style="transform-origin: center center;">
+            <p class="text-center mt-4 text-muted opacity-50">Enter Stock Number</p>
+            <div class="capture-container">
+              <div class="main-header"></div>
+              <div class="carousel-container"></div>
+              <div class="trade-in-container"></div>
+              <div class="unit-info-container"></div>
+              <div class="payment-calculator"></div>
+              <div class="total-otd-price"></div>
+            </div>
           </div>
-        </div>
-      </main>
-      <!-- End Main -->
+        </main>
+      </div>
     </div>
 
     <script src="../js/bootstrap.bundle.js"></script>

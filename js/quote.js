@@ -136,8 +136,69 @@ const tradeInFormTemplate = `
   </div>
 `;
 
+// Add sidebar collapse functionality
+function initializeSidebar() {
+  const sidebar = document.querySelector('.d-flex.flex-column.flex-shrink-0');
+  const collapseButton = document.querySelector('.navbar-brand i.bi-arrows-collapse-vertical');
+  
+  if (sidebar && collapseButton) {
+    collapseButton.addEventListener('click', () => {
+      sidebar.classList.toggle('collapsed');
+      // Update the icon
+      collapseButton.classList.toggle('bi-arrows-collapse-vertical');
+      collapseButton.classList.toggle('bi-arrows-expand-vertical');
+    });
+  }
+}
+
+// Zoom functionality
+let currentZoom = 1.0;
+const MIN_ZOOM = 0.2;
+const MAX_ZOOM = 2.0;
+const ZOOM_STEP = 0.1;
+
+function adjustZoom(delta) {
+  const newZoom = Math.min(Math.max(currentZoom + delta, MIN_ZOOM), MAX_ZOOM);
+  if (newZoom !== currentZoom) {
+    currentZoom = newZoom;
+    updateZoom();
+  }
+}
+
+function resetZoom() {
+  currentZoom = 1.0;
+  updateZoom();
+}
+
+function updateZoom() {
+  const container = document.querySelector('.zoom-container');
+  if (container) {
+    container.style.transform = `scale(${currentZoom})`;
+    document.getElementById('zoomLevel').textContent = `${Math.round(currentZoom * 100)}%`;
+  }
+}
+
+// Add keyboard shortcuts for zoom
+document.addEventListener('keydown', function(e) {
+  if (e.ctrlKey || e.metaKey) {
+    if (e.key === '=') {
+      e.preventDefault();
+      adjustZoom(ZOOM_STEP);
+    } else if (e.key === '-') {
+      e.preventDefault();
+      adjustZoom(-ZOOM_STEP);
+    } else if (e.key === '0') {
+      e.preventDefault();
+      resetZoom();
+    }
+  }
+});
+
 document.addEventListener("DOMContentLoaded", function () {
   console.log("DOM Content Loaded");
+  
+  // Initialize sidebar
+  initializeSidebar();
 
   // Create a loader element that can be controlled
   const loader = document.createElement("div");
