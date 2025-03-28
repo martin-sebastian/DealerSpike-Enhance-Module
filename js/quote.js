@@ -5,6 +5,17 @@ const CONFIG = {
   DEFAULT_INTEREST_RATE: 6.99,
 };
 
+// Add this near the top of the file, with other configuration constants
+const ALPINE_CONFIG = {
+  initializeCustomerData() {
+    return {
+      firstName: "",
+      lastName: "",
+      // Add any other customer-related data here
+    };
+  },
+};
+
 // Function declarations should come before usage
 function initializeClipboardTooltips() {
   const clipboardButtons = document.querySelectorAll("[data-clipboard-target]");
@@ -89,7 +100,7 @@ function updateTradeDetails() {
     const tradeDescription = `Trade-in: ${year} ${vehicle}${condition ? `, ${condition}` : ""}`;
     tradeValueElement.innerHTML = `
       ${tradeDescription}
-      <span class="pull-right">${numeral(value).format("$0,0.00")}</span>
+      <span class="float-end">${numeral(value).format("$0,0.00")}</span>
     `;
 
     // Update OTD price
@@ -98,7 +109,7 @@ function updateTradeDetails() {
       const newOTD = originalOTD - parseFloat(value);
       otdElement.innerHTML = `
         Total O.T.D. Price: 
-        <span class="pull-right">${numeral(newOTD).format("$0,0.00")}</span>
+        <span class="float-end">${numeral(newOTD).format("$0,0.00")}</span>
       `;
     }
   } else {
@@ -106,8 +117,8 @@ function updateTradeDetails() {
     tradeValueElement.style.display = "none";
     if (otdElement) {
       otdElement.innerHTML = `
-        Total O.T.D. Price: 
-        <span class="pull-right">${numeral(window.originalOTDPrice).format("$0,0.00")}</span>
+        Total Price: 
+        <span class="float-end">${numeral(window.originalOTDPrice).format("$0,0.00")}</span>
       `;
     }
   }
@@ -118,7 +129,7 @@ console.log("Script starting...");
 
 // Define tradeInFormTemplate
 const tradeInFormTemplate = `
-  <div class="trade-in-form">
+  <div class="trade-in-form hidden">
     <!-- Your trade-in form HTML goes here -->
     <h3>Trade-In Form</h3>
     <form>
@@ -136,8 +147,73 @@ const tradeInFormTemplate = `
   </div>
 `;
 
+// Add sidebar collapse functionality
+function initializeSidebar() {
+  const sidebar = document.querySelector(".d-flex.flex-column.flex-shrink-0");
+  const collapseButton = document.querySelector(".navbar-brand i.bi-arrows-collapse-vertical");
+
+  if (sidebar && collapseButton) {
+    collapseButton.addEventListener("click", () => {
+      sidebar.classList.toggle("collapsed");
+      // Update the icon
+      collapseButton.classList.toggle("bi-arrows-expand-vertical");
+      collapseButton.classList.toggle("bi-arrows-collapse-vertical");
+    });
+  }
+}
+
+// Zoom functionality
+let currentZoom = 1.0;
+const MIN_ZOOM = 0.2;
+const MAX_ZOOM = 2.0;
+const ZOOM_STEP = 0.1;
+
+function adjustZoom(delta) {
+  const newZoom = Math.min(Math.max(currentZoom + delta, MIN_ZOOM), MAX_ZOOM);
+  if (newZoom !== currentZoom) {
+    currentZoom = newZoom;
+    updateZoom();
+  }
+}
+
+function resetZoom() {
+  currentZoom = 1.0;
+  updateZoom();
+}
+
+function updateZoom() {
+  const container = document.querySelector(".zoom-container");
+  if (container) {
+    container.style.transform = `scale(${currentZoom})`;
+    document.getElementById("zoomLevel").textContent = `${Math.round(currentZoom * 100)}%`;
+  }
+}
+
+// Add keyboard shortcuts for zoom
+document.addEventListener("keydown", function (e) {
+  if (e.ctrlKey || e.metaKey) {
+    if (e.key === "=") {
+      e.preventDefault();
+      adjustZoom(ZOOM_STEP);
+    } else if (e.key === "-") {
+      e.preventDefault();
+      adjustZoom(-ZOOM_STEP);
+    } else if (e.key === "0") {
+      e.preventDefault();
+      resetZoom();
+    }
+  }
+});
+
 document.addEventListener("DOMContentLoaded", function () {
   console.log("DOM Content Loaded");
+
+  // Add this right after the console.log
+  // Initialize Alpine.js data
+  document.body.setAttribute("x-data", JSON.stringify(ALPINE_CONFIG.initializeCustomerData()));
+
+  // Initialize sidebar
+  initializeSidebar();
 
   // Create a loader element that can be controlled
   const loader = document.createElement("div");
@@ -149,10 +225,14 @@ document.addEventListener("DOMContentLoaded", function () {
   const errorContainer = document.createElement("div");
   errorContainer.id = "error-container";
 
-  // Clear and set up initial page structure
-  document.body.innerHTML = "";
-  document.body.appendChild(loader);
-  document.body.appendChild(errorContainer);
+  // Get the capture container instead of clearing body
+  const captureContainer = document.getElementById("capture-container");
+  if (captureContainer) {
+    // Clear only the capture container
+    captureContainer.innerHTML = "";
+    captureContainer.appendChild(loader);
+    captureContainer.appendChild(errorContainer);
+  }
 
   if (!stockNum) {
     loader.style.display = "none"; // Hide loader
@@ -177,6 +257,9 @@ document.addEventListener("DOMContentLoaded", function () {
         throw new Error("Invalid data received from API");
       }
 
+      // Store data globally
+      window.vehicleData = data;
+
       // Create page container
       let pageContainer = document.createElement("div");
       pageContainer.className = "page-container";
@@ -186,68 +269,37 @@ document.addEventListener("DOMContentLoaded", function () {
       window.originalOTDPrice = data.OTDPrice;
 
       console.log("data.StockNumber", data.StockNumber);
-      var prodTitle = data.Usage + " " + data.ModelYear + " " + data.Manufacturer + " " + data.B50ModelName;
-      var vinNumber = data.VIN;
+      const stockNumber = data.StockNumber;
+      const prodTitle = data.Usage + " " + data.ModelYear + " " + data.Manufacturer + " " + data.B50ModelName;
       const qLevel = `<span class="badge bg-secondary" style="margin-left: 100px; padding: 10px 15px; font-weight: 900">Quote Level ${data.QuoteLevel}</span>`;
-      var MSRPUnit = numeral(data.MSRPUnit).format("$0,0.00");
-      var unitMSRP = numeral(data.MSRP - data.AccessoryItemsTotal).format("$0,0.00");
-      var msrpLabel = data.MSRPTitle;
-      var msrpTotal = numeral(data.MSRPUnit).format("$0,0.00");
-      var totalOTD = numeral(data.OTDPrice).format("$0,0.00");
-      var quotePrice = numeral(data.QuotePrice).format("$0,0.00");
-      var salePrice = numeral(data.Price).format("$0,0.00");
-      var discount = numeral(data.QuotePrice - data.Price).format("$0,0.00");
-      var savings = numeral(data.Savings).format("$0,0.00");
 
-      var eDate = moment(data.ExpirationDate).format("MM/DD/YYYY");
-      var disclaimer = `<p class="portal-fees">${data.Disclaimer}</p>`;
-      var fomDisclaimer = `<p class="text-center"><small>*Price does NOT include, Manufacturer Surcharge, Manufacturer Commodity Surcharge, Freight, Dealer Document Fee $199, Sales Tax, Title Fee $30. Sale Price INCLUDES all factory incentives (If Applicable). See Flat Out Motorsports for full disclosure on current Fees and Surcharges.</small></p>`;
-      var image = data.ImageUrl;
-      var linkToUnit = data.DetailUrl;
-      var salePriceExpireDate = moment(data.SalePriceExpireDate).format("MM/DD/YYYY");
+      const ourPrice = numeral(data.OTDPrice).format("$0,0.00");
+      const discountTotal = numeral(data.MSRPUnit - data.Price).format("$0,0.00");
 
-      var arrivalDate = moment(data.EstimatedArrival).format("MM/DD/YYYY");
-      var newUsed = data.Usage;
-      var milesHours = data.Miles;
-      var inventoryStatus = data.UnitStatus;
-
-      // Discount Item
-      var discountTotal = `<li class="list-group-item">Discount <span class="pull-right bold">-${discount}</span></li>`;
-
-      // Inventory Status & Arrival Date
-      var inventoryStatusTemplate = ``;
-
-      if (data.UnitStatus == "In Inventory" && data.Lot != "ONORDER") {
-        inventoryStatusTemplate += `<h3 class="text-color-success bold">In Stock</h3>`;
-      } else if (data.UnitStatus == "Ordered") {
-        inventoryStatusTemplate += `${data.UnitStatus}, Avail. ${arrivalDate}`;
-      } else if (data.UnitStatus == "In Inventory" && data.Lot == "ONORDER") {
-        inventoryStatusTemplate += `<hr style="margin: 0 0 10px 0; border:0;"><span style="color: red; font-weight: 800; padding: 10px 0;">Ordered</span>, <span style="color: green; font-weight: 500; padding: 10px .;">Arriving ${arrivalDate}</span>`;
-      } else if (data.UnitStatus == "In Inventory" && data.Lot == "SERVICE") {
-        inventoryStatusTemplate += `In Service Being Prepared`;
-      } else {
-        inventoryStatusTemplate += ``;
-      }
+      const arrivalDate = moment(data.EstimatedArrival).format("MM/DD/YYYY");
+      const newUsed = data.Usage;
+      const milesHours = data.Miles;
+      const inventoryStatus = data.UnitStatus;
 
       // MU Items and Mat Items templates
-      var muItemsTemplate = `
-      <div class="card">
-        <h5 class="card-title">MU Items</h5>
+      var muItemsTemplate = data.MUItems?.length
+        ? `
+        <div class="card">
         ${data.MUItems.map(
           (item) => `
           ${item.Description}
-          <span class="pull-right">
+          <span class="float-end">
             -${numeral(item.Amount).format("$0,0.00")}
           </span>
         `
         ).join("")}
-      </div>
-      `;
+        </div>
+        `
+        : "";
 
       var matItemsTemplate = data.MatItems?.length
         ? `
         <div class="card">
-          <h5 class="card-title">Rebates</h5>
           ${data.MatItems.map(
             (item) => `
             <div class="d-flex justify-content-between align-items-center">
@@ -259,56 +311,39 @@ document.addEventListener("DOMContentLoaded", function () {
         </div>
       `
         : "";
+      var OTDItemsTemplate = data.OTDItems?.length
+        ? `
+        <div class="card">
+          <h5 class="card-title fs-6 my-0">Fees and Taxes</h5>
+          ${data.OTDItems.map(
+            (item) => `
+            <div class="d-flex justify-content-between align-items-center">
+              <span>${item.Description}</span>
+              <span>${numeral(item.Amount).format("$0,0.00")}</span>
+            </div>
+          `
+          ).join("")}
+        </div>
+      `
+        : "";
 
-      // OTD Items - 9 items allowed
-      var OTDItemsTemplate = ``;
-
-      for (var i = 0; i < 9; i++) {
-        if (data.OTDItems && data.OTDItems[i]) {
-          var listItemClass = data.OTDItems[i].Description.startsWith("Indiana Sales Tax") ? "list-group-item tax" : "list-group-item";
-          OTDItemsTemplate += `
-            <li class="${listItemClass}">
-              ${data.OTDItems[i].Description}
-              <span class="pull-right">
-                ${numeral(data.OTDItems[i].Amount).format("$0,0.00")}
-              </span>
-            </li>`;
-        }
-      }
-
-      // First create the accessoryImageMap
-      var carouselImages = ``;
-      var accessoryImageMap = new Map(); // Move this up before using it
+      // Remove accessoryImageMap since we don't need it anymore
+      var carouselImages = "";
 
       i = 0;
       while (i < data.Images.length) {
-        // Find if this image is associated with an accessory
-        const associatedAccessory = data.AccessoryItems.find(
-          (acc) => data.Images[i].MUItemId && data.MUItems.find((mu) => mu.Id === data.Images[i].MUItemId && mu.Description === acc.Description)
-        );
-
-        // Store the mapping if this image belongs to an accessory
-        if (associatedAccessory) {
-          accessoryImageMap.set(associatedAccessory.Description, {
-            imgUrl: data.Images[i].ImgURL,
-            slideIndex: i,
-          });
-        }
-
-        // Create carousel slide
+        // Create carousel slide with simplified caption
         carouselImages += `
           <div class="carousel-item ${i === 0 ? "active" : ""}">
-            <img src="${data.Images[i].ImgURL}" class="d-block w-100" alt="Vehicle Image">
-            ${
-              associatedAccessory
-                ? `
-              <div class="carousel-caption feature-caption">
-                <h5>${associatedAccessory.Description}</h5>
-                ${associatedAccessory.ImageDescription ? `<p>${associatedAccessory.ImageDescription}</p>` : ""}
-              </div>
-            `
-                : ""
-            }
+            <img 
+              src="${data.Images[i].ImgURL}" 
+              class="d-block w-100" 
+              alt="Vehicle Image"
+            >
+            <div class="carousel-caption">
+              <h5>${prodTitle}</h5>
+              <p>Vin: ${data.VIN} // Stock # ${stockNumber}</p>
+            </div>
           </div>`;
         i++;
       }
@@ -316,7 +351,7 @@ document.addEventListener("DOMContentLoaded", function () {
       var tradeInItemsTemplate = data.TradeInItems?.length
         ? `
           <div class="card">
-            <h5 class="card-title">Trade-In Allowance</h5>
+            <h5 class="card-title fs-6 my-0">Trade-In Allowance</h5>
             ${data.TradeInItems.map(
               (item) => `
               <div class="d-flex justify-content-between align-items-center">
@@ -333,25 +368,19 @@ document.addEventListener("DOMContentLoaded", function () {
       var accessoryItemsTemplate = data.AccessoryItems?.length
         ? `
         <div class="card">
-          <h5 class="card-title">Accessories</h5>
+          <h5 class="card-title fs-6 my-0">Accessories</h5>
           ${data.AccessoryItems.map((item) => {
-            const imageInfo = accessoryImageMap.get(item.Description);
             const priceDisplay = item.Included
-              ? `<span class="included-text">Included</span>${item.Amount > 0 ? ` <small>(value: ${numeral(item.Amount).format("$0,0.00")})</small>` : ""}`
-              : numeral(item.Amount).format("$0,0.00");
+              ? `${item.Amount > 0 ? `${item.Description} (value: ${numeral(item.Amount).format("$0,0.00")})` : item.Description}`
+              : item.Description;
 
             return `
-              <div class="accessory-item ${imageInfo ? "has-image" : ""}">
-                ${
-                  imageInfo
-                    ? `<button class="btn btn-link view-feature p-0 me-2" data-bs-target="#carousel-overlay-vehicle-info" data-bs-slide-to="${imageInfo.slideIndex}">
-                      <i class="fa fa-camera"></i>
-                     </button>`
-                    : '<div class="me-4"></div>'
-                }
-                <div class="accessory-content d-flex justify-content-between align-items-center w-100">
-                  <span class="accessory-name">${item.Description}</span>
-                  <span class="accessory-price ms-2">${priceDisplay}</span>
+              <div class="accessory-item w-100">
+                <div class="d-flex justify-content-between align-items-center">
+                  <span class="accessory-name flex-grow-1">${priceDisplay}</span>
+                  <span class="accessory-price text-end ms-2">
+                    ${item.Included ? '<span class="included-text">Included</span>' : numeral(item.Amount).format("$0,0.00")}
+                  </span>
                 </div>
               </div>
             `;
@@ -364,7 +393,7 @@ document.addEventListener("DOMContentLoaded", function () {
       var discountItemsTemplate = data.DiscountItems?.length
         ? `
         <div class="card">
-          <h5 class="card-title">Discounts</h5>
+          <h5 class="card-title fs-6 my-0">Discounts</h5>
           ${data.DiscountItems.slice(0, 3)
             .map(
               (item) => `
@@ -398,33 +427,33 @@ document.addEventListener("DOMContentLoaded", function () {
         if (data.FreeItems[i]) {
           freebieItemsTemplate += `<li class="list-group-item"><em>${data.FreeItems[i].Description} (value: ${numeral(data.FreeItems[i].Amount).format(
             "$0,0.00"
-          )})</em> <span class="pull-right">Free</span></li>`;
+          )})</em> <span class="float-end">Free</span></li>`;
         }
         i++;
       }
 
-      var totalSavings = numeral(data.DiscountItemsTotal + data.MatItemsTotal + data.TradeInItemsTotal + data.AccessoryItemsTotal).format("$0,0.00");
+      const totalSavings = numeral(data.DiscountItemsTotal + data.MatItemsTotal + data.TradeInItemsTotal + data.AccessoryItemsTotal).format("$0,0.00");
 
       // Unit Numbers & status info
       var unitNumbersTemplate = ``;
 
       if (inventoryStatus !== null) {
-        unitNumbersTemplate += `<li class="list-group-item">Status: <span class="pull-right">${inventoryStatus}</span></li>`;
+        unitNumbersTemplate += `<li class="list-group-item">Status: <span class="float-end">${inventoryStatus}</span></li>`;
       }
       if (data.EstimatedArrival !== null) {
-        unitNumbersTemplate += `<li class="list-group-item">Available: <span class="pull-right">${arrivalDate}</span></li>`;
+        unitNumbersTemplate += `<li class="list-group-item">Available: <span class="float-end">${arrivalDate}</span></li>`;
       }
       if (data.Usage.length) {
-        unitNumbersTemplate += `<li class="list-group-item">Usage: <span class="pull-right">${newUsed}</span></li>`;
+        unitNumbersTemplate += `<li class="list-group-item">Usage: <span class="float-end">${newUsed}</span></li>`;
       }
       if (data.Miles >= 0) {
-        unitNumbersTemplate += `<li class="list-group-item">Miles/Hours: <span class="pull-right">${milesHours}</span></li>`;
+        unitNumbersTemplate += `<li class="list-group-item">Miles/Hours: <span class="float-end">${milesHours}</span></li>`;
       }
       if (data.StockNumber.length) {
-        unitNumbersTemplate += `<li class="list-group-item">Stock #: <span class="pull-right">${stockNum}</span></li>`;
+        unitNumbersTemplate += `<li class="list-group-item">Stock #: <span class="float-end">${stockNum}</span></li>`;
       }
       if (data.VIN.length) {
-        unitNumbersTemplate += `<li class="list-group-item">VIN: <span class="pull-right">${data.VIN}</span></li>`;
+        unitNumbersTemplate += `<li class="list-group-item">VIN: <span class="float-end">${data.VIN}</span></li>`;
       }
 
       // Availability
@@ -460,7 +489,7 @@ document.addEventListener("DOMContentLoaded", function () {
           if (data.AccessoryItems[i].ImgURL && data.AccessoryItems[i].Included === false) {
             muImageCardTemplate += `
 			<div class="accessory-items-card">
-				<div class="mu-feature-card shadow">
+				<div class="mu-feature-card">
 					<img style="width: 100%;"
 					src="${data.AccessoryItems[i].ImgURL}">
 					<div style="padding: 10px;">
@@ -474,7 +503,7 @@ document.addEventListener("DOMContentLoaded", function () {
           } else if (data.AccessoryItems[i].ImgURL && data.AccessoryItems[i].Included === true && data.AccessoryItems[i].Amount > 0) {
             muImageCardTemplate += `
 			<div class="accessory-items-cards">
-				<div class="mu-feature-card shadow">
+				<div class="mu-feature-card">
 					<img style="width: 100%;"
 					src="${data.AccessoryItems[i].ImgURL}">
 					<div style="padding: 10px;">
@@ -488,7 +517,7 @@ document.addEventListener("DOMContentLoaded", function () {
           } else if (data.AccessoryItems[i].ImgURL && data.AccessoryItems[i].Included === true && data.AccessoryItems[i].Amount === 0) {
             muImageCardTemplate += `
 			<div class="accessory-items-list">
-				<div class="mu-feature-card shadow">
+				<div class="mu-feature-card">
 					<img style="width: 100%;"
 					src="${data.AccessoryItems[i].ImgURL}">
 					<div style="padding: 10px;">
@@ -503,85 +532,6 @@ document.addEventListener("DOMContentLoaded", function () {
           i++;
         }
       }
-
-      // Update the carousel images template
-      var carouselImages = ``;
-      var accessoryImageMap = new Map(); // Track which images belong to which accessories
-
-      i = 0;
-      while (i < data.Images.length) {
-        // Find if this image is associated with an accessory
-        const associatedAccessory = data.AccessoryItems.find(
-          (acc) => data.Images[i].MUItemId && data.MUItems.find((mu) => mu.Id === data.Images[i].MUItemId && mu.Description === acc.Description)
-        );
-
-        // Store the mapping if this image belongs to an accessory
-        if (associatedAccessory) {
-          accessoryImageMap.set(associatedAccessory.Description, {
-            imgUrl: data.Images[i].ImgURL,
-            slideIndex: i,
-          });
-        }
-
-        // Create carousel slide
-        carouselImages += `
-          <div class="carousel-item ${i === 0 ? "active" : ""}">
-            <img src="${data.Images[i].ImgURL}" class="d-block w-100" alt="Vehicle Image">
-            ${
-              associatedAccessory
-                ? `
-              <div class="carousel-caption feature-caption">
-                <h5>${associatedAccessory.Description}</h5>
-                ${associatedAccessory.ImageDescription ? `<p>${associatedAccessory.ImageDescription}</p>` : ""}
-              </div>
-            `
-                : ""
-            }
-          </div>`;
-        i++;
-      }
-
-      // Add some CSS to style the new elements
-      const styleElement = document.createElement("style");
-      styleElement.textContent = `
-        .feature-caption {
-          background: rgba(0, 0, 0, 0.7);
-          border-radius: 4px;
-          padding: 10px;
-        }
-        
-        .accessory-item {
-          display: flex;
-          align-items: center;
-          padding: 8px 0;
-          border-bottom: 1px solid #eee;
-        }
-        
-        .accessory-item.has-image {
-          background-color: #f8f9fa;
-        }
-        
-        .included-text {
-          color: #28a745;
-          font-weight: bold;
-        }
-        
-        .view-feature {
-          color: #666;
-          min-width: 20px;
-        }
-        
-        .view-feature:hover {
-          color: #000;
-        }
-        
-        .accessory-content {
-          display: flex;
-          justify-content: space-between;
-          width: 100%;
-        }
-      `;
-      document.head.appendChild(styleElement);
 
       // Update the carousel container template
       var carousel = `
@@ -623,16 +573,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Major Unit Header with Year, Make, Model, VIN, Stock Number.
       var muHeaderTemplate = `
-    <div class="vehicle-header-container">
-      <div class="vehicle-name-container">
-        <h3 class="vehicle-title" style="margin: 15px 0 0 0; font-weight: 900;">${prodTitle}</h3>
-        <h4 class="vehicle-subtitle" style="margin: 1px 0 15px 0; padding:0;">
+      <div class="vehicle-header">
+        <h1 class="vehicle-title my-0">${prodTitle}</h1>
+        <p class="vehicle-subtitle my-0">
           <small>Model: </small>${data.ModelCode} 
-          <small class="d-none d-sm-inline">VIN: </small><span class="d-none d-sm-inline">${vinNumber} </span>
-          <small>Stock Number: </small>${stockNum}
-        </h4>
+          <small>Stock Number: </small>${data.StockNumber}
+        </p>
       </div>
-    </div>
     `;
 
       // Boat Terms for Payment Calculator
@@ -700,138 +647,204 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       // Payment Calculator
-      var paymentCalc = `
-		<div class="payment-caclculator text-center">
-            <form name="calc" method="POST">
-                <button type="button" 
-                        class="btn btn-danger w-100" 
-                        data-bs-toggle="collapse" 
-                        data-bs-target="#paymentSliders" 
-                        aria-expanded="false" 
-                        aria-controls="paymentSliders" 
-                        onClick="showpay()">
-                    <span class="payment m-0">
-                        <small>Payment</small>
-                        $<span id="payment" class="fw-bold"><i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i></span>
-                        <small>/mo.</small>
-                        <i class="fa fa-pencil" title="Calculate Your Payment"></i>
-                    </span>
-                </button>
-				<input type="hidden" name="loan" size="10" value="${data.OTDPrice}">
+      const paymentCalc = `
+		<div class="payment-calculator my-2">
+
+      <form name="calc" method="POST">
+
+        <button type="button" 
+          class="btn btn-secondary w-100" 
+          data-bs-toggle="collapse" 
+          data-bs-target="#paymentSliders" 
+          aria-expanded="false" 
+          aria-controls="paymentSliders" 
+          onClick="showpay()">
+            <span class="our-price-display">
+              <small>Price:</small>
+              <span class="fs-2 fw-bold">
+                ${numeral(data.OTDPrice).format("$0,0.00")}
+              </span>
+            </span>
+            <hr class="my-0" />
+            <span class="payment m-0 text-light">
+                <small>Est. Payment:</small>
+                <span class="fw-bold">$</span>
+                <span id="payment" class="fw-bold">
+                  <i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i>0.00
+                </span>
+                <small>/mo. Subject to credit approval.</small>
+            </span>
+        </button>
+
+        <input type="hidden" name="loan" size="10" value="${data.OTDPrice}">
 
 				<div class="collapse" id="paymentSliders">
-					<div class="row">
-						<div class="col-lg-12 downpayment-container">
-							<div class="" style="margin: 25px 0">
-								<span class="fo-label-green"><span class="fo-badge" id="downpaymentRangeValue"></span>% Down</span>
-								<i class="fa fa-spinner fa-level-down fa-2x"></i>
-							</div>
-							<input name="downpayment" type="range" min="0.00" max="30.00" value="10" step="5" class="slider downpayment-bg" id="downpaymentRange" onChange="showpay()">
-							<p class="slider-title"><span class="credit-slider-label pull-left">0%</span>Down Payment<span class="credit-slider-label pull-right">30%</span></p>
-						</div>
+					<div class="payment-collapsed-container">
 
-						<div class="col-md-12 credit-container">
-							<div class="hidden" style="margin: 25px 0">
-								<span class="fo-label-dark-green"><span class="fo-badge" id="percentRangeValue"></span>% APR</span>
-								<i class="fa fa-spinner fa-level-down fa-1x"></i>
+            <div class="downpayment-container">
+							<div class="downpayment-label">
+								<span class="updated-value-line"><span class="downpayment-value" id="downpaymentRangeValue"></span>% Down</span>
 							</div>
-							<input name="rate" type="range" min="3.99" max="19.99" value="6.99" step="1" class="slider credit-bg-new rotated" id="percentRange" onChange="showpay()">
-							<p class="slider-title"><span class="credit-slider-label pull-left">POOR</span>Credit Standing<span class="credit-slider-label pull-right">EXCELENT</span></p>
-						</div>
 
-						<div class="col-md-12 terms-container">
-							<div class="loan-term">
-							<p class="terms-label">Loan Term In months <i class="fa fa-spinner fa-level-down fa-1x"></i></p>
-								<div data-toggle="buttons">
-									${loanTerms}
-								</div>
-							</div>
-						</div>
+							<div class="slider-row">
+                <span class="credit-slider-label">0%</span>
+                  <input name="downpayment" type="range" min="0.00" max="30.00" value="10" step="5" class="range-slider downpayment-bg" id="downpaymentRange" onChange="showpay()">
+                <span class="credit-slider-label">30%</span>
+              </div>
+            </div>
 
+            <div class="apr-container">
+              <div class="apr-label">
+                <span class="updated-value-line"><span class="apr-value" id="percentRangeValue"></span>% APR</span>
+              </div>
+							
+							<div class="slider-row">
+                <span class="credit-slider-label">LOW</span>
+                <input name="rate" type="range" min="3.99" max="19.99" value="6.99" step="1" class="range-slider credit-bg" id="percentRange" onChange="showpay()">
+                <span class="credit-slider-label">HIGH</span>
+              </div>
+            </div>
+
+              <div class="loan-term-container">
+                <p class="loan-term-label">Loan Term (Months)</p>
+                  <div data-toggle="buttons">${loanTerms}</div>
+              </div>
 					</div>
 					<input type="hidden" name="pay" size="10">
 					<input type="hidden" onClick="showpay()" value="Calculate">
-					<div style="height: 10px;"></div>
 				</div>
 			</form>
-			<div class="credit-approval-message gray">
-				Subject to credit approval.
-			</div>
-        </div>
+    </div>
 		`;
 
       // Create a separate template for the price container
       const priceContainer = `
-        <ul class="list-group">
-          <li class="list-group-item text-center">
+        <div class="text-center">
             ${paymentCalc}
-          </li>
-          
-        </ul>
+        </div>
+      `;
+
+      // Our Price display template
+      const ourPriceContainer = `
+        <div id="ourPriceDisplay" class="text-center">
+        <h1 class="text-center fw-bold">${numeral(data.OTDPrice).format("$0,0.00")}</h1>
+        </div>
+
       `;
 
       // Trade In display template
       const tradeInVehicleTemplate = `
-
-        <div id="tradeValueDisplay" style="display: ">
-          2020 Harley Davidson <span class="pull-right">$10,000</span>
+        <div id="tradeValueDisplay" style="display: none;">
+          2020 Harley Davidson <span class="float-end">$10,000</span>
         </div>
 
       `;
 
+      // Visibility Toggle Checkboxes template
+      const visibilityToggleTemplate = `
+        <div class="show-hide-container d-inline-flex me-5">
+          <div class="form-date mx-1">
+            <input type="date" id="quoteDate" name="quoteDate">
+            <label class="form-check-label text-light" for="quoteDate">Date</label>
+          </div>
+          <div class="form-check mx-1">
+            <input class="form-check-input" type="checkbox" value="" id="quoteName" checked />
+            <label class="form-check-label text-light" for="quoteName">Name</label>
+          </div>
+          <div class="form-check mx-1">
+            <input class="form-check-input" type="checkbox" value="" id="quoteHeader" checked />
+            <label class="form-check-label text-light" for="quoteHeader">Header</label>
+          </div>
+          <div class="form-check mx-1">
+            <input class="form-check-input" type="checkbox" value="" id="quoteImages" checked />
+            <label class="form-check-label text-light" for="quoteImages">Images</label>
+          </div>
+          <div class="form-check mx-1">
+            <input class="form-check-input" type="checkbox" value="" id="quotePayment" checked />
+            <label class="form-check-label text-light" for="quotePayment">Payment</label>
+          </div>
+          <div class="form-check mx-1">
+            <input class="form-check-input" type="checkbox" value="" id="quoteRebates" checked />
+            <label class="form-check-label text-light" for="quoteRebates">Rebates</label>
+          </div>
+          <div class="form-check mx-1">
+            <input class="form-check-input" type="checkbox" value="" id="quoteDiscounts" checked />
+            <label class="form-check-label text-light" for="quoteDiscounts">Discounts</label>
+          </div>
+          <div class="form-check mx-1">
+            <input class="form-check-input" type="checkbox" value="" id="quoteAccessories" checked />
+            <label class="form-check-label text-light" for="quoteAccessories">Accessories</label>
+          </div>
+          <div class="form-check mx-1">
+            <input class="form-check-input" type="checkbox" value="" id="quoteFees" checked />
+            <label class="form-check-label text-light" for="quoteFees">Fees</label>
+          </div>
+          <div class="form-check mx-1">
+            <input class="form-check-input" type="checkbox" value="" id="quoteTotal" checked />
+            <label class="form-check-label text-light" for="quoteTotal">Total</label>
+          </div>
+        </div>
+      `;
+
+      // Quote Dates
+      let quoteDate = Date.now();
+      let quoteDateFormatted = moment(quoteDate).format("MM/DD/YYYY");
+      let quoteTime = Date.now();
+      let quoteTimeFormatted = moment(quoteTime).format("h:mm a");
+
       // Update the main page content structure
       const pageContent = `
+      <div id="capture-container">
+      
+        
+        <div class="quote-date-container">
+        ${quoteDateFormatted} ${quoteTimeFormatted}
+        </div>
+
         <div class="main-header">
           ${muHeaderTemplate}
         </div>
-        
-        <div class="content-container">
-          <div class="left-column">
-            <div class="carousel-container">
-              ${carousel}
+        <div class="content-body">
+          <div class="carousel-container">
+            ${carousel}
+          </div>
+          <div class="trade-in-container">
+            ${tradeInFormTemplate}
+          </div>
+          <div class="unit-info-container hidden">
+            <div class="card">
+              ${unitNumbersTemplate}
             </div>
-            
-            <div class="trade-in-container">
-              ${tradeInFormTemplate}
-            </div>
-            
-            <div class="unit-info-container">
-              <h3 class="text-left bold">Information</h3>
-              <ul class="list-group">
-                ${unitNumbersTemplate}
-              </ul>
+          </div>
+          <div>
+            ${priceContainer}
+          </div>
+          <div class="trade-in-container">
+            ${tradeInItemsTemplate}
+          </div>
+          <div class="mat-items-container">
+            ${matItemsTemplate}
+          </div>
+          <div class="discount-items-container">
+            ${discountItemsTemplate}
+          </div>
+          <div class="accessory-items-container">
+            ${accessoryItemsTemplate}
+          </div>
+          <div class="otd-items-container">
+            ${OTDItemsTemplate}
+          </div>
+
+          <!-- OTD Price -->
+          <div class="card otd-price-container">
+            <div class="total-otd-price bold" id="otdPriceDisplay">
+                Total Price: 
+                <span class="float-end fw-bold">${numeral(data.OTDPrice).format("$0,0.00")}</span>
             </div>
           </div>
 
-          <div class="right-column">
-            <!-- Price and Payment Section -->
-            ${priceContainer}
-            
-            <!-- Pricing Details -->
-            <div class="pricing-details">
-              ${tradeInItemsTemplate}
-              ${matItemsTemplate}
-              ${discountItemsTemplate}
-              ${accessoryItemsTemplate}
-              <div class="card">
-                <h5 class="card-title">Fees</h5>
-                ${OTDItemsTemplate}
-              </div>
-            </div>
-            
-            <!-- OTD Price -->
-            <div class="otd-price">
-              <ul class="list-group">
-                <li class="list-group-item otd-li">  
-                  <div class="total-otd-price" id="otdPriceDisplay">
-                    Total O.T.D. Price: 
-                    <span class="pull-right fw-bold">${numeral(data.OTDPrice).format("$0,0.00")}</span>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </div>
         </div>
+      </div>
       `;
 
       // Replace the entire page content at once
@@ -847,7 +860,6 @@ document.addEventListener("DOMContentLoaded", function () {
           pause: true,
         });
 
-        // Force stop any running carousel
         carousel.pause();
       }
 
@@ -860,12 +872,38 @@ document.addEventListener("DOMContentLoaded", function () {
       });
 
       showpay();
-
-      // Initialize clipboard tooltips after content is loaded
       initializeClipboardTooltips();
+      initializeVisibilityToggles();
+      createExportButton();
 
       // Remove loader once everything is ready
       loader.remove();
+
+      // Add this to your style section or CSS file
+      const styleElement = document.createElement("style");
+      styleElement.textContent = `
+        .main-header,
+        .carousel-container,
+        .payment-calculator,
+        .mat-items-container,
+        .discount-items-container,
+        .accessory-items-container,
+        .otd-items-container,
+        .otd-price-container {
+          overflow: hidden;
+          transition: all 0.3s ease-in-out;
+          opacity: 1;
+          max-height: 2000px; /* Set this to something larger than your largest section */
+        }
+
+        .section-hidden {
+          opacity: 0;
+          max-height: 0;
+          margin: 0 !important;
+          padding: 0 !important;
+        }
+      `;
+      document.head.appendChild(styleElement);
     })
     .catch((error) => {
       console.error("Error in fetch:", error);
@@ -885,8 +923,11 @@ function showError(message) {
     </div>
   `;
 
-  const container = document.getElementById("error-container") || document.body;
-  container.innerHTML = errorHtml;
+  // Update to use capture container instead of body
+  const container = document.getElementById("error-container") || document.getElementById("capture-container");
+  if (container) {
+    container.innerHTML = errorHtml;
+  }
 }
 
 // Add global error handler
@@ -894,3 +935,188 @@ window.addEventListener("error", function (event) {
   console.error("Global error:", event.error);
   showError(`Unexpected error: ${event.error?.message || "Unknown error"}`);
 });
+
+function createExportButton() {
+  const container = document.querySelector(".export-btn-container");
+  if (!container) {
+    console.error("Export button container not found");
+    return;
+  }
+
+  // Remove placeholder button if it exists
+  document.getElementById("placeholderSaveBtn")?.remove();
+
+  // Create the real button
+  const exportBtn = document.createElement("button");
+  exportBtn.className = "btn btn-danger ms-2 d-flex align-items-center gap-2";
+  exportBtn.innerHTML = `
+    <i class="bi bi-floppy"></i>
+    <span>Save Quote</span>
+  `;
+  exportBtn.addEventListener("click", captureFullContent);
+
+  container.appendChild(exportBtn);
+}
+
+function generateFilename(data) {
+  const timestamp = moment().format("YYYY-MM-DD");
+  const parts = [data.StockNumber, data.ModelYear, data.Manufacturer, data.B50ModelName, timestamp];
+
+  return (
+    parts
+      .filter(Boolean) // Remove any undefined/null values
+      .join("_") // Join with underscores
+      .replace(/\s+/g, "_") // Replace spaces with underscores
+      .replace(/[^a-zA-Z0-9._-]/g, "") + // Remove special characters
+    ".jpg"
+  );
+}
+
+async function saveFile(blob, filename) {
+  if ("showSaveFilePicker" in window) {
+    try {
+      const handle = await window.showSaveFilePicker({
+        suggestedName: filename,
+        types: [
+          {
+            description: "JPEG Image",
+            accept: {
+              "image/jpeg": [".jpg", ".jpeg"],
+            },
+          },
+        ],
+      });
+      const writable = await handle.createWritable();
+      await writable.write(blob);
+      await writable.close();
+    } catch (err) {
+      if (err.name === "AbortError") return; // User cancelled
+      throw err; // Re-throw other errors
+    }
+  } else {
+    // Fallback for browsers that don't support file picker
+    const link = document.createElement("a");
+    link.download = filename;
+    link.href = URL.createObjectURL(blob);
+    link.click();
+    URL.revokeObjectURL(link.href);
+  }
+}
+
+async function captureFullContent() {
+  try {
+    // Image quality settings
+    const scaleFactor = 1.0; // Increase for higher resolution (1.0 = original size)
+    const imageQuality = 2.0; // 0.0 to 1.0 (0% to 100%)
+
+    // Store original scroll position
+    const originalScrollPos = window.scrollY;
+
+    // Get the element we want to capture
+    const element = document.querySelector("#capture-container");
+    const rect = element.getBoundingClientRect();
+
+    // Scroll element into view
+    element.scrollIntoView();
+
+    // Wait a bit for any reflows/repaints
+    await new Promise((resolve) => setTimeout(resolve, 100));
+
+    // Start screen capture
+    const stream = await navigator.mediaDevices.getDisplayMedia({
+      preferCurrentTab: true,
+      video: {
+        displaySurface: "browser",
+      },
+    });
+
+    const video = document.createElement("video");
+    video.srcObject = stream;
+    await new Promise((resolve) => (video.onloadedmetadata = resolve));
+    video.play();
+
+    // Create canvas with scaled dimensions for higher resolution
+    const canvas = document.createElement("canvas");
+    canvas.width = element.scrollWidth * scaleFactor;
+    canvas.height = element.scrollHeight * scaleFactor;
+
+    const ctx = canvas.getContext("2d");
+
+    // Scale the context to increase resolution
+    ctx.scale(scaleFactor, scaleFactor);
+
+    // Draw the full element
+    ctx.drawImage(
+      video,
+      rect.left,
+      rect.top,
+      element.scrollWidth,
+      element.scrollHeight, // Source rectangle
+      0,
+      0,
+      element.scrollWidth,
+      element.scrollHeight // Destination rectangle
+    );
+
+    // Stop screen capture
+    stream.getTracks().forEach((track) => track.stop());
+
+    // Restore original scroll position
+    window.scrollTo(0, originalScrollPos);
+
+    const data = window.vehicleData;
+    const filename = generateFilename(data);
+
+    // Convert canvas to blob with configurable quality
+    const blob = await new Promise((resolve) => {
+      canvas.toBlob(resolve, "image/jpeg", imageQuality);
+    });
+
+    await saveFile(blob, filename);
+  } catch (err) {
+    console.error("Error capturing screen:", err);
+    alert("Screen capture failed or was cancelled");
+  }
+}
+
+function handleSearch(event) {
+  event.preventDefault(); // Prevent form submission
+
+  const searchInput = document.getElementById("stockNumberSearch");
+  const stockNumber = searchInput.value.trim();
+
+  if (stockNumber) {
+    // Update URL and reload page
+    window.location.href = `${window.location.pathname}?search=${encodeURIComponent(stockNumber)}`;
+  }
+}
+
+function initializeVisibilityToggles() {
+  const toggleMap = {
+    quoteName: ".quote-name",
+    quoteHeader: ".main-header",
+    quoteImages: ".carousel-container",
+    quotePayment: ".payment-calculator",
+    quoteRebates: ".mat-items-container",
+    quoteDiscounts: ".discount-items-container",
+    quoteAccessories: ".accessory-items-container",
+    quoteFees: ".otd-items-container",
+    quoteTotal: ".otd-price-container",
+  };
+
+  Object.keys(toggleMap).forEach((checkboxId) => {
+    const checkbox = document.getElementById(checkboxId);
+    if (checkbox) {
+      checkbox.addEventListener("change", (e) => {
+        const container = document.querySelector(toggleMap[checkboxId]);
+        if (container) {
+          if (e.target.checked) {
+            container.classList.remove("section-hidden");
+          } else {
+            container.classList.add("section-hidden");
+          }
+        }
+      });
+    }
+  });
+}

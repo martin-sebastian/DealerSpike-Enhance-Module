@@ -3,160 +3,211 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <title>Vehicle Quote</title>
     <link href="../css/bootstrap.css" rel="stylesheet" />
-    <link href="../css/style.css" rel="stylesheet" />
-    <link rel="stylesheet" href="../css/font-awesome.css" />
-    <style>
-      /* Print settings */
-      @page {
-        size: letter;
-        margin: 0.25in;
-      }
-
-      body {
-        background: #f0f0f0;
-        margin: 0;
-        padding: 1rem;
-      }
-
-      /* Page container mimics paper size */
-      .page-container {
-        width: 8.5in;
-        min-height: 11in;
-        margin: 0 auto;
-        background: white;
-        padding: 0.25in;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      }
-
-      /* Main content layout */
-      .content-container {
-        display: flex;
-        gap: 0.25in;
-        margin-top: 0.25in;
-      }
-
-      /* Column sizing */
-      .left-column {
-        width: 4in;
-      }
-
-      .right-column {
-        width: 4in;
-      }
-      .pull-right {
-        float: right;
-      }
-
-      /* Component spacing */
-      .trade-in-container,
-      .unit-info-container,
-      .price-container,
-      .payment-calculator,
-      .pricing-details {
-        margin-bottom: 0.25in;
-      }
-
-      /* Carousel sizing */
-      .carousel-container {
-        width: 100%;
-        margin-bottom: 0.25in;
-      }
-
-      .carousel-container img {
-        width: 100%;
-        height: auto;
-        object-fit: cover;
-      }
-
-      .card {
-        width: 100%;
-        margin: 5px 0;
-        padding: 0.125in;
-      }
-
-      /* Price display */
-      .price-payment-container {
-        text-align: center;
-        padding: 0.125in;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-      }
-
-      /* Print specific styles */
-      @media print {
-        body {
-          margin: 0;
-          padding: 0;
-          background: white;
-        }
-
-        .page-container {
-          width: 8in;
-          box-shadow: none;
-          padding: 0.25in;
-        }
-
-        .no-print {
-          display: none;
-        }
-
-        /* Force page break if content exceeds one page */
-        .page-break {
-          page-break-before: always;
-        }
-      }
-
-      #page-loader {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        z-index: 1000;
-      }
-    </style>
+    <link rel="stylesheet" href="../css/bootstrap-icons.css" />
+    <link rel="stylesheet" href="../css/quote.css" />
   </head>
-  <body class="dots">
-    <div class="page-container">
-      <header>
-        <div class="main-header"></div>
-      </header>
+  <body class="dots m-0 p-0" x-data="{ firstName: '', lastName: '' }">
+    <div class="d-flex flex-row flex-nowrap">
+      <!-- Start Sidebar -->
+      <div class="d-flex flex-column flex-shrink-0 p-2 text-bg-dark vh-100 overflow-hidden opacity-98 d-print-none sidebar" style="width: 280px">
+        <div class="navbar-brand my-2 mx-2">
+          <a href="/" class="d-flex align-items-center mb-1 mb-md-0 me-md-auto text-white text-decoration-none">
+            <img src="../img/fom-app-logo-01.svg" alt="FOM Logo" width="180" height="27" class="logo-full" />
+            <img src="../img/sidebar-logo.png" alt="FOM Icon" width="48" height="48" class="logo-icon rounded-circle" />
+          </a>
+        </div>
+        <ul class="nav nav-pills flex-column my-4">
+          <li class="nav-item">
+            <a href="../" class="nav-link text-white">
+              <i class="bi bi-house mx-2"></i>
+              <span>Inventory</span>
+            </a>
+          </li>
+          <li>
+            <a href="../key-tags" class="nav-link text-white">
+              <i class="bi bi-tag mx-2"></i>
+              <span>Key Tags</span>
+            </a>
+          </li>
+          <li>
+            <a href="../hang-tags" class="nav-link text-white">
+              <i class="bi bi-tags mx-2"></i>
+              <span>Hang Tags</span>
+            </a>
+          </li>
+          <li>
+            <a href="../quote" class="nav-link active">
+              <i class="bi bi-card-heading mx-2"></i>
+              <span>Quotes</span>
+            </a>
+          </li>
+        </ul>
 
-      <div class="content-container">
-        <!-- Left Column -->
-        <div class="left-column">
-          <div class="carousel-container">
-            <!-- Images will be inserted here -->
+        <div class="show-hide-container flex-column flex-nowrap mb-auto">
+          <form>
+            <div class="mb-3 mx-3">
+              <label for="inputFirstName" class="form-label">Customer Name</label>
+              <input type="text" class="form-control form-control-sm" placeholder="First Name" id="inputFirstName" x-model="firstName" />
+            </div>
+            <div class="mb-3 mx-3">
+              <label for="inputLastName" class="form-label visually-hidden">Last Name</label>
+              <input type="text" class="form-control form-control-sm" placeholder="Last Name" id="inputLastName" x-model="lastName" />
+            </div>
+          </form>
+          <div class="form-check mx-3">
+            <input class="form-check-input" type="checkbox" value="" id="quoteName" checked />
+            <label class="form-check-label text-light mx-2" for="quoteName">Name</label>
           </div>
-
-          <div class="trade-in-container">
-            <!-- Trade-in form will be inserted here -->
+          <div class="form-check mx-3">
+            <input class="form-check-input" type="checkbox" value="" id="quoteHeader" checked />
+            <label class="form-check-label text-light mx-2" for="quoteHeader">Header</label>
           </div>
-
-          <div class="unit-info-container">
-            <!-- Unit information will be inserted here -->
+          <div class="form-check mx-3">
+            <input class="form-check-input" type="checkbox" value="" id="quoteImages" checked />
+            <label class="form-check-label text-light mx-2" for="quoteImages">Images</label>
+          </div>
+          <div class="form-check mx-3">
+            <input class="form-check-input" type="checkbox" value="" id="quotePayment" checked />
+            <label class="form-check-label text-light mx-2" for="quotePayment">Payment</label>
+          </div>
+          <div class="form-check mx-3">
+            <input class="form-check-input" type="checkbox" value="" id="quoteRebates" checked />
+            <label class="form-check-label text-light mx-2" for="quoteRebates">Rebates</label>
+          </div>
+          <div class="form-check mx-3">
+            <input class="form-check-input" type="checkbox" value="" id="quoteDiscounts" checked />
+            <label class="form-check-label text-light mx-2" for="quoteDiscounts">Discounts</label>
+          </div>
+          <div class="form-check mx-3">
+            <input class="form-check-input" type="checkbox" value="" id="quoteAccessories" checked />
+            <label class="form-check-label text-light mx-2" for="quoteAccessories">Accessories</label>
+          </div>
+          <div class="form-check mx-3">
+            <input class="form-check-input" type="checkbox" value="" id="quoteFees" checked />
+            <label class="form-check-label text-light mx-2" for="quoteFees">Fees</label>
+          </div>
+          <div class="form-check mx-3">
+            <input class="form-check-input" type="checkbox" value="" id="quoteTotal" checked />
+            <label class="form-check-label text-light mx-2" for="quoteTotal">Total</label>
           </div>
         </div>
-
-        <!-- Right Column -->
-        <div class="right-column">
-          <div class="price-container">
-            <!-- Price and savings will be inserted here -->
-          </div>
-
-          <div class="payment-calculator">
-            <!-- Payment calculator will be inserted here -->
-          </div>
-
-          <div class="pricing-details">
-            <!-- MAT items, accessories, etc will be inserted here -->
-          </div>
-
-          <div class="otd-price">
-            <!-- OTD price will be inserted here -->
-          </div>
+        <div class="mb-auto"></div>
+        <hr class="mx-2 my-2 opacity-10" />
+        <div class="dropdown">
+          <a
+            href="#"
+            class="d-flex align-items-center text-white text-decoration-none px-2 py-2 dropdown-toggle"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <img src="../img/fom-building-256.jpg" alt="" width="32" height="32" class="rounded-circle mx-2 admin-avatar" />
+            <span class="admin-text">Admin</span>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+            <li><a class="dropdown-item" href="#">Settings</a></li>
+            <li><a class="dropdown-item" href="#">Profile</a></li>
+            <li><hr class="dropdown-divider" /></li>
+            <li><a class="dropdown-item" href="#">Sign out</a></li>
+          </ul>
         </div>
+      </div>
+      <!-- End Sidebar -->
+
+      <!-- Start Main Content Area (contains navbar and main content) -->
+      <div class="d-flex flex-column flex-grow-1 vh-100 overflow-hidden">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom opacity-95">
+          <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+              <i class="bi bi-arrows-collapse-vertical"></i>
+            </a>
+            <div class="vr me-3"></div>
+            <button
+              class="navbar-toggler"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <form class="d-flex" role="search" onsubmit="handleSearch(event)">
+                <input class="form-control me-1" type="search" placeholder="Stock Number" aria-label="Search" id="stockNumberSearch" required />
+                <button class="btn btn-danger me-2" type="submit"><i class="bi bi-arrow-return-left"></i></button>
+              </form>
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                  <a class="btn btn-outline-secondary ms-1" aria-current="page" href="./">Clear</a>
+                </li>
+                <li class="nav-item dropdown">
+                  <a class="btn btn-outline-secondary mx-1" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Templates <i class="bi bi-chevron-compact-down"></i>
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li>
+                      <a class="dropdown-item" href="#"><i class="bi bi-messenger me-2"></i> Facebook Marketplace Quote</a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="#"><i class="bi bi-chat-dots me-2"></i> SMS Text Quote</a>
+                    </li>
+                    <li><hr class="dropdown-divider" /></li>
+                    <li>
+                      <a class="dropdown-item" href="#"><i class="bi bi-list me-2"></i> All Templates</a>
+                    </li>
+                  </ul>
+                </li>
+                <li class="nav-item d-flex align-items-center ms-2">
+                  <div class="btn-group">
+                    <button class="btn btn-outline-secondary" onclick="adjustZoom(-0.1)" title="Zoom Out">
+                      <i class="bi bi-zoom-out"></i>
+                    </button>
+                    <button class="btn btn-outline-secondary" onclick="resetZoom()" title="Reset Zoom">
+                      <span id="zoomLevel">100%</span>
+                    </button>
+                    <button class="btn btn-outline-secondary" onclick="adjustZoom(0.1)" title="Zoom In">
+                      <i class="bi bi-zoom-in"></i>
+                    </button>
+                  </div>
+                </li>
+              </ul>
+              <div class="export-btn-container"></div>
+              <button id="placeholderSaveBtn" class="btn btn-danger ms-2 d-flex align-items-center gap-2" disabled>
+                <i class="bi bi-floppy"></i>
+                <span>Save Quote</span>
+              </button>
+            </div>
+          </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="flex-grow-1 overflow-y-auto py-5 d-flex flex-column align-items-center justify-content-center" style="padding-top: 300px">
+          <h1 x-data="{ message: 'I ❤️ Alpine' }" x-text="message" class="my-5 hidden"></h1>
+          <div class="page-container w-100 zoom-container" style="transform-origin: center center">
+            <p class="text-center mt-4 text-muted opacity-50">Enter Stock Number</p>
+            <div class="capture-container">
+              <div class="customer-name">
+                <template x-if="firstName || lastName">
+                  <h3>
+                    <span x-text="firstName"></span>
+                    <span x-text="lastName"></span>
+                  </h3>
+                </template>
+              </div>
+              <div class="main-header"></div>
+              <div class="carousel-container"></div>
+              <div class="trade-in-container"></div>
+              <div class="unit-info-container"></div>
+              <div class="payment-calculator"></div>
+              <div class="total-otd-price"></div>
+            </div>
+          </div>
+        </main>
       </div>
     </div>
 
