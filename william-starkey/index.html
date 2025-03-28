@@ -37,14 +37,21 @@
       body {
         margin: 0;
         padding: 0;
-        overflow: hidden;
         background-color: #eeeeee;
         color: #444444;
       }
       .card-img-top {
         object-fit: cover;
         object-position: center;
+        border-top-left-radius: 16px !important;
+        border-top-right-radius: 16px !important;
         max-height: 18rem;
+      }
+      .card-header {
+        background-color: #fff;
+        border-top-left-radius: 16px !important;
+        border-top-right-radius: 16px !important;
+        overflow: hidden;
       }
       .card-body {
         background-color: #fff;
@@ -65,10 +72,12 @@
       }
     </style>
   </head>
-  <body data-bs-theme="text-light">
-    <div class="container w-100 vh-100 d-flex flex-column align-items-center justify-content-center">
-      <div class="card rounded-4 overflow-hidden shadow-lg">
-        <img src="../img/flatout-building.jpg" class="card-img-top" alt="..." />
+  <body>
+    <div class="w-100 vh-100 overflow-y-auto d-flex flex-column align-items-center justify-content-center">
+      <div class="card rounded-4 m-5 shadow">
+        <div class="card-header m-0 p-0 overflow-hidden">
+          <img src="../img/flatout-building.jpg" class="card-img-top" alt="..." />
+        </div>
         <ul class="list-group list-group-flush">
           <li class="list-group-item text-center">
             <a href="https://www.flatoutmotorcycles.com">
@@ -95,9 +104,11 @@
             <a href="https://www.flatoutmotorcycles.com"><i class="bi bi-link-45deg me-2"></i> www.flatoutmotorcycles.com</a>
           </li>
         </ul>
-        <div class="card-body d-flex flex-row justify-content-center">
-          <a href="https://www.flatoutmotorcycles.com" class="btn btn-danger px-4 me-2">View Inventory</a>
-          <a href="https://www.flatoutmotorcycles.com/financing-application" class="btn btn-secondary px-4">Apply for Financing</a>
+        <div class="card-body d-flex rounded-4 flex-row justify-content-center">
+          <a href="https://www.flatoutmotorcycles.com" class="btn btn-secondary px-4 me-2">View Inventory</a>
+          <a href="https://www.flatoutmotorcycles.com/financing-application" class="btn btn-danger px-4"
+            ><i class="bi bi-credit-card me-2"></i> Apply for Financing</a
+          >
         </div>
       </div>
     </div>
