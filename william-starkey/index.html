@@ -29,8 +29,8 @@
     <meta property="twitter:image" content="https://newportal.flatoutmotorcycles.com/staff/img/fom-og-image.jpg" />
 
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="../img/favicon.png" />
-    <link rel="apple-touch-icon" href="../img/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" href="https://newportal.flatoutmotorcycles.com/staff/img/favicon.png" />
+    <link rel="apple-touch-icon" href="https://newportal.flatoutmotorcycles.com/staff/img/apple-touch-icon.png" />
 
     <!-- Existing scripts and styles -->
     <style>
@@ -44,7 +44,7 @@
       .card-img-top {
         object-fit: cover;
         object-position: center;
-        height: 12rem;
+        max-height: 18rem;
       }
       .card-body {
         background-color: #fff;
@@ -67,8 +67,15 @@
   </head>
   <body data-bs-theme="text-light">
     <div class="container w-100 vh-100 d-flex flex-column align-items-center justify-content-center">
-      <div class="card rounded-4 overflow-hidden shadow-lg" style="width: 25rem">
+      <div class="card rounded-4 overflow-hidden shadow-lg">
         <img src="../img/flatout-building.jpg" class="card-img-top" alt="..." />
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item text-center">
+            <a href="https://www.flatoutmotorcycles.com">
+              <img src="../img/fom-logo.png" class="img-fluid" alt="..." />
+            </a>
+          </li>
+        </ul>
         <div class="card-body">
           <h5 class="card-title my-1 text-secondary">Flat Out Motorsports</h5>
           <p class="card-text my-0 fw-semibold text-secondary">7525 E. 88th Place.</p>
@@ -94,7 +101,5 @@
         </div>
       </div>
     </div>
-    <script src="./js/bootstrap.bundle.js"></script>
-    <script src="./js/popper.js"></script>
   </body>
 </html>
