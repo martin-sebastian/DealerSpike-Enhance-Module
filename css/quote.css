@@ -183,20 +183,26 @@ ul .nav-pill:hover {
   letter-spacing: -0.02em;
   color: #000 !important;
 }
+/* Capture container */
+#capture-container {
+  width: 760px;
+  min-height: auto;
+  margin: 0 auto;
+}
 /* Page container mimics paper size */
 .page-container {
   width: 100%;
   height: auto;
-}
-
-#capture-container {
-  width: 480px;
-  min-height: auto;
-  margin: 0 auto;
-  background: white;
   padding: 20px;
+  border: 5px solid #fff;
   border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
+  transform: scale(1);
+  transform-origin: center center;
+  transition: transform 0.3s ease-in-out;
+  -webkit-font-smoothing: antialiased; /* or grayscale */
+  text-rendering: optimizeLegibility; /* or geometricPrecision */
 }
 
 /* Main content layout */

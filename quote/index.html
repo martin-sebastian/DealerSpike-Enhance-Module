@@ -186,16 +186,15 @@
         </nav>
 
         <!-- Main Content -->
-        <main class="flex-grow-1 overflow-y-auto py-5 d-flex flex-column align-items-center justify-content-center" style="padding-top: 300px">
-          <h1 x-data="{ message: 'I ❤️ Alpine' }" x-text="message" class="my-5 hidden"></h1>
-          <div class="page-container w-100 zoom-container" style="transform-origin: center center">
-            <p class="text-center mt-4 text-muted opacity-50">Enter Stock Number</p>
-            <div class="capture-container">
+        <main class="flex-grow-1 w-100 overflow-y-auto d-flex flex-column align-items-center justify-content-center">
+          <div class="capture-container zoom-container" style="transform-origin: center center">
+            <div class="page-container">
+              <p class="text-center mt-4 text-muted opacity-50">Enter Stock Number</p>
               <div class="customer-name">
                 <template x-if="firstName || lastName">
                   <h3>
-                    <span x-text="firstName"></span>
-                    <span x-text="lastName"></span>
+                    <span x-text="firstName">First Name</span>
+                    <span x-text="lastName">Last Name</span>
                   </h3>
                 </template>
               </div>

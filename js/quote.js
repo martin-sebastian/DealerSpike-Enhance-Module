@@ -182,7 +182,7 @@ function resetZoom() {
 }
 
 function updateZoom() {
-  const container = document.querySelector(".zoom-container");
+  const container = document.querySelector(".capture-container.zoom-container");
   if (container) {
     container.style.transform = `scale(${currentZoom})`;
     document.getElementById("zoomLevel").textContent = `${Math.round(currentZoom * 100)}%`;
@@ -225,13 +225,22 @@ document.addEventListener("DOMContentLoaded", function () {
   const errorContainer = document.createElement("div");
   errorContainer.id = "error-container";
 
-  // Get the capture container instead of clearing body
-  const captureContainer = document.getElementById("capture-container");
-  if (captureContainer) {
-    // Clear only the capture container
+  // Get the capture container or page container
+  const captureContainer = document.querySelector(".capture-container.zoom-container");
+  const pageContainer = captureContainer ? captureContainer.querySelector(".page-container") : null;
+  
+  if (pageContainer) {
+    // Clear only the page container
+    pageContainer.innerHTML = "";
+    pageContainer.appendChild(loader);
+    pageContainer.appendChild(errorContainer);
+  } else if (captureContainer) {
+    // Fallback to the capture container
     captureContainer.innerHTML = "";
     captureContainer.appendChild(loader);
     captureContainer.appendChild(errorContainer);
+  } else {
+    console.error("Could not find container for loading display");
   }
 
   if (!stockNum) {
@@ -649,9 +658,7 @@ document.addEventListener("DOMContentLoaded", function () {
       // Payment Calculator
       const paymentCalc = `
 		<div class="payment-calculator my-2">
-
       <form name="calc" method="POST">
-
         <button type="button" 
           class="btn btn-secondary w-100" 
           data-bs-toggle="collapse" 
@@ -675,9 +682,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 <small>/mo. Subject to credit approval.</small>
             </span>
         </button>
-
         <input type="hidden" name="loan" size="10" value="${data.OTDPrice}">
-
 				<div class="collapse" id="paymentSliders">
 					<div class="payment-collapsed-container">
 
@@ -707,7 +712,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
               <div class="loan-term-container">
                 <p class="loan-term-label">Loan Term (Months)</p>
-                  <div data-toggle="buttons">${loanTerms}</div>
+                <div data-toggle="buttons">${loanTerms}</div>
               </div>
 					</div>
 					<input type="hidden" name="pay" size="10">
@@ -794,61 +799,35 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Update the main page content structure
       const pageContent = `
-      <div id="capture-container">
-      
-        
+        <div class="customer-name">
+          <template x-if="firstName || lastName">
+            <h3>
+              <span x-text="firstName">First Name</span>
+              <span x-text="lastName">Last Name</span>
+            </h3>
+          </template>
+        </div>
         <div class="quote-date-container">
-        ${quoteDateFormatted} ${quoteTimeFormatted}
+          ${quoteDateFormatted} ${quoteTimeFormatted}
         </div>
-
-        <div class="main-header">
-          ${muHeaderTemplate}
-        </div>
-        <div class="content-body">
-          <div class="carousel-container">
-            ${carousel}
-          </div>
-          <div class="trade-in-container">
-            ${tradeInFormTemplate}
-          </div>
-          <div class="unit-info-container hidden">
-            <div class="card">
-              ${unitNumbersTemplate}
-            </div>
-          </div>
-          <div>
-            ${priceContainer}
-          </div>
-          <div class="trade-in-container">
-            ${tradeInItemsTemplate}
-          </div>
-          <div class="mat-items-container">
-            ${matItemsTemplate}
-          </div>
-          <div class="discount-items-container">
-            ${discountItemsTemplate}
-          </div>
-          <div class="accessory-items-container">
-            ${accessoryItemsTemplate}
-          </div>
-          <div class="otd-items-container">
-            ${OTDItemsTemplate}
-          </div>
-
-          <!-- OTD Price -->
-          <div class="card otd-price-container">
-            <div class="total-otd-price bold" id="otdPriceDisplay">
-                Total Price: 
-                <span class="float-end fw-bold">${numeral(data.OTDPrice).format("$0,0.00")}</span>
-            </div>
-          </div>
-
-        </div>
-      </div>
+        <div class="main-header">${muHeaderTemplate}</div>
+        <div class="carousel-container">${carousel}</div>
+        <div class="payment-calculator">${paymentCalc}</div>
+        <div class="trade-in-container">${tradeInVehicleTemplate}</div>
+        <div class="mat-items-container">${matItemsTemplate}</div>
+        <div class="discount-items-container">${discountItemsTemplate}</div>
+        <div class="accessory-items-container">${accessoryItemsTemplate}</div>
+        <div class="otd-items-container">${OTDItemsTemplate}</div>
+        <div class="total-otd-price">${ourPriceContainer}</div>
       `;
 
       // Replace the entire page content at once
-      document.querySelector(".page-container").innerHTML = pageContent;
+      const pageContainerEl = document.querySelector(".capture-container.zoom-container .page-container");
+      if (pageContainerEl) {
+        pageContainerEl.innerHTML = pageContent;
+      } else {
+        console.error("Could not find .page-container inside .capture-container.zoom-container");
+      }
 
       // Initialize carousel with vanilla JS
       const carouselElement = document.querySelector("#carousel-overlay-vehicle-info");
@@ -892,8 +871,9 @@ document.addEventListener("DOMContentLoaded", function () {
         .otd-price-container {
           overflow: hidden;
           transition: all 0.3s ease-in-out;
-          opacity: 1;
           max-height: 2000px; /* Set this to something larger than your largest section */
+          -webkit-font-smoothing: antialiased;
+          text-rendering: optimizeLegibility; 
         }
 
         .section-hidden {
@@ -923,10 +903,15 @@ function showError(message) {
     </div>
   `;
 
-  // Update to use capture container instead of body
-  const container = document.getElementById("error-container") || document.getElementById("capture-container");
+  // First check the error container, then the capture container, then find the page container
+  const container = document.getElementById("error-container") || 
+                   document.querySelector(".capture-container.zoom-container .page-container") ||
+                   document.querySelector(".capture-container.zoom-container");
+  
   if (container) {
     container.innerHTML = errorHtml;
+  } else {
+    console.error("Could not find container to display error message:", message);
   }
 }
 
@@ -1007,13 +992,16 @@ async function captureFullContent() {
   try {
     // Image quality settings
     const scaleFactor = 1.0; // Increase for higher resolution (1.0 = original size)
-    const imageQuality = 2.0; // 0.0 to 1.0 (0% to 100%)
+    const imageQuality = 1.0; // 0.0 to 1.0 (0% to 100%)
 
     // Store original scroll position
     const originalScrollPos = window.scrollY;
 
     // Get the element we want to capture
-    const element = document.querySelector("#capture-container");
+    const element = document.querySelector(".capture-container");
+    if (!element) {
+      throw new Error("Capture container not found");
+    }
     const rect = element.getBoundingClientRect();
 
     // Scroll element into view
@@ -1075,7 +1063,7 @@ async function captureFullContent() {
     await saveFile(blob, filename);
   } catch (err) {
     console.error("Error capturing screen:", err);
-    alert("Screen capture failed or was cancelled");
+    alert("Screen capture failed or was cancelled: " + err.message);
   }
 }
 
