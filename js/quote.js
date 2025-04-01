@@ -5,14 +5,15 @@ const CONFIG = {
   DEFAULT_INTEREST_RATE: 6.99,
 };
 
-// Add this near the top of the file, with other configuration constants
+// Alpine.js configuration
 const ALPINE_CONFIG = {
-  initializeCustomerData() {
-    return {
-      firstName: "",
-      lastName: "",
-      // Add any other customer-related data here
-    };
+  customerData: {
+    firstName: "",
+    lastName: "",
+  },
+  init() {
+    // Initialize with any existing data or defaults
+    return this.customerData;
   },
 };
 
@@ -208,9 +209,14 @@ document.addEventListener("keydown", function (e) {
 document.addEventListener("DOMContentLoaded", function () {
   console.log("DOM Content Loaded");
 
-  // Add this right after the console.log
-  // Initialize Alpine.js data
-  document.body.setAttribute("x-data", JSON.stringify(ALPINE_CONFIG.initializeCustomerData()));
+  // Initialize Alpine.js data at the body level
+  document.body.setAttribute(
+    "x-data",
+    JSON.stringify({
+      firstName: "",
+      lastName: "",
+    })
+  );
 
   // Initialize sidebar
   initializeSidebar();
@@ -228,7 +234,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Get the capture container or page container
   const captureContainer = document.querySelector(".capture-container.zoom-container");
   const pageContainer = captureContainer ? captureContainer.querySelector(".page-container") : null;
-  
+
   if (pageContainer) {
     // Clear only the page container
     pageContainer.innerHTML = "";
@@ -309,6 +315,7 @@ document.addEventListener("DOMContentLoaded", function () {
       var matItemsTemplate = data.MatItems?.length
         ? `
         <div class="card">
+        <h5 class="card-title fs-6 my-0">Manufacturer Rebates</h5>
           ${data.MatItems.map(
             (item) => `
             <div class="d-flex justify-content-between align-items-center">
@@ -593,7 +600,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Boat Terms for Payment Calculator
       var loanTerms = ``;
-      if (data.MSRP > 80000) {
+      if (data.B50ModelType === "Pontoons") {
         loanTerms += `
 		<label class="btn btn-danger term-button">
 		<input type="radio" name="months" id="option1" value="24" onChange="showpay()"> 24
@@ -799,16 +806,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Update the main page content structure
       const pageContent = `
+      <div class="capture-container" style="max-width: 600px; padding: 20px; margin: 0 auto;">
+        <div class="quote-date-container">
+          ${quoteDateFormatted} ${quoteTimeFormatted}
+        </div>
         <div class="customer-name">
           <template x-if="firstName || lastName">
-            <h3>
+            <h3 class="mb-3">
               <span x-text="firstName">First Name</span>
               <span x-text="lastName">Last Name</span>
             </h3>
           </template>
-        </div>
-        <div class="quote-date-container">
-          ${quoteDateFormatted} ${quoteTimeFormatted}
         </div>
         <div class="main-header">${muHeaderTemplate}</div>
         <div class="carousel-container">${carousel}</div>
@@ -819,6 +827,7 @@ document.addEventListener("DOMContentLoaded", function () {
         <div class="accessory-items-container">${accessoryItemsTemplate}</div>
         <div class="otd-items-container">${OTDItemsTemplate}</div>
         <div class="total-otd-price">${ourPriceContainer}</div>
+      </div>
       `;
 
       // Replace the entire page content at once
@@ -904,10 +913,11 @@ function showError(message) {
   `;
 
   // First check the error container, then the capture container, then find the page container
-  const container = document.getElementById("error-container") || 
-                   document.querySelector(".capture-container.zoom-container .page-container") ||
-                   document.querySelector(".capture-container.zoom-container");
-  
+  const container =
+    document.getElementById("error-container") ||
+    document.querySelector(".capture-container.zoom-container .page-container") ||
+    document.querySelector(".capture-container.zoom-container");
+
   if (container) {
     container.innerHTML = errorHtml;
   } else {

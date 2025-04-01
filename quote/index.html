@@ -6,20 +6,20 @@
 
     <!-- Basic SEO -->
     <title>Vehicle Quote | Flat Out Motorcycles</title>
-    <meta name="description" content="Create and manage vehicle quotes for motorcycles, ATVs, and more at Flat Out Motorcycles." />
+    <meta name="description" content="Create vehicle quotes and save them as a jpg image for easy texting to Flat Out Motorcycles customers." />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://newportal.flatoutmotorcycles.com/quote/" />
     <meta property="og:title" content="Vehicle Quote | Flat Out Motorcycles" />
-    <meta property="og:description" content="Create and manage vehicle quotes for motorcycles, ATVs, and more at Flat Out Motorcycles." />
+    <meta property="og:description" content="Create vehicle quotes and save them as a jpg image for easy texting to Flat Out Motorcycles customers." />
     <meta property="og:image" content="https://newportal.flatoutmotorcycles.com/img/fom-og-image.jpg" />
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content="https://newportal.flatoutmotorcycles.com/quote/" />
     <meta property="twitter:title" content="Vehicle Quote | Flat Out Motorcycles" />
-    <meta property="twitter:description" content="Create and manage vehicle quotes for motorcycles, ATVs, and more at Flat Out Motorcycles." />
+    <meta property="twitter:description" content="Create vehicle quotes and save them as a jpg image for easy texting to Flat Out Motorcycles customers." />
     <meta property="twitter:image" content="https://newportal.flatoutmotorcycles.com/img/fom-og-image.jpg" />
 
     <!-- Favicon -->
@@ -32,110 +32,80 @@
     <link rel="stylesheet" href="../css/bootstrap-icons.css" />
     <link rel="stylesheet" href="../css/quote.css" />
   </head>
-  <body class="dots m-0 p-0" x-data="{ firstName: '', lastName: '' }">
+  <body class="dots m-0 p-0">
     <div class="d-flex flex-row flex-nowrap">
       <!-- Start Sidebar -->
       <div class="d-flex flex-column flex-shrink-0 p-2 text-bg-dark vh-100 overflow-hidden opacity-98 d-print-none sidebar" style="width: 280px">
-        <div class="navbar-brand my-2 mx-2">
+        <div class="navbar-brand my-2 mx-auto">
           <a href="/" class="d-flex align-items-center mb-1 mb-md-0 me-md-auto text-white text-decoration-none">
             <img src="../img/fom-app-logo-01.svg" alt="FOM Logo" width="180" height="27" class="logo-full" />
             <img src="../img/sidebar-logo.png" alt="FOM Icon" width="48" height="48" class="logo-icon rounded-circle" />
           </a>
         </div>
-        <ul class="nav nav-pills flex-column my-4">
-          <li class="nav-item">
-            <a href="../" class="nav-link text-white">
-              <i class="bi bi-house mx-2"></i>
-              <span>Inventory</span>
-            </a>
-          </li>
-          <li>
-            <a href="../key-tags" class="nav-link text-white">
-              <i class="bi bi-tag mx-2"></i>
-              <span>Key Tags</span>
-            </a>
-          </li>
-          <li>
-            <a href="../hang-tags" class="nav-link text-white">
-              <i class="bi bi-tags mx-2"></i>
-              <span>Hang Tags</span>
-            </a>
-          </li>
-          <li>
-            <a href="../quote" class="nav-link active">
-              <i class="bi bi-card-heading mx-2"></i>
-              <span>Quotes</span>
-            </a>
-          </li>
-        </ul>
-
-        <div class="show-hide-container flex-column flex-nowrap mb-auto">
-          <form>
-            <div class="mb-3 mx-3">
-              <label for="inputFirstName" class="form-label">Customer Name</label>
-              <input type="text" class="form-control form-control-sm" placeholder="First Name" id="inputFirstName" x-model="firstName" />
-            </div>
-            <div class="mb-3 mx-3">
-              <label for="inputLastName" class="form-label visually-hidden">Last Name</label>
-              <input type="text" class="form-control form-control-sm" placeholder="Last Name" id="inputLastName" x-model="lastName" />
-            </div>
-          </form>
-          <div class="form-check mx-3">
-            <input class="form-check-input" type="checkbox" value="" id="quoteName" checked />
-            <label class="form-check-label text-light mx-2" for="quoteName">Name</label>
+        <hr class="mx-2 my-2 opacity-10" />
+        <form class="px-2">
+          <div class="mb-3">
+            <label for="inputFirstName" class="form-label">First Name</label>
+            <input type="text" class="form-control" id="inputFirstName" x-model="firstName" />
+            <div id="emailHelp" class="form-text text-light text-opacity-50">Add a first name to the quote.</div>
           </div>
-          <div class="form-check mx-3">
-            <input class="form-check-input" type="checkbox" value="" id="quoteHeader" checked />
-            <label class="form-check-label text-light mx-2" for="quoteHeader">Header</label>
+          <div class="mb-3">
+            <label for="inputLastName" class="form-label">Last Name</label>
+            <input type="text" class="form-control" id="inputLastName" x-model="lastName" />
+            <div id="emailHelp" class="form-text text-light text-opacity-50">Add a last name to the quote.</div>
           </div>
-          <div class="form-check mx-3">
-            <input class="form-check-input" type="checkbox" value="" id="quoteImages" checked />
-            <label class="form-check-label text-light mx-2" for="quoteImages">Images</label>
+          <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="exampleCheck1" />
+            <label class="form-check-label" for="exampleCheck1">Check me out</label>
           </div>
-          <div class="form-check mx-3">
-            <input class="form-check-input" type="checkbox" value="" id="quotePayment" checked />
-            <label class="form-check-label text-light mx-2" for="quotePayment">Payment</label>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+        <h5 class="mx-auto my-2">Show/Hide Sections</h5>
+        <div class="show-hide-container flex-column flex-nowrap px-4 mb-auto">
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" role="switch" id="quoteName" checked />
+            <label class="form-check-label" for="quoteName">Show Name</label>
           </div>
-          <div class="form-check mx-3">
-            <input class="form-check-input" type="checkbox" value="" id="quoteRebates" checked />
-            <label class="form-check-label text-light mx-2" for="quoteRebates">Rebates</label>
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" role="switch" id="quoteHeader" checked />
+            <label class="form-check-label" for="quoteHeader">Show Header</label>
           </div>
-          <div class="form-check mx-3">
-            <input class="form-check-input" type="checkbox" value="" id="quoteDiscounts" checked />
-            <label class="form-check-label text-light mx-2" for="quoteDiscounts">Discounts</label>
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" role="switch" id="quoteImages" checked />
+            <label class="form-check-label" for="quoteImages">Show Images</label>
           </div>
-          <div class="form-check mx-3">
-            <input class="form-check-input" type="checkbox" value="" id="quoteAccessories" checked />
-            <label class="form-check-label text-light mx-2" for="quoteAccessories">Accessories</label>
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" role="switch" id="quotePayment" checked />
+            <label class="form-check-label" for="quotePayment">Show Payment</label>
           </div>
-          <div class="form-check mx-3">
-            <input class="form-check-input" type="checkbox" value="" id="quoteFees" checked />
-            <label class="form-check-label text-light mx-2" for="quoteFees">Fees</label>
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" role="switch" id="quoteTradeIn" checked />
+            <label class="form-check-label" for="quoteTradeIn">Show Trade In</label>
           </div>
-          <div class="form-check mx-3">
-            <input class="form-check-input" type="checkbox" value="" id="quoteTotal" checked />
-            <label class="form-check-label text-light mx-2" for="quoteTotal">Total</label>
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" role="switch" id="quoteRebates" checked />
+            <label class="form-check-label" for="quoteRebates">Show Rebates</label>
           </div>
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" role="switch" id="quoteDiscounts" checked />
+            <label class="form-check-label" for="quoteDiscounts">Show Discounts</label>
+          </div>
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" role="switch" id="quoteAccessories" checked />
+            <label class="form-check-label" for="quoteAccessories">Show Accessories</label>
+          </div>
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" role="switch" id="quoteFees" checked />
+            <label class="form-check-label" for="quoteFees">Show Fees</label>
+          </div>
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" role="switch" id="quoteTotal" checked />
+            <label class="form-check-label" for="quoteTotal">Show Total</label>
+          </div>
+          <div class="form-check form-switch"></div>
         </div>
         <div class="mb-auto"></div>
-        <hr class="mx-2 my-2 opacity-10" />
-        <div class="dropdown">
-          <a
-            href="#"
-            class="d-flex align-items-center text-white text-decoration-none px-2 py-2 dropdown-toggle"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
-            <img src="../img/fom-building-256.jpg" alt="" width="32" height="32" class="rounded-circle mx-2 admin-avatar" />
-            <span class="admin-text">Admin</span>
-          </a>
-          <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
-            <li><a class="dropdown-item" href="#">Settings</a></li>
-            <li><a class="dropdown-item" href="#">Profile</a></li>
-            <li><hr class="dropdown-divider" /></li>
-            <li><a class="dropdown-item" href="#">Sign out</a></li>
-          </ul>
-        </div>
+        <a href="../" target="_blank" class="btn btn-outline-secondary mx-3 mb-2">Back to Inventory</a>
       </div>
       <!-- End Sidebar -->
 
@@ -162,22 +132,26 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <form class="d-flex" role="search" onsubmit="handleSearch(event)">
                 <input class="form-control me-1" type="search" placeholder="Stock Number" aria-label="Search" id="stockNumberSearch" required />
-                <button class="btn btn-danger me-2" type="submit"><i class="bi bi-arrow-return-left"></i></button>
+                <button class="btn btn-danger me-1" type="submit"><i class="bi bi-arrow-return-left"></i></button>
               </form>
+
               <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
                   <a class="btn btn-outline-secondary ms-1" aria-current="page" href="./">Clear</a>
                 </li>
+              </ul>
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item dropdown">
-                  <a class="btn btn-outline-secondary mx-1" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Templates <i class="bi bi-chevron-compact-down"></i>
+                  <a class="btn btn-outline-secondary" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <span class="">Templates</span> <i class="bi bi-chevron-compact-down"></i>
                   </a>
+
                   <ul class="dropdown-menu">
                     <li>
-                      <a class="dropdown-item" href="#"><i class="bi bi-messenger me-2"></i> Facebook Marketplace Quote</a>
+                      <a class="dropdown-item" href="#"><i class="bi bi-messenger me-2"></i> Facebook Marketplace</a>
                     </li>
                     <li>
-                      <a class="dropdown-item" href="#"><i class="bi bi-chat-dots me-2"></i> SMS Text Quote</a>
+                      <a class="dropdown-item" href="#"><i class="bi bi-chat-dots me-2"></i> SMS Text Message</a>
                     </li>
                     <li><hr class="dropdown-divider" /></li>
                     <li>
@@ -185,6 +159,7 @@
                     </li>
                   </ul>
                 </li>
+                <hr class="mx-2 my-2 opacity-10" />
                 <li class="nav-item d-flex align-items-center ms-2">
                   <div class="btn-group">
                     <button class="btn btn-outline-secondary" onclick="adjustZoom(-0.1)" title="Zoom Out">
@@ -199,23 +174,31 @@
                   </div>
                 </li>
               </ul>
-              <div class="export-btn-container"></div>
-              <button id="placeholderSaveBtn" class="btn btn-danger ms-2 d-flex align-items-center gap-2" disabled>
-                <i class="bi bi-floppy"></i>
-                <span>Save Quote</span>
-              </button>
+
+              <div class="cancel-btn-container">
+                <a href="../" class="btn btn-secondary ms-2 d-flex align-items-center gap-2">
+                  <i class="bi bi-x-circle"></i>
+                  <span>Cancel</span>
+                </a>
+              </div>
+              <div class="export-btn-container">
+                <button id="placeholderSaveBtn" class="btn btn-danger ms-2 d-flex align-items-center gap-2" disabled>
+                  <i class="bi bi-floppy"></i>
+                  <span>Save Quote</span>
+                </button>
+              </div>
             </div>
           </div>
         </nav>
 
         <!-- Main Content -->
-        <main class="flex-grow-1 w-100 overflow-y-auto d-flex flex-column align-items-center justify-content-center">
+        <main class="flex-grow-1 overflow-y-auto d-flex flex-column align-items-center justify-content-center">
           <div class="capture-container zoom-container" style="transform-origin: center center">
             <div class="page-container">
               <p class="text-center mt-4 text-muted opacity-50">Enter Stock Number</p>
               <div class="customer-name">
                 <template x-if="firstName || lastName">
-                  <h3>
+                  <h3 class="mb-3">
                     <span x-text="firstName">First Name</span>
                     <span x-text="lastName">Last Name</span>
                   </h3>
