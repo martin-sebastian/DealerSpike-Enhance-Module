@@ -22,6 +22,8 @@
             <a class="navbar-brand" href="./">
               <img id="logo" class="ms-1 me-1 pt-0" src="./img/fom-app-logo-01.svg" alt="Logo" width="180" height="27" />
             </a>
+            <button type="button" class="btn btn-default text-white" title="Create custom key tag" onclick="openKeyTagsByStockNumberModal('${stockNumber}')"><i class="bi bi-plus-circle mx-1"></i> Key Tag</button>
+            
           </div>
 
           <form class="d-flex flex-row d-none d-sm-block" role="search">
@@ -100,19 +102,7 @@
             </div>
           </form>
           <div class="toggles-group d-flex flex-row">
-            <div class="btn-group me-5" role="group" aria-label="Button group with nested dropdown">
-              <button type="button" class="btn btn-outline-secondary" title="Create custom key tag" onclick="openKeyTagsByStockNumberModal('${stockNumber}')"><i class="bi bi-tag"></i></button>
-              <div class="btn-group" role="group">
-                <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                  <i class="bi bi-grid-3x3-gap-fill"></i>
-                </button>
-                <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="#" title="Create custom key tag" onclick="openKeyTagsByStockNumberModal('${stockNumber}')"><i class="bi bi-tag me-2"></i> Custom Key Tag</a></li>
-                  <li><a class="dropdown-item disabled" href="#"><i class="bi bi-tags me-2"></i> Custom Hang Tags</a></li>
-                  <li><a class="dropdown-item" href="./quote/"><i class="bi bi-card-heading me-2"></i> Custom Quote</a></li>
-                </ul>
-              </div>
-            </div>
+            
             <button id="toggleThemeButton" class="btn btn-outline-secondary px-3 mx-1" type="button">
               <i id="theme-icon" class="bi bi-moon-stars"></i>
             </button>
@@ -170,12 +160,17 @@
 
     <main>
       <div class="container-fluid">
-        <div class="spacer-75 d-flex flex-row align-items-center"></div>
+        <div class="spacer-75 d-flex flex-row justify-content-between align-items-center"></div>
         
-        <div class="d-flex pb-2 text-secondary">
+        <div class="d-flex flex-row justify-content-between align-items-center pb-2 text-secondary">
           <!-- element for displaying row count -->
-          Results: <span class="mx-1" id="rowCountDisplay"></span>
+          <div class="mx-1">
+            Results: <span class="mx-1" id="rowCountDisplay"></span>
+          </div>
+          
         </div>
+
+
         <div class="table-responsive">
           <table id="vehiclesTable" class="table table-hover table-responsive">
             <thead>
