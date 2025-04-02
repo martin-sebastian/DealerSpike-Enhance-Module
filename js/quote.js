@@ -181,7 +181,7 @@ function resetZoom() {
 }
 
 function updateZoom() {
-  const container = document.querySelector(".capture-container.zoom-container");
+  const container = document.querySelector(".page-container.zoom-container");
   if (container) {
     container.style.transform = `scale(${currentZoom})`;
     document.getElementById("zoomLevel").textContent = `${Math.round(currentZoom * 100)}%`;
@@ -738,8 +738,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Our Price display template
       const ourPriceContainer = `
-        <div id="ourPriceDisplay">
-        <div class="text-left fw-bold py-0">TOTAL PRICE:<span class="float-end">${numeral(data.OTDPrice).format("$0,0.00")}</span></div>
+        <div id="ourPriceDisplay" class="card">
+        <div class="text-left fw-bold mx-2">TOTAL PRICE:<span class="float-end">${numeral(data.OTDPrice).format("$0,0.00")}</span></div>
         </div>
 
       `;
@@ -896,11 +896,15 @@ document.addEventListener("DOMContentLoaded", function () {
 // Add helper function for showing errors
 function showError(message) {
   const errorHtml = `
-    <div class="alert alert-danger" style="margin: 20px;">
-      <h4>Error Loading Vehicle Data</h4>
-      <p>${message}</p>
-      <p>Please try refreshing the page or contact support if the problem persists.</p>
-      <pre style="display: none;">${new Error().stack}</pre>
+    <div class="alert alert-danger" style="border-right: 1px solid #eee; border-left: 5px solid #dc3545; border-top: 1px solid #eee; border-bottom: 1px solid #eee;">
+    <i class="bi bi-cone-striped fs-1 float-end"></i>
+      <h5>Error Loading Vehicle Data</h5>
+      <p class="fw-semibold">${message}!</p>
+      <pre style="auto: none;">${new Error().stack}</pre>
+      <p class="small">Please search for new stock number in the bar above, or return to inventory and click quote next to a vehicle.</p>
+      <a href="../" class="btn btn-secondary">
+        <i class="bi bi-arrow-bar-left"></i> Back to Major Units
+      </a>
     </div>
   `;
 
@@ -938,7 +942,7 @@ function createExportButton() {
   exportBtn.className = "btn btn-danger ms-2 d-flex align-items-center gap-2";
   exportBtn.innerHTML = `
     <i class="bi bi-floppy"></i>
-    <span>Save Quote</span>
+    <span>Save</span>
   `;
   exportBtn.addEventListener("click", captureFullContent);
 
@@ -1104,7 +1108,7 @@ function initializeVisibilityToggles() {
     quoteDiscounts: ".discount-items-container",
     quoteAccessories: ".accessory-items-container",
     quoteFees: ".otd-items-container",
-    quoteTotal: ".otd-price-container",
+    quoteTotal: ".total-otd-price",
   };
 
   Object.keys(toggleMap).forEach((checkboxId) => {

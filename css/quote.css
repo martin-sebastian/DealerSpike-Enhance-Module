@@ -184,17 +184,16 @@ ul .nav-pill:hover {
   color: #000 !important;
 }
 /* Capture container */
-#capture-container {
-  width: 760px;
-  min-height: auto;
-  margin: 0 auto;
+.capture-container {
+  border-radius: 10px;
+  padding: 20px;
 }
 /* Page container mimics paper size */
 .page-container {
   width: 100%;
   max-width: 760px;
   height: 2000px;
-  padding: 20px;
+  padding: 10px;
   border: 5px solid #fff;
   border-radius: 10px;
   background-color: #fff;
