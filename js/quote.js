@@ -993,24 +993,41 @@ async function saveFile(blob, filename) {
 async function captureFullContent() {
   try {
     // Image quality settings
-    const scaleFactor = 1.0; // Increase for higher resolution (1.0 = original size)
-    const imageQuality = 1.0; // 0.0 to 1.0 (0% to 100%)
-
-    // Store original scroll position
-    const originalScrollPos = window.scrollY;
+    const scaleFactor = 1.0;
+    const imageQuality = 1.0;
 
     // Get the element we want to capture
     const element = document.querySelector(".capture-container");
     if (!element) {
       throw new Error("Capture container not found");
     }
-    const rect = element.getBoundingClientRect();
 
-    // Scroll element into view
-    element.scrollIntoView();
+    // Store original scroll position and zoom
+    const originalScrollPos = window.scrollY;
+    const originalZoom = currentZoom;
 
-    // Wait a bit for any reflows/repaints
-    await new Promise((resolve) => setTimeout(resolve, 100));
+    // Reset zoom to 1 temporarily for accurate capture
+    currentZoom = 1.0;
+    updateZoom();
+
+    // Get the navbar height to offset our capture
+    const navbar = document.querySelector("nav");
+    const navbarHeight = navbar ? navbar.offsetHeight : 0;
+
+    // Get the full content dimensions
+    const contentHeight = element.scrollHeight;
+    const contentWidth = element.scrollWidth;
+
+    // Temporarily modify the page to ensure full content is visible
+    const originalPosition = element.style.position;
+    const originalTop = element.style.top;
+
+    element.style.position = "relative";
+    element.style.top = "0";
+
+    // Ensure the container is fully visible
+    window.scrollTo(0, 0);
+    await new Promise((resolve) => setTimeout(resolve, 500));
 
     // Start screen capture
     const stream = await navigator.mediaDevices.getDisplayMedia({
@@ -1025,39 +1042,35 @@ async function captureFullContent() {
     await new Promise((resolve) => (video.onloadedmetadata = resolve));
     video.play();
 
-    // Create canvas with scaled dimensions for higher resolution
+    // Create canvas with dimensions matching the full content
     const canvas = document.createElement("canvas");
-    canvas.width = element.scrollWidth * scaleFactor;
-    canvas.height = element.scrollHeight * scaleFactor;
+    canvas.width = contentWidth;
+    canvas.height = contentHeight;
 
     const ctx = canvas.getContext("2d");
 
-    // Scale the context to increase resolution
-    ctx.scale(scaleFactor, scaleFactor);
+    // Get element position relative to viewport
+    const rect = element.getBoundingClientRect();
 
-    // Draw the full element
-    ctx.drawImage(
-      video,
-      rect.left,
-      rect.top,
-      element.scrollWidth,
-      element.scrollHeight, // Source rectangle
-      0,
-      0,
-      element.scrollWidth,
-      element.scrollHeight // Destination rectangle
-    );
+    // Draw the content
+    ctx.drawImage(video, rect.left, rect.top, contentWidth, contentHeight, 0, 0, contentWidth, contentHeight);
 
     // Stop screen capture
     stream.getTracks().forEach((track) => track.stop());
 
-    // Restore original scroll position
+    // Restore original element position
+    element.style.position = originalPosition;
+    element.style.top = originalTop;
+
+    // Restore original scroll position and zoom
     window.scrollTo(0, originalScrollPos);
+    currentZoom = originalZoom;
+    updateZoom();
 
     const data = window.vehicleData;
     const filename = generateFilename(data);
 
-    // Convert canvas to blob with configurable quality
+    // Convert canvas to blob
     const blob = await new Promise((resolve) => {
       canvas.toBlob(resolve, "image/jpeg", imageQuality);
     });
