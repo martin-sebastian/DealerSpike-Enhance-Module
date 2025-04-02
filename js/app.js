@@ -172,7 +172,6 @@ async function fetchData() {
 
     // Fetch fresh data if cache is missing or expired
     console.log("Fetching fresh XML data...");
-    //const response = await fetch("https://www.sloansmotorcycle.com/unitinventory_univ.xml");
     const response = await fetch("https://www.flatoutmotorcycles.com/unitinventory_univ.xml");
     if (!response.ok) throw new Error("Network response was not ok");
 
@@ -279,7 +278,7 @@ async function processXMLData(xmlDoc) {
         <td><span class="badge bg-success p-2 w-100 fw-bold border">${webPrice}</span></td>
         <td>
           <span class="badge text-secondary p-2 w-100 fw-semibold border">${moment(updated).fromNow()}
-            <span class="small text-muted">${moment(updated).format("MM-DD-YYYY")}</span>
+            <span class="small text-muted d-none">${moment(updated).format("MM-DD-YYYY")}</span>
           </span>
         </td>
         <td class="text-center">${
@@ -705,8 +704,8 @@ function printKeyTag(event) {
             font-weight: 600;
             margin: 0;
             padding: 0.051in;
-            width: 1.5in;
-            height: 2in;
+            width: 1.625in;
+            height: 2.125in;
             overflow: hidden;
           }
           #keytagContainer {
@@ -720,6 +719,7 @@ function printKeyTag(event) {
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            overflow: hidden;
           }
           #keytagContainerTwo {
             position: relative;
@@ -775,7 +775,9 @@ function printKeyTag(event) {
             border-bottom: 1px solid #eee;
           }
           #modelVin {
-            font-size: 8pt;
+            width: 1.5in;
+            font-size: 5pt;
+            text-overflow: ellipsis;
           }
           #modelUsage::after {
             display: block;
