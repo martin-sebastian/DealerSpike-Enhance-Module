@@ -50,13 +50,13 @@
       <!-- Start Sidebar -->
       <div class="d-flex flex-column flex-shrink-0 p-2 text-bg-dark vh-100 overflow-hidden opacity-98 d-print-none sidebar" style="width: 280px">
         <div class="navbar-brand my-2 mx-auto">
-          <a href="/" class="d-flex align-items-center mb-1 mb-md-0 me-md-auto text-white text-decoration-none">
+          <a href="/" class="d-flex align-items-center mb-1 mb-md-0 me-md-auto text-white">
             <img src="../img/fom-app-logo-01.svg" alt="FOM Logo" width="180" height="27" class="logo-full" />
             <img src="../img/sidebar-logo.png" alt="FOM Icon" width="48" height="48" class="logo-icon rounded-circle" />
           </a>
         </div>
         <hr class="mx-2 my-2 opacity-10" />
-        <form class="px-2">
+        <form class="px-2 visually-hidden">
           <h5 class="mx-auto my-2">Customer Info</h5>
           <div class="mb-3">
             <label for="inputFirstName" class="form-label visually-hidden">First Name</label>
@@ -67,49 +67,45 @@
             <input type="text" class="form-control" id="inputLastName" placeholder="Last Name" x-model="lastName" />
           </div>
         </form>
-        <h5 class="mx-auto my-2">Show/Hide Sections</h5>
-        <div class="show-hide-container flex-column flex-nowrap px-4 mb-auto">
-          <div class="form-check form-switch">
-            <input class="form-check-input" type="checkbox" role="switch" id="quoteName" checked />
-            <label class="form-check-label" for="quoteName">Show Name</label>
-          </div>
+        <div class="show-hide-container flex-column flex-nowrap px-2 mt-4 mb-auto">
+          <h5 class="fs-6 mx-auto mb-1 text-center">Show/Hide Sections</h5>
+          <hr class="hr mb-2" />
           <div class="form-check form-switch">
             <input class="form-check-input" type="checkbox" role="switch" id="quoteHeader" checked />
-            <label class="form-check-label" for="quoteHeader">Show Header</label>
+            <label class="form-check-label small" for="quoteHeader">Year, Make, Model, Stock #</label>
           </div>
           <div class="form-check form-switch">
             <input class="form-check-input" type="checkbox" role="switch" id="quoteImages" checked />
-            <label class="form-check-label" for="quoteImages">Show Images</label>
+            <label class="form-check-label small" for="quoteImages">Photo Slider</label>
           </div>
           <div class="form-check form-switch">
             <input class="form-check-input" type="checkbox" role="switch" id="quotePayment" checked />
-            <label class="form-check-label" for="quotePayment">Show Payment</label>
-          </div>
-          <div class="form-check form-switch">
-            <input class="form-check-input" type="checkbox" role="switch" id="quoteTradeIn" checked />
-            <label class="form-check-label" for="quoteTradeIn">Show Trade In</label>
-          </div>
-          <div class="form-check form-switch">
-            <input class="form-check-input" type="checkbox" role="switch" id="quoteRebates" checked />
-            <label class="form-check-label" for="quoteRebates">Show Rebates</label>
-          </div>
-          <div class="form-check form-switch">
-            <input class="form-check-input" type="checkbox" role="switch" id="quoteDiscounts" checked />
-            <label class="form-check-label" for="quoteDiscounts">Show Discounts</label>
+            <label class="form-check-label small" for="quotePayment">Price & Payment</label>
           </div>
           <div class="form-check form-switch">
             <input class="form-check-input" type="checkbox" role="switch" id="quoteAccessories" checked />
-            <label class="form-check-label" for="quoteAccessories">Show Accessories</label>
+            <label class="form-check-label small" for="quoteAccessories">Accessories Added</label>
+          </div>
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" role="switch" id="quoteTradeIn" checked />
+            <label class="form-check-label small" for="quoteTradeIn">Show Trade In (if applicable)</label>
+          </div>
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" role="switch" id="quoteRebates" checked />
+            <label class="form-check-label small" for="quoteRebates">Manufacturer Rebates</label>
+          </div>
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" role="switch" id="quoteDiscounts" checked />
+            <label class="form-check-label small" for="quoteDiscounts">Dealer Discounts</label>
           </div>
           <div class="form-check form-switch">
             <input class="form-check-input" type="checkbox" role="switch" id="quoteFees" checked />
-            <label class="form-check-label" for="quoteFees">Show Fees</label>
+            <label class="form-check-label small" for="quoteFees">Fees, Freight, Taxes</label>
           </div>
           <div class="form-check form-switch">
             <input class="form-check-input" type="checkbox" role="switch" id="quoteTotal" checked />
-            <label class="form-check-label" for="quoteTotal">Show Total</label>
+            <label class="form-check-label small" for="quoteTotal">Total Price</label>
           </div>
-          <div class="form-check form-switch"></div>
         </div>
         <div class="mb-auto"></div>
         <button onclick="history.back()" class="btn btn-outline-secondary mx-3 mb-2">

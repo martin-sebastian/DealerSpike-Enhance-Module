@@ -356,7 +356,7 @@ document.addEventListener("DOMContentLoaded", function () {
               class="d-block w-100" 
               alt="Vehicle Image"
             >
-            <div class="carousel-caption">
+            <div class="carousel-caption visually-hidden">
               <h5>${prodTitle}</h5>
               <p>Vin: ${data.VIN} // Stock # ${stockNumber}</p>
             </div>
@@ -551,7 +551,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Update the carousel container template
       const carousel = `
-    <div class="carousel-container">
+    <div class="carousel-container ratio ratio-16x9 rounded cover">
       <div id="carousel-overlay-vehicle-info" 
             class="carousel slide" 
             data-bs-ride="false"
@@ -590,8 +590,8 @@ document.addEventListener("DOMContentLoaded", function () {
       // Major Unit Header with Year, Make, Model, VIN, Stock Number.
       var muHeaderTemplate = `
       <div class="vehicle-header text-center">
-        <h1 class="fs-4 vehicle-title my-0">${prodTitle}</h1>
-        <p class="fs-5 vehicle-subtitle my-0">
+        <h1 class="fs-3 vehicle-title fw-bold my-0">${prodTitle}</h1>
+        <p class="fs-6 vehicle-subtitle my-0">
           <small>Model: </small>${data.ModelCode} 
           <small>Stock Number: </small>${data.StockNumber}
         </p>
@@ -664,10 +664,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Payment Calculator
       const paymentCalc = `
-		<div class="payment-calculator mb-1">
+		<div class="payment-calculator mb-2" style="margin-top: -15px;">
       <form name="calc" method="POST">
         <button type="button" 
-          class="btn btn-danger w-100" 
+          class="btn btn-danger bg-danger bg-gradient w-100" 
           data-bs-toggle="collapse" 
           data-bs-target="#paymentSliders" 
           aria-expanded="false" 
@@ -681,14 +681,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 </div>
               </div>
               <div class="vr"></div>
-              <div class="payment m-auto text-left" style="letter-spacing: -0.5px;">
-                  <span class="text-white">Payment:</span>
+              <div class="payment m-auto text-center mb-2" style="margin-top: -20px;">
+                  <span class="text-white fw-normal">Payment:</span>
                   <span class="fs-2 fw-bold">$</span>
-                  <span id="payment" class="fs-2 fw-bold">
+                  <span id="payment" class="fs-2 fw-bold" style="letter-spacing: -1px; font-weight: 900 !important;">
                     <i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i>
                   </span>
                   <span class="text-white">/mo.</span>
-                  <div class="text-white small">Subject to credit approval.</div>
+                  <div class="text-white small" style="letter-spacing: 0px; margin-top: -5px;">Subject to credit approval.</div>
               </div>
             </div>
         </button>
@@ -768,7 +768,7 @@ document.addEventListener("DOMContentLoaded", function () {
           </div>
           <div class="form-check mx-1">
             <input class="form-check-input" type="checkbox" value="" id="quoteHeader" checked />
-            <label class="form-check-label text-light" for="quoteHeader">Header</label>
+            <label class="form-check-label text-light" for="quoteHeader">Vehicle Year, Name, Model Code & Stock #</label>
           </div>
           <div class="form-check mx-1">
             <input class="form-check-input" type="checkbox" value="" id="quoteImages" checked />
