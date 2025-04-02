@@ -589,9 +589,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Major Unit Header with Year, Make, Model, VIN, Stock Number.
       var muHeaderTemplate = `
-      <div class="vehicle-header">
-        <h1 class="vehicle-title my-0">${prodTitle}</h1>
-        <p class="vehicle-subtitle my-0">
+      <div class="vehicle-header text-center">
+        <h1 class="fs-4 vehicle-title my-0">${prodTitle}</h1>
+        <p class="fs-5 vehicle-subtitle my-0">
           <small>Model: </small>${data.ModelCode} 
           <small>Stock Number: </small>${data.StockNumber}
         </p>
@@ -667,27 +667,30 @@ document.addEventListener("DOMContentLoaded", function () {
 		<div class="payment-calculator mb-1">
       <form name="calc" method="POST">
         <button type="button" 
-          class="btn btn-secondary w-100" 
+          class="btn btn-danger w-100" 
           data-bs-toggle="collapse" 
           data-bs-target="#paymentSliders" 
           aria-expanded="false" 
           aria-controls="paymentSliders" 
           onClick="showpay()">
-            <span class="our-price-display">
-              <small>Price:</small>
-              <span class="fs-2 fw-bold">
-                ${numeral(data.OTDPrice).format("$0,0.00")}
-              </span>
-            </span>
-            <hr class="my-0" />
-            <span class="payment m-0 text-light">
-                <small>Est. Payment:</small>
-                <span class="fw-bold">$</span>
-                <span id="payment" class="fw-bold">
-                  <i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i>0.00
-                </span>
-                <small>/mo. Subject to credit approval.</small>
-            </span>
+            <div class="d-flex justify-content-between">
+              <div class="our-price-display m-auto text-left">
+                <div class="text-white m-0 p-0">Our Price:</div>
+                <div class="fs-2 fw-bold p-0" style="letter-spacing: -1px; font-weight: 900 !important; margin-top: -10px;">
+                  ${numeral(data.OTDPrice).format("$0,0.00")}
+                </div>
+              </div>
+              <div class="vr"></div>
+              <div class="payment m-auto text-left" style="letter-spacing: -0.5px;">
+                  <span class="text-white">Payment:</span>
+                  <span class="fs-2 fw-bold">$</span>
+                  <span id="payment" class="fs-2 fw-bold">
+                    <i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i>
+                  </span>
+                  <span class="text-white">/mo.</span>
+                  <div class="text-white small">Subject to credit approval.</div>
+              </div>
+            </div>
         </button>
         <input type="hidden" name="loan" size="10" value="${data.OTDPrice}">
 				<div class="collapse" id="paymentSliders">
