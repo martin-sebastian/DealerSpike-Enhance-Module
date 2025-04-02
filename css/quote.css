@@ -192,7 +192,8 @@ ul .nav-pill:hover {
 /* Page container mimics paper size */
 .page-container {
   width: 100%;
-  height: auto;
+  max-width: 760px;
+  height: 2000px;
   padding: 20px;
   border: 5px solid #fff;
   border-radius: 10px;
@@ -226,7 +227,7 @@ ul .nav-pill:hover {
 /* Carousel sizing */
 .carousel-container {
   width: 100%;
-  margin: 5px 0;
+  margin: 3px 0;
 }
 .carousel-container img {
   width: 100%;
@@ -272,7 +273,7 @@ ul .nav-pill:hover {
 
 .card {
   width: 100%;
-  margin: 5px 0;
+  margin: 2px 0;
   padding: 5px 10px;
 }
 
@@ -294,6 +295,10 @@ ul .nav-pill:hover {
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 1000;
+}
+
+.term-button {
+  margin: 2px;
 }
 #payment {
   margin-left: -4px;

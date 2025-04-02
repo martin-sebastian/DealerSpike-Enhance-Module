@@ -5,7 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- Basic SEO -->
-    <title>Vehicle Quote | Flat Out Motorcycles</title>
+    <title>Quote Stock #</title>
+    <script>
+      (function () {
+        //Immediately invoked function expression to avoid global scope pollution
+        function updateTitleWithStockNumber() {
+          const urlParams = new URLSearchParams(window.location.search);
+          const titleStockNumber = urlParams.get("search");
+          if (titleStockNumber) {
+            document.title = document.title + " [ " + titleStockNumber + " ]";
+          }
+        }
+        updateTitleWithStockNumber();
+      })();
+    </script>
     <meta name="description" content="Create vehicle quotes and save them as a jpg image for easy texting to Flat Out Motorcycles customers." />
 
     <!-- Open Graph / Facebook -->
@@ -44,21 +57,15 @@
         </div>
         <hr class="mx-2 my-2 opacity-10" />
         <form class="px-2">
+          <h5 class="mx-auto my-2">Customer Info</h5>
           <div class="mb-3">
-            <label for="inputFirstName" class="form-label">First Name</label>
-            <input type="text" class="form-control" id="inputFirstName" x-model="firstName" />
-            <div id="emailHelp" class="form-text text-light text-opacity-50">Add a first name to the quote.</div>
+            <label for="inputFirstName" class="form-label visually-hidden">First Name</label>
+            <input type="text" class="form-control" id="inputFirstName" placeholder="First Name" x-model="firstName" />
           </div>
           <div class="mb-3">
-            <label for="inputLastName" class="form-label">Last Name</label>
-            <input type="text" class="form-control" id="inputLastName" x-model="lastName" />
-            <div id="emailHelp" class="form-text text-light text-opacity-50">Add a last name to the quote.</div>
+            <label for="inputLastName" class="form-label visually-hidden">Last Name</label>
+            <input type="text" class="form-control" id="inputLastName" placeholder="Last Name" x-model="lastName" />
           </div>
-          <div class="mb-3 form-check">
-            <input type="checkbox" class="form-check-input" id="exampleCheck1" />
-            <label class="form-check-label" for="exampleCheck1">Check me out</label>
-          </div>
-          <button type="submit" class="btn btn-primary">Submit</button>
         </form>
         <h5 class="mx-auto my-2">Show/Hide Sections</h5>
         <div class="show-hide-container flex-column flex-nowrap px-4 mb-auto">
@@ -105,10 +112,10 @@
           <div class="form-check form-switch"></div>
         </div>
         <div class="mb-auto"></div>
-        <a href="../" target="_blank" class="btn btn-outline-secondary mx-3 mb-2">
+        <button onclick="history.back()" class="btn btn-outline-secondary mx-3 mb-2">
           <i class="bi bi-arrow-left me-2"></i>
           <span class="d-none d-sm-inline">Back to Inventory</span>
-        </a>
+        </button>
       </div>
       <!-- End Sidebar -->
 
@@ -144,9 +151,9 @@
                 </li>
               </ul>
               <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item dropdown">
+                <li class="nav-item dropdown d-none">
                   <a class="btn btn-outline-secondary" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <span class="">Templates</span> <i class="bi bi-chevron-compact-down"></i>
+                    <span class="d-none d-sm-inline">Templates</span> <i class="bi bi-chevron-compact-down"></i>
                   </a>
 
                   <ul class="dropdown-menu">
@@ -194,24 +201,16 @@
           </div>
         </nav>
 
-        <!-- Main Content -->
-        <main class="flex-grow-1 overflow-y-auto d-flex flex-column align-items-center justify-content-center">
-          <div class="capture-container zoom-container" style="transform-origin: center center">
-            <div class="page-container">
+        <!-- QUOTE CONTENT TEMPLATE -->
+        <main class="flex-grow-1 overflow-y-auto d-flex flex-column align-items-center justify-content-start">
+          <div id="pageContainer" class="page-container zoom-container">
+            <div class="capture-container">
               <p class="text-center mt-4 text-muted opacity-50">Enter Stock Number</p>
-              <div class="customer-name">
-                <template x-if="firstName || lastName">
-                  <h3 class="mb-3">
-                    <span x-text="firstName">First Name</span>
-                    <span x-text="lastName">Last Name</span>
-                  </h3>
-                </template>
-              </div>
               <div class="main-header"></div>
               <div class="carousel-container"></div>
               <div class="trade-in-container"></div>
               <div class="unit-info-container"></div>
-              <div class="payment-calculator"></div>
+              <div class="payment-calculator-container"></div>
               <div class="total-otd-price"></div>
             </div>
           </div>

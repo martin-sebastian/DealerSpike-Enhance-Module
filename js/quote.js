@@ -51,8 +51,6 @@ const stockNum = urlParams.get("search");
 
 console.log("Attempting to fetch data for stock number:", stockNum);
 
-// Overlay by Martin Sebastian
-
 // Payment Calculator
 function showpay() {
   var princ = document.calc.loan.value;
@@ -232,8 +230,8 @@ document.addEventListener("DOMContentLoaded", function () {
   errorContainer.id = "error-container";
 
   // Get the capture container or page container
-  const captureContainer = document.querySelector(".capture-container.zoom-container");
-  const pageContainer = captureContainer ? captureContainer.querySelector(".page-container") : null;
+  const pageContainer = document.querySelector("#pageContainer");
+  const captureContainer = pageContainer ? pageContainer.querySelector(".capture-container") : null;
 
   if (pageContainer) {
     // Clear only the page container
@@ -275,10 +273,12 @@ document.addEventListener("DOMContentLoaded", function () {
       // Store data globally
       window.vehicleData = data;
 
-      // Create page container
-      let pageContainer = document.createElement("div");
-      pageContainer.className = "page-container";
-      document.body.appendChild(pageContainer);
+      // Get existing page container instead of creating a new one
+      let pageContainer = document.querySelector("#pageContainer");
+      if (!pageContainer) {
+        console.error("Could not find page container");
+        return;
+      }
 
       // Store original OTD price globally
       window.originalOTDPrice = data.OTDPrice;
@@ -550,7 +550,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       // Update the carousel container template
-      var carousel = `
+      const carousel = `
     <div class="carousel-container">
       <div id="carousel-overlay-vehicle-info" 
             class="carousel slide" 
@@ -664,7 +664,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Payment Calculator
       const paymentCalc = `
-		<div class="payment-calculator my-2">
+		<div class="payment-calculator mb-1">
       <form name="calc" method="POST">
         <button type="button" 
           class="btn btn-secondary w-100" 
@@ -738,8 +738,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Our Price display template
       const ourPriceContainer = `
-        <div id="ourPriceDisplay" class="text-center">
-        <h1 class="text-center fw-bold">${numeral(data.OTDPrice).format("$0,0.00")}</h1>
+        <div id="ourPriceDisplay">
+        <div class="text-left fw-bold py-0">TOTAL PRICE:<span class="float-end">${numeral(data.OTDPrice).format("$0,0.00")}</span></div>
         </div>
 
       `;
@@ -806,36 +806,28 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Update the main page content structure
       const pageContent = `
-      <div class="capture-container" style="max-width: 600px; padding: 20px; margin: 0 auto;">
-        <div class="quote-date-container">
-          ${quoteDateFormatted} ${quoteTimeFormatted}
+        <div class="capture-container">
+          <div class="quote-date-container d-none">
+            ${quoteDateFormatted} ${quoteTimeFormatted}
+          </div>
+          <div class="main-header">${muHeaderTemplate}</div>
+          <div class="carousel-container">${carousel}</div>
+          <div class="payment-calculator-container">${paymentCalc}</div>
+          <div class="trade-in-container">${tradeInVehicleTemplate}</div>
+          <div class="mat-items-container">${matItemsTemplate}</div>
+          <div class="discount-items-container">${discountItemsTemplate}</div>
+          <div class="accessory-items-container">${accessoryItemsTemplate}</div>
+          <div class="otd-items-container">${OTDItemsTemplate}</div>
+          <div class="total-otd-price">${ourPriceContainer}</div>
         </div>
-        <div class="customer-name">
-          <template x-if="firstName || lastName">
-            <h3 class="mb-3">
-              <span x-text="firstName">First Name</span>
-              <span x-text="lastName">Last Name</span>
-            </h3>
-          </template>
-        </div>
-        <div class="main-header">${muHeaderTemplate}</div>
-        <div class="carousel-container">${carousel}</div>
-        <div class="payment-calculator">${paymentCalc}</div>
-        <div class="trade-in-container">${tradeInVehicleTemplate}</div>
-        <div class="mat-items-container">${matItemsTemplate}</div>
-        <div class="discount-items-container">${discountItemsTemplate}</div>
-        <div class="accessory-items-container">${accessoryItemsTemplate}</div>
-        <div class="otd-items-container">${OTDItemsTemplate}</div>
-        <div class="total-otd-price">${ourPriceContainer}</div>
-      </div>
       `;
 
       // Replace the entire page content at once
-      const pageContainerEl = document.querySelector(".capture-container.zoom-container .page-container");
+      const pageContainerEl = document.querySelector(".page-container");
       if (pageContainerEl) {
         pageContainerEl.innerHTML = pageContent;
       } else {
-        console.error("Could not find .page-container inside .capture-container.zoom-container");
+        console.error("Could not find .page-container");
       }
 
       // Initialize carousel with vanilla JS
