@@ -281,36 +281,36 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       // Store original OTD price globally
-      window.originalOTDPrice = data.OTDPrice;
+      // window.originalOTDPrice = data.OTDPrice;
 
       console.log("data.StockNumber", data.StockNumber);
       const stockNumber = data.StockNumber;
       const prodTitle = data.Usage + " " + data.ModelYear + " " + data.Manufacturer + " " + data.B50ModelName;
-      const qLevel = `<span class="badge bg-secondary" style="margin-left: 100px; padding: 10px 15px; font-weight: 900">Quote Level ${data.QuoteLevel}</span>`;
-
-      const ourPrice = numeral(data.OTDPrice).format("$0,0.00");
-      const discountTotal = numeral(data.MSRPUnit - data.Price).format("$0,0.00");
-
       const arrivalDate = moment(data.EstimatedArrival).format("MM/DD/YYYY");
       const newUsed = data.Usage;
       const milesHours = data.Miles;
       const inventoryStatus = data.UnitStatus;
+      const qLevel = data.QuoteLevel;
+     
+ 
+      // Get OTD Items Total using reduce
+      const otdItemsTotal = data?.OTDItems?.reduce((total, item) => total + item.Amount, 0) || 0;
+      console.log('otdItemsTotal:', otdItemsTotal);
 
-      // MU Items and Mat Items templates
-      var muItemsTemplate = data.MUItems?.length
-        ? `
-        <div class="card">
-        ${data.MUItems.map(
-          (item) => `
-          ${item.Description}
-          <span class="float-end">
-            -${numeral(item.Amount).format("$0,0.00")}
-          </span>
-        `
-        ).join("")}
-        </div>
-        `
-        : "";
+
+      // calculate total price, total savings
+      const totalPrice = data.MSRPUnit + data.DiscountItemsTotal + data.MatItemsTotal + data.AccessoryItemsTotal + otdItemsTotal;
+      const totalPriceDisplay = numeral(totalPrice).format("$0,0.00");
+      const totalSavings = data.DiscountItemsTotal + data.MatItemsTotal + data.TradeInItemsTotal + data.AccessoryItemsTotal;
+      const totalSavingsDisplay = numeral(totalSavings * -1).format("$0,0");
+      
+
+      // Update the qLevel, totalPrice, totalSavings
+      // document.getElementById("qLevel").innerHTML = qLevel;
+      // document.getElementById("totalPrice").innerHTML = totalPrice;
+      // document.getElementById("totalSavings").innerHTML = totalSavings;
+
+
 
       var matItemsTemplate = data.MatItems?.length
         ? `
@@ -424,16 +424,26 @@ document.addEventListener("DOMContentLoaded", function () {
       `
         : "";
 
-      // Accessory Total and Total collapse line
-      var accTotal = numeral(data.AccessoryItemsTotal).format("$0,0.00");
+      // OTD Items Template
+      var OTDItemsTemplate = data.OTDItems?.length
+        ? `
+        <div class="card">
+          <h5 class="card-title fs-6 my-0">Fees and Taxes</h5>
+          ${data.OTDItems.slice(0, 3)
+            .map(
+              (item) => `
+              <div class="d-flex justify-content-between align-items-center">
+                <span>${item.Description}</span>
+                <span class="text-danger fw-bold">${numeral(item.Amount).format("$0,0.00")}</span>
+              </div>
+            `
+            )
+            .join("")}
+        </div>
+      `
+        : "";
 
-      if (data.AccessoryItems.length && data.AccessoryItemsTotal > 0) {
-        var accessoryLine = `<li class="list-group-item">Features <span class=""> - ${accTotal}</span></li>`;
-      } else if (data.AccessoryItems.length && data.AccessoryItemsTotal < 1) {
-        var accessoryLine = `<li class="list-group-item">Features <span class="gray"> - Included</span></li>`;
-      } else {
-        var accessoryLine = ``;
-      }
+
 
       // Freebie items - 3 items allowed
       var freebieItemsTemplate = ``;
@@ -448,7 +458,7 @@ document.addEventListener("DOMContentLoaded", function () {
         i++;
       }
 
-      const totalSavings = numeral(data.DiscountItemsTotal + data.MatItemsTotal + data.TradeInItemsTotal + data.AccessoryItemsTotal).format("$0,0.00");
+      
 
       // Unit Numbers & status info
       var unitNumbersTemplate = ``;
@@ -473,20 +483,20 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       // Availability
-      var mainLots = ["SUZ", "KAW", "POL", "PREOWNED", "PRE OWNED"];
-      var onOrderLots = ["ONORDER", "ON ORDER"];
+      // var mainLots = ["SUZ", "KAW", "POL", "PREOWNED", "PRE OWNED"];
+      // var onOrderLots = ["ONORDER", "ON ORDER"];
 
-      var unitLocation = ``;
+      // var unitLocation = ``;
 
-      if (mainLots.includes(data.Lot)) {
-        unitLocation = `<small class="red bold">IN STOCK - Main Showroom</small>`;
-      } else if (onOrderLots.includes(data.Lot)) {
-        unitLocation = `<small class="red bold">ON ORDER - Arriving ${arrivalDate}</small>`;
-      } else if (data.Lot === "VH") {
-        unitLocation = `<small class="red bold">IN STOCK - Vanderhall Showroom</small>`;
-      } else if (data.Lot == "IMC") {
-        unitLocation = `<small class="red bold">IN STOCK - Indian Showroom</small>`;
-      }
+      // if (mainLots.includes(data.Lot)) {
+      //   unitLocation = `<small class="red bold">IN STOCK - Main Showroom</small>`;
+      // } else if (onOrderLots.includes(data.Lot)) {
+      //   unitLocation = `<small class="red bold">ON ORDER - Arriving ${arrivalDate}</small>`;
+      // } else if (data.Lot === "VH") {
+      //   unitLocation = `<small class="red bold">IN STOCK - Vanderhall Showroom</small>`;
+      // } else if (data.Lot == "IMC") {
+      //   unitLocation = `<small class="red bold">IN STOCK - Indian Showroom</small>`;
+      // }
 
       // Yellow Tag
       if (data.YellowTag === true) {
@@ -664,10 +674,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Payment Calculator
       const paymentCalc = `
-		<div class="payment-calculator mb-2" style="margin-top: -15px;">
+		<div class="payment-calculator-container mb-2" style="margin-top: 00px;">
       <form name="calc" method="POST">
         <button type="button" 
-          class="btn btn-danger bg-danger bg-gradient w-100" 
+          class="btn btn-danger bg-danger bg-gradient w-100 pt-3"
+          style="margin-top: -15px;"
           data-bs-toggle="collapse" 
           data-bs-target="#paymentSliders" 
           aria-expanded="false" 
@@ -677,23 +688,29 @@ document.addEventListener("DOMContentLoaded", function () {
               <div class="our-price-display m-auto text-left">
                 <div class="text-white m-0 p-0">Our Price:</div>
                 <div class="fs-2 fw-bold p-0" style="letter-spacing: -1px; font-weight: 900 !important; margin-top: -10px;">
-                  ${numeral(data.OTDPrice).format("$0,0.00")}
+                  ${totalPriceDisplay}
                 </div>
               </div>
               <div class="vr"></div>
-              <div class="payment m-auto text-center mb-2" style="margin-top: -20px;">
+              <div class="savings-display m-auto text-left">
+                <div class="text-white m-0 p-0">Savings:</div>
+                <div class="fs-2 fw-bold p-0" style="letter-spacing: -1px; font-weight: 900 !important; margin-top: -10px;">
+                    ${totalSavingsDisplay}
+                </div>
+              </div>
+              <div class="vr"></div>
+              <div class="payment text-center mx-auto pt-0">
                   <span class="text-white fw-normal">Payment:</span>
-                  <span class="fs-2 fw-bold">$</span>
-                  <span id="payment" class="fs-2 fw-bold" style="letter-spacing: -1px; font-weight: 900 !important;">
+                  <span class="fs-3 fw-bold">$</span>
+                  <span id="payment" class="fs-3 fw-bold" style="letter-spacing: -1px; font-weight: 900 !important;">
                     <i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i>
-                  </span>
-                  <span class="text-white">/mo.</span>
-                  <div class="text-white small" style="letter-spacing: 0px; margin-top: -5px;">Subject to credit approval.</div>
+                  </span> <span class="text-white">/mo.</span>
+                  <div class="text-white small" style="letter-spacing: 0px; margin-top: -10px;">Subject to credit approval.</div>
               </div>
             </div>
         </button>
-        <input type="hidden" name="loan" size="10" value="${data.OTDPrice}">
-				<div class="collapse" id="paymentSliders">
+        <input type="hidden" name="loan" size="10" value="${totalPrice}">
+				<div class="text-center collapse" id="paymentSliders">
 					<div class="payment-collapsed-container">
 
             <div class="downpayment-container">
@@ -720,10 +737,10 @@ document.addEventListener("DOMContentLoaded", function () {
               </div>
             </div>
 
-              <div class="loan-term-container">
-                <p class="loan-term-label">Loan Term (Months)</p>
-                <div data-toggle="buttons">${loanTerms}</div>
-              </div>
+            <div class="loan-term-container">
+              <p class="loan-term-label">Loan Term (Months)</p>
+              <div data-toggle="buttons">${loanTerms}</div>
+            </div>
 					</div>
 					<input type="hidden" name="pay" size="10">
 					<input type="hidden" onClick="showpay()" value="Calculate">
@@ -733,16 +750,24 @@ document.addEventListener("DOMContentLoaded", function () {
 		`;
 
       // Create a separate template for the price container
-      const priceContainer = `
+      const paymentCalcContainer = `
         <div class="text-center">
             ${paymentCalc}
         </div>
       `;
 
       // Our Price display template
-      const ourPriceContainer = `
-        <div id="ourPriceDisplay" class="card">
-        <div class="text-left fw-bold mx-2">TOTAL PRICE:<span class="float-end">${numeral(data.OTDPrice).format("$0,0.00")}</span></div>
+      const totalPriceContainer = `
+        <div id="totalPriceDisplay" class="card">
+        <div class="text-left fw-bold mx-1">TOTAL PRICE:<span class="float-end">${totalPriceDisplay}</span></div>
+        </div>
+
+      `;
+
+      // Savings display template
+      const savingsContainer = `
+        <div id="savingsDisplay" class="card">
+        <div class="text-left fw-bold mx-2">SAVINGS:<span class="float-end">${totalSavings}</span></div>
         </div>
 
       `;
@@ -821,7 +846,7 @@ document.addEventListener("DOMContentLoaded", function () {
           <div class="discount-items-container">${discountItemsTemplate}</div>
           <div class="accessory-items-container">${accessoryItemsTemplate}</div>
           <div class="otd-items-container">${OTDItemsTemplate}</div>
-          <div class="total-otd-price">${ourPriceContainer}</div>
+          <div class="total-price-container">${totalPriceContainer}</div>
         </div>
       `;
 
@@ -996,7 +1021,7 @@ async function saveFile(blob, filename) {
     URL.revokeObjectURL(link.href);
   }
 }
-
+// Capture the full content of the quote div
 async function captureFullContent() {
   try {
     // Image quality settings
