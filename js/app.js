@@ -734,6 +734,7 @@ function printKeyTag(event) {
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            overflow: hidden;
           }
           #keytagContainer div {
             margin: 0;
@@ -763,8 +764,10 @@ function printKeyTag(event) {
             border-bottom: 1px solid #ddd;
           }
           #modelName {
-            font-size: 10pt;
+            font-size: 9pt;
             border-bottom: 1px solid #eee;
+            white-space: nowrap;
+            overflow: hidden;
           }
           #modelCode {
             font-size: 8pt;
@@ -776,8 +779,10 @@ function printKeyTag(event) {
           }
           #modelVin {
             width: 1.5in;
-            font-size: 5pt;
+            font-size: 8pt;
             text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
           }
           #modelUsage::after {
             display: block;

@@ -82,6 +82,7 @@ input[type="search"] {
   height: 2in;
   background: #fff !important;
   zoom: 2;
+  overflow: hidden;
 }
 .key-tag-container-right {
   writing-mode: vertical-rl;
@@ -93,6 +94,7 @@ input[type="search"] {
   height: 2in;
   background: #fff !important;
   zoom: 2;
+  overflow: hidden;
 }
 .keytag-label {
   font-size: 6pt;
@@ -127,10 +129,12 @@ input[type="search"] {
   line-height: 18px;
   font-weight: 700;
   border-bottom: solid 1px #eee;
+  white-space: nowrap;
+  overflow: hidden;
 }
 .model-name {
   text-align: center;
-  font-size: 14px;
+  font-size: 10px;
   line-height: 20px;
   font-weight: 700;
   white-space: nowrap;
@@ -143,6 +147,8 @@ input[type="search"] {
   line-height: 18px;
   font-weight: 700;
   border-bottom: solid 1px #eee;
+  white-space: nowrap;
+  overflow: hidden;
 }
 .model-color {
   text-align: center;
@@ -158,6 +164,8 @@ input[type="search"] {
   font-size: 12px;
   font-weight: 700;
   line-height: 18px;
+  white-space: nowrap;
+  overflow: hidden;
 }
 .model-usage::after {
   display: block;
