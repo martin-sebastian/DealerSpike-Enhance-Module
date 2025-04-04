@@ -111,6 +111,12 @@ ul .nav-pill:hover {
   background-color: #444 !important;
   cursor: pointer;
 }
+.supersmall {
+  font-size: 10px;
+  line-height: 12px;
+  font-weight: 500;
+  letter-spacing: 0px;
+}
 .nav-pill:active {
   background-color: #444 !important;
   cursor: pointer;

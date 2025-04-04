@@ -686,26 +686,26 @@ document.addEventListener("DOMContentLoaded", function () {
           onClick="showpay()">
             <div class="d-flex justify-content-between">
               <div class="our-price-display m-auto text-left">
-                <div class="text-white m-0 p-0">Our Price:</div>
+                <div class="text-light fw-bold m-0 p-0">Sale Price:</div>
                 <div class="fs-2 fw-bold p-0" style="letter-spacing: -1px; font-weight: 900 !important; margin-top: -10px;">
                   ${totalPriceDisplay}
                 </div>
               </div>
               <div class="vr"></div>
               <div class="savings-display m-auto text-left">
-                <div class="text-white m-0 p-0">Savings:</div>
+                <div class="text-light fw-bold m-0 p-0">Savings:</div>
                 <div class="fs-2 fw-bold p-0" style="letter-spacing: -1px; font-weight: 900 !important; margin-top: -10px;">
                     ${totalSavingsDisplay}
                 </div>
               </div>
               <div class="vr"></div>
               <div class="payment text-center mx-auto pt-0">
-                  <span class="text-white fw-normal">Payment:</span>
+                  <span class="text-light fw-bold">Payment:</span>
                   <span class="fs-3 fw-bold">$</span>
                   <span id="payment" class="fs-3 fw-bold" style="letter-spacing: -1px; font-weight: 900 !important;">
                     <i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i>
-                  </span> <span class="text-white">/mo.</span>
-                  <div class="text-white small" style="letter-spacing: 0px; margin-top: -10px;">Subject to credit approval.</div>
+                  </span> <span class="text-light fw-bold">/mo.</span>
+                  <div class="text-light supersmall" style="letter-spacing: 0px; margin-top: -10px;">Subject to credit approval.</div>
               </div>
             </div>
         </button>
@@ -758,15 +758,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Our Price display template
       const totalPriceContainer = `
-        <div id="totalPriceDisplay" class="card">
-        <div class="text-left fw-bold mx-1">TOTAL PRICE:<span class="float-end">${totalPriceDisplay}</span></div>
+        <div id="totalPriceDisplay" class="card py-1 px-2">
+        <div class="text-left fw-bold">Total:<span class="float-end">${totalPriceDisplay}</span></div>
         </div>
 
       `;
 
       // Savings display template
       const savingsContainer = `
-        <div id="savingsDisplay" class="card">
+        <div id="savingsDisplay" class="card py-1 px-2">
         <div class="text-left fw-bold mx-2">SAVINGS:<span class="float-end">${totalSavings}</span></div>
         </div>
 
@@ -841,10 +841,10 @@ document.addEventListener("DOMContentLoaded", function () {
           <div class="main-header">${muHeaderTemplate}</div>
           <div class="carousel-container">${carousel}</div>
           <div class="payment-calculator-container">${paymentCalc}</div>
+          <div class="accessory-items-container">${accessoryItemsTemplate}</div>
           <div class="trade-in-container">${tradeInVehicleTemplate}</div>
           <div class="mat-items-container">${matItemsTemplate}</div>
           <div class="discount-items-container">${discountItemsTemplate}</div>
-          <div class="accessory-items-container">${accessoryItemsTemplate}</div>
           <div class="otd-items-container">${OTDItemsTemplate}</div>
           <div class="total-price-container">${totalPriceContainer}</div>
         </div>
@@ -1132,9 +1132,9 @@ function initializeVisibilityToggles() {
     quoteHeader: ".main-header",
     quoteImages: ".carousel-container",
     quotePayment: ".payment-calculator",
+    quoteAccessories: ".accessory-items-container",
     quoteRebates: ".mat-items-container",
     quoteDiscounts: ".discount-items-container",
-    quoteAccessories: ".accessory-items-container",
     quoteFees: ".otd-items-container",
     quoteTotal: ".total-otd-price",
   };
