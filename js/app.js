@@ -1154,10 +1154,4 @@ function initializeClipboardTooltips() {
     });
   });
 }
-document.addEventListener(
-  "DOMContentLoaded",
-  (e) => {
-    $("#searchFilter").autocomplete();
-  },
-  false
-);
+
