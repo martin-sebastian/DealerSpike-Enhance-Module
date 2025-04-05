@@ -302,7 +302,8 @@ document.addEventListener("DOMContentLoaded", function () {
       const totalPrice = data.MSRPUnit + data.DiscountItemsTotal + data.MatItemsTotal + data.AccessoryItemsTotal + otdItemsTotal;
       const totalPriceDisplay = numeral(totalPrice).format("$0,0.00");
       const totalSavings = data.DiscountItemsTotal + data.MatItemsTotal + data.TradeInItemsTotal + data.AccessoryItemsTotal;
-      const totalSavingsDisplay = numeral(totalSavings * -1).format("$0,0");
+      const totalSavingsPositive = totalSavings * -1;
+      const totalSavingsDisplay = numeral(totalSavingsPositive).format("$0,0");
       
 
       // Update the qLevel, totalPrice, totalSavings
@@ -318,7 +319,25 @@ document.addEventListener("DOMContentLoaded", function () {
       let quoteExpirationDate = moment(quoteDate).add(3, 'days');
       let quoteExpirationDateFormatted = quoteExpirationDate.format("MM/DD/YYYY");
 
+      let totalSavingsTemplate = ``;
 
+      if (totalSavingsPositive > 0) {
+        totalSavingsTemplate += `
+      <div class="text-light fw-bold m-0 p-0">Savings:</div>
+        <div class="fs-2 fw-bold p-0" style="letter-spacing: -1px; font-weight: 900 !important; margin-top: -10px;">
+          ${totalSavingsDisplay}
+        </div>
+      </div>
+      `
+      } else {
+        totalSavingsTemplate += `
+        <div class="text-light fw-bold m-0 p-0"> OR </div>
+        <div class="fs-2 fw-bold p-0" style="letter-spacing: -1px; font-weight: 900 !important; margin-top: -10px;">
+          <i class="bi bi-arrow-right"></i>
+        </div>
+      </div>
+        `;
+      }
 
       var matItemsTemplate = data.MatItems?.length
         ? `
@@ -722,11 +741,7 @@ document.addEventListener("DOMContentLoaded", function () {
               </div>
               <div class="vr"></div>
               <div class="savings-display m-auto text-left">
-                <div class="text-light fw-bold m-0 p-0">Savings:</div>
-                <div class="fs-2 fw-bold p-0" style="letter-spacing: -1px; font-weight: 900 !important; margin-top: -10px;">
-                    ${totalSavingsDisplay}
-                </div>
-              </div>
+                  ${totalSavingsTemplate}
               <div class="vr"></div>
               <div class="payment text-center mx-auto pt-0">
                   <span class="text-light fw-bold">Payment:</span>
@@ -734,7 +749,7 @@ document.addEventListener("DOMContentLoaded", function () {
                   <span id="payment" class="fs-2 fw-bold" style="letter-spacing: -1px; font-weight: 900 !important;">
                     <i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i>
                   </span> <span class="text-light fw-bold">/mo.</span>
-                  <div class="text-light supersmall" style="letter-spacing: 0px; margin-top: -10px;">Subject to credit approval.</div>
+                  <div class="text-light supersmall" style="letter-spacing: 0px; margin-top: -6px;">Subject to credit approval.</div>
               </div>
             </div>
         </button>
@@ -784,6 +799,7 @@ document.addEventListener("DOMContentLoaded", function () {
             ${paymentCalc}
         </div>
       `;
+      
 
       // Trade In display template
       const tradeInVehicleTemplate = `
@@ -793,15 +809,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
       `;
 
-      
       // Savings display template
-      const savingsTemplate = `
-      <div id="savingsDisplay" class="card py-1 px-2">
-      <div class="text-left fw-bold mx-1">Total Savings:<span class="float-end">${totalSavingsDisplay}</span></div>
-      </div>
+      let savingsTemplate = ``;
+
+      if (totalSavingsPositive > 0) {
+        savingsTemplate += `
+        <div id="savingsDisplay" class="card py-1 px-2">
+          <div class="text-left fw-bold mx-1">Savings:<span class="float-end">${totalSavingsDisplay}</span></div>
+        </div>
       
-      `;
-      
+        `
+      }
+
+
       // Our Price display template
       const totalPriceTemplate = `
         <div id="totalPriceDisplay" class="card py-1 px-2">
