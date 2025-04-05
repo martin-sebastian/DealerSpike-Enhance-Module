@@ -296,6 +296,9 @@ document.addEventListener("DOMContentLoaded", function () {
       const otdItemsTotal = data?.OTDItems?.reduce((total, item) => total + item.Amount, 0) || 0;
 
       // calculate total price, total savings
+      const msrpDisplay = numeral(data.MSRPUnit).format("$0,0.00");
+      const salesPrice = data.MSRPUnit + data.DiscountItemsTotal + data.MatItemsTotal + data.AccessoryItemsTotal;
+      const salesPriceDisplay = numeral(salesPrice).format("$0,0.00");
       const totalPrice = data.MSRPUnit + data.DiscountItemsTotal + data.MatItemsTotal + data.AccessoryItemsTotal + otdItemsTotal;
       const totalPriceDisplay = numeral(totalPrice).format("$0,0.00");
       const totalSavings = data.DiscountItemsTotal + data.MatItemsTotal + data.TradeInItemsTotal + data.AccessoryItemsTotal;
@@ -712,9 +715,9 @@ document.addEventListener("DOMContentLoaded", function () {
           onClick="showpay()">
             <div class="d-flex justify-content-between">
               <div class="our-price-display m-auto text-left">
-                <div class="text-light fw-bold m-0 p-0">Sale Price:</div>
+                <div class="text-light fw-bold m-0 p-0">MSRP: <s>${msrpDisplay}</s></div>
                 <div class="fs-2 fw-bold p-0" style="letter-spacing: -1px; font-weight: 900 !important; margin-top: -10px;">
-                  ${totalPriceDisplay}
+                  ${salesPriceDisplay}
                 </div>
               </div>
               <div class="vr"></div>
