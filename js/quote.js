@@ -292,11 +292,8 @@ document.addEventListener("DOMContentLoaded", function () {
       const inventoryStatus = data.UnitStatus;
       const qLevel = data.QuoteLevel;
      
- 
       // Get OTD Items Total using reduce
       const otdItemsTotal = data?.OTDItems?.reduce((total, item) => total + item.Amount, 0) || 0;
-      console.log('otdItemsTotal:', otdItemsTotal);
-
 
       // calculate total price, total savings
       const totalPrice = data.MSRPUnit + data.DiscountItemsTotal + data.MatItemsTotal + data.AccessoryItemsTotal + otdItemsTotal;
@@ -311,6 +308,14 @@ document.addEventListener("DOMContentLoaded", function () {
       // document.getElementById("totalSavings").innerHTML = totalSavings;
 
 
+      // Quote Dates
+      let quoteDate = moment(); // current date
+      let quoteDateFormatted = quoteDate.format("MM/DD/YYYY");
+      let quoteTime = quoteDate.format("h:mm a");
+      let quoteExpirationDate = moment(quoteDate).add(3, 'days');
+      let quoteExpirationDateFormatted = quoteExpirationDate.format("MM/DD/YYYY");
+
+
 
       var matItemsTemplate = data.MatItems?.length
         ? `
@@ -320,7 +325,7 @@ document.addEventListener("DOMContentLoaded", function () {
             (item) => `
             <div class="d-flex justify-content-between align-items-center">
               <span>${item.Description}</span>
-              <span>${numeral(item.Amount).format("$0,0.00")}</span>
+              <span class="text-danger fw-bold">${numeral(item.Amount).format("$0,0.00")}</span>
             </div>
           `
           ).join("")}
@@ -394,7 +399,7 @@ document.addEventListener("DOMContentLoaded", function () {
               <div class="accessory-item w-100">
                 <div class="d-flex justify-content-between align-items-center">
                   <span class="accessory-name flex-grow-1">${priceDisplay}</span>
-                  <span class="accessory-price text-end ms-2">
+                  <span class="accessory-price fw-bold text-end ms-2">
                     ${item.Included ? '<span class="included-text">Included</span>' : numeral(item.Amount).format("$0,0.00")}
                   </span>
                 </div>
@@ -423,6 +428,26 @@ document.addEventListener("DOMContentLoaded", function () {
         </div>
       `
         : "";
+      
+      // Discretion Items Template
+      var discretionItemsTemplate = data.DiscretionItems?.length
+        ? `
+        <div class="card">
+          <h5 class="card-title fs-6 my-0">Discretionary</h5>
+          ${data.DiscretionItems.slice(0, 3)
+            .map(
+              (item) => `
+              <div class="d-flex justify-content-between align-items-center">
+                <span>${item.Description}</span>
+                <span class="text-danger fw-bold">${numeral(item.Amount).format("$0,0.00")}</span>
+              </div>
+            `
+            )
+            .join("")}
+        </div>
+      `
+        : "";
+      
 
       // OTD Items Template
       var OTDItemsTemplate = data.OTDItems?.length
@@ -559,7 +584,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       }
 
-      // Update the carousel container template
+      // Update the Vehicle Image Carousel container template
       const carousel = `
     <div class="carousel-container ratio ratio-16x9 rounded cover">
       <div id="carousel-overlay-vehicle-info" 
@@ -597,10 +622,12 @@ document.addEventListener("DOMContentLoaded", function () {
     </div>
       `;
 
+      
+
       // Major Unit Header with Year, Make, Model, VIN, Stock Number.
       var muHeaderTemplate = `
       <div class="vehicle-header text-center">
-        <h1 class="fs-3 vehicle-title fw-bold my-0">${prodTitle}</h1>
+        <h1 class="fs-4 vehicle-title fw-bold my-0">${prodTitle}</h1>
         <p class="fs-6 vehicle-subtitle my-0">
           <small>Model: </small>${data.ModelCode} 
           <small>Stock Number: </small>${data.StockNumber}
@@ -674,11 +701,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Payment Calculator
       const paymentCalc = `
-		<div class="payment-calculator-container mb-2" style="margin-top: 00px;">
+		<div class="payment-calculator-container my-1">
       <form name="calc" method="POST">
         <button type="button" 
-          class="btn btn-danger bg-danger bg-gradient w-100 pt-3"
-          style="margin-top: -15px;"
+          class="btn btn-danger bg-danger bg-gradient w-100 pt-2"
           data-bs-toggle="collapse" 
           data-bs-target="#paymentSliders" 
           aria-expanded="false" 
@@ -701,8 +727,8 @@ document.addEventListener("DOMContentLoaded", function () {
               <div class="vr"></div>
               <div class="payment text-center mx-auto pt-0">
                   <span class="text-light fw-bold">Payment:</span>
-                  <span class="fs-3 fw-bold">$</span>
-                  <span id="payment" class="fs-3 fw-bold" style="letter-spacing: -1px; font-weight: 900 !important;">
+                  <span class="fs-2 fw-bold">$</span>
+                  <span id="payment" class="fs-2 fw-bold" style="letter-spacing: -1px; font-weight: 900 !important;">
                     <i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i>
                   </span> <span class="text-light fw-bold">/mo.</span>
                   <div class="text-light supersmall" style="letter-spacing: 0px; margin-top: -10px;">Subject to credit approval.</div>
@@ -756,22 +782,6 @@ document.addEventListener("DOMContentLoaded", function () {
         </div>
       `;
 
-      // Our Price display template
-      const totalPriceContainer = `
-        <div id="totalPriceDisplay" class="card py-1 px-2">
-        <div class="text-left fw-bold">Total:<span class="float-end">${totalPriceDisplay}</span></div>
-        </div>
-
-      `;
-
-      // Savings display template
-      const savingsContainer = `
-        <div id="savingsDisplay" class="card py-1 px-2">
-        <div class="text-left fw-bold mx-2">SAVINGS:<span class="float-end">${totalSavings}</span></div>
-        </div>
-
-      `;
-
       // Trade In display template
       const tradeInVehicleTemplate = `
         <div id="tradeValueDisplay" style="display: none;">
@@ -780,64 +790,94 @@ document.addEventListener("DOMContentLoaded", function () {
 
       `;
 
+      
+      // Savings display template
+      const savingsTemplate = `
+      <div id="savingsDisplay" class="card py-1 px-2">
+      <div class="text-left fw-bold mx-1">Total Savings:<span class="float-end">${totalSavingsDisplay}</span></div>
+      </div>
+      
+      `;
+      
+      // Our Price display template
+      const totalPriceTemplate = `
+        <div id="totalPriceDisplay" class="card py-1 px-2">
+          <div class="text-left fs-5 fw-bold mx-1">Total:<span class="float-end">${totalPriceDisplay}</span></div>
+        </div>
+
+      `;
+
+      // Expiration date template
+      const quoteDateTemplate = `
+        <div id="quoteDateDisplay" class="pt-1 px-2">
+          <div class="text-left mx-1">Quote Expires: ${quoteExpirationDateFormatted}<span class="float-start">Quote Date: ${quoteDateFormatted} ${quoteTime}</span></div>
+        </div>
+
+      `;
+      
+      
       // Visibility Toggle Checkboxes template
       const visibilityToggleTemplate = `
-        <div class="show-hide-container d-inline-flex me-5">
-          <div class="form-date mx-1">
-            <input type="date" id="quoteDate" name="quoteDate">
-            <label class="form-check-label text-light" for="quoteDate">Date</label>
+        <div class="show-hide-container flex-column flex-nowrap text-start px-2 py-3 mt-5 mb-auto">
+          <h5 class="fs-6 mx-auto mb-1 text-center">Show & Hide Sections</h5>
+          <hr class="hr mb-2" />
+          <div class="form-check form-check-reverse text-start form-switch my-2">
+            <label class="form-check-label small" for="quoteHeader">Unit Name + Mode & Stock #</label>
+            <input class="form-check-input" type="checkbox" role="switch" id="quoteHeader" checked />
           </div>
-          <div class="form-check mx-1">
-            <input class="form-check-input" type="checkbox" value="" id="quoteName" checked />
-            <label class="form-check-label text-light" for="quoteName">Name</label>
+          <div class="form-check form-check-reverse text-start form-switch my-2">
+            <input class="form-check-input" type="checkbox" role="switch" id="quoteImages" checked />
+            <label class="form-check-label small" for="quoteImages">Unit Photo + Selector</label>
           </div>
-          <div class="form-check mx-1">
-            <input class="form-check-input" type="checkbox" value="" id="quoteHeader" checked />
-            <label class="form-check-label text-light" for="quoteHeader">Vehicle Year, Name, Model Code & Stock #</label>
+          <div class="form-check form-check-reverse text-start form-switch my-2">
+            <input class="form-check-input" type="checkbox" role="switch" id="quotePayment" checked />
+            <label class="form-check-label small" for="quotePayment">Price, Savings & Payment</label>
           </div>
-          <div class="form-check mx-1">
-            <input class="form-check-input" type="checkbox" value="" id="quoteImages" checked />
-            <label class="form-check-label text-light" for="quoteImages">Images</label>
+          <div class="form-check form-check-reverse text-start form-switch my-2">
+            <input class="form-check-input" type="checkbox" role="switch" id="quoteAccessories" checked />
+            <label class="form-check-label small" for="quoteAccessories">Accessories Added/Included</label>
           </div>
-          <div class="form-check mx-1">
-            <input class="form-check-input" type="checkbox" value="" id="quotePayment" checked />
-            <label class="form-check-label text-light" for="quotePayment">Payment</label>
+          <div class="form-check form-check-reverse text-start form-switch my-2">
+            <input class="form-check-input" type="checkbox" role="switch" id="quoteTradeIn" checked />
+            <label class="form-check-label small" for="quoteTradeIn">Trade In Allowance</label>
           </div>
-          <div class="form-check mx-1">
-            <input class="form-check-input" type="checkbox" value="" id="quoteRebates" checked />
-            <label class="form-check-label text-light" for="quoteRebates">Rebates</label>
+          <div class="form-check form-check-reverse text-start form-switch my-2">
+            <input class="form-check-input" type="checkbox" role="switch" id="quoteRebates" checked />
+            <label class="form-check-label small" for="quoteRebates">Manufacturer Rebates</label>
           </div>
-          <div class="form-check mx-1">
-            <input class="form-check-input" type="checkbox" value="" id="quoteDiscounts" checked />
-            <label class="form-check-label text-light" for="quoteDiscounts">Discounts</label>
+          <div class="form-check form-check-reverse text-start form-switch my-2">
+            <input class="form-check-input" type="checkbox" role="switch" id="quoteDiscounts" checked />
+            <label class="form-check-label small" for="quoteDiscounts">Dealer Discounts</label>
           </div>
-          <div class="form-check mx-1">
-            <input class="form-check-input" type="checkbox" value="" id="quoteAccessories" checked />
-            <label class="form-check-label text-light" for="quoteAccessories">Accessories</label>
+          <div class="form-check form-check-reverse text-start form-switch my-2">
+            <input class="form-check-input" type="checkbox" role="switch" id="quoteDiscretionary" checked disabled />
+            <label class="form-check-label small" for="quoteDiscretionary">Discretionary Discounts</label>
           </div>
-          <div class="form-check mx-1">
-            <input class="form-check-input" type="checkbox" value="" id="quoteFees" checked />
-            <label class="form-check-label text-light" for="quoteFees">Fees</label>
+          <div class="form-check form-check-reverse text-start form-switch my-2">
+            <input class="form-check-input" type="checkbox" role="switch" id="quoteFees" checked />
+            <label class="form-check-label small" for="quoteFees">Fees, Freight, Taxes</label>
           </div>
-          <div class="form-check mx-1">
-            <input class="form-check-input" type="checkbox" value="" id="quoteTotal" checked />
-            <label class="form-check-label text-light" for="quoteTotal">Total</label>
+          <div class="form-check form-check-reverse text-start form-switch my-2">
+            <input class="form-check-input" type="checkbox" role="switch" id="quoteSavings" checked />
+            <label class="form-check-label small" for="quoteSavings">Total Savings</label>
+          </div>
+          <div class="form-check form-check-reverse text-start form-switch my-2">
+            <input class="form-check-input" type="checkbox" role="switch" id="quoteTotal" checked />
+            <label class="form-check-label small" for="quoteTotal">Total w/ Fees & Taxes</label>
           </div>
         </div>
       `;
 
-      // Quote Dates
-      let quoteDate = Date.now();
-      let quoteDateFormatted = moment(quoteDate).format("MM/DD/YYYY");
-      let quoteTime = Date.now();
-      let quoteTimeFormatted = moment(quoteTime).format("h:mm a");
+      const visibilityToggleTemplateContainer = document.getElementById("visibilityToggleContainer");
+      if (visibilityToggleTemplateContainer) {
+        visibilityToggleTemplateContainer.innerHTML = visibilityToggleTemplate;
+      }
+
+      
 
       // Update the main page content structure
       const pageContent = `
         <div class="capture-container">
-          <div class="quote-date-container d-none">
-            ${quoteDateFormatted} ${quoteTimeFormatted}
-          </div>
           <div class="main-header">${muHeaderTemplate}</div>
           <div class="carousel-container">${carousel}</div>
           <div class="payment-calculator-container">${paymentCalc}</div>
@@ -846,7 +886,10 @@ document.addEventListener("DOMContentLoaded", function () {
           <div class="mat-items-container">${matItemsTemplate}</div>
           <div class="discount-items-container">${discountItemsTemplate}</div>
           <div class="otd-items-container">${OTDItemsTemplate}</div>
-          <div class="total-price-container">${totalPriceContainer}</div>
+          <div class="savings-container">${savingsTemplate}</div>
+          <div class="total-price-container">${totalPriceTemplate}</div>
+          <div class="quote-date-container">${quoteDateTemplate}</div>
+          </div>
         </div>
       `;
 
@@ -890,26 +933,33 @@ document.addEventListener("DOMContentLoaded", function () {
       // Add this to your style section or CSS file
       const styleElement = document.createElement("style");
       styleElement.textContent = `
+        .capture-container {
+            width: 760px;
+            max-width: 760px;
+            margin: 0 auto;
+        }
+
         .main-header,
         .carousel-container,
-        .payment-calculator,
+        .payment-calculator-container,
         .mat-items-container,
         .discount-items-container,
         .accessory-items-container,
         .otd-items-container,
-        .otd-price-container {
-          overflow: hidden;
-          transition: all 0.3s ease-in-out;
-          max-height: 2000px; /* Set this to something larger than your largest section */
-          -webkit-font-smoothing: antialiased;
-          text-rendering: optimizeLegibility; 
+        .savings-container,
+        .total-price-container {
+            overflow: hidden;
+            transition: all 0.6s ease-in-out;
+            max-height: 2000px;
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility; 
         }
 
         .section-hidden {
-          opacity: 0;
-          max-height: 0;
-          margin: 0 !important;
-          padding: 0 !important;
+            opacity: 0;
+            max-height: 0;
+            margin: 0 !important;
+            padding: 0 !important;
         }
       `;
       document.head.appendChild(styleElement);
@@ -924,12 +974,12 @@ document.addEventListener("DOMContentLoaded", function () {
 // Add helper function for showing errors
 function showError(message) {
   const errorHtml = `
-    <div class="alert alert-danger" style="border-right: 1px solid #eee; border-left: 5px solid #dc3545; border-top: 1px solid #eee; border-bottom: 1px solid #eee;">
+    <div class="alert bg-white" style="border-right: 1px solid #eee; border-left: 5px solid #dc3545; border-top: 1px solid #eee; border-bottom: 1px solid #eee;">
     <i class="bi bi-cone-striped fs-1 float-end"></i>
       <h5>Error Loading Vehicle Data</h5>
       <p class="fw-semibold">${message}!</p>
       <pre style="auto: none;">${new Error().stack}</pre>
-      <p class="small">Please search for new stock number in the bar above, or return to inventory and click quote next to a vehicle.</p>
+      <p class="small">Search for a new stock number in the bar above, or return to inventory and click quote next to a vehicle.</p>
       <a href="../" class="btn btn-secondary">
         <i class="bi bi-arrow-bar-left"></i> Back to Major Units
       </a>
@@ -981,14 +1031,12 @@ function generateFilename(data) {
   const timestamp = moment().format("YYYY-MM-DD");
   const parts = [data.StockNumber, data.ModelYear, data.Manufacturer, data.B50ModelName, timestamp];
 
-  return (
-    parts
-      .filter(Boolean) // Remove any undefined/null values
-      .join("_") // Join with underscores
-      .replace(/\s+/g, "_") // Replace spaces with underscores
-      .replace(/[^a-zA-Z0-9._-]/g, "") + // Remove special characters
-    ".jpg"
-  );
+  return parts
+    .filter(Boolean)
+    .join("_")
+    .replace(/\s+/g, "_")
+    .replace(/[^a-zA-Z0-9._-]/g, "") + 
+    ".jpg";
 }
 
 async function saveFile(blob, filename) {
@@ -996,21 +1044,19 @@ async function saveFile(blob, filename) {
     try {
       const handle = await window.showSaveFilePicker({
         suggestedName: filename,
-        types: [
-          {
-            description: "JPEG Image",
-            accept: {
-              "image/jpeg": [".jpg", ".jpeg"],
-            },
-          },
-        ],
+        types: [{
+          description: "JPEG Image",
+          accept: {
+            "image/jpeg": [".jpg", ".jpeg"]
+          }
+        }]
       });
       const writable = await handle.createWritable();
       await writable.write(blob);
       await writable.close();
     } catch (err) {
-      if (err.name === "AbortError") return; // User cancelled
-      throw err; // Re-throw other errors
+      if (err.name === "AbortError") return;
+      throw err;
     }
   } else {
     // Fallback for browsers that don't support file picker
@@ -1021,11 +1067,12 @@ async function saveFile(blob, filename) {
     URL.revokeObjectURL(link.href);
   }
 }
+
 // Capture the full content of the quote div
 async function captureFullContent() {
   try {
     // Image quality settings
-    const scaleFactor = 1.0;
+    const scaleFactor = 2.0;
     const imageQuality = 1.0;
 
     // Get the element we want to capture
@@ -1131,12 +1178,13 @@ function initializeVisibilityToggles() {
     quoteName: ".quote-name",
     quoteHeader: ".main-header",
     quoteImages: ".carousel-container",
-    quotePayment: ".payment-calculator",
+    quotePayment: ".payment-calculator-container",
     quoteAccessories: ".accessory-items-container",
     quoteRebates: ".mat-items-container",
     quoteDiscounts: ".discount-items-container",
     quoteFees: ".otd-items-container",
-    quoteTotal: ".total-otd-price",
+    quoteSavings: ".savings-container",
+    quoteTotal: ".total-price-container",
   };
 
   Object.keys(toggleMap).forEach((checkboxId) => {

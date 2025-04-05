@@ -117,6 +117,9 @@ ul .nav-pill:hover {
   font-weight: 500;
   letter-spacing: 0px;
 }
+.highlight {
+  border-bottom: 1px solid yellow !important;
+}
 .nav-pill:active {
   background-color: #444 !important;
   cursor: pointer;
@@ -199,7 +202,7 @@ ul .nav-pill:hover {
 /* Page container mimics paper size */
 .page-container {
   width: 100%;
-  max-width: 760px;
+  max-width: 900px;
   height: 2000px;
   padding: 0px;
   border: 0px solid #fff;
@@ -218,7 +221,7 @@ ul .nav-pill:hover {
   border: 0px solid red;
 }
 .vehicle-header {
-  text-align: left;
+  text-align: center;
 }
 .vehicle-title {
   font-size: 1.1rem;
@@ -234,7 +237,7 @@ ul .nav-pill:hover {
 /* Carousel sizing */
 .carousel-container {
   width: 100%;
-  margin: 3px 0;
+  margin: 0;
 }
 .carousel-container img {
   width: 100%;
@@ -442,10 +445,7 @@ ul .nav-pill:hover {
   margin: 0;
 }
 .show-hide-container {
-  border: 1px solid 222;
-  padding: 20px 0;
-  margin: 0 5px;
-  border-radius: 15px;
+  border-radius: 10px;
   background-color: #333;
 }
 
