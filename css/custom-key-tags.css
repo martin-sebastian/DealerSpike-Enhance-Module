@@ -9,7 +9,7 @@
   color: currentColor;
 }
 input[type="search"] {
-  font-weight: 800;
+  font-weight: 700;
 }
 ::placeholder {
   color: #999 !important;
@@ -47,8 +47,8 @@ input[type="search"] {
 }
 .model-name-vertical {
   font-size: 8pt !important;
-  line-height: 12px;
-  font-weight: 800;
+  line-height: 8pt;
+  font-weight: 700;
 }
 .warning-icon-container {
   text-align: center;
@@ -67,39 +67,37 @@ input[type="search"] {
   margin-bottom: 10px;
 }
 .placeholder {
-  font-size: 12px !important;
-  line-height: 12px !important;
-  height: 12px !important;
+  font-size: 8pt !important;
+  line-height: 8pt !important;
+  height: 8pt !important;
   background: #ddd !important;
 }
-#keytagContainerRight {
-  transform: rotate(90deg);
-}
-.r-90 {
-  transform: rotate(90deg);
-}
+
 .key-tag-container-left {
-  border: solid 1px #ddd;
+  border: dashed 1px #ddd;
   border-radius: 6pt;
   padding: 0;
-  margin: 0;
+  margin: 0.06in auto !important;
   width: 1.5in;
   height: 2in;
   background: #fff !important;
   zoom: 2;
+  overflow: hidden;
 }
 .key-tag-container-right {
-  border: solid 1px #ddd;
+  writing-mode: vertical-rl;
+  border: dashed 1px #ddd;
   border-radius: 6px;
   padding: 0px;
-  margin-top: 0px;
-  width: 2in;
-  height: 1.5in;
+  margin: 0.06in auto !important;
+  width: 1.5in;
+  height: 2in;
   background: #fff !important;
   zoom: 2;
+  overflow: hidden;
 }
 .keytag-label {
-  font-size: 6px;
+  font-size: 6pt;
   color: #999;
   margin: -8px 0 0px 0;
   padding-left: 0px;
@@ -108,35 +106,37 @@ input[type="search"] {
   text-align: center;
   font-size: 12px;
   line-height: 16px;
-  font-weight: 800;
+  font-weight: 700;
   border-bottom: solid 1px #eee;
 }
 .stock-number {
   text-align: center;
   font-size: 18px;
-  line-height: 22px;
-  font-weight: 900;
+  line-height: 21px;
+  font-weight: 700;
   border-bottom: solid 1px #eee;
 }
 .model-year {
   text-align: center;
   font-size: 18px;
   line-height: 22px;
-  font-weight: 800;
+  font-weight: 700;
   border-bottom: solid 1px #eee;
 }
 .manufacturer {
   text-align: center;
   font-size: 14px;
   line-height: 18px;
-  font-weight: 800;
+  font-weight: 700;
   border-bottom: solid 1px #eee;
+  white-space: nowrap;
+  overflow: hidden;
 }
 .model-name {
   text-align: center;
-  font-size: 14px;
+  font-size: 10px;
   line-height: 20px;
-  font-weight: 800;
+  font-weight: 700;
   white-space: nowrap;
   overflow: hidden;
   border-bottom: solid 1px #eee;
@@ -145,14 +145,16 @@ input[type="search"] {
   text-align: center;
   font-size: 14px;
   line-height: 18px;
-  font-weight: 800;
+  font-weight: 700;
   border-bottom: solid 1px #eee;
+  white-space: nowrap;
+  overflow: hidden;
 }
 .model-color {
   text-align: center;
   font-size: 12px;
   line-height: 16px;
-  font-weight: 800;
+  font-weight: 700;
   white-space: nowrap;
   overflow: hidden;
   border-bottom: solid 1px #eee;
@@ -160,8 +162,10 @@ input[type="search"] {
 .model-vin {
   text-align: center;
   font-size: 12px;
-  font-weight: 800;
+  font-weight: 700;
   line-height: 18px;
+  white-space: nowrap;
+  overflow: hidden;
 }
 .model-usage::after {
   display: block;
@@ -170,7 +174,7 @@ input[type="search"] {
   margin-bottom: 0px;
   margin-top: -4px;
   content: "USAGE";
-  font-size: 6px !important;
+  font-size: 6pt !important;
   line-height: 8px;
   color: #ddd;
 }
@@ -182,7 +186,7 @@ input[type="search"] {
   margin-bottom: 0px;
   margin-top: -4px;
   content: "STOCK#";
-  font-size: 6px !important;
+  font-size: 6pt !important;
   line-height: 6px;
   color: #ddd;
 }
@@ -193,7 +197,7 @@ input[type="search"] {
   margin-bottom: 0px;
   margin-top: -4px;
   content: "YEAR";
-  font-size: 6px !important;
+  font-size: 6pt !important;
   line-height: 6px;
   color: #ddd;
 }
@@ -204,8 +208,8 @@ input[type="search"] {
   margin-bottom: 0px;
   margin-top: -4px;
   content: "MANUF.";
-  font-size: 6px !important;
-  line-height: 8px;
+  font-size: 6pt !important;
+  line-height: 6px;
   color: #ddd;
 }
 .model-name::after {
@@ -215,7 +219,7 @@ input[type="search"] {
   margin-bottom: 0px;
   margin-top: -4px;
   content: "MODEL";
-  font-size: 6px !important;
+  font-size: 6pt !important;
   line-height: 8px;
   color: #ddd;
 }
@@ -226,7 +230,7 @@ input[type="search"] {
   margin-bottom: 0px;
   margin-top: -4px;
   content: "CODE";
-  font-size: 6px !important;
+  font-size: 6pt !important;
   line-height: 8px;
   color: #ddd;
 }
@@ -238,7 +242,7 @@ input[type="search"] {
   margin-bottom: 0px;
   margin-top: -4px;
   content: "COLOR";
-  font-size: 6px !important;
+  font-size: 6pt !important;
   line-height: 8px;
   color: #ddd;
 }
@@ -250,18 +254,29 @@ input[type="search"] {
   margin-bottom: 0px;
   margin-top: -4px;
   content: "VIN";
-  font-size: 6px !important;
+  font-size: 6pt !important;
   line-height: 6px;
   color: #ddd;
 }
-.year-make-container {
-  font-size: 18pt;
-  line-height: 18pt;
-  font-weight: 700;
-  letter-spacing: -1px;
+.year-manufacturer-vertical {
+  text-orientation: mixed;
+  text-align: center;
+  font-size: 18pt !important;
+  line-height: 18pt !important;
+  font-weight: 700 !important;
+  letter-spacing: -1px !important;
 }
 .model-vin-vertical {
+  text-orientation: mixed;
+  text-align: center;
   font-size: 13pt;
-  line-height: 20px;
+  line-height: 13pt;
+  font-weight: 700;
+}
+.model-name-vertical {
+  text-orientation: mixed;
+  text-align: center;
+  font-size: 13pt;
+  line-height: 13pt;
   font-weight: 700;
 }

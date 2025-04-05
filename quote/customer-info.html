@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Dynamic Name Display</title>
+    <style>
+      .container {
+        display: flex;
+      }
+
+      .sidebar {
+        width: 200px;
+        padding: 20px;
+        background-color: #f0f0f0;
+      }
+
+      .quote-body {
+        flex-grow: 1;
+        padding: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="sidebar">
+        <form id="nameForm">
+          <label for="firstName">First Name:</label><br />
+          <input type="text" id="firstName" name="firstName" /><br /><br />
+          <label for="lastName">Last Name:</label><br />
+          <input type="text" id="lastName" name="lastName" />
+        </form>
+      </div>
+      <div class="quote-body">
+        <h1 id="displayName"></h1>
+        <p>Some quote body content here...</p>
+      </div>
+    </div>
+
+    <script>
+      const firstNameInput = document.getElementById("firstName");
+      const lastNameInput = document.getElementById("lastName");
+      const displayName = document.getElementById("displayName");
+
+      function updateDisplayName() {
+        const firstName = firstNameInput.value;
+        const lastName = lastNameInput.value;
+        displayName.textContent = `${firstName} ${lastName}`.trim(); //trim to remove extra spaces if one input is empty.
+      }
+
+      firstNameInput.addEventListener("input", updateDisplayName);
+      lastNameInput.addEventListener("input", updateDisplayName);
+    </script>
+  </body>
+</html>

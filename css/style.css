@@ -27,7 +27,7 @@ body {
   text-align: left;
   max-width: 75%;
 }
-img:hover {
+td a img:hover {
   margin: 1px;
   outline: solid 2px #fff;
 }

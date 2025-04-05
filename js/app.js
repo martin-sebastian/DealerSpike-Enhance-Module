@@ -172,7 +172,6 @@ async function fetchData() {
 
     // Fetch fresh data if cache is missing or expired
     console.log("Fetching fresh XML data...");
-    //const response = await fetch("https://www.sloansmotorcycle.com/unitinventory_univ.xml");
     const response = await fetch("https://www.flatoutmotorcycles.com/unitinventory_univ.xml");
     if (!response.ok) throw new Error("Network response was not ok");
 
@@ -279,7 +278,7 @@ async function processXMLData(xmlDoc) {
         <td><span class="badge bg-success p-2 w-100 fw-bold border">${webPrice}</span></td>
         <td>
           <span class="badge text-secondary p-2 w-100 fw-semibold border">${moment(updated).fromNow()}
-            <span class="small text-muted">${moment(updated).format("MM-DD-YYYY")}</span>
+            <span class="small text-muted d-none">${moment(updated).format("MM-DD-YYYY")}</span>
           </span>
         </td>
         <td class="text-center">${
@@ -303,8 +302,8 @@ async function processXMLData(xmlDoc) {
               href="javascript:void(0);" 
               type="button" 
               class="btn btn-danger action-button mx-1"
-              title="Pricing"
-              onclick="openOverlayModal('${stockNumber}')"
+              title="Quote this vehicle"
+              onclick="window.location.href = 'quote/?search=${stockNumber}'"
             >
               <i class="bi bi-card-heading"></i>
               <span style="font-size:10px; text-transform:uppercase;">Quote</span>
@@ -705,8 +704,8 @@ function printKeyTag(event) {
             font-weight: 600;
             margin: 0;
             padding: 0.051in;
-            width: 1.5in;
-            height: 2in;
+            width: 1.625in;
+            height: 2.125in;
             overflow: hidden;
           }
           #keytagContainer {
@@ -720,6 +719,7 @@ function printKeyTag(event) {
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            overflow: hidden;
           }
           #keytagContainerTwo {
             position: relative;
@@ -734,6 +734,7 @@ function printKeyTag(event) {
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            overflow: hidden;
           }
           #keytagContainer div {
             margin: 0;
@@ -763,8 +764,10 @@ function printKeyTag(event) {
             border-bottom: 1px solid #ddd;
           }
           #modelName {
-            font-size: 10pt;
+            font-size: 9pt;
             border-bottom: 1px solid #eee;
+            white-space: nowrap;
+            overflow: hidden;
           }
           #modelCode {
             font-size: 8pt;
@@ -775,7 +778,11 @@ function printKeyTag(event) {
             border-bottom: 1px solid #eee;
           }
           #modelVin {
+            width: 1.5in;
             font-size: 8pt;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
           }
           #modelUsage::after {
             display: block;
@@ -1147,10 +1154,4 @@ function initializeClipboardTooltips() {
     });
   });
 }
-document.addEventListener(
-  "DOMContentLoaded",
-  (e) => {
-    $("#searchFilter").autocomplete();
-  },
-  false
-);
+

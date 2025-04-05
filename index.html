@@ -9,8 +9,8 @@
 
     <title>FOM | PRINT TAGS</title>
     <link rel="stylesheet" href="./css/bootstrap.css" />
-    <link rel="stylesheet" href="./css/bootstrap-icons.css">
-    <link href="./css/style.css" rel="stylesheet" />
+    <link rel="stylesheet" href="./css/bootstrap-icons.css" />
+    <link rel="stylesheet" href="./css/style.css" />
     
     
   </head>
@@ -20,13 +20,11 @@
         <div class="container-fluid">
           <div class="navbar-left">
             <a class="navbar-brand" href="./">
-              <img id="logo" class="me-2 pt-1" src="./img/fom-app-logo-01.svg" alt="Logo" width="180" height="30.6" />
+              <img id="logo" class="ms-1 me-1 pt-0" src="./img/fom-app-logo-01.svg" alt="Logo" width="180" height="27" />
             </a>
-            <button type="button" class="btn btn-danger btn-sm" title="Create custom tag" onclick="openKeyTagsByStockNumberModal('${stockNumber}')">
-              <i class="bi bi-plus-circle"></i> NEW
-            </button>
+            <button type="button" class="btn btn-danger text-white" title="Create custom key tag" onclick="openKeyTagsByStockNumberModal('${stockNumber}')"><i class="bi bi-plus-circle me-2"></i>Key Tag</button>
+            
           </div>
-
 
           <form class="d-flex flex-row d-none d-sm-block" role="search">
             <label for="searchFilter" class="visually-hidden">Search</label>
@@ -86,7 +84,7 @@
               <option value="Kawasaki">Kawasaki</option>
               <option value="Scarab">Scarab</option>
               <option value="Sea-Doo">Sea-Doo</option>
-              <option value="South Bay">South Bay</option>
+              <option value="South bay">South Bay</option>
               <option value="Suzuki">Suzuki</option>
               <option value="Suzuki Marine">Suzuki Marine</option>
               <option value="Polaris Industries">Polaris Industries</option>
@@ -104,6 +102,7 @@
             </div>
           </form>
           <div class="toggles-group d-flex flex-row">
+            
             <button id="toggleThemeButton" class="btn btn-outline-secondary px-3 mx-1" type="button">
               <i id="theme-icon" class="bi bi-moon-stars"></i>
             </button>
@@ -122,6 +121,7 @@
       </nav>
     </header>
 
+    <!-- RIGHT SIDE MENU-->
     <div
       class="offcanvas offcanvas-end"
       data-bs-scroll="true"
@@ -137,16 +137,22 @@
       <div class="offcanvas-body">
         <form class="d-flex flex-column row-gap-3 my-3" role="search">
           <div class="d-flex flex-column row-gap-2">
-            <button type="button" class="btn btn-danger" title="Create custom tag" onclick="openKeyTagsByStockNumberModal('${stockNumber}')">
-              <i class="bi bi-tag float-start"></i> Create Custom Tag
+            <button type="button" class="btn btn-danger" title="Create custom key tag" onclick="openKeyTagsByStockNumberModal('${stockNumber}')">
+              <i class="bi bi-tag float-start"></i> Create Custom Key Tag
+            </button>
+            <button type="button" class="btn btn-danger disabled" title="Create custom hang tags" onclick="openKeyTagsByStockNumberModal('${stockNumber}')">
+              <i class="bi bi-tags float-start"></i> Create Custom Hang Tags
+            </button>
+            <button type="button" class="btn btn-danger" title="Create custom quote" onclick="window.location.href = './quote/'">
+              <i class="bi bi-card-heading float-start"></i> Create Custom Quote
             </button>
             <button type="button" class="btn btn-danger" title="Service Calendar" onclick="openServiceCalendarModal()">
-              <i class="bi bi-calendar-date float-start"></i> Service Calendar
+              <i class="bi bi-calendar-date float-start"></i> Service Calendar Demo
             </button>
-            <button type="button" class="btn btn-danger" title="Service Calendar" onclick="window.open('/admin', '_blak')">
-              <i class="bi bi-gear float-start"></i> Admin
+            <button type="button" class="btn btn-danger disabled" title="Settings" onclick="window.open('/admin')">
+              <i class="bi bi-gear float-start"></i>Settings - coming soon.
             </button>
-            <nav class="side-menu-footer">V.0.1.0</nav>
+            <nav class="side-menu-footer text-light text-muted">V.0.3.0</nav>
           </div>
         </form>
       </div>
@@ -154,13 +160,18 @@
 
     <main>
       <div class="container-fluid">
-        <div class="spacer-75 d-flex flex-row align-items-center"></div>
+        <div class="spacer-75 d-flex flex-row justify-content-between align-items-center"></div>
         
-        <div class="d-flex pb-2 text-secondary">
+        <div class="d-flex flex-row justify-content-between align-items-center pb-2 text-secondary">
           <!-- element for displaying row count -->
-          Results: <span class="mx-1" id="rowCountDisplay"></span>
+          <div class="mx-1">
+            Results: <span class="mx-1" id="rowCountDisplay"></span>
+          </div>
+          
         </div>
-        <div class="">
+
+
+        <div class="table-responsive">
           <table id="vehiclesTable" class="table table-hover table-responsive">
             <thead>
               <tr>
@@ -192,13 +203,14 @@
               <h5 class="modal-title" id="overlayModalLabel"><i class="bi bi-tags me-2 icon-circle text-white"></i>QUOTE THIS VEHICLE</h5>
               <button type="button" class="btn-close btn-primary" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body m-0 p-0 d-print-none">
-              <iframe id="overlayIframe" src="" frameborder="1" class="w-100" style="max-height: 100%; min-height: 99%; border: 0; margin: 0; padding: 0;"></iframe>
+            <div class="modal-body m-0 p-0 d-print-none" style="background-color: #f0f0f0;">
+              <iframe id="overlayIframe" src="" frameborder="0" style="width: 100%; height: 99%; border: 0; margin: 0; padding: 0;"></iframe>
             </div>
             <div class="modal-footer d-print-none">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              
               <button type="button" class="btn btn-danger" onclick="printOverlayIframe()">
-                <i class="bi bi-printer me-2"></i> Print
+                Print <i class="bi bi-printer"></i>
               </button>
             </div>
           </div>
@@ -214,7 +226,7 @@
             </div>
             <div class="modal-body p-0 m-0 overflow-hidden d-print-none">
               <button type="button" class="btn btn-outline-secondary position-absolute top-0 end-0 mt-2 me-4" title="Esc" data-bs-dismiss="modal" aria-label="Close"><i class="bi bi-x-lg"></i></button>
-              <iframe id="newOverlayIframe" src="" frameborder="0" class="m-0 p-0 border-0 w-100 h-100 shadow-lg" style="border: 0; margin: 0; padding: 0; height:99%;"></iframe>
+              <iframe id="newOverlayIframe" src="" frameborder="0" class="m-0 p-0 border-0 w-100 h-100 shadow-lg" style="border: 0; margin: 0; padding: 0; height:100%;"></iframe>
             </div>
             <div class="modal-footer d-print-none" style="display: none;">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

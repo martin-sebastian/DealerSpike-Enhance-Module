@@ -1,0 +1,560 @@
+/* reset styles */
+input[type="range"] {
+  -webkit-appearance: none; /* Hides the slider so that custom slider can be made */
+  width: 100%; /* Specific width is required for Firefox. */
+  background: transparent; /* Otherwise white in Chrome */
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+}
+
+input[type="range"]:focus {
+  outline: none; /* Removes the blue border. You should probably do some kind of focus styling for accessibility reasons though. */
+}
+
+input[type="range"]::-ms-track {
+  width: 100%;
+  cursor: pointer;
+
+  /* Hides the slider so custom styles can be added */
+  background: transparent;
+  border-color: transparent;
+  color: transparent;
+}
+
+/* slider thumb */
+/* Special styling for WebKit/Blink */
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  border: 1px solid #000000;
+  height: 30px;
+  width: 64px;
+  border-radius: 5px;
+  background: #ffffff;
+  cursor: pointer;
+  margin-top: -12px;
+}
+
+/* All the same stuff for Firefox */
+input[type="range"]::-moz-range-thumb {
+  border: 1px solid #000000;
+  height: 30px;
+  width: 64px;
+  border-radius: 5px;
+  background: #ffffff;
+  cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  width: 90%;
+  height: 8.4px;
+  cursor: pointer;
+  background: #555;
+  border-radius: 1.3px;
+  border: 0.2px solid #010101;
+}
+
+input[type="range"]:focus::-webkit-slider-runnable-track {
+  background: #666;
+}
+
+input[type="range"]::-moz-range-track {
+  width: 90%;
+  height: 8.4px;
+  cursor: pointer;
+  background: #555;
+  border-radius: 1.3px;
+  border: 0.2px solid #010101;
+}
+
+input[type="range"]::-ms-track {
+  width: 100%;
+  height: 8.4px;
+  cursor: pointer;
+  background: transparent;
+  border-color: transparent;
+  border-width: 16px 0;
+  color: transparent;
+}
+input[type="range"]::-ms-fill-lower {
+  background: #2a6495;
+  border: 0.2px solid #010101;
+  border-radius: 2.6px;
+  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+}
+input[type="range"]:focus::-ms-fill-lower {
+  background: #3071a9;
+}
+input[type="range"]::-ms-fill-upper {
+  background: #3071a9;
+  border: 0.2px solid #010101;
+  border-radius: 2.6px;
+  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+}
+input[type="range"]:focus::-ms-fill-upper {
+  background: #367ebd;
+}
+
+/* Global styles */
+body {
+  background: #f0f0f0;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+.dots {
+  background-image: radial-gradient(circle, #ddd 1px, transparent 1px);
+  background-size: 15px 15px;
+}
+ul .nav-pill:hover {
+  background-color: #444 !important;
+  cursor: pointer;
+}
+.supersmall {
+  font-size: 10px;
+  line-height: 12px;
+  font-weight: 500;
+  letter-spacing: 0px;
+}
+.highlight {
+  border-bottom: 1px solid yellow !important;
+}
+.nav-pill:active {
+  background-color: #444 !important;
+  cursor: pointer;
+}
+.nav-pill a {
+  color: #fff !important;
+  cursor: pointer;
+}
+.nav-pill a:hover {
+  color: #fff !important;
+  background-color: #444 !important;
+  cursor: pointer;
+}
+.nav-pill a:active {
+  color: #fff !important;
+  background-color: #444 !important;
+  cursor: pointer;
+}
+
+.spacer-200 {
+  height: 200px;
+}
+.spacer-100 {
+  height: 100px;
+}
+.spacer-50 {
+  height: 50px;
+}
+.spacer-25 {
+  height: 25px;
+}
+.spacer-10 {
+  height: 10px;
+}
+.bg-white {
+  background: #fff;
+}
+.hidden {
+  display: none !important;
+}
+.opacity-5 {
+  opacity: 0.05;
+}
+.opacity-10 {
+  opacity: 0.1;
+}
+.opacity-20 {
+  opacity: 0.2;
+}
+.opacity-90 {
+  opacity: 0.9;
+}
+.opacity-95 {
+  opacity: 0.95;
+}
+.opacity-98 {
+  opacity: 0.98;
+}
+.opacity-100 {
+  opacity: 1;
+}
+#ourPriceDisplay {
+  padding: 10px 0;
+  border-radius: 10px;
+}
+#ourPriceDisplay h1 {
+  font-size: 2rem;
+  line-height: 1.2;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: #000 !important;
+}
+/* Capture container */
+.capture-container {
+  min-width: 760px;
+  max-width: 760px;
+  border-radius: 15px;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
+}
+/* Page container mimics paper size */
+.page-container {
+  width: 100%;
+  max-width: 900px;
+  height: auto;
+  padding: 0px;
+  border: 0px solid #fff;
+  border-radius: 10px;
+  background-color: transparent;
+
+  transform: scale(1);
+  transform-origin: center center;
+  transition: transform 0.3s ease-in-out;
+  -webkit-font-smoothing: antialiased; /* or grayscale */
+  text-rendering: optimizeLegibility; /* or geometricPrecision */
+}
+
+/* Main content layout */
+.content-container {
+  border: 0px solid red;
+}
+.vehicle-header {
+  text-align: center;
+}
+.vehicle-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+.vehicle-subtitle {
+  font-size: 1rem;
+  font-weight: 700;
+}
+.vehicle-subtitle small {
+  font-weight: 500;
+}
+/* Carousel sizing */
+.carousel-container {
+  width: 100%;
+  margin: 0;
+}
+.carousel-container img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+.carousel-caption {
+  color: #ffffff;
+  padding: 20px;
+  border-radius: 5px;
+}
+.carousel-caption h5 {
+  font-size: 1rem;
+  font-weight: 900;
+  background-color: rgba(0, 0, 0, 0.4);
+  border-radius: 5px;
+  padding: 5px;
+}
+.carousel-caption p {
+  font-size: 0.7rem;
+  font-weight: 500;
+  background-color: rgba(0, 0, 0, 0.4);
+  border-radius: 5px;
+  padding: 5px;
+}
+.carousel-indicators {
+  opacity: 0.1;
+}
+.carousel-indicators:hover {
+  opacity: 1;
+}
+/* Unit info container */
+.unit-info-container {
+  margin: 5px 0;
+}
+.unit-info-container ul {
+  margin: 0;
+  padding: 0;
+}
+.unit-info-container ul li {
+  padding: 5px 10px;
+}
+
+.card {
+  width: 100%;
+  margin: 2px 0;
+  padding: 5px 10px;
+}
+
+.payment-calculator {
+  text-align: center;
+}
+
+/* Price display */
+.price-payment-container {
+  text-align: center;
+  padding: 75px;
+  border: 0px solid #ddd;
+  border-radius: 4px;
+}
+
+#page-loader {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+}
+
+.term-button {
+  margin: 2px;
+}
+#payment {
+  margin-left: -4px;
+  margin-right: -4px;
+}
+.credit-bg {
+  background-color: #f3eb44 !important;
+}
+.downpayment-bg {
+  background-color: #f3eb44 !important;
+}
+.payment-collapsed-container {
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+.range-slider .downpayment-bg {
+  background-color: #ee0000;
+}
+.range-slider .downpayment-bg .slider-handle {
+  background-color: #ee0000;
+}
+.range-slider .downpayment-bg .slider-handle:hover {
+  background-color: #ee0000;
+}
+
+.credit-slider-label {
+  color: #ee0000;
+  font-weight: 700;
+  padding: 5px;
+}
+.range-slider .credit-bg {
+  background-color: #ee0000;
+}
+.range-slider .credit-bg .slider-handle {
+  background-color: #000000;
+}
+.updated-value-line {
+  border: 0px solid red;
+}
+.downpayment-value {
+  border: 0px solid red;
+}
+.downpayment-label {
+  border: 0px solid blue;
+  padding: 5px;
+}
+.slider-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 0px solid pink;
+  background-color: #fff;
+  padding: 5px;
+  margin-bottom: 10px;
+}
+.credit-slider-label {
+  border: 0px solid green;
+}
+.apr-label {
+  border: 0px solid red;
+  padding: 5px;
+}
+.apr-value {
+  border: 0px solid skyblue;
+}
+.loan-term-container {
+  border: 0px solid red;
+  padding: 0 0 10px 0;
+}
+.loan-term-label {
+  border: 0px solid red;
+}
+.credit-disclaimer-container {
+  border-radius: 5px;
+  border: 0px solid red;
+  padding: 5px 0;
+}
+
+.export-btn {
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.accessory-price {
+  min-width: 100px; /* Or whatever width works for your prices */
+  text-align: right;
+}
+
+.accessory-name {
+  padding-right: 1rem;
+}
+
+/* Sidebar */
+.sidebar {
+  transition: width 0.3s ease-in-out;
+  width: 280px !important;
+}
+
+.sidebar.collapsed {
+  width: 0px !important;
+}
+
+.sidebar.collapsed *,
+.sidebar.collapsed .nav-link span,
+.sidebar.collapsed .dropdown-toggle strong,
+.sidebar.collapsed .show-hide-container,
+.sidebar.collapsed .form-check-label,
+.sidebar.collapsed .dropdown-menu {
+  display: none;
+}
+
+.sidebar.collapsed .nav-link {
+  padding: 0.5rem;
+  text-align: center;
+  cursor: pointer;
+}
+
+.sidebar.collapsed .nav-link i {
+  margin: 0;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.sidebar.collapsed .dropdown-toggle {
+  padding: 0.5rem;
+  text-align: center;
+  cursor: pointer;
+}
+
+.sidebar.collapsed .dropdown-toggle img {
+  margin: 0;
+}
+.show-hide-container {
+  border-radius: 10px;
+  background-color: #333;
+}
+
+/* Main content area */
+.main-content {
+  flex: 1;
+  min-width: 0; /* Prevents flex item from overflowing */
+  transition: margin-left 0.3s ease-in-out;
+  margin-left: 0;
+}
+
+.sidebar.collapsed + .main-content {
+  margin-left: -220px;
+}
+
+/* Navbar */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+/* Main content scrolling */
+main {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem;
+}
+
+/* Print styles */
+@media print {
+  .sidebar {
+    display: none !important;
+  }
+  .main-content {
+    margin-left: 0 !important;
+  }
+}
+
+/* Logo switching */
+.logo-icon {
+  display: none;
+}
+
+.logo-full {
+  display: block;
+}
+
+.sidebar.collapsed .logo-icon {
+  display: block;
+  margin: 0 auto;
+}
+
+.sidebar.collapsed .logo-full {
+  display: none;
+}
+
+.sidebar.collapsed a.d-flex {
+  justify-content: center;
+  margin-right: 0 !important;
+}
+
+/* Admin profile styles */
+.admin-avatar {
+  transition: margin 0.3s ease-in-out;
+}
+
+.admin-text {
+  transition: opacity 0.3s ease-in-out;
+}
+
+.sidebar.collapsed .admin-text {
+  display: none;
+}
+
+.sidebar.collapsed .admin-avatar {
+  margin: 0 auto !important;
+}
+
+.sidebar.collapsed .dropdown > a {
+  justify-content: center;
+  padding: 0.5rem;
+}
+
+.sidebar.collapsed .dropdown-toggle::after {
+  display: none;
+}
+
+.quote-date-container {
+  text-align: right;
+  color: #666;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.customer-name {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.customer-name h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+.customer-name span {
+  margin: 0 0.25rem;
+}

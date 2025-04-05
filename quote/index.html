@@ -3,160 +3,233 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vehicle Quote</title>
+
+    <!-- Basic SEO -->
+    <title>Quote Stock #</title>
+    <script>
+      (function () {
+        //Immediately invoked function expression to avoid global scope pollution
+        function updateTitleWithStockNumber() {
+          const urlParams = new URLSearchParams(window.location.search);
+          const titleStockNumber = urlParams.get("search");
+          if (titleStockNumber) {
+            document.title = document.title + " [ " + titleStockNumber + " ]";
+          }
+        }
+        updateTitleWithStockNumber();
+      })();
+    </script>
+    <meta name="description" content="Create vehicle quotes and save them as a jpg image for easy texting to Flat Out Motorcycles customers." />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://newportal.flatoutmotorcycles.com/quote/" />
+    <meta property="og:title" content="Vehicle Quote | Flat Out Motorcycles" />
+    <meta property="og:description" content="Create vehicle quotes and save them as a jpg image for easy texting to Flat Out Motorcycles customers." />
+    <meta property="og:image" content="https://newportal.flatoutmotorcycles.com/img/fom-og-image.jpg" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://newportal.flatoutmotorcycles.com/quote/" />
+    <meta property="twitter:title" content="Vehicle Quote | Flat Out Motorcycles" />
+    <meta property="twitter:description" content="Create vehicle quotes and save them as a jpg image for easy texting to Flat Out Motorcycles customers." />
+    <meta property="twitter:image" content="https://newportal.flatoutmotorcycles.com/img/fom-og-image.jpg" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="../img/favicon.png" />
+    <link rel="apple-touch-icon" href="../img/apple-touch-icon.png" />
+
+    <!-- Existing scripts and styles -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link href="../css/bootstrap.css" rel="stylesheet" />
-    <link href="../css/style.css" rel="stylesheet" />
-    <link rel="stylesheet" href="../css/font-awesome.css" />
-    <style>
-      /* Print settings */
-      @page {
-        size: letter;
-        margin: 0.25in;
-      }
-
-      body {
-        background: #f0f0f0;
-        margin: 0;
-        padding: 1rem;
-      }
-
-      /* Page container mimics paper size */
-      .page-container {
-        width: 8.5in;
-        min-height: 11in;
-        margin: 0 auto;
-        background: white;
-        padding: 0.25in;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      }
-
-      /* Main content layout */
-      .content-container {
-        display: flex;
-        gap: 0.25in;
-        margin-top: 0.25in;
-      }
-
-      /* Column sizing */
-      .left-column {
-        width: 4in;
-      }
-
-      .right-column {
-        width: 4in;
-      }
-      .pull-right {
-        float: right;
-      }
-
-      /* Component spacing */
-      .trade-in-container,
-      .unit-info-container,
-      .price-container,
-      .payment-calculator,
-      .pricing-details {
-        margin-bottom: 0.25in;
-      }
-
-      /* Carousel sizing */
-      .carousel-container {
-        width: 100%;
-        margin-bottom: 0.25in;
-      }
-
-      .carousel-container img {
-        width: 100%;
-        height: auto;
-        object-fit: cover;
-      }
-
-      .card {
-        width: 100%;
-        margin: 5px 0;
-        padding: 0.125in;
-      }
-
-      /* Price display */
-      .price-payment-container {
-        text-align: center;
-        padding: 0.125in;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-      }
-
-      /* Print specific styles */
-      @media print {
-        body {
-          margin: 0;
-          padding: 0;
-          background: white;
-        }
-
-        .page-container {
-          width: 8in;
-          box-shadow: none;
-          padding: 0.25in;
-        }
-
-        .no-print {
-          display: none;
-        }
-
-        /* Force page break if content exceeds one page */
-        .page-break {
-          page-break-before: always;
-        }
-      }
-
-      #page-loader {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        z-index: 1000;
-      }
-    </style>
+    <link rel="stylesheet" href="../css/bootstrap-icons.css" />
+    <link rel="stylesheet" href="../css/quote.css" />
   </head>
-  <body class="dots">
-    <div class="page-container">
-      <header>
-        <div class="main-header"></div>
-      </header>
-
-      <div class="content-container">
-        <!-- Left Column -->
-        <div class="left-column">
-          <div class="carousel-container">
-            <!-- Images will be inserted here -->
+  <body class="dots m-0 p-0">
+    <div class="d-flex flex-row flex-nowrap">
+      <!-- Start Sidebar -->
+      <div class="d-flex flex-column flex-shrink-0 p-2 text-bg-dark vh-100 overflow-hidden opacity-98 d-print-none sidebar" style="width: 280px">
+        <div class="navbar-brand mb-1 mx-auto">
+          <a href="../" class="d-flex align-items-center mb-2 mb-md-0 text-white">
+            <i class="bi bi-arrow-left-square fs-4 me-2"></i>
+            <img src="../img/fom-app-logo-01.svg" alt="FOM Logo" width="180" height="27" class="logo-full" />
+            <img src="../img/sidebar-logo.png" alt="FOM Icon" width="36" height="36" class="logo-icon rounded-circle" />
+          </a>
+        </div>
+        <hr class="mx-2 my-2 opacity-10" />
+        <form class="px-2 visually-hidden">
+          <h5 class="mx-auto my-2">Customer Info</h5>
+          <div class="mb-3">
+            <label for="inputFirstName" class="form-label visually-hidden">First Name</label>
+            <input type="text" class="form-control" id="inputFirstName" placeholder="First Name" x-model="firstName" />
           </div>
-
-          <div class="trade-in-container">
-            <!-- Trade-in form will be inserted here -->
+          <div class="mb-3">
+            <label for="inputLastName" class="form-label visually-hidden">Last Name</label>
+            <input type="text" class="form-control" id="inputLastName" placeholder="Last Name" x-model="lastName" />
           </div>
+        </form>
 
-          <div class="unit-info-container">
-            <!-- Unit information will be inserted here -->
+        <div id="visibilityToggleContainer">
+          <div class="show-hide-container flex-column flex-nowrap text-start px-2 py-3 mt-5 mb-auto">
+            <h5 class="fs-6 mx-auto mb-1 text-center">Show & Hide Sections</h5>
+            <hr class="hr mb-2" />
+            <div class="form-check form-check-reverse text-start form-switch my-2">
+              <label class="form-check-label small" for="quoteHeader">Unit Name + Mode & Stock #</label>
+              <input class="form-check-input" type="checkbox" role="switch" id="quoteHeader" checked />
+            </div>
+            <div class="form-check form-check-reverse text-start form-switch my-2">
+              <input class="form-check-input" type="checkbox" role="switch" id="quoteImages" checked />
+              <label class="form-check-label small" for="quoteImages">Unit Photo + Selector</label>
+            </div>
+            <div class="form-check form-check-reverse text-start form-switch my-2">
+              <input class="form-check-input" type="checkbox" role="switch" id="quotePayment" checked />
+              <label class="form-check-label small" for="quotePayment">Price, Savings & Payment</label>
+            </div>
+            <div class="form-check form-check-reverse text-start form-switch my-2">
+              <input class="form-check-input" type="checkbox" role="switch" id="quoteAccessories" checked />
+              <label class="form-check-label small" for="quoteAccessories">Accessories Added/Included</label>
+            </div>
+            <div class="form-check form-check-reverse text-start form-switch my-2">
+              <input class="form-check-input" type="checkbox" role="switch" id="quoteTradeIn" checked />
+              <label class="form-check-label small" for="quoteTradeIn">Trade In Allowance</label>
+            </div>
+            <div class="form-check form-check-reverse text-start form-switch my-2">
+              <input class="form-check-input" type="checkbox" role="switch" id="quoteRebates" checked />
+              <label class="form-check-label small" for="quoteRebates">Manufacturer Rebates</label>
+            </div>
+            <div class="form-check form-check-reverse text-start form-switch my-2">
+              <input class="form-check-input" type="checkbox" role="switch" id="quoteDiscounts" checked />
+              <label class="form-check-label small" for="quoteDiscounts">Dealer Discounts</label>
+            </div>
+            <div class="form-check form-check-reverse text-start form-switch my-2">
+              <input class="form-check-input" type="checkbox" role="switch" id="quoteDiscretionary" checked disabled />
+              <label class="form-check-label small" for="quoteDiscretionary">Discretionary Discounts</label>
+            </div>
+            <div class="form-check form-check-reverse text-start form-switch my-2">
+              <input class="form-check-input" type="checkbox" role="switch" id="quoteFees" checked />
+              <label class="form-check-label small" for="quoteFees">Fees, Freight, Taxes</label>
+            </div>
+            <div class="form-check form-check-reverse text-start form-switch my-2">
+              <input class="form-check-input" type="checkbox" role="switch" id="quoteSavings" checked />
+              <label class="form-check-label small" for="quoteSavings">Total Savings</label>
+            </div>
+            <div class="form-check form-check-reverse text-start form-switch my-2">
+              <input class="form-check-input" type="checkbox" role="switch" id="quoteTotal" checked />
+              <label class="form-check-label small" for="quoteTotal">Total w/ Fees & Taxes</label>
+            </div>
           </div>
         </div>
 
-        <!-- Right Column -->
-        <div class="right-column">
-          <div class="price-container">
-            <!-- Price and savings will be inserted here -->
-          </div>
+        <!-- Sidebar Footer -->
+        <div class="mb-auto"></div>
+        <button onclick="history.back()" class="btn btn-outline-secondary mx-3 mb-2">
+          <i class="bi bi-arrow-left me-2"></i>
+          <span class="d-none d-sm-inline">Back to Inventory</span>
+        </button>
+      </div>
+      <!-- End Sidebar -->
 
-          <div class="payment-calculator">
-            <!-- Payment calculator will be inserted here -->
-          </div>
+      <!-- Start Main Content Area (contains navbar and main content) -->
+      <div class="d-flex flex-column flex-grow-1 vh-100 overflow-hidden">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom opacity-95">
+          <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+              <i class="bi bi-arrows-collapse-vertical"></i>
+            </a>
+            <div class="vr me-3"></div>
+            <button
+              class="navbar-toggler"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <form class="d-flex" role="search" onsubmit="handleSearch(event)">
+                <input class="form-control me-1" type="search" placeholder="Stock Number" aria-label="Search" id="stockNumberSearch" required />
+                <button class="btn btn-danger me-1" type="submit"><i class="bi bi-arrow-return-left"></i></button>
+              </form>
 
-          <div class="pricing-details">
-            <!-- MAT items, accessories, etc will be inserted here -->
-          </div>
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                  <a class="btn btn-secondary me-1" aria-current="page" href="./">
+                    <i class="bi bi-x-circle"></i>
+                  </a>
+                </li>
+              </ul>
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item dropdown d-none">
+                  <a class="btn btn-outline-secondary" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <span class="d-none d-sm-inline">Templates</span> <i class="bi bi-chevron-compact-down"></i>
+                  </a>
 
-          <div class="otd-price">
-            <!-- OTD price will be inserted here -->
+                  <ul class="dropdown-menu">
+                    <li>
+                      <a class="dropdown-item" href="#"><i class="bi bi-messenger me-2"></i> Facebook Marketplace</a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="#"><i class="bi bi-chat-dots me-2"></i> SMS Text Message</a>
+                    </li>
+                    <li><hr class="dropdown-divider" /></li>
+                    <li>
+                      <a class="dropdown-item" href="#"><i class="bi bi-list me-2"></i> All Templates</a>
+                    </li>
+                  </ul>
+                </li>
+                <hr class="mx-2 my-2 opacity-10" />
+                <li class="nav-item d-flex align-items-center ms-2">
+                  <div class="btn-group">
+                    <button class="btn btn-outline-secondary" onclick="adjustZoom(-0.1)" title="Zoom Out">
+                      <i class="bi bi-zoom-out"></i>
+                    </button>
+                    <button class="btn btn-outline-secondary" onclick="resetZoom()" title="Reset Zoom">
+                      <span id="zoomLevel">100%</span>
+                    </button>
+                    <button class="btn btn-outline-secondary" onclick="adjustZoom(0.1)" title="Zoom In">
+                      <i class="bi bi-zoom-in"></i>
+                    </button>
+                  </div>
+                </li>
+              </ul>
+              
+              <div class="vr mx-3"></div>
+              <div class="cancel-btn-container">
+                <a href="../" class="btn btn-secondary ms-2 d-flex align-items-center gap-2">
+                  <span>Cancel</span>
+                </a>
+              </div>
+              <div class="export-btn-container">
+                <button id="placeholderSaveBtn" class="btn btn-danger ms-2 d-flex align-items-center gap-2" disabled>
+                  <i class="bi bi-floppy"></i>
+                  <span>Save</span>
+                </button>
+              </div>
+            </div>
           </div>
-        </div>
+        </nav>
+
+        <!-- QUOTE CONTENT TEMPLATE -->
+        <main class="overflow-y-auto d-flex flex-column align-items-center justify-content-center">
+          <div id="pageContainer" class="page-container zoom-container">
+            <div class="capture-container">
+              <div class="main-header"></div>
+              <div class="carousel-container"></div>
+              <div class="payment-calculator-container"></div>
+              <div class="accessory-items-container"></div>
+              <div class="trade-in-container"></div>
+              <div class="mat-items-container"></div>
+              <div class="discount-items-container"></div>
+              <div class="otd-items-container"></div>
+              <div class="savings-container"></div>
+              <div class="total-price-container"></div>
+            </div>
+          </div>
+        </main>
       </div>
     </div>
 
