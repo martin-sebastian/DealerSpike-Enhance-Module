@@ -936,7 +936,7 @@ document.addEventListener("DOMContentLoaded", function () {
         .capture-container {
             width: 760px;
             max-width: 760px;
-            margin: 0 auto;
+            
         }
 
         .main-header,

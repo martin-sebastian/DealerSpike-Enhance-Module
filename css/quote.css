@@ -194,7 +194,9 @@ ul .nav-pill:hover {
 }
 /* Capture container */
 .capture-container {
-  border-radius: 10px;
+  min-width: 760px;
+  max-width: 760px;
+  border-radius: 15px;
   padding: 20px;
   background-color: #fff;
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
@@ -203,7 +205,7 @@ ul .nav-pill:hover {
 .page-container {
   width: 100%;
   max-width: 900px;
-  height: 2000px;
+  height: auto;
   padding: 0px;
   border: 0px solid #fff;
   border-radius: 10px;
