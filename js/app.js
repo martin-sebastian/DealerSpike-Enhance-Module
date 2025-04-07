@@ -156,7 +156,7 @@ async function fetchData() {
     // Check cache first
     const cache = localStorage.getItem("vehiclesCache");
     const cacheTimestamp = localStorage.getItem("vehiclesCacheTimestamp");
-    const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes in milliseconds
+    const CACHE_DURATION = 20 * 60 * 1000; // 20 minutes in milliseconds
 
     // Use cached data if it exists and is less than 5 minutes old
     if (cache && cacheTimestamp) {
@@ -255,7 +255,7 @@ async function processXMLData(xmlDoc) {
           <span class="text-wrap">${modelName}</span>
           
           <span class="visually-hidden">
-          ${stockNumber} ${vin} ${usage} ${year} ${manufacturer} ${modelName} ${modelType} ${color} ${moment(updated).format("YYYY-MM-DD")}
+          ${stockNumber} ${vin} ${usage} ${year} ${manufacturer} ${modelName} ${modelType} ${color} ${moment(updated).format("MM-DD-YYYY")}
           </span>
         </td>
         <td class="visually-hidden">${modelType}</td>
@@ -276,28 +276,34 @@ async function processXMLData(xmlDoc) {
           </div>
         </td>
         <td><span class="badge bg-success p-2 w-100 fw-bold border">${webPrice}</span></td>
-        <td>
-          <span class="badge text-secondary p-2 w-100 fw-semibold border">${moment(updated).fromNow()}
-            <span class="small text-muted d-none">${moment(updated).format("MM-DD-YYYY")}</span>
+        <td><span class="visually-hidden">${updated}</span>
+          <span class="badge text-secondary w-100 fw-semibold border">
+           ${moment(updated).format("MM-DD-YYYY")}
           </span>
+          <span class="d-none">${moment(updated).fromNow()} | ${moment(updated).format("MM-DD-YYYY")}</span>
         </td>
-        <td class="text-center">${
+        <td class="text-center">
+        ${
           imageElements.length > 10
             ? `<span class="photos-status" title="In-House Photos Done"><i class="bi bi-camera2 text-warning"></i><span class="visually-hidden" style="font-size: 10px;">FOM PHOTOS</span></span>`
             : `<span class="photos-status" title="Awaiting Photo Shoot"><i class="bi bi-camera2 text-secondary"></i><span class="visually-hidden" style="font-size: 10px;">STOCK PHOTOS</span></span>`
-        }</td>
+        }
+        </td>
         <td class="text-center text-nowrap">
           <div class="action-button-group" role="group" aria-label="Vehicles">
-            <button type="button" id="keytagModalButton" class="btn btn-danger action-button mx-1"  title="Print Key Tag" data-bs-toggle="modal" data-bs-target="#keytagModal" data-bs-stocknumber="${stockNumber}">
+          <!-- Key Tags Button -->
+            <button type="button" id="keytagModalButton" class="btn btn-danger action-button mx-1" title="Print Key Tag" data-bs-toggle="modal" data-bs-target="#keytagModal" data-bs-stocknumber="${stockNumber}">
               <i class="bi bi-tag"></i>
               <span style="font-size:10px; text-transform:uppercase;">Key Tags</span>
             </button>
 
-            <button type="button" class="btn btn-danger action-button mx-1"  title="Print Hang Tags" data-bs-toggle="modal" data-bs-target="#HangTagModal" data-bs-stocknumber="${stockNumber}" onclick="openHangTagsModal('${stockNumber}')">
+            <!-- Hang Tags Button -->
+            <button type="button" class="btn btn-danger action-button mx-1" title="Print Hang Tags" data-bs-toggle="modal" data-bs-target="#HangTagModal" data-bs-stocknumber="${stockNumber}" onclick="openHangTagsModal('${stockNumber}')">
               <i class="bi bi-tags"></i>
               <span style="font-size:10px; margin-top:-10px; padding:0; text-transform:uppercase;">Hang Tags</span>
             </button>
-            
+
+            <!-- Quote Button -->
             <a
               href="javascript:void(0);" 
               type="button" 
@@ -309,6 +315,7 @@ async function processXMLData(xmlDoc) {
               <span style="font-size:10px; text-transform:uppercase;">Quote</span>
             </a>
 
+            <!-- Overlay Button -->
             <a
               href="javascript:void(0);" 
               type="button" 
@@ -1154,4 +1161,3 @@ function initializeClipboardTooltips() {
     });
   });
 }
-
