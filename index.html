@@ -23,10 +23,9 @@
               <img id="logo" class="ms-1 me-1 pt-0" src="./img/fom-app-logo-01.svg" alt="Logo" width="180" height="27" />
             </a>
             <button type="button" class="btn btn-danger btn-sm text-white" title="Create custom key tag" onclick="openKeyTagsByStockNumberModal('${stockNumber}')"><i class="bi bi-plus-circle me-2"></i>Key Tag</button>
-            
           </div>
-
-          <form class="d-flex flex-row d-none d-sm-block" role="search">
+          <div class="navbar-center d-none d-sm-block">
+          <form class="form-group d-flex flex-row justify-content-center align-items-center" role="search">
             <label for="searchFilter" class="visually-hidden">Search</label>
             <input
               type="search"
@@ -41,56 +40,21 @@
               oninput="handleSearchInput(this.value)"
             />
             <datalist id="datalistOptions">
-              <!-- Options -->
-              <option value="3 Wheel Motorcycle"></option>
-              <option value="ATV"></option>
-              <option value="Boat Trailers"></option>
-              <option value="Boats"></option>
-              <option value="Cruiser/V-Twin"></option>
-              <option value="Dirt Bikes"></option>
-              <option value="Outboard Motors"></option>
-              <option value="PWC"></option>
-              <option value="Pontoons"></option>
+              <!-- Will be populated dynamically from multiple data columns -->
             </datalist>
-            <select id="yearFilter" class="form-select d-inline-flex me-1" style="width: 90px">
+            <select id="yearFilter" class="form-select me-1" style="max-width: 80px">
               <option value="">Year</option>
-              <option value="2026">2026</option>
-              <option value="2025">2025</option>
-              <option value="2024">2024</option>
-              <option value="2023">2023</option>
-              <option value="2022">2022</option>
-              <option value="2021">2021</option>
-              <option value="2020">2020</option>
-              <option value="2019">2019</option>
-              <option value="2018">2018</option>
-              <option value="2017">2017</option>
-              <option value="2016">2016</option>
-              <option value="2015">2015</option>
-              <option value="2015">2014</option>
-              <option value="2015">2013</option>
-              <option value="2015">2012</option>
-              <option value="2015">2011</option>
-              <option value="2015">2010</option>
+              <option value="">All</option>
             </select>
 
-            <select id="manufacturerFilter" class="form-select d-inline-flex me-1" style="max-width: 150px">
-              <option value="">Manufacturer</option>
+            <select id="manufacturerFilter" class="form-select me-1" style="max-width: 90px">
+              <option value="">Make</option>
               <option value="">All</option>
-              <option value="BMW">BMW</option>
-              <option value="Can-Am">Can-Am</option>
-              <option value="Harley-Davidson">Harley Davidson</option>
-              <option value="Honda">Honda</option>
-              <option value="Indian Motorcycle">Indian Motorcycle</option>
-              <option value="Kawasaki">Kawasaki</option>
-              <option value="Scarab">Scarab</option>
-              <option value="Sea-Doo">Sea-Doo</option>
-              <option value="South bay">South Bay</option>
-              <option value="Suzuki">Suzuki</option>
-              <option value="Suzuki Marine">Suzuki Marine</option>
-              <option value="Polaris Industries">Polaris Industries</option>
-              <option value="Vanderhall">Vanderhall</option>
-              <option value="Victory Motorcycles">Victory Motorcycles</option>
-              <option value="Yamaha">Yamaha</option>
+            </select>
+            
+            <select id="typeFilter" class="form-select me-1" style="max-width: 90px">
+              <option value="">Type</option>
+              <option value="">All</option>
             </select>
             <label for="updatedFilter" class="visually-hidden">Updated:</label>
             <input type="date" id="updatedFilter" value="" class="form-control d-inline-flex w-25 me-1 visually-hidden" name="updated-date" onchange="filterTable()">
@@ -101,8 +65,9 @@
               </label>
             </div>
           </form>
-          <div class="toggles-group d-flex flex-row">
-            
+</div>
+
+          <div class="navbar-right toggles-group d-flex flex-row">
             <button id="toggleThemeButton" class="btn btn-outline-secondary px-3 mx-1" type="button">
               <i id="theme-icon" class="bi bi-moon-stars"></i>
             </button>

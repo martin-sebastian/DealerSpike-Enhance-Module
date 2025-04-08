@@ -18,6 +18,132 @@ const DOM = {
   },
 };
 
+// Add this function near the top of your file, with other utility functions
+function normalizeDate(dateString) {
+  if (!dateString) return null;
+
+  // Parse the date
+  const parsedDate = moment(dateString);
+
+  // If the date is in the future (likely due to timezone issues), adjust it
+  if (parsedDate.isAfter(moment())) {
+    // Use the current date for display purposes
+    return moment();
+  }
+
+  return parsedDate;
+}
+
+// Add near the top with other utility functions
+function populateManufacturerDropdown(manufacturers) {
+  const manufacturerFilter = document.getElementById("manufacturerFilter");
+  if (!manufacturerFilter) return;
+
+  // Clear existing options except the first two (default options)
+  while (manufacturerFilter.options.length > 2) {
+    manufacturerFilter.remove(2);
+  }
+
+  // Sort manufacturers alphabetically
+  manufacturers.sort();
+
+  // Add manufacturers to dropdown
+  manufacturers.forEach((manufacturer) => {
+    const option = document.createElement("option");
+    option.value = manufacturer;
+    option.textContent = manufacturer;
+    manufacturerFilter.appendChild(option);
+  });
+}
+
+// Add near the populateManufacturerDropdown function
+function populateYearDropdown(years) {
+  const yearFilter = document.getElementById("yearFilter");
+  if (!yearFilter) return;
+
+  // Clear existing options except the first two (default options)
+  while (yearFilter.options.length > 2) {
+    yearFilter.remove(2);
+  }
+
+  // Sort years in descending order (newest first)
+  years.sort((a, b) => b - a);
+
+  // Add years to dropdown
+  years.forEach((year) => {
+    const option = document.createElement("option");
+    option.value = year;
+    option.textContent = year;
+    yearFilter.appendChild(option);
+  });
+}
+
+// Add near the populateManufacturerDropdown function
+function populateTypeDropdown(types) {
+  const typeFilter = document.getElementById("typeFilter");
+  if (!typeFilter) return;
+
+  // Clear existing options except the first two (default options)
+  while (typeFilter.options.length > 2) {
+    typeFilter.remove(2);
+  }
+
+  // Sort types alphabetically
+  types.sort();
+
+  // Add types to dropdown
+  types.forEach((type) => {
+    const option = document.createElement("option");
+    option.value = type;
+    option.textContent = type;
+    typeFilter.appendChild(option);
+  });
+}
+
+// Add near the other dropdown population functions
+function populateSearchSuggestions(itemsArray) {
+  const datalist = document.getElementById("datalistOptions");
+  if (!datalist) return;
+
+  // Clear existing options
+  datalist.innerHTML = "";
+
+  // Set to track unique suggestions
+  const suggestions = new Set();
+
+  // Maximum number of suggestions to show (too many makes the list unwieldy)
+  const MAX_SUGGESTIONS = 30;
+
+  // Extract useful search terms from various data fields
+  itemsArray.forEach((item) => {
+    // Get key data fields that users might search for
+    const stockNumber = item.getElementsByTagName("stocknumber")[0]?.textContent || "";
+    const vin = item.getElementsByTagName("vin")[0]?.textContent || "";
+    const manufacturer = item.getElementsByTagName("manufacturer")[0]?.textContent || "";
+    const modelName = item.getElementsByTagName("model_name")[0]?.textContent || "";
+    const modelType = item.getElementsByTagName("model_type")[0]?.textContent || "";
+    const year = item.getElementsByTagName("year")[0]?.textContent || "";
+
+    // Add combinations that would be useful for searching
+    if (stockNumber) suggestions.add(stockNumber);
+    if (vin) suggestions.add(vin);
+    if (manufacturer && modelName) suggestions.add(`${manufacturer} ${modelName}`);
+    if (year && manufacturer && modelName) suggestions.add(`${year} ${manufacturer} ${modelName}`);
+    if (modelType && modelType !== "N/A" && modelType !== manufacturer) suggestions.add(modelType);
+  });
+
+  // Convert to array, sort, and limit to max suggestions
+  const suggestionArray = [...suggestions].sort();
+  const limitedSuggestions = suggestionArray.slice(0, MAX_SUGGESTIONS);
+
+  // Add options to datalist
+  limitedSuggestions.forEach((suggestion) => {
+    const option = document.createElement("option");
+    option.value = suggestion;
+    datalist.appendChild(option);
+  });
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
   DOM.init();
 
@@ -82,8 +208,19 @@ function handleGlobalClicks(event) {
 }
 
 function handleSearchInput(value) {
-  // This will be called whenever the input changes, including when cleared
-  filterTable(); // or whatever function you use to filter your table
+  // This function is called whenever the search input changes
+
+  // Apply search filter with debounce
+  filterTable();
+
+  // If the search input is cleared, refresh suggestions
+  if (!value || value.trim() === "") {
+    const searchFilter = document.getElementById("searchFilter");
+    if (searchFilter) {
+      // Focus the search field to show the datalist
+      searchFilter.focus();
+    }
+  }
 }
 
 function showPlaceholder(rowCount = 10) {
@@ -207,16 +344,71 @@ async function processXMLData(xmlDoc) {
   const items = xmlDoc.getElementsByTagName("item");
   if (!DOM.tableBody) return;
 
+  // Convert NodeList to Array for sorting
+  const itemsArray = Array.from(items);
+
+  // Sort items by updated date (newest first)
+  itemsArray.sort((a, b) => {
+    const dateAStr = a.getElementsByTagName("updated")[0]?.textContent || "";
+    const dateBStr = b.getElementsByTagName("updated")[0]?.textContent || "";
+
+    // Use the normalizeDate function to handle potential timezone issues
+    const dateA = normalizeDate(dateAStr);
+    const dateB = normalizeDate(dateBStr);
+
+    // Compare the normalized dates
+    return dateB - dateA; // Most recent first
+  });
+
+  // Collect unique manufacturers for dropdown
+  const manufacturers = new Set();
+  itemsArray.forEach((item) => {
+    const manufacturer = item.getElementsByTagName("manufacturer")[0]?.textContent || "";
+    if (manufacturer && manufacturer !== "N/A") {
+      manufacturers.add(manufacturer);
+    }
+  });
+
+  // Populate manufacturer dropdown
+  populateManufacturerDropdown([...manufacturers]);
+
+  // Collect unique years for dropdown
+  const years = new Set();
+  itemsArray.forEach((item) => {
+    const year = item.getElementsByTagName("year")[0]?.textContent || "";
+    if (year && year !== "N/A") {
+      years.add(year);
+    }
+  });
+
+  // Populate year dropdown
+  populateYearDropdown([...years]);
+
+  // Collect unique types for dropdown
+  const types = new Set();
+  itemsArray.forEach((item) => {
+    const type = item.getElementsByTagName("model_type")[0]?.textContent || "";
+    if (type && type !== "N/A") {
+      types.add(type);
+    }
+  });
+
+  // Populate type dropdown
+  populateTypeDropdown([...types]);
+
+  // Populate search suggestions
+  populateSearchSuggestions(itemsArray);
+
   // Create a document fragment to batch DOM updates
   const fragment = document.createDocumentFragment();
 
   // Process items in chunks to prevent UI blocking
   const chunkSize = 20;
   const processChunk = async (startIndex) => {
-    const endIndex = Math.min(startIndex + chunkSize, items.length);
+    const endIndex = Math.min(startIndex + chunkSize, itemsArray.length);
 
     for (let i = startIndex; i < endIndex; i++) {
-      const item = items[i];
+      const item = itemsArray[i];
 
       // Extract values once to avoid repeated DOM access
       const imageUrl = item.getElementsByTagName("images")[0]?.getElementsByTagName("imageurl")[0]?.textContent || "N/A";
@@ -277,9 +469,14 @@ async function processXMLData(xmlDoc) {
         </td>
         <td><span class="badge bg-success p-2 w-100 fw-bold border">${webPrice}</span></td>
         <td>
-          <span class="badge text-secondary p-2 w-100 fw-semibold border">${moment(updated).fromNow()}
-            <span class="small text-muted d-none">${moment(updated).format("MM-DD-YYYY")}</span>
+          <span class="badge text-secondary p-2 w-100 fw-semibold border"
+                title="${normalizeDate(updated).format("MM-DD-YYYY")}"
+                data-bs-toggle="tooltip"
+                data-bs-placement="top">
+            ${normalizeDate(updated).fromNow()}
+            <span class="small text-muted d-none">${normalizeDate(updated).format("MM-DD-YYYY")}</span>
           </span>
+          <span class="visually-hidden">${normalizeDate(updated).format("YYYY-MM-DD")}</span>
         </td>
         <td class="text-center">${
           imageElements.length > 10
@@ -336,7 +533,7 @@ async function processXMLData(xmlDoc) {
     // Append the fragment
     DOM.tableBody.appendChild(fragment);
 
-    if (endIndex < items.length) {
+    if (endIndex < itemsArray.length) {
       // Process next chunk in next animation frame
       requestAnimationFrame(() => processChunk(endIndex));
     } else {
@@ -359,6 +556,17 @@ function initializeTableFeatures() {
   const headers = document.querySelectorAll("#vehiclesTable th");
   headers.forEach((header) => {
     header.addEventListener("click", () => sortTableByColumn(header));
+
+    // Set default sort indicator on the updated column (assuming it's the 10th column, index 9)
+    if (header.textContent.trim().toLowerCase().includes("updated")) {
+      header.classList.add("sort-desc");
+    }
+  });
+
+  // Initialize tooltips for date badges
+  const dateBadges = document.querySelectorAll(".badge[data-bs-toggle='tooltip']");
+  dateBadges.forEach((badge) => {
+    new bootstrap.Tooltip(badge);
   });
 
   // Count rows after data is loaded
@@ -1077,11 +1285,26 @@ function sortTableByColumn(header) {
       return isAscending ? aNum - bNum : bNum - aNum;
     }
 
-    // Handle date sorting
-    const aDate = new Date(aValue);
-    const bDate = new Date(bValue);
-    if (!isNaN(aDate) && !isNaN(bDate)) {
-      return isAscending ? aDate - bDate : bDate - aDate;
+    // Handle date sorting - specifically for the updated column
+    // Check if the column contains dates in our expected format
+    if (aValue.includes("-") && bValue.includes("-")) {
+      // Try to find the hidden date field first (MM-DD-YYYY format)
+      const aHidden = a.children[columnIndex]?.querySelector(".small.text-muted")?.textContent.trim();
+      const bHidden = b.children[columnIndex]?.querySelector(".small.text-muted")?.textContent.trim();
+
+      // If hidden dates exist, use those for more accurate sorting
+      if (aHidden && bHidden) {
+        const aDate = normalizeDate(aHidden);
+        const bDate = normalizeDate(bHidden);
+        return isAscending ? aDate - bDate : bDate - aDate;
+      }
+
+      // Fallback to the visible date
+      const aVisibleDate = normalizeDate(aValue);
+      const bVisibleDate = normalizeDate(bValue);
+      if (aVisibleDate && bVisibleDate) {
+        return isAscending ? aVisibleDate - bVisibleDate : bVisibleDate - aVisibleDate;
+      }
     }
 
     // Default to string comparison
@@ -1154,4 +1377,3 @@ function initializeClipboardTooltips() {
     });
   });
 }
-
