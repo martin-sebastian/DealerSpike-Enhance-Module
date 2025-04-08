@@ -155,6 +155,36 @@
             </tbody>
           </table>
         </div>
+        
+        <!-- Pagination controls -->
+        <div class="d-flex justify-content-between align-items-center my-3">
+          <div class="d-flex align-items-center">
+            <label for="pageSizeSelect" class="me-2">Show:</label>
+            <select id="pageSizeSelect" class="form-select form-select-sm" style="width: auto;">
+              <option value="10">10</option>
+              <option value="25">25</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+              <option value="all">All</option>
+            </select>
+          </div>
+          
+          <nav aria-label="Table navigation">
+            <ul class="pagination pagination-sm mb-0">
+              <li class="page-item">
+                <button class="page-link" id="prevPage" aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span>
+                </button>
+              </li>
+              <li class="page-item"><span class="page-link" id="pageInfo">Page 1 of 1</span></li>
+              <li class="page-item">
+                <button class="page-link" id="nextPage" aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+                </button>
+              </li>
+            </ul>
+          </nav>
+        </div>
     </main>
 
       <div class="modal fade" id="overlayModal" tabindex="-1" aria-labelledby="overlayModalLabel" aria-hidden="true">

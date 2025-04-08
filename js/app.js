@@ -3,6 +3,12 @@ const DOM = {
   table: null,
   tableBody: null,
   filters: {},
+  pagination: {
+    pageSizeSelect: null,
+    prevPageBtn: null,
+    nextPageBtn: null,
+    pageInfo: null,
+  },
   init() {
     this.table = document.getElementById("vehiclesTable");
     this.tableBody = this.table?.getElementsByTagName("tbody")[0];
@@ -14,6 +20,12 @@ const DOM = {
       usage: document.getElementById("usageFilter"),
       updated: document.getElementById("updatedFilter"),
       photos: document.getElementById("photosFilter"),
+    };
+    this.pagination = {
+      pageSizeSelect: document.getElementById("pageSizeSelect"),
+      prevPageBtn: document.getElementById("prevPage"),
+      nextPageBtn: document.getElementById("nextPage"),
+      pageInfo: document.getElementById("pageInfo"),
     };
   },
 };
@@ -396,18 +408,25 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
     });
   }
+
+  // Add other filter change listeners
   Object.values(DOM.filters).forEach((filter) => {
     if (filter && filter.id !== "searchFilter") {
       filter.addEventListener("change", filterTable);
     }
   });
 
-  // Show placeholder and fetch data
+  // Show placeholder while loading data
   showPlaceholder();
-  await fetchData();
-  updateRowCount();
 
-  initializeClipboardTooltips();
+  // Load user preferences before fetching data
+  State.loadState();
+
+  // Fetch and process data
+  await fetchData();
+
+  // Initialize the table features (e.g., sorting)
+  initializeTableFeatures();
 
   // Handle window resize to ensure dropdown stays with the search input
   window.addEventListener(
@@ -602,194 +621,85 @@ async function processXMLData(xmlDoc) {
 
   // Collect unique manufacturers for dropdown
   const manufacturers = new Set();
-  itemsArray.forEach((item) => {
-    const manufacturer = item.getElementsByTagName("manufacturer")[0]?.textContent || "";
+  const years = new Set();
+  const types = new Set();
+
+  // Process all items and store in State.allItems
+  State.allItems = itemsArray.map((item) => {
+    // Extract all data values once
+    const imageUrl = item.getElementsByTagName("images")[0]?.getElementsByTagName("imageurl")[0]?.textContent || "N/A";
+    const title = item.getElementsByTagName("title")[0]?.textContent || "N/A";
+    const webURL = item.getElementsByTagName("link")[0]?.textContent || "N/A";
+    const stockNumber = item.getElementsByTagName("stocknumber")[0]?.textContent || "N/A";
+    const vin = item.getElementsByTagName("vin")[0]?.textContent || "N/A";
+    const price = item.getElementsByTagName("price")[0]?.textContent || "N/A";
+    const webPrice = numeral(price).format("$0,0.00");
+    const manufacturer = item.getElementsByTagName("manufacturer")[0]?.textContent || "N/A";
+    const year = item.getElementsByTagName("year")[0]?.textContent || "N/A";
+    const modelName = item.getElementsByTagName("model_name")[0]?.textContent || "N/A";
+    const modelType = item.getElementsByTagName("model_type")[0]?.textContent || "N/A";
+    const color = item.getElementsByTagName("color")[0]?.textContent || "N/A";
+    const usage = item.getElementsByTagName("usage")[0]?.textContent || "N/A";
+    const updated = item.getElementsByTagName("updated")[0]?.textContent || "N/A";
+
+    // Count image elements
+    const imageElements = item.getElementsByTagName("imageurl").length;
+
+    // Add values to filter dropdown sets
     if (manufacturer && manufacturer !== "N/A") {
       manufacturers.add(manufacturer);
     }
-  });
-
-  // Populate manufacturer dropdown
-  populateManufacturerDropdown([...manufacturers]);
-
-  // Collect unique years for dropdown
-  const years = new Set();
-  itemsArray.forEach((item) => {
-    const year = item.getElementsByTagName("year")[0]?.textContent || "";
     if (year && year !== "N/A") {
       years.add(year);
     }
-  });
-
-  // Populate year dropdown
-  populateYearDropdown([...years]);
-
-  // Collect unique types for dropdown
-  const types = new Set();
-  itemsArray.forEach((item) => {
-    const type = item.getElementsByTagName("model_type")[0]?.textContent || "";
-    if (type && type !== "N/A") {
-      types.add(type);
+    if (modelType && modelType !== "N/A") {
+      types.add(modelType);
     }
+
+    // Return a processed item object
+    return {
+      imageUrl,
+      title,
+      webURL,
+      stockNumber,
+      vin,
+      price,
+      webPrice,
+      manufacturer,
+      year,
+      modelName,
+      modelType,
+      color,
+      usage,
+      updated,
+      imageElements,
+    };
   });
 
-  // Populate type dropdown
-  populateTypeDropdown([...types]);
+  // Initialize with all items
+  State.filteredItems = [...State.allItems];
 
-  // Populate search suggestions
+  // Populate dropdowns
+  populateManufacturerDropdown([...manufacturers]);
+  populateYearDropdown([...years]);
+  populateTypeDropdown([...types]);
   populateSearchSuggestions(itemsArray);
 
-  // Create a document fragment to batch DOM updates
-  const fragment = document.createDocumentFragment();
+  // Load saved pagination state
+  State.loadState();
 
-  // Process items in chunks to prevent UI blocking
-  const chunkSize = 20;
-  const processChunk = async (startIndex) => {
-    const endIndex = Math.min(startIndex + chunkSize, itemsArray.length);
+  // Initialize pagination controls
+  initializePagination();
 
-    for (let i = startIndex; i < endIndex; i++) {
-      const item = itemsArray[i];
-
-      // Extract values once to avoid repeated DOM access
-      const imageUrl = item.getElementsByTagName("images")[0]?.getElementsByTagName("imageurl")[0]?.textContent || "N/A";
-      const title = item.getElementsByTagName("title")[0]?.textContent || "N/A";
-      const webURL = item.getElementsByTagName("link")[0]?.textContent || "N/A";
-      const stockNumber = item.getElementsByTagName("stocknumber")[0]?.textContent || "N/A";
-      const vin = item.getElementsByTagName("vin")[0]?.textContent || "N/A";
-      const price = item.getElementsByTagName("price")[0]?.textContent || "N/A";
-      const webPrice = numeral(price).format("$0,0.00");
-      const manufacturer = item.getElementsByTagName("manufacturer")[0]?.textContent || "N/A";
-      const year = item.getElementsByTagName("year")[0]?.textContent || "N/A";
-      const modelName = item.getElementsByTagName("model_name")[0]?.textContent || "N/A";
-      const modelType = item.getElementsByTagName("model_type")[0]?.textContent || "N/A";
-      const color = item.getElementsByTagName("color")[0]?.textContent || "N/A";
-      const usage = item.getElementsByTagName("usage")[0]?.textContent || "N/A";
-      const updated = item.getElementsByTagName("updated")[0]?.textContent || "N/A";
-      const imageElements = item.getElementsByTagName("imageurl");
-
-      const row = document.createElement("tr");
-      row.innerHTML = `
-        <td data-cell="image" class="text-center">
-          <a href="${webURL}" target="_blank">
-            ${
-              imageUrl !== "N/A"
-                ? `<img src="${imageUrl}" alt="${title}" style="max-width: 100px; max-height: 100px;" loading="lazy" />`
-                : `<i class="bi bi-card-image"></i>`
-            }
-          </a>
-        </td>
-        <td class="text-center"><span class="badge ${usage === "New" ? "text-bg-success" : "text-bg-secondary"}">${usage}</span></td>
-        <td class="text-center">
-          <span class="badge text-bg-dark border">${year}</span>
-        </td>
-        <td class="text-truncate">${manufacturer}</td>
-        <td class="text-wrap" style="max-width: 300px;">
-          <span class="text-wrap">${modelName}</span>
-          
-          <span class="visually-hidden">
-          ${stockNumber} ${vin} ${usage} ${year} ${manufacturer} ${modelName} ${modelType} ${color} ${moment(updated).format("YYYY-MM-DD")}
-          </span>
-        </td>
-        <td class="visually-hidden">${modelType}</td>
-        <td class="visually-hidden">${color}</td>
-        <td>
-          <div class="input-group input-group-sm">
-            <input type="text" class="form-control" value="${stockNumber}" placeholder="Stock Number" title="${stockNumber}" aria-label="stock number" aria-describedby="btnGroupAddon">
-            <div class="input-group-text" id="btnGroupAddon">
-              <button type="button" 
-                      class="btn-icon" 
-                      data-bs-toggle="tooltip"
-                      data-bs-placement="top"
-                      data-bs-title="Copy to clipboard"
-                      onclick="navigator.clipboard.writeText('${stockNumber}')">
-                <i class="bi bi-clipboard"></i>
-              </button>
-            </div>
-          </div>
-        </td>
-        <td><span class="badge bg-success p-2 w-100 fw-bold border">${webPrice}</span></td>
-        <td>
-          <span class="badge text-secondary p-2 w-100 fw-semibold border"
-                title="${normalizeDate(updated).format("MM-DD-YYYY")}"
-                data-bs-toggle="tooltip"
-                data-bs-placement="top">
-            ${normalizeDate(updated).fromNow()}
-            <span class="small text-muted d-none">${normalizeDate(updated).format("MM-DD-YYYY")}</span>
-          </span>
-          <span class="visually-hidden">${normalizeDate(updated).format("YYYY-MM-DD")}</span>
-        </td>
-        <td class="text-center">${
-          imageElements.length > 10
-            ? `<span class="photos-status" title="In-House Photos Done"><i class="bi bi-camera2 text-warning"></i><span class="visually-hidden" style="font-size: 10px;">FOM PHOTOS</span></span>`
-            : `<span class="photos-status" title="Awaiting Photo Shoot"><i class="bi bi-camera2 text-secondary"></i><span class="visually-hidden" style="font-size: 10px;">STOCK PHOTOS</span></span>`
-        }</td>
-        <td class="text-center text-nowrap">
-          <div class="action-button-group" role="group" aria-label="Vehicles">
-            <button type="button" id="keytagModalButton" class="btn btn-danger action-button mx-1"  title="Print Key Tag" data-bs-toggle="modal" data-bs-target="#keytagModal" data-bs-stocknumber="${stockNumber}">
-              <i class="bi bi-tag"></i>
-              <span style="font-size:10px; text-transform:uppercase;">Key Tags</span>
-            </button>
-
-            <button type="button" class="btn btn-danger action-button mx-1"  title="Print Hang Tags" data-bs-toggle="modal" data-bs-target="#HangTagModal" data-bs-stocknumber="${stockNumber}" onclick="openHangTagsModal('${stockNumber}')">
-              <i class="bi bi-tags"></i>
-              <span style="font-size:10px; margin-top:-10px; padding:0; text-transform:uppercase;">Hang Tags</span>
-            </button>
-            
-            <a
-              href="javascript:void(0);" 
-              type="button" 
-              class="btn btn-danger action-button mx-1"
-              title="Quote this vehicle"
-              onclick="window.location.href = 'quote/?search=${stockNumber}'"
-            >
-              <i class="bi bi-card-heading"></i>
-              <span style="font-size:10px; text-transform:uppercase;">Quote</span>
-            </a>
-
-            <a
-              href="javascript:void(0);" 
-              type="button" 
-              class="btn btn-danger action-button mx-1"
-              style="display: none;"
-              title="Pricing"
-              data-bs-toggle="modal"
-              data-bs-target="#pricingModal"
-              onclick="openNewOverlayModal('${stockNumber}')"
-            >
-              <i class="bi bi-card-heading"></i>
-              <span style="font-size:10px; text-transform:uppercase;">Overlay</span>
-            </a>
-          </div>  
-        </td>`;
-
-      fragment.appendChild(row);
-    }
-
-    if (startIndex === 0) {
-      // Clear existing content on first chunk
-      DOM.tableBody.innerHTML = "";
-    }
-
-    // Append the fragment
-    DOM.tableBody.appendChild(fragment);
-
-    if (endIndex < itemsArray.length) {
-      // Process next chunk in next animation frame
-      requestAnimationFrame(() => processChunk(endIndex));
-    } else {
-      // All chunks processed - initialize features
-      initializeTableFeatures();
-    }
-  };
-
-  // Start processing first chunk
-  await processChunk(0);
+  // Apply pagination and render the table
+  applyPagination();
 
   // After data is loaded
   document.querySelectorAll(".placeholder-wave").forEach((el) => {
     el.classList.remove("placeholder-wave");
   });
 }
+
 // Helper function to initialize table features
 function initializeTableFeatures() {
   // Add event listeners for sorting
@@ -823,15 +733,10 @@ function filterTable() {
   const photosFilter = document.getElementById("photosFilter")?.value.toUpperCase() || "";
   const updatedFilter = document.getElementById("updatedFilter")?.value || "";
 
-  const table = document.getElementById("vehiclesTable");
-  const tr = table?.getElementsByTagName("tr");
-
-  if (!tr) return;
-
   // Split search input into individual terms
   const searchTerms = searchInput.split(/\s+/).filter((term) => term.length > 0);
 
-  const rows = Array.from(tr).slice(1); // Convert to array once, skip header
+  // Define filter conditions
   const filters = {
     manufacturer: manufacturerFilter,
     type: typeFilter,
@@ -841,52 +746,53 @@ function filterTable() {
     updated: updatedFilter,
   };
 
-  rows.forEach((row) => {
-    const titleTd = row.querySelector("td:nth-child(5)");
-    const hiddenSpan = titleTd?.querySelector(".visually-hidden");
+  // Apply filters to allItems
+  State.filteredItems = State.allItems.filter((item) => {
+    // Create a combined string of all searchable fields
+    const searchText =
+      `${item.stockNumber} ${item.vin} ${item.usage} ${item.year} ${item.manufacturer} ${item.modelName} ${item.modelType} ${item.color}`.toUpperCase();
 
-    if (titleTd && hiddenSpan) {
-      const hiddenText = hiddenSpan.textContent.trim();
-      const [stockNumber, vin, usage, year, manufacturer, modelName, modelType, color, updatedDate] = hiddenText.split(" ");
+    // Check if all search terms match
+    const searchMatch = searchTerms.length === 0 || searchTerms.every((term) => searchText.includes(term));
 
-      // Check if all search terms match anywhere in the hidden text
-      const searchMatch = searchTerms.length === 0 || searchTerms.every((term) => hiddenText.toUpperCase().includes(term));
+    // Check other filters
+    const filterMatch = Object.entries(filters).every(([key, value]) => {
+      if (!value) return true; // Skip empty filters
 
-      const filterMatch = Object.entries(filters).every(([key, value]) => {
-        if (!value) return true; // Skip empty filters
+      let textToCompare = "";
+      switch (key) {
+        case "manufacturer":
+          textToCompare = item.manufacturer || "";
+          break;
+        case "year":
+          textToCompare = item.year || "";
+          break;
+        case "type":
+          textToCompare = item.modelType || "";
+          break;
+        case "usage":
+          textToCompare = item.usage || "";
+          break;
+        case "updated":
+          // Strip time components from both dates for comparison
+          const itemDate = moment(item.updated).startOf("day").format("YYYY-MM-DD");
+          const filterDate = moment(value).startOf("day").format("YYYY-MM-DD");
+          return itemDate === filterDate;
+        default:
+          textToCompare = "";
+      }
 
-        let textToCompare = "";
-        switch (key) {
-          case "manufacturer":
-            textToCompare = manufacturer || "";
-            break;
-          case "year":
-            textToCompare = year || "";
-            break;
-          case "type":
-            textToCompare = modelType || "";
-            break;
-          case "usage":
-            textToCompare = usage || "";
-            break;
-          case "updated":
-            // Strip time components from both dates for comparison
-            const rowDate = moment(updatedDate).startOf("day").format("YYYY-MM-DD");
-            const filterDate = moment(value).startOf("day").format("YYYY-MM-DD");
-            return rowDate === filterDate;
-          default:
-            textToCompare = "";
-        }
+      return textToCompare.toUpperCase().includes(value);
+    });
 
-        return textToCompare.toUpperCase().includes(value);
-      });
-
-      row.style.display = searchMatch && filterMatch ? "" : "none";
-    }
+    return searchMatch && filterMatch;
   });
 
-  // Update row count after filtering
-  updateRowCount();
+  // Reset to first page when filters change
+  State.pagination.currentPage = 1;
+
+  // Apply pagination with the filtered items
+  applyPagination();
 }
 
 function toggleTheme() {
@@ -928,17 +834,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Function to update row count (initial and filtered)
 function updateRowCount() {
-  const table = document.getElementById("vehiclesTable");
-  const tr = table?.getElementsByTagName("tr");
-
-  // Skip the first row if it's the header row
-  const totalRows = tr.length - 1; // Assuming first row is the header
-  const visibleRows = [...tr].slice(1).filter((row) => row.style.display !== "none").length;
-
   // Update rowCountDisplay with both visible rows and total rows
   const rowCountElement = document.getElementById("rowCountDisplay");
   if (rowCountElement) {
-    rowCountElement.innerHTML = `${visibleRows} of ${totalRows}`;
+    const totalItems = State.allItems.length;
+    const filteredItems = State.filteredItems.length;
+    const visibleItems = State.currentItems.length;
+
+    if (filteredItems === totalItems) {
+      // No filtering applied, just show visible of total
+      rowCountElement.innerHTML = `${visibleItems} of ${totalItems}`;
+    } else {
+      // Filtering is applied, show more detailed counts
+      rowCountElement.innerHTML = `${visibleItems} of ${filteredItems} filtered (${totalItems} total)`;
+    }
   }
 }
 
@@ -1616,4 +1525,270 @@ function initializeClipboardTooltips() {
       }, 2000);
     });
   });
+}
+
+// Add after DOM object
+const State = {
+  // Original data before filtering
+  allItems: [],
+  // Data after filtering
+  filteredItems: [],
+  // Current page of data
+  currentItems: [],
+  // Pagination state
+  pagination: {
+    currentPage: 1,
+    pageSize: 25,
+    totalPages: 1,
+  },
+  // Save current state to localStorage
+  saveState() {
+    localStorage.setItem(
+      "tablePagination",
+      JSON.stringify({
+        currentPage: this.pagination.currentPage,
+        pageSize: this.pagination.pageSize,
+      })
+    );
+  },
+  // Load state from localStorage
+  loadState() {
+    try {
+      const savedState = localStorage.getItem("tablePagination");
+      if (savedState) {
+        const parsedState = JSON.parse(savedState);
+        this.pagination.currentPage = parsedState.currentPage || 1;
+        this.pagination.pageSize = parsedState.pageSize || 25;
+      }
+    } catch (e) {
+      console.error("Error loading saved state:", e);
+    }
+  },
+};
+
+// Pagination functions
+function initializePagination() {
+  // Set the page size select to the saved value
+  if (DOM.pagination.pageSizeSelect) {
+    const pageSizeValue = State.pagination.pageSize === Infinity ? "all" : State.pagination.pageSize.toString();
+    const option = Array.from(DOM.pagination.pageSizeSelect.options).find((opt) => opt.value === pageSizeValue);
+    if (option) {
+      option.selected = true;
+    }
+
+    // Add event listener for page size changes
+    DOM.pagination.pageSizeSelect.addEventListener("change", function () {
+      const newSize = this.value === "all" ? Infinity : parseInt(this.value, 10);
+      State.pagination.pageSize = newSize;
+      State.pagination.currentPage = 1; // Reset to first page on size change
+      State.saveState();
+      applyPagination();
+    });
+  }
+
+  // Add event listeners for pagination buttons
+  if (DOM.pagination.prevPageBtn) {
+    DOM.pagination.prevPageBtn.addEventListener("click", function () {
+      if (State.pagination.currentPage > 1) {
+        State.pagination.currentPage--;
+        State.saveState();
+        applyPagination();
+      }
+    });
+  }
+
+  if (DOM.pagination.nextPageBtn) {
+    DOM.pagination.nextPageBtn.addEventListener("click", function () {
+      if (State.pagination.currentPage < State.pagination.totalPages) {
+        State.pagination.currentPage++;
+        State.saveState();
+        applyPagination();
+      }
+    });
+  }
+}
+
+function applyPagination() {
+  const { currentPage, pageSize } = State.pagination;
+
+  // Calculate total pages
+  State.pagination.totalPages = pageSize === Infinity ? 1 : Math.ceil(State.filteredItems.length / pageSize);
+
+  // Make sure current page is valid
+  if (currentPage > State.pagination.totalPages) {
+    State.pagination.currentPage = State.pagination.totalPages || 1;
+  }
+
+  // Calculate start and end indices
+  const startIndex = pageSize === Infinity ? 0 : (State.pagination.currentPage - 1) * pageSize;
+  const endIndex = pageSize === Infinity ? State.filteredItems.length : startIndex + pageSize;
+
+  // Get items for current page
+  State.currentItems = State.filteredItems.slice(startIndex, endIndex);
+
+  // Update UI
+  updateTable();
+  updatePaginationUI();
+}
+
+function updatePaginationUI() {
+  if (DOM.pagination.pageInfo) {
+    DOM.pagination.pageInfo.textContent = `Page ${State.pagination.currentPage} of ${State.pagination.totalPages}`;
+  }
+
+  // Disable/enable prev/next buttons
+  if (DOM.pagination.prevPageBtn) {
+    DOM.pagination.prevPageBtn.disabled = State.pagination.currentPage <= 1;
+    DOM.pagination.prevPageBtn.classList.toggle("disabled", State.pagination.currentPage <= 1);
+  }
+
+  if (DOM.pagination.nextPageBtn) {
+    DOM.pagination.nextPageBtn.disabled = State.pagination.currentPage >= State.pagination.totalPages;
+    DOM.pagination.nextPageBtn.classList.toggle("disabled", State.pagination.currentPage >= State.pagination.totalPages);
+  }
+}
+
+// New function to update the table with the current items
+function updateTable() {
+  if (!DOM.tableBody) return;
+
+  // Clear the table body
+  while (DOM.tableBody.firstChild) {
+    DOM.tableBody.removeChild(DOM.tableBody.firstChild);
+  }
+
+  // Create a document fragment for better performance
+  const fragment = document.createDocumentFragment();
+
+  // Add rows for the current page
+  State.currentItems.forEach((item) => {
+    // Extract values once to avoid repeated DOM access
+    const imageUrl = item.imageUrl;
+    const title = item.title;
+    const webURL = item.webURL;
+    const stockNumber = item.stockNumber;
+    const vin = item.vin;
+    const price = item.price;
+    const webPrice = item.webPrice;
+    const manufacturer = item.manufacturer;
+    const year = item.year;
+    const modelName = item.modelName;
+    const modelType = item.modelType;
+    const color = item.color;
+    const usage = item.usage;
+    const updated = item.updated;
+    const imageElements = item.imageElements;
+
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td data-cell="image" class="text-center">
+        <a href="${webURL}" target="_blank">
+          ${
+            imageUrl !== "N/A"
+              ? `<img src="${imageUrl}" alt="${title}" style="max-width: 100px; max-height: 100px;" loading="lazy" />`
+              : `<i class="bi bi-card-image"></i>`
+          }
+        </a>
+      </td>
+      <td class="text-center"><span class="badge ${usage === "New" ? "text-bg-success" : "text-bg-secondary"}">${usage}</span></td>
+      <td class="text-center">
+        <span class="badge text-bg-dark border">${year}</span>
+      </td>
+      <td class="text-truncate">${manufacturer}</td>
+      <td class="text-wrap" style="max-width: 300px;">
+        <span class="text-wrap">${modelName}</span>
+        
+        <span class="visually-hidden">
+        ${stockNumber} ${vin} ${usage} ${year} ${manufacturer} ${modelName} ${modelType} ${color} ${moment(updated).format("YYYY-MM-DD")}
+        </span>
+      </td>
+      <td class="visually-hidden">${modelType}</td>
+      <td class="visually-hidden">${color}</td>
+      <td>
+        <div class="input-group input-group-sm flex-nowrap" style="width: 150px;">
+          <input type="text" class="form-control" value="${stockNumber}" placeholder="Stock Number" title="${stockNumber}" aria-label="stock number" aria-describedby="btnGroupAddon">
+          <div class="input-group-text" id="btnGroupAddon">
+            <button type="button" 
+                    class="btn-icon" 
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="top"
+                    data-bs-title="Copy to clipboard"
+                    onclick="navigator.clipboard.writeText('${stockNumber}')">
+              <i class="bi bi-clipboard"></i>
+            </button>
+          </div>
+        </div>
+      </td>
+      <td><span class="badge bg-success p-2 w-100 fw-bold border">${webPrice}</span></td>
+      <td>
+        <span class="badge text-secondary p-2 w-100 fw-semibold border"
+              title="${normalizeDate(updated).format("MM-DD-YYYY")}"
+              data-bs-toggle="tooltip"
+              data-bs-placement="top">
+          ${normalizeDate(updated).fromNow()}
+          <span class="small text-muted d-none">${normalizeDate(updated).format("MM-DD-YYYY")}</span>
+        </span>
+        <span class="visually-hidden">${normalizeDate(updated).format("YYYY-MM-DD")}</span>
+      </td>
+      <td class="text-center">${
+        parseInt(imageElements) > 10
+          ? `<span class="photos-status" title="In-House Photos Done"><i class="bi bi-camera2 text-warning"></i><span class="visually-hidden" style="font-size: 10px;">FOM PHOTOS</span></span>`
+          : `<span class="photos-status" title="Awaiting Photo Shoot"><i class="bi bi-camera2 text-secondary"></i><span class="visually-hidden" style="font-size: 10px;">STOCK PHOTOS</span></span>`
+      }</td>
+      <td class="text-center text-nowrap">
+        <div class="action-button-group" role="group" aria-label="Vehicles">
+          <button type="button" id="keytagModalButton" class="btn btn-danger action-button mx-1"  title="Print Key Tag" data-bs-toggle="modal" data-bs-target="#keytagModal" data-bs-stocknumber="${stockNumber}">
+            <i class="bi bi-tag"></i>
+            <span style="font-size:10px; text-transform:uppercase;">Key Tags</span>
+          </button>
+
+          <button type="button" class="btn btn-danger action-button mx-1"  title="Print Hang Tags" data-bs-toggle="modal" data-bs-target="#HangTagModal" data-bs-stocknumber="${stockNumber}" onclick="openHangTagsModal('${stockNumber}')">
+            <i class="bi bi-tags"></i>
+            <span style="font-size:10px; margin-top:-10px; padding:0; text-transform:uppercase;">Hang Tags</span>
+          </button>
+          
+          <a
+            href="javascript:void(0);" 
+            type="button" 
+            class="btn btn-danger action-button mx-1"
+            title="Quote this vehicle"
+            onclick="window.location.href = 'quote/?search=${stockNumber}'"
+          >
+            <i class="bi bi-card-heading"></i>
+            <span style="font-size:10px; text-transform:uppercase;">Quote</span>
+          </a>
+
+          <a
+            href="javascript:void(0);" 
+            type="button" 
+            class="btn btn-danger action-button mx-1"
+            style="display: none;"
+            title="Pricing"
+            data-bs-toggle="modal"
+            data-bs-target="#pricingModal"
+            onclick="openNewOverlayModal('${stockNumber}')"
+          >
+            <i class="bi bi-card-heading"></i>
+            <span style="font-size:10px; text-transform:uppercase;">Overlay</span>
+          </a>
+        </div>  
+      </td>`;
+
+    fragment.appendChild(row);
+  });
+
+  // Append the fragment to the table body
+  DOM.tableBody.appendChild(fragment);
+
+  // Initialize tooltips for the new rows
+  initializeClipboardTooltips();
+
+  // Initialize tooltips for date badges
+  const dateBadges = document.querySelectorAll(".badge[data-bs-toggle='tooltip']");
+  dateBadges.forEach((badge) => {
+    new bootstrap.Tooltip(badge);
+  });
+
+  // Update row count after rendering
+  updateRowCount();
 }
