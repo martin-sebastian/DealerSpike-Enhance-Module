@@ -30,6 +30,13 @@ const DOM = {
   },
 };
 
+// Near the top of the file, add a global storage fallback
+let memoryStorage = {
+  vehiclesCache: null,
+  vehiclesCacheTimestamp: null,
+  tablePagination: null,
+};
+
 // Add this function near the top of your file, with other utility functions
 function normalizeDate(dateString) {
   if (!dateString) return null;
@@ -318,6 +325,15 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   DOM.init();
 
+  // Setup diagnostic monitoring
+  const networkStatus = setupNetworkMonitoring();
+
+  // Check for localStorage availability and display browser info
+  const storageStatus = checkLocalStorageAvailability();
+  console.log(`Browser info: ${navigator.userAgent}`);
+  console.log(`Storage status: ${JSON.stringify(storageStatus)}`);
+  console.log(`Network status: ${JSON.stringify(networkStatus)}`);
+
   // Theme handling - using existing theme functions instead of applyTheme
   const savedTheme = localStorage.getItem("theme");
   if (savedTheme) {
@@ -549,48 +565,181 @@ function debounce(func, wait) {
 
 async function fetchData() {
   try {
-    // Check cache first
-    const cache = localStorage.getItem("vehiclesCache");
-    const cacheTimestamp = localStorage.getItem("vehiclesCacheTimestamp");
+    // Add mobile debugging info
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    console.log(`Device info - Mobile: ${isMobile}, UserAgent: ${navigator.userAgent}`);
+
+    // Check if we're using localStorage or memory fallback
+    const useMemoryFallback = !checkLocalStorageAvailability().available;
+
+    // Check cache first (either localStorage or memory)
+    let cache, cacheTimestamp;
+
+    if (useMemoryFallback) {
+      cache = memoryStorage.vehiclesCache;
+      cacheTimestamp = memoryStorage.vehiclesCacheTimestamp;
+      console.log("Using memory storage fallback");
+    } else {
+      cache = localStorage.getItem("vehiclesCache");
+      cacheTimestamp = localStorage.getItem("vehiclesCacheTimestamp");
+    }
+
     const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes in milliseconds
 
     // Use cached data if it exists and is less than 5 minutes old
     if (cache && cacheTimestamp) {
-      const age = Date.now() - parseInt(cacheTimestamp);
+      const age = Date.now() - (typeof cacheTimestamp === "string" ? parseInt(cacheTimestamp) : cacheTimestamp);
       if (age < CACHE_DURATION) {
         console.log("Using cached XML data...");
-        const parser = new DOMParser();
-        const xmlDoc = parser.parseFromString(cache, "text/xml");
-        await processXMLData(xmlDoc);
-        return;
+        try {
+          const parser = new DOMParser();
+          const xmlDoc = parser.parseFromString(cache, "text/xml");
+
+          // Check for parsing errors
+          const parseError = xmlDoc.querySelector("parsererror");
+          if (parseError) {
+            console.error("XML Parse Error:", parseError.textContent);
+            throw new Error("XML parsing failed");
+          }
+
+          await processXMLData(xmlDoc);
+          return;
+        } catch (parseError) {
+          console.error("Error parsing cached XML:", parseError);
+          // If parse error, continue to fetch fresh data
+        }
       }
     }
 
     // Fetch fresh data if cache is missing or expired
     console.log("Fetching fresh XML data...");
-    const response = await fetch("https://www.flatoutmotorcycles.com/unitinventory_univ.xml");
-    if (!response.ok) throw new Error("Network response was not ok");
 
-    const data = await response.text();
+    try {
+      // Set a longer timeout on mobile
+      const timeoutDuration = isMobile ? 60000 : 30000; // 60 seconds on mobile, 30 on desktop
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), timeoutDuration);
 
-    // Update cache
-    localStorage.setItem("vehiclesCache", data);
-    localStorage.setItem("vehiclesCacheTimestamp", Date.now().toString());
+      const response = await fetch("https://www.flatoutmotorcycles.com/unitinventory_univ.xml", {
+        signal: controller.signal,
+        mode: "cors", // Explicitly request CORS
+        headers: {
+          Accept: "application/xml, text/xml",
+        },
+        // Add cache busting for mobile
+        cache: isMobile ? "no-cache" : "default",
+      });
 
-    const parser = new DOMParser();
-    const xmlDoc = parser.parseFromString(data, "text/xml");
-    await processXMLData(xmlDoc);
+      clearTimeout(timeoutId);
+
+      if (!response.ok) {
+        console.error(`Network response error: ${response.status} ${response.statusText}`);
+        throw new Error(`Network response error: ${response.status}`);
+      }
+
+      const data = await response.text();
+      console.log(`Received data length: ${data.length} characters`);
+
+      if (data.length < 100) {
+        console.error("Response too short, likely not valid XML");
+        throw new Error("Response too short");
+      }
+
+      // Validate XML before caching
+      const parser = new DOMParser();
+      const xmlDoc = parser.parseFromString(data, "text/xml");
+      const parseError = xmlDoc.querySelector("parsererror");
+
+      if (parseError) {
+        console.error("XML Parse Error in fresh data:", parseError.textContent);
+        throw new Error("XML parsing failed for fresh data");
+      }
+
+      // Update cache (either localStorage or memory)
+      try {
+        if (useMemoryFallback) {
+          memoryStorage.vehiclesCache = data;
+          memoryStorage.vehiclesCacheTimestamp = Date.now();
+        } else {
+          localStorage.setItem("vehiclesCache", data);
+          localStorage.setItem("vehiclesCacheTimestamp", Date.now().toString());
+        }
+        console.log("Cache updated successfully");
+      } catch (storageError) {
+        console.error("Storage error (possibly quota exceeded):", storageError);
+        // Fall back to memory if localStorage fails
+        memoryStorage.vehiclesCache = data;
+        memoryStorage.vehiclesCacheTimestamp = Date.now();
+        console.log("Fell back to memory storage");
+      }
+
+      await processXMLData(xmlDoc);
+    } catch (fetchError) {
+      console.error("Fetch error details:", fetchError);
+      throw fetchError; // Re-throw to be caught by outer try/catch
+    }
   } catch (error) {
     console.error("Error fetching XML:", error);
+
+    // Check if it's an abort error (timeout)
+    if (error.name === "AbortError") {
+      console.log("Request timed out - trying to use cached data as fallback");
+    }
+
     // If there's an error fetching fresh data, try to use cached data as fallback
-    const cache = localStorage.getItem("vehiclesCache");
+    const useMemoryFallback = !checkLocalStorageAvailability().available;
+    const cache = useMemoryFallback ? memoryStorage.vehiclesCache : localStorage.getItem("vehiclesCache");
+
     if (cache) {
       console.log("Using cached data as fallback...");
-      const parser = new DOMParser();
-      const xmlDoc = parser.parseFromString(cache, "text/xml");
-      await processXMLData(xmlDoc);
+      try {
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(cache, "text/xml");
+
+        // Check for parsing errors in fallback
+        const parseError = xmlDoc.querySelector("parsererror");
+        if (parseError) {
+          console.error("XML Parse Error in fallback cache:", parseError.textContent);
+          showDataLoadError("Could not load vehicle data. Please try again later.");
+          return;
+        }
+
+        await processXMLData(xmlDoc);
+      } catch (fallbackError) {
+        console.error("Error using fallback cache:", fallbackError);
+        showDataLoadError("Could not load vehicle data. Please try again later.");
+      }
+    } else {
+      console.error("No cache available and fetch failed");
+      showDataLoadError("Could not load vehicle data. Please try again later.");
     }
   }
+}
+
+// Add a function to show error message to the user
+function showDataLoadError(message) {
+  if (!DOM.tableBody) return;
+
+  // Clear existing content
+  while (DOM.tableBody.firstChild) {
+    DOM.tableBody.removeChild(DOM.tableBody.firstChild);
+  }
+
+  // Create error message row
+  const row = document.createElement("tr");
+  row.innerHTML = `
+    <td colspan="12" class="text-center p-5">
+      <div class="alert alert-danger" role="alert">
+        <i class="bi bi-exclamation-triangle me-2"></i>
+        ${message}
+      </div>
+      <button class="btn btn-outline-primary mt-3" onclick="location.reload()">
+        <i class="bi bi-arrow-clockwise me-2"></i>Refresh
+      </button>
+    </td>
+  `;
+
+  DOM.tableBody.appendChild(row);
 }
 
 // Separate function to process the XML data
@@ -1541,22 +1690,43 @@ const State = {
     pageSize: 25,
     totalPages: 1,
   },
-  // Save current state to localStorage
+  // Save current state to localStorage or memory fallback
   saveState() {
-    localStorage.setItem(
-      "tablePagination",
-      JSON.stringify({
-        currentPage: this.pagination.currentPage,
-        pageSize: this.pagination.pageSize,
-      })
-    );
+    const stateToSave = {
+      currentPage: this.pagination.currentPage,
+      pageSize: this.pagination.pageSize,
+    };
+
+    try {
+      if (checkLocalStorageAvailability().available) {
+        localStorage.setItem("tablePagination", JSON.stringify(stateToSave));
+        console.log("Saved state to localStorage");
+      } else {
+        memoryStorage.tablePagination = stateToSave;
+        console.log("Saved state to memory fallback");
+      }
+    } catch (e) {
+      console.warn("Failed to save state", e);
+      memoryStorage.tablePagination = stateToSave;
+    }
   },
-  // Load state from localStorage
+  // Load state from localStorage or memory fallback
   loadState() {
     try {
-      const savedState = localStorage.getItem("tablePagination");
-      if (savedState) {
-        const parsedState = JSON.parse(savedState);
+      let parsedState;
+
+      if (checkLocalStorageAvailability().available) {
+        const savedState = localStorage.getItem("tablePagination");
+        if (savedState) {
+          parsedState = JSON.parse(savedState);
+          console.log("Loaded state from localStorage");
+        }
+      } else if (memoryStorage.tablePagination) {
+        parsedState = memoryStorage.tablePagination;
+        console.log("Loaded state from memory fallback");
+      }
+
+      if (parsedState) {
         this.pagination.currentPage = parsedState.currentPage || 1;
         this.pagination.pageSize = parsedState.pageSize || 25;
       }
@@ -1791,4 +1961,98 @@ function updateTable() {
 
   // Update row count after rendering
   updateRowCount();
+}
+
+// Add this function near the top with other utility functions
+function checkLocalStorageAvailability() {
+  try {
+    // Test localStorage availability
+    const testKey = "__storage_test__";
+    localStorage.setItem(testKey, testKey);
+    localStorage.removeItem(testKey);
+
+    // Try estimating available space
+    let totalBytes = 0;
+
+    // Keep adding data until we hit a quota error
+    try {
+      // Get existing storage use
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        const value = localStorage.getItem(key);
+        totalBytes += key.length + value.length;
+      }
+
+      // Test for additional space
+      const oneKB = "a".repeat(1024); // 1KB of data
+      let testCounter = 0;
+      const testPrefix = "__space_test__";
+
+      // Try to add up to 5MB more to see if we hit limits
+      while (testCounter < 5) {
+        localStorage.setItem(`${testPrefix}${testCounter}`, oneKB);
+        testCounter++;
+      }
+
+      // Clean up test items
+      for (let i = 0; i < testCounter; i++) {
+        localStorage.removeItem(`${testPrefix}${i}`);
+      }
+
+      console.log(`LocalStorage: Approximately ${Math.round(totalBytes / 1024)}KB in use`);
+      return { available: true, quotaExceeded: false };
+    } catch (e) {
+      // Caught a quota error
+      console.warn("LocalStorage quota may be limited - will use memory fallbacks if needed");
+      return { available: true, quotaExceeded: true };
+    }
+  } catch (e) {
+    console.error("LocalStorage not available", e);
+    return { available: false, quotaExceeded: false };
+  }
+}
+
+// Add near the top with other utility functions
+function setupNetworkMonitoring() {
+  const reportNetworkStatus = () => {
+    const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+
+    const status = {
+      online: navigator.onLine,
+    };
+
+    // Add connection info if available (mostly mobile browsers)
+    if (connection) {
+      status.type = connection.type;
+      status.effectiveType = connection.effectiveType;
+      status.downlinkMax = connection.downlinkMax;
+      status.downlink = connection.downlink;
+      status.rtt = connection.rtt;
+      status.saveData = connection.saveData;
+    }
+
+    console.log("Network status:", status);
+    return status;
+  };
+
+  // Report current status
+  const initialStatus = reportNetworkStatus();
+
+  // Add event listeners for network changes
+  window.addEventListener("online", () => {
+    console.log("Network came online");
+    reportNetworkStatus();
+  });
+
+  window.addEventListener("offline", () => {
+    console.log("Network went offline");
+    reportNetworkStatus();
+  });
+
+  // Add connection change listener if available
+  if (navigator.connection && navigator.connection.addEventListener) {
+    navigator.connection.addEventListener("change", reportNetworkStatus);
+  }
+
+  return initialStatus;
 }
