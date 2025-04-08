@@ -102,19 +102,20 @@ function populateTypeDropdown(types) {
 
 // Add near the other dropdown population functions
 function populateSearchSuggestions(itemsArray) {
-  const datalist = document.getElementById("datalistOptions");
-  if (!datalist) return;
+  // This function is called when data is loaded, but suggestions
+  // will only show when user types 1-2 characters
 
-  // Clear existing options
-  datalist.innerHTML = "";
+  // Store all possible suggestions in a global object for later filtering
+  // We'll use this when the user starts typing
+  window.searchSuggestions = {
+    stockNumbers: [],
+    vins: [],
+    makeModels: [],
+    yearMakeModels: [],
+    types: [],
+  };
 
-  // Set to track unique suggestions
-  const suggestions = new Set();
-
-  // Maximum number of suggestions to show (too many makes the list unwieldy)
-  const MAX_SUGGESTIONS = 30;
-
-  // Extract useful search terms from various data fields
+  // Extract all searchable values from the data
   itemsArray.forEach((item) => {
     // Get key data fields that users might search for
     const stockNumber = item.getElementsByTagName("stocknumber")[0]?.textContent || "";
@@ -124,24 +125,162 @@ function populateSearchSuggestions(itemsArray) {
     const modelType = item.getElementsByTagName("model_type")[0]?.textContent || "";
     const year = item.getElementsByTagName("year")[0]?.textContent || "";
 
-    // Add combinations that would be useful for searching
-    if (stockNumber) suggestions.add(stockNumber);
-    if (vin) suggestions.add(vin);
-    if (manufacturer && modelName) suggestions.add(`${manufacturer} ${modelName}`);
-    if (year && manufacturer && modelName) suggestions.add(`${year} ${manufacturer} ${modelName}`);
-    if (modelType && modelType !== "N/A" && modelType !== manufacturer) suggestions.add(modelType);
+    // Store in our global object
+    if (stockNumber) window.searchSuggestions.stockNumbers.push(stockNumber);
+    if (vin) window.searchSuggestions.vins.push(vin);
+    if (manufacturer && modelName) window.searchSuggestions.makeModels.push(`${manufacturer} ${modelName}`);
+    if (year && manufacturer && modelName) window.searchSuggestions.yearMakeModels.push(`${year} ${manufacturer} ${modelName}`);
+    if (modelType && modelType !== "N/A" && modelType !== manufacturer) window.searchSuggestions.types.push(modelType);
   });
 
-  // Convert to array, sort, and limit to max suggestions
-  const suggestionArray = [...suggestions].sort();
-  const limitedSuggestions = suggestionArray.slice(0, MAX_SUGGESTIONS);
-
-  // Add options to datalist
-  limitedSuggestions.forEach((suggestion) => {
-    const option = document.createElement("option");
-    option.value = suggestion;
-    datalist.appendChild(option);
+  // Remove duplicates and sort
+  Object.keys(window.searchSuggestions).forEach((key) => {
+    window.searchSuggestions[key] = [...new Set(window.searchSuggestions[key])].sort();
   });
+}
+
+// This function will be called when the user types in the search box
+function updateSearchSuggestions(query) {
+  if (!query || query.length < 1) {
+    // Clear suggestions if query is empty or too short
+    clearSearchSuggestions();
+    return;
+  }
+
+  // Find or create the custom dropdown
+  let suggestionsDropdown = document.getElementById("custom-suggestions");
+  const searchInput = document.getElementById("searchFilter");
+  if (!searchInput) return;
+
+  // Create a container for the search input and dropdown if it doesn't exist
+  let searchContainer = searchInput.closest(".search-container");
+  if (!searchContainer) {
+    // Wrap the search input in a container with relative positioning
+    searchContainer = document.createElement("div");
+    searchContainer.className = "search-container";
+    searchInput.parentNode.insertBefore(searchContainer, searchInput);
+    searchContainer.appendChild(searchInput);
+  }
+
+  if (!suggestionsDropdown) {
+    suggestionsDropdown = document.createElement("div");
+    suggestionsDropdown.id = "custom-suggestions";
+    suggestionsDropdown.className = "search-suggestions-dropdown";
+
+    // Append the dropdown to our container
+    searchContainer.appendChild(suggestionsDropdown);
+  }
+
+  // Clear existing options
+  suggestionsDropdown.innerHTML = "";
+
+  if (!window.searchSuggestions) return;
+
+  // Convert query to uppercase for case-insensitive matching
+  const upperQuery = query.trim().toUpperCase();
+
+  // Maximum suggestions to show
+  const MAX_SUGGESTIONS = 20;
+  let suggestionsCount = 0;
+
+  // Prioritize suggestions in this order
+  const suggestionTypes = [
+    { key: "stockNumbers", weight: 10 }, // Stock numbers are highest priority
+    { key: "yearMakeModels", weight: 5 }, // Year+Make+Model combinations next
+    { key: "makeModels", weight: 3 }, // Make+Model combinations
+    { key: "vins", weight: 2 }, // VINs
+    { key: "types", weight: 1 }, // Model types lowest priority
+  ];
+
+  // Filter and score matched suggestions from all categories
+  const matchedSuggestions = [];
+
+  suggestionTypes.forEach(({ key, weight }) => {
+    window.searchSuggestions[key].forEach((suggestion) => {
+      const upperSuggestion = suggestion.toUpperCase();
+
+      // Check if suggestion matches query
+      if (upperSuggestion.includes(upperQuery)) {
+        // Calculate score - exact matches score higher
+        let score = weight;
+
+        // Bonus for matches at start of string or word
+        if (upperSuggestion.startsWith(upperQuery)) {
+          score += 5; // Big bonus for starts with
+        } else if (upperSuggestion.includes(" " + upperQuery)) {
+          score += 3; // Smaller bonus for start of word
+        }
+
+        // Bonus for shorter matches (more precise)
+        score += (20 - Math.min(20, suggestion.length)) / 10;
+
+        matchedSuggestions.push({ suggestion, score });
+      }
+    });
+  });
+
+  // Sort by score (highest first) and limit
+  matchedSuggestions
+    .sort((a, b) => b.score - a.score)
+    .slice(0, MAX_SUGGESTIONS)
+    .forEach(({ suggestion }) => {
+      const item = document.createElement("div");
+      item.className = "suggestion-item";
+      item.textContent = suggestion;
+
+      // Add data type for styling
+      // Determine the type by checking all categories
+      if (window.searchSuggestions.stockNumbers.includes(suggestion)) {
+        item.setAttribute("data-type", "stockNumbers");
+      } else if (window.searchSuggestions.vins.includes(suggestion)) {
+        item.setAttribute("data-type", "vins");
+      } else if (window.searchSuggestions.yearMakeModels.includes(suggestion)) {
+        item.setAttribute("data-type", "yearMakeModels");
+      } else if (window.searchSuggestions.makeModels.includes(suggestion)) {
+        item.setAttribute("data-type", "makeModels");
+      } else if (window.searchSuggestions.types.includes(suggestion)) {
+        item.setAttribute("data-type", "types");
+      }
+
+      // Add event to select the suggestion when clicked
+      item.addEventListener("click", () => {
+        const searchInput = document.getElementById("searchFilter");
+        if (searchInput) {
+          searchInput.value = suggestion;
+          searchInput.focus();
+          filterTable();
+          clearSearchSuggestions();
+        }
+      });
+
+      suggestionsDropdown.appendChild(item);
+      suggestionsCount++;
+    });
+
+  // Show or hide the dropdown based on matches
+  if (suggestionsCount > 0) {
+    suggestionsDropdown.style.display = "block";
+
+    // Ensure the dropdown is visible by scrolling to it if needed
+    if (searchInput) {
+      // If the search input is not in view, scroll to it
+      const inputRect = searchInput.getBoundingClientRect();
+      if (inputRect.bottom > window.innerHeight) {
+        searchInput.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    }
+  } else {
+    suggestionsDropdown.style.display = "none";
+  }
+
+  console.log(`Showing ${suggestionsCount} search suggestions for "${query}"`);
+}
+
+function clearSearchSuggestions() {
+  const suggestionsDropdown = document.getElementById("custom-suggestions");
+  if (suggestionsDropdown) {
+    suggestionsDropdown.style.display = "none";
+  }
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -163,12 +302,79 @@ document.addEventListener("DOMContentLoaded", async () => {
     toggleVerticalKeyTag({ target: verticalKeyTagSwitch });
   }
 
+  // Make sure search input is wrapped in a container for dropdown positioning
+  const searchInput = document.getElementById("searchFilter");
+  if (searchInput && !searchInput.closest(".search-container")) {
+    const searchContainer = document.createElement("div");
+    searchContainer.className = "search-container";
+    searchInput.parentNode.insertBefore(searchContainer, searchInput);
+    searchContainer.appendChild(searchInput);
+  }
+
   // Add event listeners using delegation where possible
   document.addEventListener("click", handleGlobalClicks);
 
   // Add filter listeners with debounce
   if (DOM.filters.search) {
-    DOM.filters.search.addEventListener("keyup", debounce(filterTable, 250));
+    // Add a class for custom styling
+    DOM.filters.search.classList.add("search-with-suggestions");
+
+    DOM.filters.search.addEventListener(
+      "input",
+      debounce((e) => {
+        handleSearchInput(e.target.value);
+      }, 250)
+    );
+
+    // Handle document clicks to close the dropdown when clicking outside
+    document.addEventListener("click", (e) => {
+      if (!e.target.closest("#searchFilter") && !e.target.closest("#custom-suggestions")) {
+        clearSearchSuggestions();
+      }
+    });
+
+    // Handle keyboard navigation inside the dropdown
+    DOM.filters.search.addEventListener("keydown", (e) => {
+      const dropdown = document.getElementById("custom-suggestions");
+      if (!dropdown || dropdown.style.display === "none") return;
+
+      const items = dropdown.querySelectorAll(".suggestion-item");
+      if (items.length === 0) return;
+
+      // Find currently highlighted item
+      const highlighted = dropdown.querySelector(".suggestion-item.highlighted");
+      let index = -1;
+
+      if (highlighted) {
+        index = Array.from(items).indexOf(highlighted);
+      }
+
+      // Handle arrow keys
+      if (e.key === "ArrowDown") {
+        e.preventDefault();
+        if (index < items.length - 1) {
+          if (highlighted) highlighted.classList.remove("highlighted");
+          items[index + 1].classList.add("highlighted");
+          items[index + 1].scrollIntoView({ block: "nearest" });
+        }
+      } else if (e.key === "ArrowUp") {
+        e.preventDefault();
+        if (index > 0) {
+          if (highlighted) highlighted.classList.remove("highlighted");
+          items[index - 1].classList.add("highlighted");
+          items[index - 1].scrollIntoView({ block: "nearest" });
+        }
+      } else if (e.key === "Enter") {
+        e.preventDefault();
+        if (highlighted) {
+          DOM.filters.search.value = highlighted.textContent;
+          filterTable();
+          clearSearchSuggestions();
+        }
+      } else if (e.key === "Escape") {
+        clearSearchSuggestions();
+      }
+    });
   }
   Object.values(DOM.filters).forEach((filter) => {
     if (filter && filter.id !== "searchFilter") {
@@ -182,6 +388,28 @@ document.addEventListener("DOMContentLoaded", async () => {
   updateRowCount();
 
   initializeClipboardTooltips();
+
+  // Handle window resize to ensure dropdown stays with the search input
+  window.addEventListener(
+    "resize",
+    debounce(() => {
+      const dropdown = document.getElementById("custom-suggestions");
+      if (dropdown && dropdown.style.display !== "none") {
+        // If dropdown is visible, update its position
+        const searchInput = document.getElementById("searchFilter");
+        if (searchInput) {
+          // Force a small delay to allow for DOM updates
+          setTimeout(() => {
+            // Simply hiding and showing refreshes the position
+            dropdown.style.display = "none";
+            setTimeout(() => {
+              dropdown.style.display = "block";
+            }, 10);
+          }, 150);
+        }
+      }
+    }, 250)
+  );
 });
 
 function handleGlobalClicks(event) {
@@ -208,19 +436,11 @@ function handleGlobalClicks(event) {
 }
 
 function handleSearchInput(value) {
-  // This function is called whenever the search input changes
-
   // Apply search filter with debounce
   filterTable();
 
-  // If the search input is cleared, refresh suggestions
-  if (!value || value.trim() === "") {
-    const searchFilter = document.getElementById("searchFilter");
-    if (searchFilter) {
-      // Focus the search field to show the datalist
-      searchFilter.focus();
-    }
-  }
+  // Update search suggestions based on current input
+  updateSearchSuggestions(value);
 }
 
 function showPlaceholder(rowCount = 10) {

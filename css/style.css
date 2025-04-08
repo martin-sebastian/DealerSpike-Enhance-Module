@@ -646,3 +646,87 @@ th {
 ::backdrop {
   display: none;
 }
+
+/* Custom Search Dropdown Styles */
+.search-container {
+  position: relative;
+  display: inline-block;
+  width: auto;
+}
+
+.search-with-suggestions {
+  position: relative;
+  max-width: 180px;
+  display: inline-flex;
+  margin-right: 0.25rem;
+  margin-left: 0.25rem;
+  width: 100%; /* Ensure container takes up full width of input */
+}
+
+.search-suggestions-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 180px; /* Match minimum width of search input */
+  width: 100%; /* Take full width of parent container */
+  max-height: 300px;
+  overflow-y: auto;
+  background-color: #fff;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1050;
+  display: none;
+  margin-top: 2px;
+}
+
+[data-bs-theme="dark"] .search-suggestions-dropdown {
+  background-color: #343a40;
+  border-color: #495057;
+  color: #f8f9fa;
+}
+
+.suggestion-item {
+  padding: 8px 12px;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 14px;
+}
+
+.suggestion-item:hover,
+.suggestion-item.highlighted {
+  background-color: #f8f9fa;
+}
+
+[data-bs-theme="dark"] .suggestion-item:hover,
+[data-bs-theme="dark"] .suggestion-item.highlighted {
+  background-color: #495057;
+}
+
+/* Stock numbers have a special appearance */
+.suggestion-item[data-type="stockNumbers"] {
+  font-weight: bold;
+}
+
+/* Make dropdown scrollable on mobile */
+@media (max-width: 768px) {
+  .search-suggestions-dropdown {
+    min-width: 180px;
+    width: 100%;
+    max-height: 200px;
+    left: 0;
+  }
+
+  .search-with-suggestions {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .search-container {
+    width: 100%;
+    max-width: 100%;
+    display: block;
+  }
+}
