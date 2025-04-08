@@ -204,6 +204,67 @@ document.addEventListener("keydown", function (e) {
   }
 });
 
+// Add script to load html2canvas if not already loaded
+function loadHtml2Canvas() {
+  if (window.html2canvas) return Promise.resolve();
+
+  return new Promise((resolve, reject) => {
+    const script = document.createElement("script");
+    script.src = "https://html2canvas.hertzen.com/dist/html2canvas.min.js";
+    script.onload = resolve;
+    script.onerror = reject;
+    document.head.appendChild(script);
+  });
+}
+
+// Fallback capture method using domtoimage
+async function captureUsingDomToImage() {
+  if (!window.domtoimage) {
+    await loadDomToImage();
+  }
+
+  const element = document.querySelector(".capture-container");
+  if (!element) {
+    throw new Error("Capture container not found");
+  }
+
+  try {
+    const dataUrl = await domtoimage.toPng(element, {
+      quality: 1.0,
+      bgcolor: "#fff",
+      scale: window.devicePixelRatio,
+    });
+
+    // Convert to blob
+    const res = await fetch(dataUrl);
+    const blob = await res.blob();
+
+    // Save the file
+    const data = window.vehicleData;
+    const filename = generateFilename(data);
+    await saveFile(blob, filename);
+
+    return blob;
+  } catch (err) {
+    console.error("DomToImage capture failed:", err);
+    throw err;
+  }
+}
+
+// Add script to load domtoimage if not already loaded
+function loadDomToImage() {
+  if (window.domtoimage) return Promise.resolve();
+
+  return new Promise((resolve, reject) => {
+    const script = document.createElement("script");
+    script.src = "https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js";
+    script.onload = resolve;
+    script.onerror = reject;
+    document.head.appendChild(script);
+  });
+}
+
+// Modified document ready function to load required libraries
 document.addEventListener("DOMContentLoaded", function () {
   console.log("DOM Content Loaded");
 
@@ -215,6 +276,15 @@ document.addEventListener("DOMContentLoaded", function () {
       lastName: "",
     })
   );
+
+  // Load required libraries
+  Promise.all([loadHtml2Canvas(), loadDomToImage()])
+    .then(() => {
+      console.log("Libraries loaded successfully");
+    })
+    .catch((err) => {
+      console.error("Failed to load libraries:", err);
+    });
 
   // Initialize sidebar
   initializeSidebar();
@@ -291,7 +361,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const milesHours = data.Miles;
       const inventoryStatus = data.UnitStatus;
       const qLevel = data.QuoteLevel;
-     
+
       // Get OTD Items Total using reduce
       const otdItemsTotal = data?.OTDItems?.reduce((total, item) => total + item.Amount, 0) || 0;
 
@@ -304,19 +374,17 @@ document.addEventListener("DOMContentLoaded", function () {
       const totalSavings = data.DiscountItemsTotal + data.MatItemsTotal + data.TradeInItemsTotal + data.AccessoryItemsTotal;
       const totalSavingsPositive = totalSavings * -1;
       const totalSavingsDisplay = numeral(totalSavingsPositive).format("$0,0");
-      
 
       // Update the qLevel, totalPrice, totalSavings
       // document.getElementById("qLevel").innerHTML = qLevel;
       // document.getElementById("totalPrice").innerHTML = totalPrice;
       // document.getElementById("totalSavings").innerHTML = totalSavings;
 
-
       // Quote Dates
       let quoteDate = moment(); // current date
       let quoteDateFormatted = quoteDate.format("MM/DD/YYYY");
       let quoteTime = quoteDate.format("h:mm a");
-      let quoteExpirationDate = moment(quoteDate).add(3, 'days');
+      let quoteExpirationDate = moment(quoteDate).add(3, "days");
       let quoteExpirationDateFormatted = quoteExpirationDate.format("MM/DD/YYYY");
 
       let totalSavingsTemplate = ``;
@@ -328,7 +396,7 @@ document.addEventListener("DOMContentLoaded", function () {
           ${totalSavingsDisplay}
         </div>
       </div>
-      `
+      `;
       } else {
         totalSavingsTemplate += `
         <div class="text-light fw-bold m-0 p-0"> OR </div>
@@ -450,7 +518,7 @@ document.addEventListener("DOMContentLoaded", function () {
         </div>
       `
         : "";
-      
+
       // Discretion Items Template
       var discretionItemsTemplate = data.DiscretionItems?.length
         ? `
@@ -469,7 +537,6 @@ document.addEventListener("DOMContentLoaded", function () {
         </div>
       `
         : "";
-      
 
       // OTD Items Template
       var OTDItemsTemplate = data.OTDItems?.length
@@ -490,8 +557,6 @@ document.addEventListener("DOMContentLoaded", function () {
       `
         : "";
 
-
-
       // Freebie items - 3 items allowed
       var freebieItemsTemplate = ``;
 
@@ -504,8 +569,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         i++;
       }
-
-      
 
       // Unit Numbers & status info
       var unitNumbersTemplate = ``;
@@ -643,8 +706,6 @@ document.addEventListener("DOMContentLoaded", function () {
       </div>
     </div>
       `;
-
-      
 
       // Major Unit Header with Year, Make, Model, VIN, Stock Number.
       var muHeaderTemplate = `
@@ -799,7 +860,6 @@ document.addEventListener("DOMContentLoaded", function () {
             ${paymentCalc}
         </div>
       `;
-      
 
       // Trade In display template
       const tradeInVehicleTemplate = `
@@ -818,9 +878,8 @@ document.addEventListener("DOMContentLoaded", function () {
           <div class="text-left fw-bold mx-1">Savings:<span class="float-end">${totalSavingsDisplay}</span></div>
         </div>
       
-        `
+        `;
       }
-
 
       // Our Price display template
       const totalPriceTemplate = `
@@ -837,8 +896,7 @@ document.addEventListener("DOMContentLoaded", function () {
         </div>
 
       `;
-      
-      
+
       // Visibility Toggle Checkboxes template
       const visibilityToggleTemplate = `
         <div class="show-hide-container flex-column flex-nowrap text-start px-2 py-3 mt-5 mb-auto">
@@ -895,8 +953,6 @@ document.addEventListener("DOMContentLoaded", function () {
       if (visibilityToggleTemplateContainer) {
         visibilityToggleTemplateContainer.innerHTML = visibilityToggleTemplate;
       }
-
-      
 
       // Update the main page content structure
       const pageContent = `
@@ -1038,28 +1094,40 @@ function createExportButton() {
   // Remove placeholder button if it exists
   document.getElementById("placeholderSaveBtn")?.remove();
 
-  // Create the real button
-  const exportBtn = document.createElement("button");
-  exportBtn.className = "btn btn-danger ms-2 d-flex align-items-center gap-2";
-  exportBtn.innerHTML = `
+  // Create the save button
+  const saveBtn = document.createElement("button");
+  saveBtn.className = "btn btn-danger ms-2 d-flex align-items-center gap-2";
+  saveBtn.innerHTML = `
     <i class="bi bi-floppy"></i>
     <span>Save</span>
   `;
-  exportBtn.addEventListener("click", captureFullContent);
+  saveBtn.addEventListener("click", captureFullContent);
 
-  container.appendChild(exportBtn);
+  // Create the copy to clipboard button
+  const copyBtn = document.createElement("button");
+  copyBtn.className = "btn btn-outline-danger ms-2 d-flex align-items-center gap-2";
+  copyBtn.innerHTML = `
+    <i class="bi bi-clipboard"></i>
+    <span>Copy</span>
+  `;
+  copyBtn.addEventListener("click", copyToClipboard);
+
+  // Add both buttons to the container
+  container.appendChild(saveBtn);
+  container.appendChild(copyBtn);
 }
 
 function generateFilename(data) {
   const timestamp = moment().format("YYYY-MM-DD");
   const parts = [data.StockNumber, data.ModelYear, data.Manufacturer, data.B50ModelName, timestamp];
 
-  return parts
-    .filter(Boolean)
-    .join("_")
-    .replace(/\s+/g, "_")
-    .replace(/[^a-zA-Z0-9._-]/g, "") + 
-    ".jpg";
+  return (
+    parts
+      .filter(Boolean)
+      .join("_")
+      .replace(/\s+/g, "_")
+      .replace(/[^a-zA-Z0-9._-]/g, "") + ".jpg"
+  );
 }
 
 async function saveFile(blob, filename) {
@@ -1067,12 +1135,14 @@ async function saveFile(blob, filename) {
     try {
       const handle = await window.showSaveFilePicker({
         suggestedName: filename,
-        types: [{
-          description: "JPEG Image",
-          accept: {
-            "image/jpeg": [".jpg", ".jpeg"]
-          }
-        }]
+        types: [
+          {
+            description: "JPEG Image",
+            accept: {
+              "image/jpeg": [".jpg", ".jpeg"],
+            },
+          },
+        ],
       });
       const writable = await handle.createWritable();
       await writable.write(blob);
@@ -1091,12 +1161,57 @@ async function saveFile(blob, filename) {
   }
 }
 
-// Capture the full content of the quote div
+// Loading indicator functions
+function showLoadingIndicator() {
+  // Remove existing indicator if present
+  hideLoadingIndicator();
+
+  // Create and style the loading indicator
+  const loader = document.createElement("div");
+  loader.id = "screenshotLoader";
+  loader.style.cssText = `
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    color: white;
+    font-family: sans-serif;
+  `;
+
+  loader.innerHTML = `
+    <div style="background-color: rgba(0, 0, 0, 0.8); padding: 30px; border-radius: 10px; text-align: center;">
+      <div class="spinner-border text-light" role="status" style="width: 3rem; height: 3rem; margin-bottom: 15px;"></div>
+      <h4>Processing Image</h4>
+      <p>Please wait while we process your image...</p>
+    </div>
+  `;
+
+  document.body.appendChild(loader);
+
+  // Add safety timeout to prevent endless loading
+  setTimeout(() => {
+    hideLoadingIndicator();
+  }, 10000); // 10 seconds max
+}
+
+function hideLoadingIndicator() {
+  const loader = document.getElementById("screenshotLoader");
+  if (loader) {
+    document.body.removeChild(loader);
+  }
+}
+
+// Capture function that uses screen capture API but crops to just the container
 async function captureFullContent() {
   try {
-    // Image quality settings
-    const scaleFactor = 2.0;
-    const imageQuality = 1.0;
+    showLoadingIndicator();
 
     // Get the element we want to capture
     const element = document.querySelector(".capture-container");
@@ -1112,75 +1227,429 @@ async function captureFullContent() {
     currentZoom = 1.0;
     updateZoom();
 
-    // Get the navbar height to offset our capture
-    const navbar = document.querySelector("nav");
-    const navbarHeight = navbar ? navbar.offsetHeight : 0;
-
-    // Get the full content dimensions
-    const contentHeight = element.scrollHeight;
-    const contentWidth = element.scrollWidth;
-
-    // Temporarily modify the page to ensure full content is visible
-    const originalPosition = element.style.position;
-    const originalTop = element.style.top;
-
-    element.style.position = "relative";
-    element.style.top = "0";
-
     // Ensure the container is fully visible
     window.scrollTo(0, 0);
     await new Promise((resolve) => setTimeout(resolve, 500));
 
-    // Start screen capture
-    const stream = await navigator.mediaDevices.getDisplayMedia({
-      preferCurrentTab: true,
-      video: {
-        displaySurface: "browser",
-      },
-    });
+    try {
+      // Get the bounding rectangle of the element we want to capture
+      const rect = element.getBoundingClientRect();
 
-    const video = document.createElement("video");
-    video.srcObject = stream;
-    await new Promise((resolve) => (video.onloadedmetadata = resolve));
-    video.play();
+      console.log("Element dimensions:", {
+        left: rect.left,
+        top: rect.top,
+        width: rect.width,
+        height: rect.height,
+      });
 
-    // Create canvas with dimensions matching the full content
-    const canvas = document.createElement("canvas");
-    canvas.width = contentWidth;
-    canvas.height = contentHeight;
+      // Use screen capture API - this avoids CORS issues
+      const stream = await navigator.mediaDevices.getDisplayMedia({
+        preferCurrentTab: true,
+        video: {
+          displaySurface: "browser",
+          frameRate: { ideal: 1 },
+        },
+      });
 
-    const ctx = canvas.getContext("2d");
+      // Create a video element to capture the stream
+      const video = document.createElement("video");
+      video.srcObject = stream;
+      await new Promise((resolve) => {
+        video.onloadedmetadata = resolve;
+        // Safety timeout
+        setTimeout(resolve, 3000);
+      });
+      video.play();
 
-    // Get element position relative to viewport
-    const rect = element.getBoundingClientRect();
+      // Wait a bit to ensure the frame is captured
+      await new Promise((resolve) => setTimeout(resolve, 300));
 
-    // Draw the content
-    ctx.drawImage(video, rect.left, rect.top, contentWidth, contentHeight, 0, 0, contentWidth, contentHeight);
+      // Create a canvas for the full screenshot
+      const fullCanvas = document.createElement("canvas");
+      fullCanvas.width = video.videoWidth;
+      fullCanvas.height = video.videoHeight;
 
-    // Stop screen capture
-    stream.getTracks().forEach((track) => track.stop());
+      // Get the context and draw the video frame
+      const fullCtx = fullCanvas.getContext("2d");
+      fullCtx.drawImage(video, 0, 0, fullCanvas.width, fullCanvas.height);
 
-    // Restore original element position
-    element.style.position = originalPosition;
-    element.style.top = originalTop;
+      // Stop the screen capture
+      stream.getTracks().forEach((track) => track.stop());
+
+      // Calculate scale factor between screen pixels and CSS pixels
+      const scaleX = video.videoWidth / window.innerWidth;
+      const scaleY = video.videoHeight / window.innerHeight;
+
+      // Calculate the position and dimensions for cropping
+      const scaledLeft = rect.left * scaleX;
+      const scaledTop = rect.top * scaleY;
+      const scaledWidth = rect.width * scaleX;
+      const scaledHeight = rect.height * scaleY;
+
+      console.log("Scaled dimensions for cropping:", {
+        left: scaledLeft,
+        top: scaledTop,
+        width: scaledWidth,
+        height: scaledHeight,
+      });
+
+      // Create a new canvas for the cropped image
+      const croppedCanvas = document.createElement("canvas");
+      croppedCanvas.width = scaledWidth;
+      croppedCanvas.height = scaledHeight;
+
+      // Draw only the portion of the full screenshot that contains our element
+      const croppedCtx = croppedCanvas.getContext("2d");
+      croppedCtx.drawImage(
+        fullCanvas,
+        scaledLeft,
+        scaledTop,
+        scaledWidth,
+        scaledHeight, // Source rectangle
+        0,
+        0,
+        scaledWidth,
+        scaledHeight // Destination rectangle
+      );
+
+      // Convert to blob and save
+      const blob = await new Promise((resolve) => {
+        croppedCanvas.toBlob(resolve, "image/jpeg", 1.0);
+      });
+
+      const data = window.vehicleData;
+      const filename = generateFilename(data);
+      await saveFile(blob, filename);
+    } catch (captureErr) {
+      console.error("Capture failed:", captureErr);
+      alert("Image capture failed or was cancelled. Please try again.");
+    }
+
+    // Always clean up
+    hideLoadingIndicator();
 
     // Restore original scroll position and zoom
     window.scrollTo(0, originalScrollPos);
     currentZoom = originalZoom;
     updateZoom();
-
-    const data = window.vehicleData;
-    const filename = generateFilename(data);
-
-    // Convert canvas to blob
-    const blob = await new Promise((resolve) => {
-      canvas.toBlob(resolve, "image/jpeg", imageQuality);
-    });
-
-    await saveFile(blob, filename);
   } catch (err) {
-    console.error("Error capturing screen:", err);
-    alert("Screen capture failed or was cancelled: " + err.message);
+    console.error("Error in capture process:", err);
+    alert("Image capture failed: " + err.message);
+    hideLoadingIndicator();
+
+    // Restore original position and zoom
+    try {
+      window.scrollTo(0, originalScrollPos || 0);
+      currentZoom = originalZoom || 1.0;
+      updateZoom();
+    } catch (e) {
+      console.error("Error restoring state:", e);
+    }
+  }
+}
+
+// Function to copy the captured image to clipboard
+async function copyToClipboard() {
+  try {
+    showLoadingIndicator();
+
+    // Get the element we want to capture
+    const element = document.querySelector(".capture-container");
+    if (!element) {
+      throw new Error("Capture container not found");
+    }
+
+    // Store original scroll position and zoom
+    const originalScrollPos = window.scrollY;
+    const originalZoom = currentZoom;
+
+    // Reset zoom to 1 temporarily for accurate capture
+    currentZoom = 1.0;
+    updateZoom();
+
+    // Ensure the container is fully visible
+    window.scrollTo(0, 0);
+    await new Promise((resolve) => setTimeout(resolve, 500));
+
+    try {
+      // Get the bounding rectangle of the element we want to capture
+      const rect = element.getBoundingClientRect();
+
+      console.log("Element dimensions for clipboard:", {
+        left: rect.left,
+        top: rect.top,
+        width: rect.width,
+        height: rect.height,
+      });
+
+      // Use screen capture API - this avoids CORS issues
+      const stream = await navigator.mediaDevices.getDisplayMedia({
+        preferCurrentTab: true,
+        video: {
+          displaySurface: "browser",
+          frameRate: { ideal: 1 },
+        },
+      });
+
+      // Create a video element to capture the stream
+      const video = document.createElement("video");
+      video.srcObject = stream;
+      await new Promise((resolve) => {
+        video.onloadedmetadata = resolve;
+        // Safety timeout
+        setTimeout(resolve, 3000);
+      });
+      video.play();
+
+      // Wait a bit to ensure the frame is captured
+      await new Promise((resolve) => setTimeout(resolve, 300));
+
+      // Create a canvas for the full screenshot
+      const fullCanvas = document.createElement("canvas");
+      fullCanvas.width = video.videoWidth;
+      fullCanvas.height = video.videoHeight;
+
+      // Get the context and draw the video frame
+      const fullCtx = fullCanvas.getContext("2d");
+      fullCtx.drawImage(video, 0, 0, fullCanvas.width, fullCanvas.height);
+
+      // Stop the screen capture
+      stream.getTracks().forEach((track) => track.stop());
+
+      // Calculate scale factor between screen pixels and CSS pixels
+      const scaleX = video.videoWidth / window.innerWidth;
+      const scaleY = video.videoHeight / window.innerHeight;
+
+      // Calculate the position and dimensions for cropping
+      const scaledLeft = rect.left * scaleX;
+      const scaledTop = rect.top * scaleY;
+      const scaledWidth = rect.width * scaleX;
+      const scaledHeight = rect.height * scaleY;
+
+      console.log("Scaled dimensions for clipboard cropping:", {
+        left: scaledLeft,
+        top: scaledTop,
+        width: scaledWidth,
+        height: scaledHeight,
+      });
+
+      // Create a new canvas for the cropped image
+      const croppedCanvas = document.createElement("canvas");
+      croppedCanvas.width = scaledWidth;
+      croppedCanvas.height = scaledHeight;
+
+      // Draw only the portion of the full screenshot that contains our element
+      const croppedCtx = croppedCanvas.getContext("2d");
+      croppedCtx.drawImage(
+        fullCanvas,
+        scaledLeft,
+        scaledTop,
+        scaledWidth,
+        scaledHeight, // Source rectangle
+        0,
+        0,
+        scaledWidth,
+        scaledHeight // Destination rectangle
+      );
+
+      // Get data URL for the modal
+      const dataUrl = croppedCanvas.toDataURL("image/png");
+
+      // Hide loading and show copy modal
+      hideLoadingIndicator();
+      showCopyModal(dataUrl);
+    } catch (captureErr) {
+      console.error("Clipboard capture failed:", captureErr);
+      hideLoadingIndicator();
+      alert("Image capture failed or was cancelled. Please try again.");
+    }
+
+    // Restore original scroll position and zoom
+    window.scrollTo(0, originalScrollPos);
+    currentZoom = originalZoom;
+    updateZoom();
+  } catch (err) {
+    console.error("Error in clipboard process:", err);
+    alert("Failed to prepare clipboard image: " + err.message);
+    hideLoadingIndicator();
+
+    // Restore original position and zoom
+    try {
+      window.scrollTo(0, originalScrollPos || 0);
+      currentZoom = originalZoom || 1.0;
+      updateZoom();
+    } catch (e) {
+      console.error("Error restoring state:", e);
+    }
+  }
+}
+
+// Function to show a modal with the image for user-initiated copy
+function showCopyModal(dataUrl) {
+  // Remove any existing modal
+  const existingModal = document.getElementById("imageCopyModal");
+  if (existingModal) {
+    document.body.removeChild(existingModal);
+  }
+
+  // Create modal container
+  const modal = document.createElement("div");
+  modal.id = "imageCopyModal";
+  modal.style.cssText = `
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    padding: 20px;
+  `;
+
+  // Create modal content
+  const modalContent = document.createElement("div");
+  modalContent.style.cssText = `
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 90%;
+    max-height: 90%;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  `;
+
+  // Create close button
+  const closeButton = document.createElement("button");
+  closeButton.innerText = "×";
+  closeButton.style.cssText = `
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: transparent;
+    border: none;
+    font-size: 24px;
+    color: white;
+    cursor: pointer;
+  `;
+  closeButton.onclick = () => {
+    document.body.removeChild(modal);
+  };
+
+  // Create the image
+  const img = document.createElement("img");
+  img.src = dataUrl;
+  img.style.cssText = `
+    max-width: 100%;
+    max-height: 70vh;
+    margin-bottom: 15px;
+    border: 1px solid #eee;
+  `;
+
+  // Create instruction text
+  const instructions = document.createElement("p");
+  instructions.innerText = 'Right-click on the image and select "Copy Image" to copy to clipboard';
+  instructions.style.cssText = `
+    margin-bottom: 15px;
+    text-align: center;
+    color: #444;
+  `;
+
+  // Create copy button (as additional method)
+  const copyButton = document.createElement("button");
+  copyButton.innerHTML = '<i class="bi bi-clipboard"></i> Copy Image';
+  copyButton.className = "btn btn-danger";
+  copyButton.style.marginBottom = "10px";
+  copyButton.onclick = async () => {
+    try {
+      // Try to copy the image via clipboard API again
+      const res = await fetch(dataUrl);
+      const blob = await res.blob();
+
+      await navigator.clipboard.write([
+        new ClipboardItem({
+          [blob.type]: blob,
+        }),
+      ]);
+
+      copyButton.innerHTML = '<i class="bi bi-check-lg"></i> Copied!';
+      copyButton.className = "btn btn-success";
+      setTimeout(() => {
+        copyButton.innerHTML = '<i class="bi bi-clipboard"></i> Copy Image';
+        copyButton.className = "btn btn-danger";
+      }, 2000);
+    } catch (err) {
+      console.error("Copy button in modal failed:", err);
+      copyButton.innerHTML = "Copy Failed";
+      copyButton.className = "btn btn-secondary";
+
+      // Show direct instructions
+      instructions.innerHTML = `
+        <strong>Browser security prevented automatic copying.</strong><br>
+        Please right-click on the image and select "Copy Image" manually.
+      `;
+      instructions.style.color = "#dc3545";
+    }
+  };
+
+  // Create a download button as additional option
+  const downloadButton = document.createElement("a");
+  downloadButton.href = dataUrl;
+  downloadButton.download = `quote_${Date.now()}.png`;
+  downloadButton.innerHTML = '<i class="bi bi-download"></i> Download Image';
+  downloadButton.className = "btn btn-outline-secondary";
+  downloadButton.style.marginLeft = "10px";
+
+  // Create button container
+  const buttonContainer = document.createElement("div");
+  buttonContainer.style.display = "flex";
+  buttonContainer.appendChild(copyButton);
+  buttonContainer.appendChild(downloadButton);
+
+  // Build the modal
+  modalContent.appendChild(img);
+  modalContent.appendChild(instructions);
+  modalContent.appendChild(buttonContainer);
+  modal.appendChild(closeButton);
+  modal.appendChild(modalContent);
+
+  // Add to body
+  document.body.appendChild(modal);
+
+  // Add keyboard handler for Escape key
+  const keyHandler = (e) => {
+    if (e.key === "Escape") {
+      document.body.removeChild(modal);
+      document.removeEventListener("keydown", keyHandler);
+    }
+  };
+  document.addEventListener("keydown", keyHandler);
+}
+
+// Helper function to show copy success feedback
+function showCopySuccess() {
+  const copyBtn = document.querySelector(".export-btn-container .btn-outline-danger");
+  if (copyBtn) {
+    const originalText = copyBtn.innerHTML;
+    copyBtn.innerHTML = `
+      <i class="bi bi-check-lg"></i>
+      <span>Copied!</span>
+    `;
+    copyBtn.classList.remove("btn-outline-danger");
+    copyBtn.classList.add("btn-success");
+
+    // Reset button after 2 seconds
+    setTimeout(() => {
+      copyBtn.innerHTML = originalText;
+      copyBtn.classList.remove("btn-success");
+      copyBtn.classList.add("btn-outline-danger");
+    }, 2000);
   }
 }
 
