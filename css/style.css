@@ -28,8 +28,8 @@ body {
   max-width: 75%;
 }
 td a img:hover {
-  margin: 1px;
-  outline: solid 2px #fff;
+  margin: 0px;
+  border: solid 2px #fff;
 }
 .hidden {
   display: none;
@@ -587,22 +587,23 @@ th {
 }
 
 @media screen and (max-width: 678px) {
-  .table-image-container {
-    margin: 0 auto;
-    max-width: 200px;
-    width: 100%;
-    max-height: 133px;
-    height: 100%;
-    overflow: hidden;
-    border-radius: 5px;
-    object-fit: cover !important;
-  }
   .table {
     width: 100% !important;
     border-radius: 5px !important;
     overflow: hidden !important;
     border: solid 5px !important;
     background: transparent !important;
+  }
+  .table-image-container {
+    margin: 3px auto;
+    max-width: 400px;
+    width: 100%;
+    max-height: 240px;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 10px;
+    object-fit: cover !important;
+    object-position: 0px 95px !important;
   }
   .table-image-container img {
     margin: 0 auto;

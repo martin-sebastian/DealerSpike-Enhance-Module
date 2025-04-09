@@ -123,16 +123,15 @@
 
     <main>
       <div class="container-fluid">
-        <div class="spacer-75 d-flex flex-row justify-content-between align-items-center"></div>
-        <div class="d-flex flex-row justify-content-between align-items-center pb-2 text-secondary">
+        <div class="d-flex flex-row justify-content-between align-items-end" style="height: 10vh; overflow: hidden;">
+          <div class="text-secondary">Menu</div>
+        </div>
+        <div class="card table-responsive" style="height: 80vh; overflow: hidden; overflow-y: auto;">
           <!-- element for displaying row count -->
-          <div class="mx-1">
+          <div class="mx-2 my-1">
             Results: <span class="mx-1" id="rowCountDisplay"></span>
           </div>
-        </div>
-
-
-        <div class="card table-responsive">
+          
           <table id="vehiclesTable" class="table">
             <thead>
               <tr>
@@ -184,9 +183,6 @@
               </li>
             </ul>
           </nav>
-        </div>
-        <div class="spacer-50 my-4 py-2 small border-top border-secondary opacity-50">
-          App Version <span class="badge bg-danger">0.3.1</span>
         </div>
     </main>
 
