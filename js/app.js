@@ -922,11 +922,12 @@ function filterTable() {
         case "usage":
           textToCompare = item.usage || "";
           break;
-        case "updated":
+        case "updated": {
           // Strip time components from both dates for comparison
           const itemDate = moment(item.updated).startOf("day").format("YYYY-MM-DD");
           const filterDate = moment(value).startOf("day").format("YYYY-MM-DD");
           return itemDate === filterDate;
+        }
         default:
           textToCompare = "";
       }
@@ -1864,10 +1865,9 @@ function updateTable() {
       <td class="text-center">
         <span class="badge text-bg-dark border">${year}</span>
       </td>
-      <td class="text-truncate">${manufacturer}</td>
-      <td class="text-wrap" style="max-width: 300px;">
+      <td class="text-truncate" style="max-width: 150px;">${manufacturer}</td>
+      <td class="text-wrap">
         <span class="text-wrap">${modelName}</span>
-        
         <span class="visually-hidden">
         ${stockNumber} ${vin} ${usage} ${year} ${manufacturer} ${modelName} ${modelType} ${color} ${moment(updated).format("YYYY-MM-DD")}
         </span>
