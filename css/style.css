@@ -232,17 +232,21 @@ th {
 
 /* data table styles */
 .table-image-container {
-  max-width: 100px;
+  max-width: 80px;
+  margin: 4px auto;
   width: 100%;
   max-height: 100px;
   height: 100%;
   overflow: hidden;
   border-radius: 5px;
-}
-.table-image-container img {
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: contain !important;
+  img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+  }
+  img:hover {
+    outline: solid 4px #ee0000;
+  }
 }
 .nowrap {
   white-space: nowrap;

@@ -124,15 +124,15 @@
     <main>
       <div class="container-fluid">
         <div class="d-flex flex-row justify-content-between align-items-end" style="height: 10vh; overflow: hidden;">
-          <div class="text-secondary">Menu</div>
+          <div class="text-secondary"></div>
         </div>
-        <div class="card table-responsive" style="height: 80vh; overflow: hidden; overflow-y: auto;">
+        <div class="card mx-2 table-responsive" style="height: 80vh; overflow: hidden; overflow-y: auto;">
           <!-- element for displaying row count -->
           <div class="mx-2 my-1">
-            Results: <span class="mx-1" id="rowCountDisplay"></span>
+            <span class="text-secondary">Results:</span> <span class="mx-1" id="rowCountDisplay"></span></span>
           </div>
           
-          <table id="vehiclesTable" class="table">
+          <table id="vehiclesTable" class="table table-sm">
             <thead>
               <tr>
                 <th class="text-center">Image</th>
@@ -156,7 +156,7 @@
         </div>
         
         <!-- Pagination controls -->
-        <div class="d-flex justify-content-between align-items-center my-3">
+        <div class="d-flex justify-content-between align-items-center mx-2 my-3">
           <div class="d-flex align-items-center">
             <label for="pageSizeSelect" class="me-2">Show:</label>
             <select id="pageSizeSelect" class="form-select form-select-sm" style="width: auto;">
