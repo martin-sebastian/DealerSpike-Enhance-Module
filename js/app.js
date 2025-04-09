@@ -1839,7 +1839,6 @@ function updateTable() {
     const webURL = item.webURL;
     const stockNumber = item.stockNumber;
     const vin = item.vin;
-    const price = item.price;
     const webPrice = item.webPrice;
     const manufacturer = item.manufacturer;
     const year = item.year;
@@ -1854,12 +1853,10 @@ function updateTable() {
     row.innerHTML = `
       <td data-cell="image" class="text-center">
         <a href="${webURL}" target="_blank">
-          ${
-            imageUrl !== "N/A"
-              ? `<img src="${imageUrl}" alt="${title}" style="max-width: 100px; max-height: 100px;" loading="lazy" />`
-              : `<i class="bi bi-card-image"></i>`
-          }
-        </a>
+          <div class="table-image-container">
+          ${imageUrl !== "N/A" ? `<img src="${imageUrl}" alt="${title}" width="100%" height="100%" loading="lazy" />` : `<i class="bi bi-card-image fs-1"></i>`}
+          </div>
+          </a>
       </td>
       <td class="text-center"><span class="badge ${usage === "New" ? "text-bg-success" : "text-bg-secondary"}">${usage}</span></td>
       <td class="text-center">
@@ -1879,11 +1876,11 @@ function updateTable() {
           <input type="text" class="form-control" value="${stockNumber}" placeholder="Stock Number" title="${stockNumber}" aria-label="stock number" aria-describedby="btnGroupAddon">
           <div class="input-group-text" id="btnGroupAddon">
             <button type="button" 
-                    class="btn-icon" 
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="top"
-                    data-bs-title="Copy to clipboard"
-                    onclick="navigator.clipboard.writeText('${stockNumber}')">
+              class="btn-icon" 
+              data-bs-toggle="tooltip"
+              data-bs-placement="top"
+              data-bs-title="Copy to clipboard"
+              onclick="navigator.clipboard.writeText('${stockNumber}')">
               <i class="bi bi-clipboard"></i>
             </button>
           </div>

@@ -231,6 +231,19 @@ th {
 }
 
 /* data table styles */
+.table-image-container {
+  max-width: 100px;
+  width: 100%;
+  max-height: 100px;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 5px;
+}
+.table-image-container img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+}
 .nowrap {
   white-space: nowrap;
 }
@@ -574,11 +587,39 @@ th {
 }
 
 @media screen and (max-width: 678px) {
+  .table-image-container {
+    margin: 0 auto;
+    max-width: 200px;
+    width: 100%;
+    max-height: 133px;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 5px;
+    object-fit: cover !important;
+  }
+  .table {
+    width: 100% !important;
+    border-radius: 5px !important;
+    overflow: hidden !important;
+    border: solid 5px !important;
+    background: transparent !important;
+  }
+  .table-image-container img {
+    margin: 0 auto;
+    width: 100% !important;
+    height: 100% !important;
+  }
   .key-tag-container {
     zoom: 1;
   }
   .search-width {
     width: 100%;
+  }
+  tr {
+    margin: 10px auto;
+    width: 95% !important;
+    border-radius: 20px !important;
+    overflow: hidden !important;
   }
   thead {
     display: none;
@@ -598,22 +639,24 @@ th {
     width: 100%;
     text-align: center !important;
   }
-  td a img {
-    min-width: 300px;
-    width: 100%;
-    margin: 0;
-    overflow: hidden;
-  }
   td div {
     justify-content: center;
     text-align: center !important;
   }
+  .input-group {
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 300px;
+    width: 100%;
+  }
   td div input {
+    width: 100% !important;
     display: flex;
     justify-content: center;
     text-align: center !important;
     max-width: 300px;
-    width: 100% !important;
   }
 }
 
