@@ -231,6 +231,18 @@ th {
 }
 
 /* data table styles */
+.table-responsive {
+  border-radius: 15px;
+  height: 80vh;
+  overflow: hidden;
+  overflow-y: auto;
+}
+table tbody tr td {
+  border-bottom: solid 1px rgba(255, 255, 255, 0.1);
+}
+.table tbody tr:hover {
+  border: solid 1px #fff;
+}
 .table-image-container {
   max-width: 80px;
   margin: 4px auto;
@@ -595,7 +607,7 @@ th {
     width: 100% !important;
     border-radius: 5px !important;
     overflow: hidden !important;
-    border: solid 5px !important;
+    border: solid 10px !important;
     background: transparent !important;
   }
   .table-image-container {

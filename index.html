@@ -9,7 +9,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="./img/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="./img/favicon-16x16.png" />
 
-    <title>FOM PRINT TAGS</title>
+    <title>FOM PRINT</title>
     <link rel="stylesheet" href="./css/bootstrap.css" />
     <link rel="stylesheet" href="./css/bootstrap-icons.css" />
     <link rel="stylesheet" href="./css/style.css" />
@@ -20,13 +20,13 @@
     <header class="fixed-top d-print-none">
       <nav class="navbar navbar-expand-xl bg-body-tertiary bg-blur">
         <div class="container-fluid">
-          <div class="navbar-left btn-group">
+          <div class="navbar-left d-flex flex-row align-items-center">
             <a class="navbar-brand" href="./">
               <img id="logo" class="ms-1 me-1 pt-0" src="./img/fom-app-logo-01.svg" alt="Logo" width="180" height="27" />
             </a>
-            <button type="button" class="btn btn-danger btn-sm text-white d-none d-sm-none d-md-block" title="Create custom key tag" onclick="openKeyTagsByStockNumberModal('${stockNumber}')"><i class="bi bi-plus-circle me-2"></i>Key Tag</button>
+            <button type="button" class="btn btn-danger btn-sm text-white d-none d-md-block" title="Create custom key tag" onclick="openKeyTagsByStockNumberModal('${stockNumber}')"><i class="bi bi-plus-circle me-2"></i>Key Tag</button>
           </div>
-          <div class="navbar-center d-none d-sm-block">
+          <div class="navbar-center d-none d-md-block">
             <form class="form-group d-flex flex-row justify-content-center align-items-center" role="search">
               <label for="searchFilter" class="visually-hidden">Search</label>
               <input
@@ -38,19 +38,18 @@
                 aria-label="Search"
                 title="Filter vehicles by year, make, model, stock number or VIN"
                 autocomplete="off"
-                
               />
-              <select id="yearFilter" class="form-select d-inline-flex mx-1 d-none d-sm-none d-md-block" style="max-width: 90px">
+              <select id="yearFilter" class="form-select d-inline-flex mx-1" style="max-width: 90px">
                 <option value="">Year</option>
                 <option value="">All</option>
               </select>
 
-              <select id="manufacturerFilter" class="form-select mx-1 d-none d-sm-none d-md-block" style="max-width: 90px">
+              <select id="manufacturerFilter" class="form-select mx-1" style="max-width: 90px">
                 <option value="">Make</option>
                 <option value="">All</option>
               </select>
               
-              <select id="typeFilter" class="form-select mx-1 d-none d-sm-none d-md-block" style="max-width: 90px">
+              <select id="typeFilter" class="form-select mx-1" style="max-width: 90px">
                 <option value="">Type</option>
                 <option value="">All</option>
               </select>
@@ -63,9 +62,9 @@
                 </label>
               </div>
             </form>
-        </div>
+          </div>
 
-          <div class="navbar-right toggles-group d-flex flex-row">
+          <div class="navbar-right toggles-group d-flex flex-row align-items-center">
             <button id="toggleThemeButton" class="btn btn-outline-secondary px-3 mx-1" type="button">
               <i id="theme-icon" class="bi bi-moon-stars"></i>
             </button>
@@ -126,13 +125,13 @@
         <div class="d-flex flex-row justify-content-between align-items-end" style="height: 10vh; overflow: hidden;">
           <div class="text-secondary"></div>
         </div>
-        <div class="card mx-2 table-responsive" style="height: 80vh; overflow: hidden; overflow-y: auto;">
+        <div class="card mx-auto table-responsive">
           <!-- element for displaying row count -->
           <div class="mx-2 my-1">
             <span class="text-secondary">Results:</span> <span class="mx-1" id="rowCountDisplay"></span></span>
           </div>
           
-          <table id="vehiclesTable" class="table table-sm">
+          <table id="vehiclesTable" class="table-sm">
             <thead>
               <tr>
                 <th class="text-center">Image</th>
