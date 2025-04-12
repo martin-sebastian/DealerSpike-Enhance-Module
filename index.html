@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="FOM PRINT">
     <meta name="theme-color" content="#333333">
@@ -142,8 +142,8 @@
 
     <main>
       <div class="container-fluid">
-        <div class="d-flex flex-row justify-content-between align-items-end" style="height: 10vh; overflow: hidden;">
-          <div class="text-secondary"></div>
+        <div class="d-flex flex-row justify-content-between align-items-end" style="height: 8vh; overflow: hidden;">
+          <div class="text-secondary">+ Custom Key Tag</div>
         </div>
         <div class="card mx-auto table-responsive">
           <!-- element for displaying row count -->
@@ -203,7 +203,21 @@
             </ul>
           </nav>
         </div>
+
+      
     </main>
+  <!-- FOOTER -->
+  <footer class="bg-dark text-light" style="height: 3vh; z-index: 99999;">
+    <div class="w-100 d-flex flex-row justify-content-around align-items-center mt-4">
+      <div class="mx-4">
+          <button class="btn btn-danger mx-1"><i class="bi bi-house fs-5"></i></button> 
+          <button class="btn btn-danger mx-1"><i class="bi bi-calendar-event fs-5"></i></button> 
+          <button class="btn btn-danger mx-1"><i class="bi bi-arrow-counterclockwise fs-5"></i></button> 
+          <button class="btn btn-danger mx-1"><i class="bi bi-tag fs-5"></i></button>
+        </div>
+      </div>
+  </footer>
+    
 
       <div class="modal fade" id="overlayModal" tabindex="-1" aria-labelledby="overlayModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-fullscreen">
@@ -501,13 +515,32 @@
       // Register for periodic sync
       async function startPeriodicSync() {
         try {
-          const registration = await navigator.serviceWorker.ready;
-          await registration.periodicSync.register('periodic-xml-sync', {
-            minInterval: SYNC_INTERVAL
+          // Check if periodic sync is supported
+          if (!('periodicSync' in registration)) {
+            console.log('Periodic Sync is not supported by this browser');
+            return;
+          }
+
+          // Check if we have permission
+          const status = await navigator.permissions.query({
+            name: 'periodic-background-sync',
           });
-          console.log('Periodic sync registered');
+
+          if (status.state === 'granted') {
+            const registration = await navigator.serviceWorker.ready;
+            await registration.periodicSync.register('periodic-xml-sync', {
+              minInterval: SYNC_INTERVAL
+            });
+            console.log('Periodic sync registered successfully');
+          } else {
+            console.log('Periodic Sync permission not granted');
+            // Fall back to regular sync
+            await registerBackgroundSync();
+          }
         } catch (error) {
-          console.error('Error registering periodic sync:', error);
+          console.log('Periodic sync registration failed, falling back to regular sync:', error);
+          // Fall back to regular sync
+          await registerBackgroundSync();
         }
       }
 

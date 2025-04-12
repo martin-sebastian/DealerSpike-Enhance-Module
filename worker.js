@@ -23,7 +23,24 @@ const urlsToCache = [
 
 // Install event - cache assets
 self.addEventListener("install", (event) => {
-  event.waitUntil(Promise.all([caches.open(CACHE_NAME).then((cache) => cache.addAll(urlsToCache)), caches.open(XML_CACHE_NAME)]));
+  event.waitUntil(
+    Promise.all([
+      caches.open(CACHE_NAME).then((cache) => {
+        // Cache files one by one to identify which files fail
+        return Promise.allSettled(
+          urlsToCache.map(async (url) => {
+            try {
+              await cache.add(url);
+              console.log(`Successfully cached: ${url}`);
+            } catch (error) {
+              console.error(`Failed to cache: ${url}`, error);
+            }
+          })
+        );
+      }),
+      caches.open(XML_CACHE_NAME)
+    ])
+  );
 });
 
 // Sync event - handle background sync

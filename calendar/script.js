@@ -4,3 +4,5 @@ let ec = new EventCalendar(document.getElementById("ec"), {
     // your list of events
   ],
 });
+
+ec.render();
