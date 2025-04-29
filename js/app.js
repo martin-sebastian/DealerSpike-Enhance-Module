@@ -531,15 +531,15 @@ function showPlaceholder(rowCount = 10) {
     <td class="placeholder-wave"><span class="placeholder col-10"></span></td>
     `; // Your placeholder cells
     row2.innerHTML = `
-    <td class="placeholder-wave"><span class="placeholder col-12"></span></td>
+    <td class="placeholder-wave"><span class="placeholder col-10"></span></td>
     <td class="placeholder-wave"><span class="placeholder col-8"></span></td>
-    <td class="placeholder-wave"><span class="placeholder col-12"></span></td>
+    <td class="placeholder-wave"><span class="placeholder col-10"></span></td>
     <td class="placeholder-wave"><span class="placeholder col-8"></span></td>
-    <td class="placeholder-wave"><span class="placeholder col-12"></span></td>
+    <td class="placeholder-wave"><span class="placeholder col-10"></span></td>
     <td class="placeholder-wave"><span class="placeholder col-8"></span></td>
-    <td class="placeholder-wave"><span class="placeholder col-12"></span></td>
+    <td class="placeholder-wave"><span class="placeholder col-10"></span></td>
     <td class="placeholder-wave"><span class="placeholder col-8"></span></td>
-    <td class="placeholder-wave"><span class="placeholder col-12"></span></td>
+    <td class="placeholder-wave"><span class="placeholder col-10"></span></td>
     <td class="placeholder-wave"><span class="placeholder col-8"></span></td>
     <td class="placeholder-wave"><span class="placeholder col-10"></span></td>
     `; // Your placeholder cells
@@ -1886,9 +1886,9 @@ function updateTable() {
           </div>
         </div>
       </td>
-      <td><span class="badge bg-success p-2 w-100 fw-bold border">${webPrice}</span></td>
+      <td><span class="badge bg-success p-2 w-50 fw-bold border">${webPrice}</span></td>
       <td>
-        <span class="badge text-secondary p-2 w-100 fw-semibold border"
+        <span class="badge text-secondary p-2 w-50 fw-semibold border"
               title="${normalizeDate(updated).format("MM-DD-YYYY")}"
               data-bs-toggle="tooltip"
               data-bs-placement="top">
