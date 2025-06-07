@@ -1,15 +1,21 @@
-// Configuration constants
+/**
+ * CONFIGURATION CONSTANTS
+ * Main application configuration settings
+ */
 const CONFIG = {
-  API_URL: "https://newportal.flatoutmotorcycles.com/portal/public/api",
-  MAIN_LOTS: ["SUZ", "KAW", "POL", "PREOWNED", "PRE OWNED"],
-  DEFAULT_INTEREST_RATE: 6.99,
+  API_URL: "https://newportal.flatoutmotorcycles.com/portal/public/api", // Base API endpoint for vehicle data
+  MAIN_LOTS: ["SUZ", "KAW", "POL", "PREOWNED", "PRE OWNED"], // Vehicle lot categories for inventory status
+  DEFAULT_INTEREST_RATE: 6.99, // Default APR for payment calculations
 };
 
-// Alpine.js configuration
+/**
+ * ALPINE.JS CONFIGURATION
+ * Configuration object for Alpine.js reactive data (currently unused but prepared for future use)
+ */
 const ALPINE_CONFIG = {
   customerData: {
-    firstName: "",
-    lastName: "",
+    firstName: "", // Customer first name for quote personalization
+    lastName: "",  // Customer last name for quote personalization
   },
   init() {
     // Initialize with any existing data or defaults
@@ -17,25 +23,34 @@ const ALPINE_CONFIG = {
   },
 };
 
-// Function declarations should come before usage
+/**
+ * INITIALIZE CLIPBOARD TOOLTIPS
+ * Sets up clipboard copy functionality with Bootstrap tooltips for any elements with data-clipboard-target attribute
+ * Uses ClipboardJS library for copy functionality and Bootstrap tooltips for user feedback
+ */
 function initializeClipboardTooltips() {
   const clipboardButtons = document.querySelectorAll("[data-clipboard-target]");
   clipboardButtons.forEach((button) => {
+    // Initialize ClipboardJS for each button
     new ClipboardJS(button);
+    
+    // Create initial tooltip showing "Copy to clipboard"
     const tooltip = new bootstrap.Tooltip(button, {
       title: "Copy to clipboard",
       placement: "top",
       trigger: "hover",
     });
 
+    // Handle click event to show "Copied!" feedback
     button.addEventListener("click", () => {
-      tooltip.dispose();
+      tooltip.dispose(); // Remove existing tooltip
       const newTooltip = new bootstrap.Tooltip(button, {
         title: "Copied!",
         placement: "top",
         trigger: "manual",
       });
       newTooltip.show();
+      // Auto-hide the "Copied!" tooltip after 1 second
       setTimeout(() => {
         newTooltip.dispose();
         tooltip.dispose();
@@ -44,57 +59,75 @@ function initializeClipboardTooltips() {
   });
 }
 
-// URL parameter handling (single instance)
-const queryString = window.location.search;
-const urlParams = new URLSearchParams(queryString);
-const stockNum = urlParams.get("search");
+/**
+ * URL PARAMETER HANDLING
+ * Extract stock number from URL query parameters for vehicle lookup
+ */
+const queryString = window.location.search; // Get full query string from URL
+const urlParams = new URLSearchParams(queryString); // Parse query parameters
+const stockNum = urlParams.get("search"); // Extract 'search' parameter (stock number)
 
 console.log("Attempting to fetch data for stock number:", stockNum);
 
-// Payment Calculator
+/**
+ * PAYMENT CALCULATOR FUNCTION
+ * Calculates monthly payment based on loan amount, down payment, term, and interest rate
+ * Updates the payment display in real-time as user adjusts sliders
+ */
 function showpay() {
-  var princ = document.calc.loan.value;
-  var down = document.calc.downpayment.value;
-  var dp = (princ / 100) * down;
-  var term = document.calc.months.value;
-  var intr = document.calc.rate.value / 1200;
+  // Get form values
+  var princ = document.calc.loan.value;        // Principal loan amount (total vehicle price)
+  var down = document.calc.downpayment.value;  // Down payment percentage
+  var dp = (princ / 100) * down;               // Calculate down payment amount
+  var term = document.calc.months.value;       // Loan term in months
+  var intr = document.calc.rate.value / 1200;  // Monthly interest rate (annual rate / 12 / 100)
+  
+  // Calculate monthly payment using standard loan payment formula
+  // Payment = (P - DP) * r / (1 - (1 + r)^-n)
+  // Where P = Principal, DP = Down Payment, r = monthly rate, n = number of payments
   document.calc.pay.value = ((princ - dp) * intr) / (1 - Math.pow(1 / (1 + intr), term));
   document.calc.pay.value = document.calc.pay.value;
   var payment = ((princ - dp) * intr) / (1 - Math.pow(1 / (1 + intr), term));
-  var payment = payment.toFixed();
+  var payment = payment.toFixed(); // Round to nearest dollar
 
+  // Update payment display on the page
   document.getElementById("payment").innerHTML = payment;
 
+  // Update APR slider display value
   var slider2 = document.getElementById("percentRange");
   var output2 = document.getElementById("percentRangeValue");
-
   output2.innerHTML = slider2.value;
-
   slider2.oninput = function () {
     output2.innerHTML = this.value;
   };
 
+  // Update down payment slider display value
   var slider4 = document.getElementById("downpaymentRange");
   var output4 = document.getElementById("downpaymentRangeValue");
-
   output4.innerHTML = slider4.value;
-
   slider4.oninput = function () {
     output4.innerHTML = this.value;
   };
 }
 
-// Move function definition to global scope, before the fetch call
+/**
+ * UPDATE TRADE-IN DETAILS
+ * Updates the quote display when trade-in information is provided
+ * Recalculates total price by subtracting trade-in value from original OTD price
+ * This affects the final quote image that gets shared via messenger/SMS
+ */
 function updateTradeDetails() {
   const tradeValueElement = document.getElementById("tradeValueDisplay");
   const otdElement = document.getElementById("otdPriceDisplay");
+  
+  // Get trade-in form values
   const year = document.getElementById("InputYear").value;
   const vehicle = document.getElementById("InputVehicle").value;
   const condition = document.getElementById("InputCondition").value;
   const value = document.getElementById("InputTradeValue").value;
 
   if (tradeValueElement && value && value > 0) {
-    // Update trade-in display
+    // Show trade-in section and update description
     tradeValueElement.style.display = "list-item";
     const tradeDescription = `Trade-in: ${year} ${vehicle}${condition ? `, ${condition}` : ""}`;
     tradeValueElement.innerHTML = `
@@ -102,7 +135,7 @@ function updateTradeDetails() {
       <span class="float-end">${numeral(value).format("$0,0.00")}</span>
     `;
 
-    // Update OTD price
+    // Update total price by subtracting trade-in value
     if (otdElement) {
       const originalOTD = window.originalOTDPrice; // Use stored global value
       const newOTD = originalOTD - parseFloat(value);
@@ -112,7 +145,7 @@ function updateTradeDetails() {
       `;
     }
   } else {
-    // Reset displays if no trade-in value
+    // Hide trade-in section and reset to original price if no trade value
     tradeValueElement.style.display = "none";
     if (otdElement) {
       otdElement.innerHTML = `
@@ -123,10 +156,14 @@ function updateTradeDetails() {
   }
 }
 
-// Add early console log to verify script execution
+// Debug logging to verify script execution
 console.log("Script starting...");
 
-// Define tradeInFormTemplate
+/**
+ * TRADE-IN FORM TEMPLATE
+ * HTML template for trade-in form (currently unused but available for future implementation)
+ * Could be used to allow customers to input trade-in details directly in the quote interface
+ */
 const tradeInFormTemplate = `
   <div class="trade-in-form hidden">
     <!-- Your trade-in form HTML goes here -->
@@ -146,7 +183,11 @@ const tradeInFormTemplate = `
   </div>
 `;
 
-// Add sidebar collapse functionality
+/**
+ * SIDEBAR INITIALIZATION
+ * Sets up collapsible sidebar functionality for the quote interface
+ * Allows users to hide/show the sidebar to have more space for quote editing
+ */
 function initializeSidebar() {
   const sidebar = document.querySelector(".d-flex.flex-column.flex-shrink-0");
   const collapseButton = document.querySelector(".navbar-brand i.bi-arrows-collapse-vertical");
@@ -154,19 +195,27 @@ function initializeSidebar() {
   if (sidebar && collapseButton) {
     collapseButton.addEventListener("click", () => {
       sidebar.classList.toggle("collapsed");
-      // Update the icon
+      // Update the icon to reflect current state
       collapseButton.classList.toggle("bi-arrows-expand-vertical");
       collapseButton.classList.toggle("bi-arrows-collapse-vertical");
     });
   }
 }
 
-// Zoom functionality
-let currentZoom = 1.0;
-const MIN_ZOOM = 0.2;
-const MAX_ZOOM = 2.0;
-const ZOOM_STEP = 0.1;
+/**
+ * ZOOM FUNCTIONALITY
+ * Provides zoom controls for the quote interface to help with quote editing and review
+ * Users can zoom in/out to better see details or get overview of the quote card
+ */
+let currentZoom = 1.0;        // Current zoom level (1.0 = 100%)
+const MIN_ZOOM = 0.2;         // Minimum zoom level (20%)
+const MAX_ZOOM = 2.0;         // Maximum zoom level (200%)
+const ZOOM_STEP = 0.1;        // Zoom increment/decrement step
 
+/**
+ * Adjusts zoom level by the specified delta amount
+ * @param {number} delta - Amount to change zoom (positive to zoom in, negative to zoom out)
+ */
 function adjustZoom(delta) {
   const newZoom = Math.min(Math.max(currentZoom + delta, MIN_ZOOM), MAX_ZOOM);
   if (newZoom !== currentZoom) {
@@ -175,11 +224,17 @@ function adjustZoom(delta) {
   }
 }
 
+/**
+ * Resets zoom level back to 100% (1.0)
+ */
 function resetZoom() {
   currentZoom = 1.0;
   updateZoom();
 }
 
+/**
+ * Applies the current zoom level to the page container and updates zoom display
+ */
 function updateZoom() {
   const container = document.querySelector(".page-container.zoom-container");
   if (container) {
@@ -983,7 +1038,9 @@ document.addEventListener("DOMContentLoaded", function () {
         .capture-container {
             width: 760px;
             max-width: 760px;
-            
+            /* Optional: Limit height to ensure quotes always fit on screen */
+            /* max-height: 80vh; */
+            /* overflow-y: auto; */
         }
 
         .main-header,
@@ -1052,6 +1109,11 @@ window.addEventListener("error", function (event) {
   showError(`Unexpected error: ${event.error?.message || "Unknown error"}`);
 });
 
+/**
+ * CREATE EXPORT BUTTON
+ * Creates the "Save" button that triggers JPEG generation of the quote card
+ * This is the main function that generates the shareable quote image for messenger/SMS
+ */
 function createExportButton() {
   const container = document.querySelector(".export-btn-container");
   if (!container) {
@@ -1062,28 +1124,36 @@ function createExportButton() {
   // Remove placeholder button if it exists
   document.getElementById("placeholderSaveBtn")?.remove();
 
-  // Create the real button
+  // Create the save button that will capture the quote as JPEG
   const exportBtn = document.createElement("button");
   exportBtn.className = "btn btn-danger ms-2 d-flex align-items-center gap-2";
   exportBtn.innerHTML = `
     <i class="bi bi-floppy"></i>
     <span>Save</span>
   `;
-  exportBtn.addEventListener("click", captureFullContent);
+  exportBtn.addEventListener("click", captureFullContent); // Trigger JPEG capture
 
   container.appendChild(exportBtn);
 }
 
+/**
+ * GENERATE FILENAME FOR QUOTE JPEG
+ * Creates a descriptive filename for the quote image using vehicle details and timestamp
+ * Format: StockNumber_Year_Make_Model_Date.jpg
+ * This makes it easy to organize and identify quote images when sharing via messenger/SMS
+ * @param {Object} data - Vehicle data object containing stock number, year, make, model
+ * @returns {string} - Formatted filename for the JPEG quote image
+ */
 function generateFilename(data) {
   const timestamp = moment().format("YYYY-MM-DD");
   const parts = [data.StockNumber, data.ModelYear, data.Manufacturer, data.B50ModelName, timestamp];
 
   return parts
-    .filter(Boolean)
-    .join("_")
-    .replace(/\s+/g, "_")
-    .replace(/[^a-zA-Z0-9._-]/g, "") + 
-    ".jpg";
+    .filter(Boolean)              // Remove any empty/null values
+    .join("_")                    // Join with underscores
+    .replace(/\s+/g, "_")         // Replace spaces with underscores
+    .replace(/[^a-zA-Z0-9._-]/g, "") +  // Remove special characters
+    ".jpg";                       // Add JPEG extension
 }
 
 async function saveFile(blob, filename) {
@@ -1115,96 +1185,331 @@ async function saveFile(blob, filename) {
   }
 }
 
-// Capture the full content of the quote div
+/**
+ * CAPTURE QUOTE CARD AS JPEG
+ * Main function that captures the quote card content and saves it as a JPEG image
+ * This creates the shareable quote image for Facebook Messenger and SMS communication
+ * 
+ * SOLUTION FOR LONG CONTENT WITH CDN IMAGES:
+ * Since HTML2Canvas fails with CDN images (CORS), we use these approaches:
+ * 1. Scrolling method - Capture in sections and stitch together (maintains quality)
+ * 2. Temporary resize method - Shrink content to fit screen, capture, restore
+ * 3. Screen capture fallback - Single capture of visible area
+ * 
+ * DESIGN CONSIDERATION FOR MESSENGER/SMS:
+ * Very long quote images can be hard to read on mobile devices in messaging apps.
+ * Consider limiting quote cards to essential info for better mobile experience:
+ * - Vehicle image, price, payment, key details only
+ * - Hide optional sections (accessories, detailed breakdowns) for long quotes
+ * - This keeps quotes mobile-friendly and ensures reliable capture
+ */
 async function captureFullContent() {
   try {
-    // Image quality settings
-    const scaleFactor = 2.0;
-    const imageQuality = 1.0;
-
-    // Get the element we want to capture
+    // Get the quote card container to capture
     const element = document.querySelector(".capture-container");
     if (!element) {
       throw new Error("Capture container not found");
     }
 
-    // Store original scroll position and zoom
-    const originalScrollPos = window.scrollY;
-    const originalZoom = currentZoom;
+    // Configure image quality settings for optimal messenger/SMS display
+    const imageQuality = 0.95;   // High JPEG quality for professional appearance
 
-    // Reset zoom to 1 temporarily for accurate capture
+    // Generate descriptive filename using vehicle data
+    const data = window.vehicleData;
+    const filename = generateFilename(data);
+
+    // Use the standard capture method that works well for your current quotes
+    console.log("Capturing quote card...");
+    return await captureStandardSize(element, filename, imageQuality);
+
+  } catch (err) {
+    console.error("Error capturing screen:", err);
+    alert("Screen capture failed or was cancelled: " + err.message);
+  }
+}
+
+/**
+ * CAPTURE WITH SCROLLING
+ * Captures long content by taking multiple screenshots while scrolling, then stitches them together
+ * This maintains full image quality but requires precise positioning and overlap handling
+ */
+async function captureWithScrolling(element, filename, imageQuality) {
+  const originalScrollPos = window.scrollY;
+  const originalZoom = currentZoom;
+  
+  try {
+    // Reset zoom and scroll to top
     currentZoom = 1.0;
     updateZoom();
-
-    // Get the navbar height to offset our capture
-    const navbar = document.querySelector("nav");
-    const navbarHeight = navbar ? navbar.offsetHeight : 0;
-
-    // Get the full content dimensions
-    const contentHeight = element.scrollHeight;
-    const contentWidth = element.scrollWidth;
-
-    // Temporarily modify the page to ensure full content is visible
-    const originalPosition = element.style.position;
-    const originalTop = element.style.top;
-
-    element.style.position = "relative";
-    element.style.top = "0";
-
-    // Ensure the container is fully visible
     window.scrollTo(0, 0);
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    await new Promise(resolve => setTimeout(resolve, 500));
 
-    // Start screen capture
-    const stream = await navigator.mediaDevices.getDisplayMedia({
-      preferCurrentTab: true,
-      video: {
-        displaySurface: "browser",
-      },
-    });
+    // Calculate capture parameters
+    const elementRect = element.getBoundingClientRect();
+    const viewportHeight = window.innerHeight;
+    const captureHeight = Math.min(viewportHeight - 200, elementRect.height); // Leave margin for UI
+    const totalHeight = element.scrollHeight;
+    const stepSize = captureHeight * 0.8; // 20% overlap to avoid gaps
+    const numCaptures = Math.ceil(totalHeight / stepSize);
+    
+    console.log(`Capturing ${numCaptures} sections of ${totalHeight}px total height`);
 
-    const video = document.createElement("video");
-    video.srcObject = stream;
-    await new Promise((resolve) => (video.onloadedmetadata = resolve));
-    video.play();
+    // Create final canvas
+    const finalCanvas = document.createElement("canvas");
+    finalCanvas.width = elementRect.width;
+    finalCanvas.height = totalHeight;
+    const finalCtx = finalCanvas.getContext("2d");
 
-    // Create canvas with dimensions matching the full content
-    const canvas = document.createElement("canvas");
-    canvas.width = contentWidth;
-    canvas.height = contentHeight;
+    let currentY = 0;
 
-    const ctx = canvas.getContext("2d");
+    for (let i = 0; i < numCaptures; i++) {
+      console.log(`Capturing section ${i + 1}/${numCaptures}`);
+      
+      // Scroll to current position
+      const scrollTop = i * stepSize;
+      element.scrollTop = scrollTop;
+      await new Promise(resolve => setTimeout(resolve, 300));
 
-    // Get element position relative to viewport
-    const rect = element.getBoundingClientRect();
+      // Start screen capture for this section
+      const stream = await navigator.mediaDevices.getDisplayMedia({
+        preferCurrentTab: true,
+        video: { displaySurface: "browser" }
+      });
 
-    // Draw the content
-    ctx.drawImage(video, rect.left, rect.top, contentWidth, contentHeight, 0, 0, contentWidth, contentHeight);
+      const video = document.createElement("video");
+      video.srcObject = stream;
+      await new Promise(resolve => video.onloadedmetadata = resolve);
+      video.play();
 
-    // Stop screen capture
-    stream.getTracks().forEach((track) => track.stop());
+      // Create temporary canvas for this section
+      const tempCanvas = document.createElement("canvas");
+      tempCanvas.width = elementRect.width;
+      tempCanvas.height = captureHeight;
+      const tempCtx = tempCanvas.getContext("2d");
 
-    // Restore original element position
-    element.style.position = originalPosition;
-    element.style.top = originalTop;
+      // Capture this section
+      const currentRect = element.getBoundingClientRect();
+      tempCtx.drawImage(
+        video,
+        currentRect.left, currentRect.top, elementRect.width, captureHeight,
+        0, 0, elementRect.width, captureHeight
+      );
 
-    // Restore original scroll position and zoom
+      // Draw this section onto the final canvas
+      finalCtx.drawImage(tempCanvas, 0, currentY);
+      currentY += stepSize;
+
+      // Clean up this capture
+      stream.getTracks().forEach(track => track.stop());
+      
+      // Small delay between captures
+      await new Promise(resolve => setTimeout(resolve, 200));
+    }
+
+    // Restore original state
+    element.scrollTop = 0;
     window.scrollTo(0, originalScrollPos);
     currentZoom = originalZoom;
     updateZoom();
 
-    const data = window.vehicleData;
-    const filename = generateFilename(data);
+    // Save the stitched image
+    const blob = await new Promise(resolve => {
+      finalCanvas.toBlob(resolve, "image/jpeg", imageQuality);
+    });
 
-    // Convert canvas to blob
-    const blob = await new Promise((resolve) => {
+    await saveFile(blob, filename);
+    console.log("Long quote card captured successfully with scrolling method");
+
+  } catch (error) {
+    // Restore state on error
+    element.scrollTop = 0;
+    window.scrollTo(0, originalScrollPos);
+    currentZoom = originalZoom;
+    updateZoom();
+    throw error;
+  }
+}
+
+/**
+ * CAPTURE WITH TEMPORARY RESIZE
+ * Temporarily shrinks the quote card to fit on screen, captures it, then restores original size
+ * This ensures the entire quote is captured even for long content with CDN images
+ */
+async function captureWithTemporaryResize(element, filename, imageQuality) {
+  // Store original state
+  const originalScrollPos = window.scrollY;
+  const originalZoom = currentZoom;
+  const originalTransform = element.style.transform;
+  const originalWidth = element.style.width;
+  const originalHeight = element.style.height;
+  const originalOverflow = element.style.overflow;
+
+  try {
+    // Reset zoom and scroll
+    currentZoom = 1.0;
+    updateZoom();
+    window.scrollTo(0, 0);
+
+    // Calculate scale factor to fit content on screen
+    const viewportHeight = window.innerHeight - 100; // Leave some margin
+    const contentHeight = element.scrollHeight;
+    const scaleFactor = Math.min(0.9, viewportHeight / contentHeight); // Max 90% scale
+
+    console.log(`Scaling content by ${scaleFactor} to fit ${contentHeight}px into ${viewportHeight}px`);
+
+    // Apply temporary scaling to fit content on screen
+    element.style.transform = `scale(${scaleFactor})`;
+    element.style.transformOrigin = 'top left';
+    element.style.width = `${element.scrollWidth}px`;
+    element.style.height = `${element.scrollHeight}px`;
+    element.style.overflow = 'visible';
+
+    // Wait for rendering to complete
+    await new Promise(resolve => setTimeout(resolve, 800));
+
+    // Start screen capture
+    const stream = await navigator.mediaDevices.getDisplayMedia({
+      preferCurrentTab: true,
+      video: { displaySurface: "browser" }
+    });
+
+    const video = document.createElement("video");
+    video.srcObject = stream;
+    await new Promise(resolve => video.onloadedmetadata = resolve);
+    video.play();
+
+    // Get the scaled element bounds
+    const rect = element.getBoundingClientRect();
+    
+    // Create canvas with original (unscaled) dimensions for high quality
+    const canvas = document.createElement("canvas");
+    canvas.width = element.scrollWidth;
+    canvas.height = element.scrollHeight;
+    const ctx = canvas.getContext("2d");
+
+    // Draw the scaled content but restore to original size on canvas
+    ctx.drawImage(
+      video, 
+      rect.left, rect.top, rect.width, rect.height,  // Source (scaled on screen)
+      0, 0, canvas.width, canvas.height              // Destination (full size on canvas)
+    );
+
+    // Clean up
+    stream.getTracks().forEach(track => track.stop());
+
+    // Restore original element state
+    element.style.transform = originalTransform;
+    element.style.width = originalWidth;
+    element.style.height = originalHeight;
+    element.style.overflow = originalOverflow;
+    window.scrollTo(0, originalScrollPos);
+    currentZoom = originalZoom;
+    updateZoom();
+
+    // Save the image
+    const blob = await new Promise(resolve => {
       canvas.toBlob(resolve, "image/jpeg", imageQuality);
     });
 
     await saveFile(blob, filename);
-  } catch (err) {
-    console.error("Error capturing screen:", err);
-    alert("Screen capture failed or was cancelled: " + err.message);
+    console.log("Long quote card captured successfully with temporary resize method");
+
+  } catch (error) {
+    // Restore state on error
+    element.style.transform = originalTransform;
+    element.style.width = originalWidth;
+    element.style.height = originalHeight;
+    element.style.overflow = originalOverflow;
+    window.scrollTo(0, originalScrollPos);
+    currentZoom = originalZoom;
+    updateZoom();
+    throw error;
+  }
+}
+
+/**
+ * CAPTURE STANDARD SIZE
+ * Standard screen capture for quotes that fit comfortably on screen
+ */
+async function captureStandardSize(element, filename, imageQuality) {
+  // Store original state
+  const originalScrollPos = window.scrollY;
+  const originalZoom = currentZoom;
+
+  try {
+    // Reset zoom and scroll to ensure element is positioned correctly
+    currentZoom = 1.0;
+    updateZoom();
+    
+    // Position the element optimally for capture
+    // Scroll vertically to put element near top
+    const elementTop = element.offsetTop;
+    window.scrollTo(0, elementTop);
+    
+    // Center the page horizontally if needed (for narrow quote cards)
+    const pageWidth = document.documentElement.scrollWidth;
+    const viewportWidth = window.innerWidth;
+    if (pageWidth > viewportWidth) {
+      const centerScroll = (pageWidth - viewportWidth) / 2;
+      window.scrollTo(centerScroll, elementTop);
+    }
+    
+    await new Promise(resolve => setTimeout(resolve, 600));
+
+    // Start screen capture
+    const stream = await navigator.mediaDevices.getDisplayMedia({
+      preferCurrentTab: true,
+      video: { displaySurface: "browser" }
+    });
+
+    const video = document.createElement("video");
+    video.srcObject = stream;
+    await new Promise(resolve => video.onloadedmetadata = resolve);
+    video.play();
+
+    // Get element position AFTER all positioning changes
+    const rect = element.getBoundingClientRect();
+    const windowInfo = {
+      scrollX: window.scrollX,
+      scrollY: window.scrollY,
+      viewportWidth: window.innerWidth,
+      viewportHeight: window.innerHeight
+    };
+    
+    console.log("Element position:", { left: rect.left, top: rect.top, width: rect.width, height: rect.height });
+    console.log("Window info:", windowInfo);
+    console.log("Page scroll position:", { x: window.pageXOffset, y: window.pageYOffset });
+    
+    // Create canvas and capture - use the element's actual content dimensions
+    const canvas = document.createElement("canvas");
+    canvas.width = rect.width;
+    canvas.height = rect.height;
+    const ctx = canvas.getContext("2d");
+
+    // Capture starting from the element's actual left edge
+    // rect.left should be the correct starting point for the quote card
+    ctx.drawImage(
+      video, 
+      rect.left, rect.top, rect.width, rect.height,  // Source area from screen capture
+      0, 0, rect.width, rect.height                  // Destination on canvas
+    );
+
+    // Clean up
+    stream.getTracks().forEach(track => track.stop());
+
+    // Save the image
+    const blob = await new Promise(resolve => {
+      canvas.toBlob(resolve, "image/jpeg", imageQuality);
+    });
+
+    await saveFile(blob, filename);
+    console.log("Standard quote card captured successfully");
+
+  } finally {
+    // Always restore state, even if there's an error
+    window.scrollTo(0, originalScrollPos);
+    currentZoom = originalZoom;
+    updateZoom();
   }
 }
 
