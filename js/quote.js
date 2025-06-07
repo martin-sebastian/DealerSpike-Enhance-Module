@@ -285,9 +285,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
       console.log("data.StockNumber", data.StockNumber);
       const stockNumber = data.StockNumber;
-      const prodTitle = data.Usage + " " + data.ModelYear + " " + data.Manufacturer + " " + data.B50ModelName;
+      const prodTitle = data.ModelYear + " " + data.Manufacturer + " " + data.B50ModelName;
       const arrivalDate = moment(data.EstimatedArrival).format("MM/DD/YYYY");
-      const newUsed = data.Usage;
+      const newUsed = data.Usage === "New" ? "New" : "Pre-Owned";
       const milesHours = data.Miles;
       const inventoryStatus = data.UnitStatus;
       const qLevel = data.QuoteLevel;
@@ -608,7 +608,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Update the Vehicle Image Carousel container template
       const carousel = `
-    <div class="carousel-container ratio ratio-16x9 rounded cover">
+    <div class="carousel-container ratio ratio-16x9 cover">
       <div id="carousel-overlay-vehicle-info" 
             class="carousel slide" 
             data-bs-ride="false"
@@ -645,15 +645,30 @@ document.addEventListener("DOMContentLoaded", function () {
       `;
 
       
+      // Brand Logo Template
+      var brandHeaderTemplate = `
+      <div class="brand-container pb-2 mb-2 w-100 d-flex flex-row justify-content-between align-items-center">
+        <div class="brand-logo-container m-0 p-0">
+          <img src="../img/fom-app-logo-02.svg" alt="Brand Logo" class="img-fluid m-0 p-0" style="max-width: 200px;">
+        </div>
+        <div class="brand-text-container d-flex flex-column justify-content-center align-items-end m-0 p-0 py-2" style="max-width: 300px;">
+          <h6 class="h6 fw-bold mb-0">Flat Out Motorsports</h6>
+          <p class="small mt-0 p-0">
+            <small class="fw-bold pb-0 mb-0">7525 E. 88th Place</small>
+            <small class="fw-bold pb-0 mb-0">Indianapolis, IN 46256</small><br>
+            <small class="fw-bold p-0 m-0">(317) 890-9110</small><a href="sales@flatoutmotorcycles.com" class="text-decoration-none text-dark ms-2">sales@flatoutmotorcycles.com</a>
+          </p>
+        </div>
+      </div>
+    `;
 
       // Major Unit Header with Year, Make, Model, VIN, Stock Number.
       var muHeaderTemplate = `
       <div class="vehicle-header text-center">
-        <h1 class="fs-4 vehicle-title fw-bold my-0">${prodTitle}</h1>
-        <p class="fs-6 vehicle-subtitle my-0">
-          <small>Model: </small>${data.ModelCode} 
-          <small>Stock Number: </small>${data.StockNumber}
-        </p>
+        <h1 class="h3 vehicle-title fw-bold my-0">${prodTitle}</h1>
+        <h6 class="h6 vehicle-subtitle small my-0">
+          <small>Model: ${data.ModelCode} | ${newUsed} | Miles: ${milesHours} | Stock #: ${data.StockNumber}</small>
+        </h6>
       </div>
     `;
 
@@ -723,10 +738,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Payment Calculator
       const paymentCalc = `
-		<div class="payment-calculator-container my-1">
+		<div class="payment-calculator-container m-0">
       <form name="calc" method="POST">
         <button type="button" 
-          class="btn btn-danger bg-danger bg-gradient w-100 pt-2"
+          class="payment-calculator-button btn btn-danger bg-danger bg-gradient w-100 pt-2 mb-1"
           data-bs-toggle="collapse" 
           data-bs-target="#paymentSliders" 
           aria-expanded="false" 
@@ -759,7 +774,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             <div class="downpayment-container">
 							<div class="downpayment-label">
-								<span class="updated-value-line"><span class="downpayment-value" id="downpaymentRangeValue"></span>% Down</span>
+								<span class="updated-value-line badge bg-danger"><span class="badge bg-dark downpayment-value me-2" id="downpaymentRangeValue"></span>% Down</span>
 							</div>
 
 							<div class="slider-row">
@@ -845,6 +860,10 @@ document.addEventListener("DOMContentLoaded", function () {
           <h5 class="fs-6 mx-auto mb-1 text-center">Show & Hide Sections</h5>
           <hr class="hr mb-2" />
           <div class="form-check form-check-reverse text-start form-switch my-2">
+            <label class="form-check-label small" for="quoteBrandHeader">Flat Out Motorsports Header</label>
+            <input class="form-check-input" type="checkbox" role="switch" id="quoteBrandHeader" checked />
+          </div>
+          <div class="form-check form-check-reverse text-start form-switch my-2">
             <label class="form-check-label small" for="quoteHeader">Unit Name + Mode & Stock #</label>
             <input class="form-check-input" type="checkbox" role="switch" id="quoteHeader" checked />
           </div>
@@ -854,7 +873,11 @@ document.addEventListener("DOMContentLoaded", function () {
           </div>
           <div class="form-check form-check-reverse text-start form-switch my-2">
             <input class="form-check-input" type="checkbox" role="switch" id="quotePayment" checked />
-            <label class="form-check-label small" for="quotePayment">Price, Savings & Payment</label>
+            <label class="form-check-label small" for="quotePayment">Price Box</label>
+          </div>
+          <div class="form-check form-check-reverse text-start form-switch my-2">
+            <input class="form-check-input" type="checkbox" role="switch" id="quotePaymentAmount" checked />
+            <label class="form-check-label small" for="quotePaymentAmount">Monthly Payment</label>
           </div>
           <div class="form-check form-check-reverse text-start form-switch my-2">
             <input class="form-check-input" type="checkbox" role="switch" id="quoteAccessories" checked />
@@ -901,6 +924,7 @@ document.addEventListener("DOMContentLoaded", function () {
       // Update the main page content structure
       const pageContent = `
         <div class="capture-container">
+          <div class="brand-header">${brandHeaderTemplate}</div>
           <div class="main-header">${muHeaderTemplate}</div>
           <div class="carousel-container">${carousel}</div>
           <div class="payment-calculator-container">${paymentCalc}</div>
@@ -1199,9 +1223,11 @@ function handleSearch(event) {
 function initializeVisibilityToggles() {
   const toggleMap = {
     quoteName: ".quote-name",
+    quoteBrandHeader: ".brand-container",
     quoteHeader: ".main-header",
     quoteImages: ".carousel-container",
     quotePayment: ".payment-calculator-container",
+    quotePaymentAmount: ".payment",
     quoteAccessories: ".accessory-items-container",
     quoteRebates: ".mat-items-container",
     quoteDiscounts: ".discount-items-container",
