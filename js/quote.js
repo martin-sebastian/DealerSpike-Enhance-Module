@@ -656,7 +656,7 @@ document.addEventListener("DOMContentLoaded", function () {
           <p class="small mt-0 p-0">
             <small class="fw-bold pb-0 mb-0">7525 E. 88th Place</small>
             <small class="fw-bold pb-0 mb-0">Indianapolis, IN 46256</small><br>
-            <small class="fw-bold p-0 m-0">(317) 890-9110</small><a href="sales@flatoutmotorcycles.com" class="text-decoration-none text-dark ms-2">sales@flatoutmotorcycles.com</a>
+            <small class="fw-bold p-0 m-0">(317) 890-9110</small><a href="mailto:sales@flatoutmotorcycles.com" class="sales-email text-decoration-none text-dark ms-2">sales@flatoutmotorcycles.com</a>
           </p>
         </div>
       </div>
@@ -741,7 +741,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		<div class="payment-calculator-container m-0">
       <form name="calc" method="POST">
         <button type="button" 
-          class="payment-calculator-button btn btn-danger bg-danger bg-gradient w-100 pt-2 mb-1"
+          class="payment-calculator-button btn btn-danger w-100 pt-2 mb-1"
           data-bs-toggle="collapse" 
           data-bs-target="#paymentSliders" 
           aria-expanded="false" 
@@ -864,16 +864,16 @@ document.addEventListener("DOMContentLoaded", function () {
             <input class="form-check-input" type="checkbox" role="switch" id="quoteBrandHeader" checked />
           </div>
           <div class="form-check form-check-reverse text-start form-switch my-2">
-            <label class="form-check-label small" for="quoteHeader">Unit Name + Mode & Stock #</label>
+            <label class="form-check-label small" for="quoteHeader">Year, Make, Model, Stock #...</label>
             <input class="form-check-input" type="checkbox" role="switch" id="quoteHeader" checked />
           </div>
           <div class="form-check form-check-reverse text-start form-switch my-2">
             <input class="form-check-input" type="checkbox" role="switch" id="quoteImages" checked />
-            <label class="form-check-label small" for="quoteImages">Unit Photo + Selector</label>
+            <label class="form-check-label small" for="quoteImages">Vehicle Images</label>
           </div>
           <div class="form-check form-check-reverse text-start form-switch my-2">
             <input class="form-check-input" type="checkbox" role="switch" id="quotePayment" checked />
-            <label class="form-check-label small" for="quotePayment">Price Box</label>
+            <label class="form-check-label small" for="quotePayment">Price, Savings & Payment</label>
           </div>
           <div class="form-check form-check-reverse text-start form-switch my-2">
             <input class="form-check-input" type="checkbox" role="switch" id="quotePaymentAmount" checked />
@@ -881,7 +881,7 @@ document.addEventListener("DOMContentLoaded", function () {
           </div>
           <div class="form-check form-check-reverse text-start form-switch my-2">
             <input class="form-check-input" type="checkbox" role="switch" id="quoteAccessories" checked />
-            <label class="form-check-label small" for="quoteAccessories">Accessories Added/Included</label>
+            <label class="form-check-label small" for="quoteAccessories">Accessories</label>
           </div>
           <div class="form-check form-check-reverse text-start form-switch my-2">
             <input class="form-check-input" type="checkbox" role="switch" id="quoteTradeIn" checked />
@@ -905,7 +905,7 @@ document.addEventListener("DOMContentLoaded", function () {
           </div>
           <div class="form-check form-check-reverse text-start form-switch my-2">
             <input class="form-check-input" type="checkbox" role="switch" id="quoteSavings" checked />
-            <label class="form-check-label small" for="quoteSavings">Total Savings</label>
+            <label class="form-check-label small" for="quoteSavings">Savings</label>
           </div>
           <div class="form-check form-check-reverse text-start form-switch my-2">
             <input class="form-check-input" type="checkbox" role="switch" id="quoteTotal" checked />

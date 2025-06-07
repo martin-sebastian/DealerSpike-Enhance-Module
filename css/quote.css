@@ -13,6 +13,9 @@ main {
   padding-top: 300px !important;
   padding-bottom: 200px !important;
 }
+.sales-email {
+  color: #000000 !important;
+}
 .payment-calculator-button {
   border-top-left-radius: 0px;
   border-top-right-radius: 0px; 
