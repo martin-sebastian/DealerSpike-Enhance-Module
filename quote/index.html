@@ -84,10 +84,7 @@
 		>
 			<div class="offcanvas-header">
 				<div class="navbar-brand">
-					<a
-						href="../"
-						class="d-flex align-items-center text-white"
-					>
+					<a href="../" class="d-flex align-items-center text-white">
 						<i class="bi bi-arrow-left-square fs-4 me-2"></i>
 						<img
 							src="../img/fom-app-logo-01.svg"
@@ -96,7 +93,6 @@
 							height="27"
 							class="logo-full"
 						/>
-
 					</a>
 				</div>
 				<button
@@ -109,59 +105,72 @@
 			<div
 				class="offcanvas-body d-flex flex-column flex-shrink-0 p-2 overflow-hidden"
 			>
-			<!-- Search Controls Container (added above visibility toggles) -->
+				<!-- Search Controls Container (added above visibility toggles) -->
 				<div id="searchControlsContainer">
 					<!-- This will be populated by JavaScript -->
 				</div>
-				<form class="px-2">
-					<h6 class="small mx-auto my-1">Add Customer Info</h6>
-					<div class="form-group">
-						<label for="inputFullName" class="form-label visually-hidden"
-							>Full Name</label
-						>
-						<input
-							type="text"
-							class="form-control form-control-sm mb-2"
-							id="inputFullName"
-							placeholder="Full Name"
-							x-model="firstName"
-						/>
-						<label for="inputLastName" class="form-label visually-hidden"
-							>Additional Info</label
-						>
-						<input
-							type="text"
-							class="form-control form-control-sm"
-							id="inputLastName"
-							placeholder="Phone | Email | Notes"
-							x-model="lastName"
-						/>
+				<div id="customerInfoContainer" class="sidebar-card">
+					<div class="sidebar-card-header">
+						<h5 class="h6 small text-start">Add Customer to Quote</h5>
 					</div>
-				</form>
-
-				<!-- Visibility Toggle Container -->
-				<div id="visibilityToggleContainer">
-					<!-- This will be populated by JavaScript -->
+					<div class="sidebar-card-body">
+						<form class="m-0">
+							<div class="form-group">
+								<label for="inputFullName" class="form-label m-0 small text-secondary"
+									>Full Name (optional)</label
+								>
+								<input
+									type="text"
+									class="form-control form-control-sm"
+									id="inputFullName"
+									placeholder="Full Name"
+									x-model="firstName"
+								/>
+								<label for="inputLastName" class="form-label m-0 small text-secondary"
+									>Additional Info (optional)</label
+								>
+								<input
+									type="text"
+									class="form-control form-control-sm"
+									id="inputLastName"
+									placeholder="Phone, Email, Notes"
+									x-model="lastName"
+								/>
+							</div>
+						</form>
+					</div>
 				</div>
 
-				<!-- Sidebar Footer -->
-				<div class="mb-auto"></div>
+					<!-- Visibility Toggle Container -->
+					<div id="visibilityToggleContainer">
+						<!-- This will be populated by JavaScript -->
+					</div>
+
+					<!-- Sidebar Footer -->
+					<div class="mb-auto"></div>
+				</div>
 			</div>
-		</div>
 
-		<!-- Floating Menu Button -->
-		<button 
-			class="btn btn-danger position-fixed top-0 start-0 m-3 z-3" 
-			type="button" 
-			data-bs-toggle="offcanvas" 
-			data-bs-target="#sidebarOffcanvas" 
-			aria-controls="sidebarOffcanvas"
-		>
-			<i class="bi bi-gear"></i>
-		</button>
-
-		<!-- Full-Width Main Content Area -->
-		<div class="d-flex flex-column vh-100 overflow-hidden w-100">
+			<!-- Floating Menu Button -->
+			<button
+				class="btn btn-danger position-fixed top-0 start-0 m-3 z-3"
+				type="button"
+				data-bs-toggle="offcanvas"
+				data-bs-target="#sidebarOffcanvas"
+				aria-controls="sidebarOffcanvas"
+			>
+				<i class="bi bi-gear"></i>
+			</button>
+			<!-- history back button-->
+			<button
+				class="btn btn-danger position-fixed bottom-0 start-0 m-3 z-3"
+				type="button"
+				onclick="history.back()"
+			>
+				<i class="bi bi-arrow-left-square"></i> Inventory
+			</button>
+			<!-- Full-Width Main Content Area -->
+			<div class="d-flex flex-column vh-100 overflow-hidden w-100">
 				<!-- QUOTE CONTENT TEMPLATE -->
 				<main
 					class="overflow-y-auto d-flex flex-column align-items-center justify-content-center"

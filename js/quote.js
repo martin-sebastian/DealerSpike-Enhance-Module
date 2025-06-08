@@ -920,11 +920,14 @@ document.addEventListener("DOMContentLoaded", function () {
       
       // Search and Controls Card template
       const searchControlsTemplate = `
-        <div class="search-controls-container flex-column flex-nowrap text-start px-2 py-1 mb-3">
-          
-          <!-- Search Input -->
-          <div class="mb-3">
-            <label for="sidebarStockSearch" class="form-label small">Quote another vehicle</label>
+        <div class="search-controls-container sidebar-card flex-column flex-nowrap text-start">
+          <div class="sidebar-card-header">
+            <h5 class="h6 small text-start">Quote Another Vehicle</h5>
+          </div>
+          <div class="sidebar-card-body">
+            <!-- Search Input -->
+            <div class="mb-3">
+            <label for="sidebarStockSearch" class="form-label m-0 small text-secondary">Search</label>
             <div class="input-group input-group-sm">
               <input type="text" class="form-control" id="sidebarStockSearch" placeholder="Enter stock number">
               <button class="btn btn-outline-secondary" type="button" onclick="handleSidebarSearch(event)">
@@ -932,17 +935,16 @@ document.addEventListener("DOMContentLoaded", function () {
               </button>
             </div>
           </div>
-          
-          
-
         </div>
       `;
 
       // Visibility Toggle Checkboxes template
       const visibilityToggleTemplate = `
-        <div class="show-hide-container flex-column flex-nowrap text-start px-2 py-3 mt-3 mb-auto">
-          <h5 class="fs-6 mx-auto mb-1 text-center">Show & Hide Sections</h5>
-          <hr class="hr mb-2" />
+        <div class="show-hide-container sidebar-card flex-column flex-nowrap text-start">
+          <div class="sidebar-card-header">
+            <h5 class="h6 small text-start">Show & Hide Sections</h5>
+          </div>
+          <div class="sidebar-card-body">
           <div class="form-check form-check-reverse text-start form-switch my-2">
             <label class="form-check-label small" for="quoteBrandHeader">Flat Out Motorsports Header</label>
             <input class="form-check-input" type="checkbox" role="switch" id="quoteBrandHeader" checked />
@@ -997,7 +999,8 @@ document.addEventListener("DOMContentLoaded", function () {
           </div>
           <div class="form-check form-check-reverse text-start form-switch my-2">
             <input class="form-check-input" type="checkbox" role="switch" id="quoteTotal" checked />
-            <label class="form-check-label small" for="quoteTotal">Total w/ Fees & Taxes</label>
+              <label class="form-check-label small" for="quoteTotal">Total w/ Fees & Taxes</label>
+            </div>
           </div>
         </div>
       `;
