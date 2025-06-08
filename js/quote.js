@@ -343,6 +343,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const prodTitle = data.ModelYear + " " + data.Manufacturer + " " + data.B50ModelName;
       const arrivalDate = moment(data.EstimatedArrival).format("MM/DD/YYYY");
       const newUsed = data.Usage === "New" ? "New" : "Pre-Owned";
+      const msrpDsrpLabel = data.Usage === "New" ? "MSRP" : "DSRP";
       const milesHours = data.Miles;
       const inventoryStatus = data.UnitStatus;
       const qLevel = data.QuoteLevel;
@@ -352,6 +353,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // calculate total price, total savings
       const msrpDisplay = numeral(data.MSRPUnit).format("$0,0.00");
+      const dsrpDisplay = numeral(data.DSRPUnit).format("$0,0.00");
       const salesPrice = data.MSRPUnit + data.DiscountItemsTotal + data.MatItemsTotal + data.AccessoryItemsTotal;
       const salesPriceDisplay = numeral(salesPrice).format("$0,0.00");
       const totalPrice = data.MSRPUnit + data.DiscountItemsTotal + data.MatItemsTotal + data.AccessoryItemsTotal + otdItemsTotal;
@@ -790,10 +792,11 @@ document.addEventListener("DOMContentLoaded", function () {
 		</label>
 		`;
       }
+      
 
       // Payment Calculator
       const paymentCalc = `
-		<div class="payment-calculator-container m-0">
+		<div class="payment-calculator-container">
       <form name="calc" method="POST">
         <button type="button" 
           class="payment-calculator-button btn btn-danger w-100 pt-2 mb-1"
@@ -804,7 +807,7 @@ document.addEventListener("DOMContentLoaded", function () {
           onClick="showpay()">
             <div class="d-flex justify-content-between">
               <div class="our-price-display m-auto text-left">
-                <div class="text-light fw-bold m-0 p-0">MSRP: <s>${msrpDisplay}</s></div>
+                <div class="text-light fw-bold m-0 p-0">${msrpDsrpLabel}: <s>${msrpDisplay}</s></div>
                 <div class="fs-2 fw-bold p-0" style="letter-spacing: -1px; font-weight: 900 !important; margin-top: -10px;">
                   ${salesPriceDisplay}
                 </div>
@@ -829,7 +832,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             <div class="downpayment-container">
 							<div class="downpayment-label">
-								<span class="updated-value-line badge bg-danger"><span class="badge bg-dark downpayment-value me-2" id="downpaymentRangeValue"></span>% Down</span>
+								<span class="updated-value-line badge bg-danger"><span class="badge bg-dark downpayment-value px-2 py-1 me-2" id="downpaymentRangeValue"></span>% Down</span>
 							</div>
 
 							<div class="slider-row">
@@ -900,23 +903,53 @@ document.addEventListener("DOMContentLoaded", function () {
 
       `;
 
+      // Customer info template
+      let customerInfoTemplate = ``;
+
       // Expiration date template
       const quoteDateTemplate = `
         <div id="quoteDateDisplay" class="pt-1 px-2">
-          <div class="text-left mx-1">Quote Expires: ${quoteExpirationDateFormatted}<span class="float-start">Quote Date: ${quoteDateFormatted} ${quoteTime}</span></div>
+          <div class="text-left mx-1">
+            <span class="float-start small">Quote Date: ${quoteDateFormatted} ${quoteTime}</span>
+            <span class="float-end small">Quote Expires: ${quoteExpirationDateFormatted}</span>
+          </div>
         </div>
 
       `;
       
       
+      // Search and Controls Card template
+      const searchControlsTemplate = `
+        <div class="search-controls-container flex-column flex-nowrap text-start px-2 py-1 mb-3">
+          
+          <!-- Search Input -->
+          <div class="mb-3">
+            <label for="sidebarStockSearch" class="form-label small">Quote another vehicle</label>
+            <div class="input-group input-group-sm">
+              <input type="text" class="form-control" id="sidebarStockSearch" placeholder="Enter stock number">
+              <button class="btn btn-outline-secondary" type="button" onclick="handleSidebarSearch(event)">
+                <i class="bi bi-search"></i>
+              </button>
+            </div>
+          </div>
+          
+          
+
+        </div>
+      `;
+
       // Visibility Toggle Checkboxes template
       const visibilityToggleTemplate = `
-        <div class="show-hide-container flex-column flex-nowrap text-start px-2 py-3 mt-5 mb-auto">
+        <div class="show-hide-container flex-column flex-nowrap text-start px-2 py-3 mt-3 mb-auto">
           <h5 class="fs-6 mx-auto mb-1 text-center">Show & Hide Sections</h5>
           <hr class="hr mb-2" />
           <div class="form-check form-check-reverse text-start form-switch my-2">
             <label class="form-check-label small" for="quoteBrandHeader">Flat Out Motorsports Header</label>
             <input class="form-check-input" type="checkbox" role="switch" id="quoteBrandHeader" checked />
+          </div>
+          <div class="form-check form-check-reverse text-start form-switch my-2">
+            <label class="form-check-label small" for="quoteCustomerInfo">Customer Information</label>
+            <input class="form-check-input" type="checkbox" role="switch" id="quoteCustomerInfo" checked />
           </div>
           <div class="form-check form-check-reverse text-start form-switch my-2">
             <label class="form-check-label small" for="quoteHeader">Year, Make, Model, Stock #...</label>
@@ -969,6 +1002,13 @@ document.addEventListener("DOMContentLoaded", function () {
         </div>
       `;
 
+      // Render the search controls template
+      const searchControlsContainer = document.getElementById("searchControlsContainer");
+      if (searchControlsContainer) {
+        searchControlsContainer.innerHTML = searchControlsTemplate;
+      }
+
+      // Render the visibility toggles template
       const visibilityToggleTemplateContainer = document.getElementById("visibilityToggleContainer");
       if (visibilityToggleTemplateContainer) {
         visibilityToggleTemplateContainer.innerHTML = visibilityToggleTemplate;
@@ -980,6 +1020,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const pageContent = `
         <div class="capture-container">
           <div class="brand-header">${brandHeaderTemplate}</div>
+          <div class="customer-info-container">${customerInfoTemplate}</div>
           <div class="main-header">${muHeaderTemplate}</div>
           <div class="carousel-container">${carousel}</div>
           <div class="payment-calculator-container">${paymentCalc}</div>
@@ -1027,7 +1068,9 @@ document.addEventListener("DOMContentLoaded", function () {
       showpay();
       initializeClipboardTooltips();
       initializeVisibilityToggles();
+      initializeCustomerInfo();
       createExportButton();
+      createFloatingZoomControls();
 
       // Remove loader once everything is ready
       loader.remove();
@@ -1036,14 +1079,15 @@ document.addEventListener("DOMContentLoaded", function () {
       const styleElement = document.createElement("style");
       styleElement.textContent = `
         .capture-container {
-            width: 760px;
-            max-width: 760px;
+            width: 650px;
+            max-width: 650px;
             /* Optional: Limit height to ensure quotes always fit on screen */
             /* max-height: 80vh; */
             /* overflow-y: auto; */
         }
 
         .main-header,
+        .customer-info-container,
         .carousel-container,
         .payment-calculator-container,
         .mat-items-container,
@@ -1112,28 +1156,60 @@ window.addEventListener("error", function (event) {
 /**
  * CREATE EXPORT BUTTON
  * Creates the "Save" button that triggers JPEG generation of the quote card
- * This is the main function that generates the shareable quote image for messenger/SMS
+ * Button is positioned as a floating button next to the sidebar toggle for easy access
  */
 function createExportButton() {
-  const container = document.querySelector(".export-btn-container");
-  if (!container) {
-    console.error("Export button container not found");
-    return;
-  }
-
-  // Remove placeholder button if it exists
-  document.getElementById("placeholderSaveBtn")?.remove();
+  // Remove existing save button if it exists
+  document.getElementById("saveQuoteBtn")?.remove();
 
   // Create the save button that will capture the quote as JPEG
   const exportBtn = document.createElement("button");
-  exportBtn.className = "btn btn-danger ms-2 d-flex align-items-center gap-2";
+  exportBtn.id = "saveQuoteBtn";
+  exportBtn.className = "btn btn-danger position-fixed top-0 end-0 m-3 z-3 d-flex align-items-center gap-2";
   exportBtn.innerHTML = `
     <i class="bi bi-floppy"></i>
-    <span>Save</span>
+    <span class="d-none d-sm-inline">Save</span>
   `;
   exportBtn.addEventListener("click", captureFullContent); // Trigger JPEG capture
 
-  container.appendChild(exportBtn);
+  // Add it to the body so it floats above everything
+  document.body.appendChild(exportBtn);
+}
+
+/**
+ * CREATE FLOATING ZOOM CONTROLS
+ * Creates floating zoom buttons in the bottom-right corner for easy access
+ * Includes zoom in, zoom out, reset, and current zoom level display
+ */
+function createFloatingZoomControls() {
+  // Remove existing zoom controls if they exist
+  document.getElementById("floatingZoomControls")?.remove();
+
+  // Create the floating zoom controls container
+  const zoomControls = document.createElement("div");
+  zoomControls.id = "floatingZoomControls";
+  zoomControls.className = "position-fixed bottom-0 end-0 m-3 z-3";
+  zoomControls.innerHTML = `
+    <div class="bg-light border rounded p-2 shadow-sm">
+      <div class="text-center mb-2">
+        <small class="text-muted"><span id="zoomLevel" class="small">100%</span></small>
+      </div>
+      <div class="btn-group-vertical" role="group">
+        <button type="button" class="btn btn-outline-danger btn-sm" onclick="adjustZoom(0.1)" title="Zoom In">
+          <i class="bi bi-zoom-in"></i>
+        </button>
+        <button type="button" class="btn btn-outline-danger btn-sm" onclick="resetZoom()" title="Reset Zoom">
+          <i class="bi bi-arrow-clockwise"></i>
+        </button>
+        <button type="button" class="btn btn-outline-danger btn-sm" onclick="adjustZoom(-0.1)" title="Zoom Out">
+          <i class="bi bi-zoom-out"></i>
+        </button>
+      </div>
+    </div>
+  `;
+
+  // Add it to the body so it floats above everything
+  document.body.appendChild(zoomControls);
 }
 
 /**
@@ -1435,26 +1511,30 @@ async function captureStandardSize(element, filename, imageQuality) {
   // Store original state
   const originalScrollPos = window.scrollY;
   const originalZoom = currentZoom;
+  let originalBorder = "";
 
   try {
-    // Reset zoom and scroll to ensure element is positioned correctly
+    // Reset zoom first
     currentZoom = 1.0;
     updateZoom();
     
-    // Position the element optimally for capture
-    // Scroll vertically to put element near top
-    const elementTop = element.offsetTop;
-    window.scrollTo(0, elementTop);
+    // SIMPLER APPROACH: Position element at very top-left of viewport
+    // This minimizes coordinate calculation errors
+    window.scrollTo(0, 0);
+    await new Promise(resolve => setTimeout(resolve, 500));
     
-    // Center the page horizontally if needed (for narrow quote cards)
-    const pageWidth = document.documentElement.scrollWidth;
-    const viewportWidth = window.innerWidth;
-    if (pageWidth > viewportWidth) {
-      const centerScroll = (pageWidth - viewportWidth) / 2;
-      window.scrollTo(centerScroll, elementTop);
-    }
+    // Force element to top of viewport by scrolling to its position
+    element.scrollIntoView({ behavior: 'instant', block: 'start', inline: 'start' });
+    await new Promise(resolve => setTimeout(resolve, 300));
     
-    await new Promise(resolve => setTimeout(resolve, 600));
+    // Add temporary visual indicator
+    originalBorder = element.style.border;
+    element.style.border = "3px solid red";
+    
+    console.log("Using scrollIntoView positioning");
+    
+    // Wait for positioning to stabilize
+    await new Promise(resolve => setTimeout(resolve, 400));
 
     // Start screen capture
     const stream = await navigator.mediaDevices.getDisplayMedia({
@@ -1467,35 +1547,100 @@ async function captureStandardSize(element, filename, imageQuality) {
     await new Promise(resolve => video.onloadedmetadata = resolve);
     video.play();
 
-    // Get element position AFTER all positioning changes
+    // OFFCANVAS APPROACH - Dead simple center calculation!
+    // With full-width main area, the card is perfectly centered in the browser window
+    
+    // Get actual element dimensions
     const rect = element.getBoundingClientRect();
-    const windowInfo = {
-      scrollX: window.scrollX,
-      scrollY: window.scrollY,
-      viewportWidth: window.innerWidth,
-      viewportHeight: window.innerHeight
+    const quoteCardWidth = 650;  // Use exact known width!
+    const quoteCardHeight = rect.height;
+    
+    // Simple center calculation for full-width viewport
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
+    
+    // Mathematical center coordinates (no sidebar offset needed!)
+    const mathematicalCenterX = (viewportWidth - quoteCardWidth) / 2;
+    const mathematicalCenterY = (viewportHeight - quoteCardHeight) / 2;
+    
+    // Adjust for device pixel ratio (screen capture uses actual pixels, not CSS pixels)
+    const pixelRatio = window.devicePixelRatio || 1;
+    const adjustedCenterX = mathematicalCenterX * pixelRatio;
+    const adjustedCenterY = mathematicalCenterY * pixelRatio;
+    const adjustedWidth = quoteCardWidth * pixelRatio;
+    const adjustedHeight = quoteCardHeight * pixelRatio;
+    
+    // No browser UI offset needed - flexbox handles everything!
+    const calculatedRect = {
+      left: adjustedCenterX,
+      top: adjustedCenterY,
+      width: adjustedWidth,
+      height: adjustedHeight
     };
     
-    console.log("Element position:", { left: rect.left, top: rect.top, width: rect.width, height: rect.height });
-    console.log("Window info:", windowInfo);
-    console.log("Page scroll position:", { x: window.pageXOffset, y: window.pageYOffset });
+    console.log("=== OFFCANVAS CAPTURE DEBUG INFO ===");
+    console.log("Target element:", element.className);
+    console.log("Layout calculations:", { 
+      viewportWidth,
+      viewportHeight,
+      quoteCardWidth,
+      quoteCardHeight,
+      devicePixelRatio: window.devicePixelRatio,
+      browserZoom: Math.round(window.devicePixelRatio * 100) + '%',
+      actualScreenWidth: screen.width,
+      actualScreenHeight: screen.height
+    });
+    console.log("CSS Pixel calculations:", {
+      leftMargin: mathematicalCenterX,
+      topMargin: mathematicalCenterY,
+      rightMargin: viewportWidth - (mathematicalCenterX + quoteCardWidth),
+      bottomMargin: viewportHeight - (mathematicalCenterY + quoteCardHeight)
+    });
+    console.log("Device Pixel calculations (x" + pixelRatio + "):", {
+      leftMargin: adjustedCenterX,
+      topMargin: adjustedCenterY,
+      rightMargin: (viewportWidth * pixelRatio) - (adjustedCenterX + adjustedWidth),
+      bottomMargin: (viewportHeight * pixelRatio) - (adjustedCenterY + adjustedHeight)
+    });
+    console.log("Element bounds (DOM):", { left: rect.left, top: rect.top, width: rect.width, height: rect.height });
+    console.log("Calculated position (Math):", { left: calculatedRect.left, top: calculatedRect.top, width: calculatedRect.width, height: calculatedRect.height });
+    console.log("CAPTURE AREA:", {
+      startX: calculatedRect.left,
+      startY: calculatedRect.top, 
+      captureWidth: calculatedRect.width,
+      captureHeight: calculatedRect.height,
+      endX: calculatedRect.left + calculatedRect.width,
+      endY: calculatedRect.top + calculatedRect.height
+    });
     
-    // Create canvas and capture - use the element's actual content dimensions
+    // Compare DOM position vs calculated position (should be very close now!)
+    const positionDifference = {
+      leftDiff: Math.abs(rect.left - calculatedRect.left),
+      topDiff: Math.abs(rect.top - calculatedRect.top)
+    };
+    console.log("Position difference (DOM vs Math):", positionDifference);
+    console.log("===========================================");
+    
+        // Use mathematical calculation for capture (much more reliable!)
     const canvas = document.createElement("canvas");
-    canvas.width = rect.width;
-    canvas.height = rect.height;
+    canvas.width = calculatedRect.width;
+    canvas.height = calculatedRect.height;
     const ctx = canvas.getContext("2d");
 
-    // Capture starting from the element's actual left edge
-    // rect.left should be the correct starting point for the quote card
+    // Capture using mathematically calculated coordinates
     ctx.drawImage(
       video, 
-      rect.left, rect.top, rect.width, rect.height,  // Source area from screen capture
-      0, 0, rect.width, rect.height                  // Destination on canvas
+      calculatedRect.left, calculatedRect.top, calculatedRect.width, calculatedRect.height,
+      0, 0, calculatedRect.width, calculatedRect.height
     );
+    
+    console.log(`FLEXBOX CAPTURE: ${calculatedRect.width}x${calculatedRect.height} from calculated position (${calculatedRect.left}, ${calculatedRect.top})`);
 
     // Clean up
     stream.getTracks().forEach(track => track.stop());
+    
+    // Restore original border
+    element.style.border = originalBorder;
 
     // Save the image
     const blob = await new Promise(resolve => {
@@ -1507,6 +1652,7 @@ async function captureStandardSize(element, filename, imageQuality) {
 
   } finally {
     // Always restore state, even if there's an error
+    element.style.border = originalBorder || "";
     window.scrollTo(0, originalScrollPos);
     currentZoom = originalZoom;
     updateZoom();
@@ -1525,10 +1671,27 @@ function handleSearch(event) {
   }
 }
 
+/**
+ * HANDLE SIDEBAR SEARCH
+ * Handles search from the sidebar search input
+ */
+function handleSidebarSearch(event) {
+  event.preventDefault(); // Prevent form submission
+
+  const searchInput = document.getElementById("sidebarStockSearch");
+  const stockNumber = searchInput.value.trim();
+
+  if (stockNumber) {
+    // Update URL and reload page
+    window.location.href = `${window.location.pathname}?search=${encodeURIComponent(stockNumber)}`;
+  }
+}
+
 function initializeVisibilityToggles() {
   const toggleMap = {
     quoteName: ".quote-name",
     quoteBrandHeader: ".brand-container",
+    quoteCustomerInfo: ".customer-info-container",
     quoteHeader: ".main-header",
     quoteImages: ".carousel-container",
     quotePayment: ".payment-calculator-container",
@@ -1556,4 +1719,63 @@ function initializeVisibilityToggles() {
       });
     }
   });
+}
+
+/**
+ * INITIALIZE CUSTOMER INFO
+ * Sets up event listeners for customer info form fields and updates the quote display
+ * Connects sidebar form inputs to the customer-info-container in the quote card
+ */
+function initializeCustomerInfo() {
+  const fullNameInput = document.getElementById("inputFullName");
+  const additionalInfoInput = document.getElementById("inputLastName");
+  const customerInfoContainer = document.querySelector(".customer-info-container");
+
+  if (!fullNameInput || !additionalInfoInput || !customerInfoContainer) {
+    console.log("Customer info elements not found");
+    return;
+  }
+
+  // Function to generate customer info template HTML
+  function generateCustomerInfoTemplate(fullName, additionalInfo) {
+    if (!fullName && !additionalInfo) {
+      return '';
+    }
+    
+    // Build single line content with separator if both exist
+    let customerContent = '';
+    if (fullName && additionalInfo) {
+      customerContent = `<span class="fw-bold">${fullName}</span> <span class="text-muted">| ${additionalInfo}</span>`;
+    } else if (fullName) {
+      customerContent = `<span class="fw-bold">${fullName}</span>`;
+    } else {
+      customerContent = `<span class="text-muted">${additionalInfo}</span>`;
+    }
+    
+    return `
+      <div class="card py-1 px-2 mb-2">
+        <div class="d-flex align-items-center mx-1">
+          <i class="bi bi-person-circle me-2 text-primary"></i>
+          <div>${customerContent}</div>
+        </div>
+      </div>
+    `;
+  }
+
+  // Function to update the customer info display
+  function updateCustomerInfoDisplay() {
+    const fullName = fullNameInput.value.trim();
+    const additionalInfo = additionalInfoInput.value.trim();
+
+    // Generate new template and update the container
+    const newCustomerInfoTemplate = generateCustomerInfoTemplate(fullName, additionalInfo);
+    customerInfoContainer.innerHTML = newCustomerInfoTemplate;
+  }
+
+  // Add event listeners to update display in real-time
+  fullNameInput.addEventListener("input", updateCustomerInfoDisplay);
+  additionalInfoInput.addEventListener("input", updateCustomerInfoDisplay);
+
+  // Initial update
+  updateCustomerInfoDisplay();
 }

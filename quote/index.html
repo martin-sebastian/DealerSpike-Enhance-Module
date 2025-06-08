@@ -73,16 +73,20 @@
 		<link rel="stylesheet" href="../css/quote.css" />
 	</head>
 	<body class="dots m-0 p-0">
-		<div class="d-flex flex-row flex-nowrap">
-			<!-- Start Sidebar -->
-			<div
-				class="d-flex flex-column flex-shrink-0 p-2 text-bg-dark vh-100 overflow-hidden opacity-98 d-print-none sidebar"
-				style="width: 280px"
-			>
-				<div class="navbar-brand mb-1 mx-auto">
+		<!-- Floating Offcanvas Sidebar -->
+		<div
+			class="offcanvas offcanvas-start text-bg-dark"
+			tabindex="-1"
+			id="sidebarOffcanvas"
+			aria-labelledby="sidebarOffcanvasLabel"
+			data-bs-backdrop="false"
+			data-bs-scroll="true"
+		>
+			<div class="offcanvas-header">
+				<div class="navbar-brand">
 					<a
 						href="../"
-						class="d-flex align-items-center mb-2 mb-md-0 text-white"
+						class="d-flex align-items-center text-white"
 					>
 						<i class="bi bi-arrow-left-square fs-4 me-2"></i>
 						<img
@@ -92,361 +96,81 @@
 							height="27"
 							class="logo-full"
 						/>
-						<img
-							src="../img/sidebar-logo.png"
-							alt="FOM Icon"
-							width="36"
-							height="36"
-							class="logo-icon rounded-circle"
-						/>
+
 					</a>
 				</div>
-				<hr class="mx-2 my-2 opacity-10" />
-				<form class="px-2 visually-hidden">
-					<h5 class="mx-auto my-2">Customer Info</h5>
-					<div class="mb-3">
-						<label for="inputFirstName" class="form-label visually-hidden"
-							>First Name</label
+				<button
+					type="button"
+					class="btn-close btn-close-white"
+					data-bs-dismiss="offcanvas"
+					aria-label="Close"
+				></button>
+			</div>
+			<div
+				class="offcanvas-body d-flex flex-column flex-shrink-0 p-2 overflow-hidden"
+			>
+			<!-- Search Controls Container (added above visibility toggles) -->
+				<div id="searchControlsContainer">
+					<!-- This will be populated by JavaScript -->
+				</div>
+				<form class="px-2">
+					<h6 class="small mx-auto my-1">Add Customer Info</h6>
+					<div class="form-group">
+						<label for="inputFullName" class="form-label visually-hidden"
+							>Full Name</label
 						>
 						<input
 							type="text"
-							class="form-control"
-							id="inputFirstName"
-							placeholder="First Name"
+							class="form-control form-control-sm mb-2"
+							id="inputFullName"
+							placeholder="Full Name"
 							x-model="firstName"
 						/>
-					</div>
-					<div class="mb-3">
 						<label for="inputLastName" class="form-label visually-hidden"
-							>Last Name</label
+							>Additional Info</label
 						>
 						<input
 							type="text"
-							class="form-control"
+							class="form-control form-control-sm"
 							id="inputLastName"
-							placeholder="Last Name"
+							placeholder="Phone | Email | Notes"
 							x-model="lastName"
 						/>
 					</div>
 				</form>
 
+				<!-- Visibility Toggle Container -->
 				<div id="visibilityToggleContainer">
-					<div
-						class="show-hide-container flex-column flex-nowrap text-start px-2 py-3 mt-5 mb-auto"
-					>
-						<h5 class="fs-6 mx-auto mb-1 text-center">Show & Hide Sections</h5>
-						<hr class="hr mb-2" />
-						<div
-							class="form-check form-check-reverse text-start form-switch my-2"
-						>
-							<label class="form-check-label small" for="quoteHeader"
-								>Unit Name + Mode & Stock #</label
-							>
-							<input
-								class="form-check-input"
-								type="checkbox"
-								role="switch"
-								id="quoteHeader"
-								checked
-							/>
-						</div>
-						<div
-							class="form-check form-check-reverse text-start form-switch my-2"
-						>
-							<input
-								class="form-check-input"
-								type="checkbox"
-								role="switch"
-								id="quoteImages"
-								checked
-							/>
-							<label class="form-check-label small" for="quoteImages"
-								>Unit Photo + Selector</label
-							>
-						</div>
-						<div
-							class="form-check form-check-reverse text-start form-switch my-2"
-						>
-							<input
-								class="form-check-input"
-								type="checkbox"
-								role="switch"
-								id="quotePayment"
-								checked
-							/>
-							<label class="form-check-label small" for="quotePayment"
-								>Price, Savings & Payment</label
-							>
-						</div>
-						<div
-							class="form-check form-check-reverse text-start form-switch my-2"
-						>
-							<input
-								class="form-check-input"
-								type="checkbox"
-								role="switch"
-								id="quoteAccessories"
-								checked
-							/>
-							<label class="form-check-label small" for="quoteAccessories"
-								>Accessories Added/Included</label
-							>
-						</div>
-						<div
-							class="form-check form-check-reverse text-start form-switch my-2"
-						>
-							<input
-								class="form-check-input"
-								type="checkbox"
-								role="switch"
-								id="quoteTradeIn"
-								checked
-							/>
-							<label class="form-check-label small" for="quoteTradeIn"
-								>Trade In Allowance</label
-							>
-						</div>
-						<div
-							class="form-check form-check-reverse text-start form-switch my-2"
-						>
-							<input
-								class="form-check-input"
-								type="checkbox"
-								role="switch"
-								id="quoteRebates"
-								checked
-							/>
-							<label class="form-check-label small" for="quoteRebates"
-								>Manufacturer Rebates</label
-							>
-						</div>
-						<div
-							class="form-check form-check-reverse text-start form-switch my-2"
-						>
-							<input
-								class="form-check-input"
-								type="checkbox"
-								role="switch"
-								id="quoteDiscounts"
-								checked
-							/>
-							<label class="form-check-label small" for="quoteDiscounts"
-								>Dealer Discounts</label
-							>
-						</div>
-						<div
-							class="form-check form-check-reverse text-start form-switch my-2"
-						>
-							<input
-								class="form-check-input"
-								type="checkbox"
-								role="switch"
-								id="quoteDiscretionary"
-								checked
-								disabled
-							/>
-							<label class="form-check-label small" for="quoteDiscretionary"
-								>Discretionary Discounts</label
-							>
-						</div>
-						<div
-							class="form-check form-check-reverse text-start form-switch my-2"
-						>
-							<input
-								class="form-check-input"
-								type="checkbox"
-								role="switch"
-								id="quoteFees"
-								checked
-							/>
-							<label class="form-check-label small" for="quoteFees"
-								>Fees, Freight, Taxes</label
-							>
-						</div>
-						<div
-							class="form-check form-check-reverse text-start form-switch my-2"
-						>
-							<input
-								class="form-check-input"
-								type="checkbox"
-								role="switch"
-								id="quoteSavings"
-								checked
-							/>
-							<label class="form-check-label small" for="quoteSavings"
-								>Total Savings</label
-							>
-						</div>
-						<div
-							class="form-check form-check-reverse text-start form-switch my-2"
-						>
-							<input
-								class="form-check-input"
-								type="checkbox"
-								role="switch"
-								id="quoteTotal"
-								checked
-							/>
-							<label class="form-check-label small" for="quoteTotal"
-								>Total w/ Fees & Taxes</label
-							>
-						</div>
-					</div>
+					<!-- This will be populated by JavaScript -->
 				</div>
 
 				<!-- Sidebar Footer -->
 				<div class="mb-auto"></div>
-				<button
-					onclick="history.back()"
-					class="btn btn-outline-secondary mx-3 mb-2"
-				>
-					<i class="bi bi-arrow-left me-2"></i>
-					<span class="d-none d-sm-inline">Back to Inventory</span>
-				</button>
 			</div>
-			<!-- End Sidebar -->
+		</div>
 
-			<!-- Start Main Content Area (contains navbar and main content) -->
-			<div class="d-flex flex-column flex-grow-1 vh-100 overflow-hidden">
-				<!-- Navbar -->
-				<nav
-					class="navbar navbar-expand-lg bg-body-tertiary border-bottom opacity-95"
-				>
-					<div class="container-fluid">
-						<a class="navbar-brand" href="#">
-							<i class="bi bi-arrows-collapse-vertical"></i>
-						</a>
-						<div class="vr me-3"></div>
-						<button
-							class="navbar-toggler"
-							type="button"
-							data-bs-toggle="collapse"
-							data-bs-target="#navbarSupportedContent"
-							aria-controls="navbarSupportedContent"
-							aria-expanded="false"
-							aria-label="Toggle navigation"
-						>
-							<span class="navbar-toggler-icon"></span>
-						</button>
-						<div class="collapse navbar-collapse" id="navbarSupportedContent">
-							<form class="d-flex" role="search" onsubmit="handleSearch(event)">
-								<input
-									class="form-control me-1"
-									type="search"
-									placeholder="Stock Number"
-									aria-label="Search"
-									id="stockNumberSearch"
-									required
-								/>
-								<button class="btn btn-danger me-1" type="submit">
-									<i class="bi bi-arrow-return-left"></i>
-								</button>
-							</form>
+		<!-- Floating Menu Button -->
+		<button 
+			class="btn btn-danger position-fixed top-0 start-0 m-3 z-3" 
+			type="button" 
+			data-bs-toggle="offcanvas" 
+			data-bs-target="#sidebarOffcanvas" 
+			aria-controls="sidebarOffcanvas"
+		>
+			<i class="bi bi-gear"></i>
+		</button>
 
-							<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-								<li class="nav-item">
-									<a
-										class="btn btn-secondary me-1"
-										aria-current="page"
-										href="./"
-									>
-										<i class="bi bi-x-circle"></i>
-									</a>
-								</li>
-							</ul>
-							<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-								<li class="nav-item dropdown d-none">
-									<a
-										class="btn btn-outline-secondary"
-										href="#"
-										role="button"
-										data-bs-toggle="dropdown"
-										aria-expanded="false"
-									>
-										<span class="d-none d-sm-inline">Templates</span>
-										<i class="bi bi-chevron-compact-down"></i>
-									</a>
-
-									<ul class="dropdown-menu">
-										<li>
-											<a class="dropdown-item" href="#"
-												><i class="bi bi-messenger me-2"></i> Facebook
-												Marketplace</a
-											>
-										</li>
-										<li>
-											<a class="dropdown-item" href="#"
-												><i class="bi bi-chat-dots me-2"></i> SMS Text
-												Message</a
-											>
-										</li>
-										<li><hr class="dropdown-divider" /></li>
-										<li>
-											<a class="dropdown-item" href="#"
-												><i class="bi bi-list me-2"></i> All Templates</a
-											>
-										</li>
-									</ul>
-								</li>
-								<hr class="mx-2 my-2 opacity-10" />
-								<li class="nav-item d-flex align-items-center ms-2">
-									<div class="btn-group">
-										<button
-											class="btn btn-outline-secondary"
-											onclick="adjustZoom(-0.1)"
-											title="Zoom Out"
-										>
-											<i class="bi bi-zoom-out"></i>
-										</button>
-										<button
-											class="btn btn-outline-secondary"
-											onclick="resetZoom()"
-											title="Reset Zoom"
-										>
-											<span id="zoomLevel">100%</span>
-										</button>
-										<button
-											class="btn btn-outline-secondary"
-											onclick="adjustZoom(0.1)"
-											title="Zoom In"
-										>
-											<i class="bi bi-zoom-in"></i>
-										</button>
-									</div>
-								</li>
-							</ul>
-
-							<div class="vr mx-3"></div>
-							<div class="cancel-btn-container">
-								<a
-									href="../"
-									class="btn btn-secondary ms-2 d-flex align-items-center gap-2"
-								>
-									<span>Cancel</span>
-								</a>
-							</div>
-							<div class="export-btn-container">
-								<button
-									id="placeholderSaveBtn"
-									class="btn btn-danger ms-2 d-flex align-items-center gap-2"
-									disabled
-								>
-									<i class="bi bi-floppy"></i>
-									<span>Save</span>
-								</button>
-							</div>
-						</div>
-					</div>
-				</nav>
-
+		<!-- Full-Width Main Content Area -->
+		<div class="d-flex flex-column vh-100 overflow-hidden w-100">
 				<!-- QUOTE CONTENT TEMPLATE -->
 				<main
 					class="overflow-y-auto d-flex flex-column align-items-center justify-content-center"
 				>
 					<div id="pageContainer" class="page-container zoom-container">
 						<div class="capture-container">
-							<div class="main-header"></div>
 							<div class="brand-container"></div>
+							<div class="customer-info-container"></div>
+							<div class="main-header"></div>
 							<div class="carousel-container"></div>
 							<div class="payment-calculator-container"></div>
 							<div class="accessory-items-container"></div>

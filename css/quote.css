@@ -9,10 +9,7 @@ p, li {
   line-height: 1.0;
   font-weight: normal;
 }
-main {
-  padding-top: 300px !important;
-  padding-bottom: 200px !important;
-}
+
 .sales-email {
   color: #000000 !important;
 }
@@ -52,15 +49,17 @@ main {
   max-width: 200px !important;
   height: 100% !important;
 }
-
- .brand-text-container {
-    text-align: right;
-    font-size: 0.8rem;
-    line-height: 1.0;
-    width: 100% !important;
-    height: 100px !important;
-    text-wrap: nowrap;
-  }
+.brand-text-container {
+  text-align: right;
+  font-size: 0.8rem;
+  line-height: 1.0;
+  width: 100% !important;
+  height: 100px !important;
+  text-wrap: nowrap;
+}
+.payment-calculator-container {
+  border-top: 0px solid #fff;
+}
 /* Brand Logo */
 
 
@@ -260,17 +259,17 @@ ul .nav-pill:hover {
 }
 /* Capture container */
 .capture-container {
-  min-width: 760px;
-  max-width: 760px;
+  min-width: 650px;
+  max-width: 650px;
   border-radius: 15px;
-  padding: 20px;
+  padding: 15px;
   background-color: #fff;
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
 }
 /* Page container mimics paper size */
 .page-container {
   width: 100%;
-  max-width: 900px;
+  max-width: 650px;
   height: auto;
   padding: 0px;
   border: 0px solid #fff;
