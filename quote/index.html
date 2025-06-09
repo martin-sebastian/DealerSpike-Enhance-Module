@@ -72,7 +72,37 @@
 		<link rel="stylesheet" href="../css/bootstrap-icons.css" />
 		<link rel="stylesheet" href="../css/quote.css" />
 	</head>
-	<body class="dots m-0 p-0">
+	<body class="dots">
+		<div id="topBar" class="fixed-top d-flex flex-row justify-content-between">
+			<a href="../" class="float-start mt-2 ms-2">
+				<img
+					src="../img/fom-app-logo-02.svg"
+					alt="FOM Logo"
+					width="220"
+					height="40"
+					class="logo-full"
+				/>
+			</a>
+			<!-- Floating Menu Button -->
+			<div id="rightButtons" class="d-flex flex-row justify-content-end">
+				<button
+					class="btn btn-danger mt-2 me-2"
+					type="button"
+					data-bs-toggle="offcanvas"
+					data-bs-target="#sidebarOffcanvas"
+					aria-controls="sidebarOffcanvas"
+				>
+					<i class="bi bi-gear h5"></i>
+				</button>
+				<button
+					class="btn btn-secondary mt-2 me-2"
+					type="button"
+					onclick="history.back()"
+				>
+					Cancel
+				</button>
+			</div>
+		</div>
 		<!-- Floating Offcanvas Sidebar -->
 		<div
 			class="offcanvas offcanvas-start text-bg-dark"
@@ -85,7 +115,6 @@
 			<div class="offcanvas-header">
 				<div class="navbar-brand">
 					<a href="../" class="d-flex align-items-center text-white">
-						<i class="bi bi-arrow-left-square fs-4 me-2"></i>
 						<img
 							src="../img/fom-app-logo-01.svg"
 							alt="FOM Logo"
@@ -97,7 +126,7 @@
 				</div>
 				<button
 					type="button"
-					class="btn-close btn-close-white"
+					class="btn-close btn-close-white btn-sm"
 					data-bs-dismiss="offcanvas"
 					aria-label="Close"
 				></button>
@@ -147,28 +176,14 @@
 					</div>
 
 					<!-- Sidebar Footer -->
-					<div class="mb-auto"></div>
+					<div class="text-center small text-secondary mt-auto">
+						Version 1.0.1
+					</div>
 				</div>
 			</div>
 
-			<!-- Floating Menu Button -->
-			<button
-				class="btn btn-danger position-fixed top-0 start-0 m-3 z-3"
-				type="button"
-				data-bs-toggle="offcanvas"
-				data-bs-target="#sidebarOffcanvas"
-				aria-controls="sidebarOffcanvas"
-			>
-				<i class="bi bi-gear"></i>
-			</button>
-			<!-- history back button-->
-			<button
-				class="btn btn-danger position-fixed bottom-0 start-0 m-3 z-3"
-				type="button"
-				onclick="history.back()"
-			>
-				<i class="bi bi-arrow-left-square"></i> Inventory
-			</button>
+			
+			
 			<!-- Full-Width Main Content Area -->
 			<div class="d-flex flex-column vh-100 overflow-hidden w-100">
 				<!-- QUOTE CONTENT TEMPLATE -->

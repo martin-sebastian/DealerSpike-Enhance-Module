@@ -1072,6 +1072,7 @@ document.addEventListener("DOMContentLoaded", function () {
       initializeClipboardTooltips();
       initializeVisibilityToggles();
       initializeCustomerInfo();
+      initializeSidebarState();
       createExportButton();
       createFloatingZoomControls();
 
@@ -1168,15 +1169,15 @@ function createExportButton() {
   // Create the save button that will capture the quote as JPEG
   const exportBtn = document.createElement("button");
   exportBtn.id = "saveQuoteBtn";
-  exportBtn.className = "btn btn-danger position-fixed top-0 end-0 m-3 z-3 d-flex align-items-center gap-2";
+  exportBtn.className = "btn btn-danger d-flex align-items-center mt-2 me-2 gap-2";
   exportBtn.innerHTML = `
     <i class="bi bi-floppy"></i>
-    <span class="d-none d-sm-inline">Save</span>
+    <span class="d-none d-sm-inline">Save As...</span>
   `;
   exportBtn.addEventListener("click", captureFullContent); // Trigger JPEG capture
 
   // Add it to the body so it floats above everything
-  document.body.appendChild(exportBtn);
+  document.getElementById("rightButtons").appendChild(exportBtn);
 }
 
 /**
@@ -1218,14 +1219,22 @@ function createFloatingZoomControls() {
 /**
  * GENERATE FILENAME FOR QUOTE JPEG
  * Creates a descriptive filename for the quote image using vehicle details and timestamp
- * Format: StockNumber_Year_Make_Model_Date.jpg
- * This makes it easy to organize and identify quote images when sharing via messenger/SMS
+ * Format: StockNumber_Year_Make_CustomerName_Date.jpg or StockNumber_Year_Make_Model_Date.jpg
+ * Uses customer name instead of model name when available for personalized file organization
  * @param {Object} data - Vehicle data object containing stock number, year, make, model
  * @returns {string} - Formatted filename for the JPEG quote image
  */
 function generateFilename(data) {
   const timestamp = moment().format("YYYY-MM-DD");
-  const parts = [data.StockNumber, data.ModelYear, data.Manufacturer, data.B50ModelName, timestamp];
+  
+  // Get customer name from form if available
+  const customerNameInput = document.getElementById("inputFullName");
+  const customerName = customerNameInput ? customerNameInput.value.trim() : '';
+  
+  // Use customer name if available, otherwise use model name
+  const nameField = customerName || data.B50ModelName;
+  
+  const parts = [data.StockNumber, data.ModelYear, data.Manufacturer, nameField, timestamp];
 
   return parts
     .filter(Boolean)              // Remove any empty/null values
@@ -1707,6 +1716,50 @@ function initializeVisibilityToggles() {
     quoteTotal: ".total-price-container",
   };
 
+  const TOGGLES_STATE_KEY = 'quoteTogglesState';
+
+  // Function to save toggle states
+  function saveToggleStates() {
+    const states = {};
+    Object.keys(toggleMap).forEach((checkboxId) => {
+      const checkbox = document.getElementById(checkboxId);
+      if (checkbox) {
+        states[checkboxId] = checkbox.checked;
+      }
+    });
+    localStorage.setItem(TOGGLES_STATE_KEY, JSON.stringify(states));
+    console.log("Toggle states saved:", states);
+  }
+
+  // Function to restore toggle states
+  function restoreToggleStates() {
+    const savedStates = localStorage.getItem(TOGGLES_STATE_KEY);
+    if (savedStates) {
+      try {
+        const states = JSON.parse(savedStates);
+        Object.keys(states).forEach((checkboxId) => {
+          const checkbox = document.getElementById(checkboxId);
+          const container = document.querySelector(toggleMap[checkboxId]);
+          
+          if (checkbox && container) {
+            checkbox.checked = states[checkboxId];
+            
+            // Apply the visibility state
+            if (states[checkboxId]) {
+              container.classList.remove("section-hidden");
+            } else {
+              container.classList.add("section-hidden");
+            }
+          }
+        });
+        console.log("Toggle states restored:", states);
+      } catch (e) {
+        console.error("Error restoring toggle states:", e);
+      }
+    }
+  }
+
+  // Set up event listeners for each toggle
   Object.keys(toggleMap).forEach((checkboxId) => {
     const checkbox = document.getElementById(checkboxId);
     if (checkbox) {
@@ -1719,9 +1772,17 @@ function initializeVisibilityToggles() {
             container.classList.add("section-hidden");
           }
         }
+        
+        // Save state after each change
+        saveToggleStates();
       });
     }
   });
+
+  // Restore states on initialization
+  setTimeout(() => {
+    restoreToggleStates();
+  }, 100);
 }
 
 /**
@@ -1743,7 +1804,7 @@ function initializeCustomerInfo() {
   function generateCustomerInfoTemplate(fullName, additionalInfo) {
     if (!fullName && !additionalInfo) {
       return '';
-    }
+    }      
     
     // Build single line content with separator if both exist
     let customerContent = '';
@@ -1758,7 +1819,7 @@ function initializeCustomerInfo() {
     return `
       <div class="card py-1 px-2 mb-2">
         <div class="d-flex align-items-center mx-1">
-          <i class="bi bi-person-circle me-2 text-primary"></i>
+          <i class="bi bi-person-circle me-2 text-danger"></i>
           <div>${customerContent}</div>
         </div>
       </div>
@@ -1775,10 +1836,94 @@ function initializeCustomerInfo() {
     customerInfoContainer.innerHTML = newCustomerInfoTemplate;
   }
 
-  // Add event listeners to update display in real-time
-  fullNameInput.addEventListener("input", updateCustomerInfoDisplay);
-  additionalInfoInput.addEventListener("input", updateCustomerInfoDisplay);
+  const CUSTOMER_INFO_KEY = 'quoteCustomerInfo';
+
+  // Function to save customer info
+  function saveCustomerInfo() {
+    const customerData = {
+      fullName: fullNameInput.value.trim(),
+      additionalInfo: additionalInfoInput.value.trim()
+    };
+    localStorage.setItem(CUSTOMER_INFO_KEY, JSON.stringify(customerData));
+  }
+
+  // Function to restore customer info
+  function restoreCustomerInfo() {
+    const savedData = localStorage.getItem(CUSTOMER_INFO_KEY);
+    if (savedData) {
+      try {
+        const customerData = JSON.parse(savedData);
+        fullNameInput.value = customerData.fullName || '';
+        additionalInfoInput.value = customerData.additionalInfo || '';
+        console.log("Customer info restored:", customerData);
+      } catch (e) {
+        console.error("Error restoring customer info:", e);
+      }
+    }
+  }
+
+  // Add event listeners to update display and save state in real-time
+  fullNameInput.addEventListener("input", () => {
+    updateCustomerInfoDisplay();
+    saveCustomerInfo();
+  });
+  
+  additionalInfoInput.addEventListener("input", () => {
+    updateCustomerInfoDisplay();
+    saveCustomerInfo();
+  });
+
+  // Restore customer info on initialization
+  restoreCustomerInfo();
 
   // Initial update
   updateCustomerInfoDisplay();
+}
+
+/**
+ * INITIALIZE SIDEBAR STATE MANAGEMENT
+ * Saves and restores the sidebar open/closed state using localStorage
+ * Remembers user preference for sidebar visibility between sessions
+ */
+function initializeSidebarState() {
+  const sidebar = document.getElementById('sidebarOffcanvas');
+  const SIDEBAR_STATE_KEY = 'quoteSidebarState';
+  
+  if (!sidebar) {
+    console.log("Sidebar element not found");
+    return;
+  }
+
+  // Function to save sidebar state
+  function saveSidebarState(isOpen) {
+    localStorage.setItem(SIDEBAR_STATE_KEY, isOpen ? 'open' : 'closed');
+    console.log(`Sidebar state saved: ${isOpen ? 'open' : 'closed'}`);
+  }
+
+  // Function to restore sidebar state
+  function restoreSidebarState() {
+    const savedState = localStorage.getItem(SIDEBAR_STATE_KEY);
+    
+    if (savedState === 'open') {
+      // Show the sidebar
+      const bsOffcanvas = new bootstrap.Offcanvas(sidebar);
+      bsOffcanvas.show();
+      console.log("Sidebar restored to open state");
+    }
+    // If savedState is 'closed' or null, sidebar stays closed (default)
+  }
+
+  // Listen for sidebar events
+  sidebar.addEventListener('shown.bs.offcanvas', function () {
+    saveSidebarState(true);
+  });
+
+  sidebar.addEventListener('hidden.bs.offcanvas', function () {
+    saveSidebarState(false);
+  });
+
+  // Restore state on page load (after a small delay to ensure Bootstrap is ready)
+  setTimeout(() => {
+    restoreSidebarState();
+  }, 100);
 }

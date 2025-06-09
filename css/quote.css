@@ -269,9 +269,11 @@ ul .nav-pill:hover {
 /* Page container mimics paper size */
 .page-container {
   width: 100%;
-  max-width: 650px;
+  max-width: 651px;
+  margin-top: -2px;
+  margin-bottom: -1px;
   height: auto;
-  padding: 0px;
+  padding: 1px;
   border: 0px solid #fff;
   border-radius: 10px;
   background-color: transparent;
